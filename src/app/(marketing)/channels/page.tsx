@@ -5,6 +5,7 @@ import { Search, Tv, X } from "lucide-react";
 import { Breadcrumbs, Container, EmptyState, Pagination } from "@/components/ui/misc";
 import { Badge } from "@/components/ui/badge";
 import { buttonClasses } from "@/components/ui/button";
+import { SportsSection } from "@/components/sports-section";
 import { getChannelCategories, searchChannels } from "@/lib/queries";
 import { cn } from "@/lib/utils";
 
@@ -172,6 +173,7 @@ export default async function ChannelsPage({ searchParams }: PageProps<"/channel
           </div>
         </Container>
       </section>
+      <SportsSection />
     </>
   );
 }

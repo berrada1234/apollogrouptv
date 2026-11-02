@@ -4,6 +4,7 @@ import type { Plan } from "@prisma/client";
 import { ButtonLink } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Breadcrumbs, Container, Stars } from "@/components/ui/misc";
+import { accessLabel, monthlyCents, monthsFor, perDayCents, savingsPct } from "@/lib/pricing";
 import { cn, formatDate, formatMoney, intervalLabels, intervalShort, parseFeatures } from "@/lib/utils";
 
 export function PageHero({
@@ -45,36 +46,74 @@ export function PageHero({
   );
 }
 
-export function PlanCard({ plan, cta }: { plan: Plan; cta?: React.ReactNode }) {
+export function PlanCard({
+  plan,
+  cta,
+  baseMonthly = null,
+  bestValue = false,
+}: {
+  plan: Plan;
+  cta?: React.ReactNode;
+  /** Monthly rate of the shortest plan — used to compute honest savings. */
+  baseMonthly?: number | null;
+  bestValue?: boolean;
+}) {
   const features = parseFeatures(plan.features);
-  const months = { MONTHLY: 1, QUARTERLY: 3, SEMIANNUAL: 6, YEARLY: 12, ONE_TIME: 0 }[plan.interval];
-  const monthly = months > 1 ? Math.round(plan.priceCents / months) : null;
+  const months = monthsFor(plan.interval);
+  const monthly = monthlyCents(plan);
+  const perDay = perDayCents(plan);
+  const save = savingsPct(plan, baseMonthly);
+  const fullPrice = baseMonthly && months > 1 ? baseMonthly * months : null;
+  const featured = bestValue || plan.highlighted;
+  const shortName = plan.name.replace(/\s+(pack|plan)$/i, "");
+
   return (
     <article
       className={cn(
         "relative flex h-full flex-col rounded-lg border p-6 transition-colors sm:p-7",
-        plan.highlighted
-          ? "border-primary/60 bg-gradient-to-b from-[#12294a] to-card shadow-glow"
-          : "border-border bg-card shadow-card hover:border-border-strong",
+        featured ? "border-primary/60 bg-gradient-to-b from-[#12294a] to-card shadow-glow" : "border-border bg-card shadow-card hover:border-border-strong",
       )}
     >
-      {plan.highlighted && (
+      {(bestValue || plan.highlighted) && (
         <Badge tone="blue" className="absolute -top-3 left-6 bg-bg">
-          <Sparkles className="h-3 w-3" aria-hidden /> Recommended
+          <Sparkles className="h-3 w-3" aria-hidden /> {bestValue ? "Best value" : "Recommended"}
         </Badge>
       )}
-      <h3 className="font-display text-lg font-semibold text-text">{plan.name}</h3>
-      <p className="mt-2 min-h-12 text-sm leading-relaxed text-muted">{plan.description}</p>
-      <p className="mt-6 flex items-baseline gap-1">
-        <span className="font-display text-4xl font-semibold tracking-tight text-text">
-          {formatMoney(plan.priceCents, plan.currency)}
-        </span>
-        <span className="text-sm text-muted">{intervalShort[plan.interval]}</span>
-      </p>
-      <p className="mt-1 text-xs text-subtle">
-        Billed {intervalLabels[plan.interval].toLowerCase()}
-        {monthly && <> · {formatMoney(monthly, plan.currency)}/mo equivalent</>}
-      </p>
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h3 className="font-display text-lg font-semibold text-text">{plan.name}</h3>
+          <p className="mt-0.5 text-sm font-medium text-light-blue">{accessLabel(plan.interval)}</p>
+        </div>
+        {save > 0 && <Badge tone="success">Save {save}%</Badge>}
+      </div>
+
+      <div className="mt-6">
+        {fullPrice && save > 0 && (
+          <p className="text-sm text-subtle">
+            <span className="line-through">{formatMoney(fullPrice, plan.currency)}</span>
+            <span className="sr-only"> at the monthly rate</span>
+          </p>
+        )}
+        <p className="flex items-baseline gap-1.5">
+          <span className="font-display text-[2.6rem] font-semibold leading-none tracking-tight text-text">{formatMoney(plan.priceCents, plan.currency)}</span>
+          {!plan.oneTime && <span className="text-sm text-muted">{intervalShort[plan.interval]}</span>}
+        </p>
+        <p className="mt-2 text-xs text-subtle">
+          {plan.oneTime ? "One-time payment · no automatic renewal" : `Billed ${intervalLabels[plan.interval].toLowerCase()}`}
+        </p>
+        {monthly && (
+          <div className="mt-3 rounded-lg bg-inset px-3 py-2 text-xs">
+            <p className="text-muted">
+              <span className="font-semibold text-text">{formatMoney(monthly, plan.currency)}/mo</span>
+              {months > 1 ? " equivalent" : ""}
+            </p>
+            {perDay && <p className="mt-0.5 text-subtle">About {formatMoney(Math.round(perDay), plan.currency)} a day</p>}
+          </div>
+        )}
+      </div>
+
+      {plan.description && <p className="mt-5 text-sm leading-relaxed text-muted">{plan.description}</p>}
+
       {features.length > 0 && (
         <ul className="mt-6 space-y-3 border-t border-border pt-6">
           {features.map((f) => (
@@ -87,16 +126,19 @@ export function PlanCard({ plan, cta }: { plan: Plan; cta?: React.ReactNode }) {
           ))}
         </ul>
       )}
+
       <div className="mt-auto pt-7">
         {cta ?? (
-          <ButtonLink
-            href={`/create-account?plan=${plan.slug}`}
-            variant={plan.highlighted ? "primary" : "secondary"}
-            className="w-full"
-          >
-            Choose {plan.name}
+          <ButtonLink href={`/create-account?plan=${plan.slug}`} variant={featured ? "primary" : "secondary"} size="lg" className="w-full">
+            Get {shortName}
           </ButtonLink>
         )}
+        <p className="mt-3 text-center text-xs text-subtle">
+          <Link href="/refund-policy" className="underline-offset-2 hover:text-muted hover:underline">
+            Refund policy
+          </Link>{" "}
+          · Activation confirmed by our team
+        </p>
       </div>
     </article>
   );

@@ -28,7 +28,10 @@ Complete these before publishing. Most items are set in **Admin → Settings**, 
 
 ## Product data
 
-- [ ] Replace the demo plans with your approved plans and prices (Admin → Plans). The "Demo" labels must not reach production.
+- [x] Packs set (2026-11-03): Starter $24.99 / 1 month, Silver $54.99 / 3 months, Elite $99.99 / 6 months, Platinum $149.99 / 12 months, all one-time payments. Savings badges (27% / 33% / 50%) and monthly equivalents are computed from these prices. Demo plans are deactivated.
+- [ ] Confirm "Up to 5 devices per account" matches what your service actually allows (Admin → Plans → features).
+- [ ] Add further plan claims **only once they're true and you can prove them**: channel or movie counts, 24/7 support, "anti-freeze", EPG guide, 4K on all channels, and a money-back guarantee. If you offer a guarantee, also write it in Settings → Legal & policies → Refund terms so both pages agree.
+- [ ] Sports section: lists sport and region categories only. Add league, team or event names only for content you're licensed to distribute.
 - [ ] Replace the demo channels and categories with your real catalog (Admin → Channels).
 - [ ] Add app platforms and tick **"Compatibility verified"** only after testing. Include the official download URL and numbered steps. Device guides at `/guides/<device>` are generated from this.
 - [ ] Decide on referral rewards. Leave the program disabled until the rules are approved.

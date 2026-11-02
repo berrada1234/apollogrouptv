@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { FloatingHelp } from "@/components/home/floating-help";
 import { HomeHero } from "@/components/home/hero";
+import { SportsSection } from "@/components/sports-section";
 import {
   CategoriesSection,
   CompareSection,
@@ -83,6 +84,7 @@ export default async function HomePage() {
       <StepsSection />
       <PlansSection plans={plans.slice(0, 4)} checkout={isCheckoutEnabled()} />
       <CategoriesSection categories={visibleCategories} />
+      <SportsSection />
       <DevicesSection platforms={platforms} />
       <RequirementsSection />
       <LegalSection />

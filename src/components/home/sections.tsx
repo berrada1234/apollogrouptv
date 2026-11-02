@@ -35,6 +35,7 @@ import { Eyebrow } from "@/components/home/hero";
 import { ReviewCarousel } from "@/components/home/review-carousel";
 import { RichText } from "@/components/rich-text";
 import { homeCopy, homeFaq, type HomeImage } from "@/content/home";
+import { monthsFor, pricingContext, savingsPct } from "@/lib/pricing";
 import { cn } from "@/lib/utils";
 
 function Heading({
@@ -388,35 +389,91 @@ export function StepsSection() {
 
 export function PlansSection({ plans, checkout }: { plans: Plan[]; checkout: boolean }) {
   const c = homeCopy.plans;
+  const { baseMonthly, bestValueId } = pricingContext(plans);
+  const maxSave = Math.max(0, ...plans.map((p) => savingsPct(p, baseMonthly)));
+  const allOneTime = plans.length > 0 && plans.every((p) => p.oneTime);
+  const shortest = [...plans].sort((x, y) => monthsFor(x.interval) - monthsFor(y.interval))[0];
+  const best = plans.find((p) => p.id === bestValueId);
+  const middle = plans.find((p) => p.id !== shortest?.id && p.id !== bestValueId);
+
+  const hooks = [
+    allOneTime ? { icon: Receipt, t: "Pay once", b: "No automatic renewals or surprise charges" } : { icon: Receipt, t: "Clear billing", b: "Price and period shown before you pay" },
+    maxSave > 0 ? { icon: Sparkles, t: `Save up to ${maxSave}%`, b: "The longer the pack, the lower the monthly cost" } : null,
+    { icon: KeyRound, t: "Fast activation", b: "Our team confirms your pack and you're ready to watch" },
+    { icon: LifeBuoy, t: "Real support", b: "Help with setup on every pack" },
+  ].filter((h): h is { icon: typeof Receipt; t: string; b: string } => h !== null);
+
+  const guide = [
+    shortest && { who: "Trying it out", why: "Start with one month and see how it fits your routine.", plan: shortest },
+    middle && { who: "Watching every week", why: "A longer pack lowers your monthly cost without a big commitment.", plan: middle },
+    best && { who: "Want the best price", why: "The lowest cost per month of any pack.", plan: best },
+  ].filter(Boolean) as { who: string; why: string; plan: Plan }[];
+
   return (
-    <section id="plans" className="relative border-t border-border bg-bg-secondary/50 py-20 sm:py-24">
+    <section id="plans" className="relative overflow-hidden border-t border-border bg-bg-secondary/50 py-20 sm:py-24">
+      <div className="bg-spotlight pointer-events-none absolute inset-0" aria-hidden />
       <Container className="relative">
-        <SplitHeader eyebrow={c.eyebrow} title={c.h2} description={c.description} image={c.image} imageFirst />
-        <h3 className="sr-only">Available Apollo Group TV plans</h3>
+        <Heading eyebrow={c.eyebrow} title={c.h2} description={<RichText text={c.description} />} />
+
+        <ul className="mx-auto mt-10 grid max-w-5xl grid-cols-2 gap-3 lg:grid-cols-4">
+          {hooks.map((h) => (
+            <li key={h.t} className="flex items-start gap-3 rounded-xl border border-border bg-card/80 p-4">
+              <h.icon className="mt-0.5 h-5 w-5 shrink-0 text-accent" aria-hidden />
+              <span>
+                <span className="block text-sm font-semibold text-text">{h.t}</span>
+                <span className="block text-xs leading-relaxed text-muted">{h.b}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+
+        <h3 className="sr-only">Available Apollo Group TV packs</h3>
         {plans.length > 0 ? (
-          <div className={cn("mt-14 grid items-stretch gap-5 sm:grid-cols-2", plans.length >= 4 ? "lg:grid-cols-4" : "lg:grid-cols-3")}>
+          <div className={cn("mt-14 grid items-stretch gap-5 sm:grid-cols-2", plans.length >= 4 ? "xl:grid-cols-4" : "lg:grid-cols-3")}>
             {plans.map((p) => (
-              <PlanCard key={p.id} plan={p} />
+              <PlanCard key={p.id} plan={p} baseMonthly={baseMonthly} bestValue={p.id === bestValueId} />
             ))}
           </div>
         ) : (
           <EmptyState icon={CreditCard} title="Plans are being finalized" description="Pricing will be published here soon." className="mt-12" />
         )}
-        <div className="mt-10 grid gap-3 md:grid-cols-3">
-          {!checkout && (
-            <div className="flex items-start gap-3 rounded-lg border border-success/30 bg-success/5 px-5 py-4 text-sm">
-              <Check className="mt-0.5 h-5 w-5 shrink-0 text-success" aria-hidden />
-              <p className="text-muted">
-                <span className="font-semibold text-text">No card needed to start.</span> Our team confirms activation and payment options with you.
-              </p>
-            </div>
-          )}
-          <Link href="/plans" className="flex items-center justify-between gap-2 rounded-lg border border-border bg-card px-5 py-4 text-sm font-medium text-text transition-colors hover:border-accent/40">
-            Compare every plan side by side <ArrowRight className="h-4 w-4 shrink-0" aria-hidden />
-          </Link>
-          <Link href="/refund-policy" className="flex items-center justify-between gap-2 rounded-lg border border-border bg-card px-5 py-4 text-sm font-medium text-text transition-colors hover:border-accent/40">
-            Read the refund policy <ArrowRight className="h-4 w-4 shrink-0" aria-hidden />
-          </Link>
+
+        {guide.length > 1 && (
+          <div className="mt-14">
+            <h3 className="text-center font-display text-xl font-semibold text-text">Which pack is right for you?</h3>
+            <ul className="mx-auto mt-6 grid max-w-5xl gap-3 md:grid-cols-3">
+              {guide.map((g) => (
+                <li key={g.who}>
+                  <Link
+                    href={`/create-account?plan=${g.plan.slug}`}
+                    className="group flex h-full flex-col rounded-lg border border-border bg-card p-5 shadow-card transition-colors hover:border-accent/40"
+                  >
+                    <span className="text-xs font-semibold uppercase tracking-[0.14em] text-accent">{g.who}</span>
+                    <span className="mt-2 font-display text-lg font-semibold text-text">{g.plan.name}</span>
+                    <span className="mt-1 flex-1 text-sm text-muted">{g.why}</span>
+                    <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-accent">
+                      Get {g.plan.name.replace(/\s+(pack|plan)$/i, "")} <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden />
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <div className="mx-auto mt-10 flex max-w-5xl flex-col items-center justify-between gap-4 rounded-lg border border-primary/25 bg-card px-6 py-5 shadow-card md:flex-row">
+          <p className="text-center text-sm text-muted md:text-left">
+            <span className="font-semibold text-text">Questions before you buy?</span>{" "}
+            {checkout ? "Our team is happy to help you choose." : "No card needed to start — our team confirms activation and payment options with you."}
+          </p>
+          <div className="flex shrink-0 flex-wrap justify-center gap-2">
+            <ButtonLink href="/plans" variant="secondary" size="sm">
+              Compare all packs
+            </ButtonLink>
+            <ButtonLink href="/contact" variant="ghost" size="sm">
+              Ask support
+            </ButtonLink>
+          </div>
         </div>
       </Container>
     </section>

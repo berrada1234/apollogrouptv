@@ -6,6 +6,7 @@ import { CtaBand, PageHero, PlanCard } from "@/components/marketing/sections";
 import { FaqAccordion } from "@/components/marketing/faq-list";
 import { getActivePlans, getPublishedFaqs } from "@/lib/queries";
 import { isCheckoutEnabled } from "@/lib/payments";
+import { pricingContext, savingsPct } from "@/lib/pricing";
 import { cn, formatMoney, intervalLabels, parseFeatures } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -35,6 +36,8 @@ export default async function PlansPage() {
   const billingFaqs = faqs.filter((f) => /billing|payment|plan|pricing/i.test(f.category));
   const checkout = isCheckoutEnabled();
   const allFeatures = [...new Set(plans.flatMap((p) => parseFeatures(p.features)))];
+  const pricing = pricingContext(plans);
+  const maxSave = Math.max(0, ...plans.map((p) => savingsPct(p, pricing.baseMonthly)));
 
   return (
     <>
@@ -66,10 +69,16 @@ export default async function PlansPage() {
             </div>
           )}
           <h2 className="sr-only">Available plans</h2>
+          {maxSave > 0 && plans.every((p) => p.oneTime) && (
+            <p className="mb-10 text-center text-sm text-muted">
+              Every pack is a <span className="font-semibold text-text">one-time payment</span> for the period shown — no automatic renewals. Longer packs save up to{" "}
+              <span className="font-semibold text-success">{maxSave}%</span> compared with paying month by month.
+            </p>
+          )}
           {plans.length > 0 ? (
-            <div className={cn("mx-auto grid items-stretch gap-6 md:grid-cols-2", plans.length >= 3 ? "lg:grid-cols-3" : "max-w-3xl")}>
+            <div className={cn("mx-auto grid items-stretch gap-6 md:grid-cols-2", plans.length >= 4 ? "xl:grid-cols-4" : plans.length === 3 ? "lg:grid-cols-3" : "max-w-3xl")}>
               {plans.map((plan) => (
-                <PlanCard key={plan.id} plan={plan} />
+                <PlanCard key={plan.id} plan={plan} baseMonthly={pricing.baseMonthly} bestValue={plan.id === pricing.bestValueId} />
               ))}
             </div>
           ) : (

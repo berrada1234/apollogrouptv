@@ -194,6 +194,8 @@ model Plan {
   priceCents  Int
   currency    String          @default("USD") @db.Char(3)
   interval    BillingInterval
+  // One-time payment for a fixed access period (no automatic renewal).
+  oneTime     Boolean         @default(false)
   features    Json
   highlighted Boolean         @default(false)
   isActive    Boolean         @default(true)

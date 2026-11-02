@@ -49,8 +49,7 @@ export const homeCopy = {
     eyebrow: "Pricing",
     h2: "Apollo Group TV Subscription Plans & Pricing",
     description:
-      "Every Apollo Group TV plan shows its price, billing period and exactly what's included before you sign up. Longer billing periods also show their monthly equivalent, so comparing options takes seconds.",
-    image: img("apollo-group-tv-subscription-plans-pricing", "Three Apollo Group TV subscription plan cards with the recommended plan highlighted"),
+      "Pick the pack that matches how much you watch. Every Apollo Group TV pack shows its full price, the access period and what's included — and the longer the pack, the less you pay per month.",
   },
 
   catalog: {

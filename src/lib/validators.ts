@@ -95,6 +95,7 @@ export const planSchema = z.object({
     .pipe(z.array(z.string().max(160)).max(30)),
   sortOrder: z.coerce.number().int().min(0).max(1000),
   highlighted: checkbox,
+  oneTime: checkbox,
   isActive: checkbox,
 });
 

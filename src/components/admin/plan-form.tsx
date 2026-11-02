@@ -45,6 +45,7 @@ export function PlanForm({ plan }: { plan?: Plan }) {
       </Field>
       <div className="flex flex-wrap gap-6">
         <Checkbox name="highlighted" label="Mark as recommended" defaultChecked={plan?.highlighted} />
+        <Checkbox name="oneTime" label="One-time payment (no automatic renewal)" defaultChecked={plan?.oneTime} />
         <Checkbox name="isActive" label="Active (visible on the website)" defaultChecked={plan?.isActive ?? true} />
       </div>
     </ActionForm>

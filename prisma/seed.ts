@@ -2,7 +2,7 @@
  * Development seed.
  *
  *  - FAQ entries describing how the platform works are always upserted.
- *  - Demo plans, categories and channels are created only outside production
+ *  - Owner-approved plans are always ensured. Demo categories and channels are created only outside production
  *    (or with SEED_DEMO=true). They are clearly labelled “Demo” — replace them
  *    with your real, licensed catalog and approved prices before launch.
  *  - No user or administrator is ever created here. See scripts/create-admin.ts.
@@ -33,25 +33,42 @@ async function seedFaqs() {
   console.log(`✓ FAQ: ${created} added, ${removed.count} legacy entries replaced (${faqSeed.length} in the canonical set)`);
 }
 
-async function seedDemo() {
-  const plans = [
-    { slug: "demo-monthly", name: "Demo Monthly", interval: "MONTHLY", priceCents: 1000, sortOrder: 1, highlighted: false },
-    { slug: "demo-quarterly", name: "Demo Quarterly", interval: "QUARTERLY", priceCents: 2700, sortOrder: 2, highlighted: true },
-    { slug: "demo-yearly", name: "Demo Yearly", interval: "YEARLY", priceCents: 9600, sortOrder: 3, highlighted: false },
-  ] as const;
-  for (const p of plans) {
+/**
+ * Owner-approved packs (prices supplied by the site owner on 2026-11-03).
+ * Created once; later edits made in Admin → Plans are never overwritten.
+ * Features list only what the service can stand behind — add further claims in the admin
+ * once they are verified.
+ */
+const packFeatures = [
+  "Up to 5 devices per account",
+  "Live channels and on-demand library",
+  "HD, Full HD and 4K where available",
+  "Setup guides for verified devices",
+  "Account dashboard with billing history",
+  "Ticket-based customer support",
+];
+
+const packs = [
+  { slug: "starter", name: "Starter Pack", interval: "MONTHLY", priceCents: 2499, sortOrder: 1, description: "One month of access — the easiest way to get started." },
+  { slug: "silver", name: "Silver Pack", interval: "QUARTERLY", priceCents: 5499, sortOrder: 2, description: "Three months of access at a lower monthly cost." },
+  { slug: "elite", name: "Elite Pack", interval: "SEMIANNUAL", priceCents: 9999, sortOrder: 3, description: "Six months of access for regular viewers." },
+  { slug: "platinum", name: "Platinum Pack", interval: "YEARLY", priceCents: 14999, sortOrder: 4, description: "A full year of access with the lowest monthly cost." },
+] as const;
+
+async function seedPlans() {
+  for (const p of packs) {
     await db.plan.upsert({
       where: { slug: p.slug },
       update: {},
-      create: {
-        ...p,
-        description: "DEMO PLAN — placeholder for development. Replace with your approved plan and price.",
-        currency: "USD",
-        features: ["Demo feature A", "Demo feature B", "Ticket-based support"],
-      },
+      create: { ...p, currency: "USD", oneTime: true, highlighted: false, isActive: true, features: packFeatures },
     });
   }
+  // Retire the development placeholders now that real packs exist.
+  const retired = await db.plan.updateMany({ where: { slug: { startsWith: "demo-" }, isActive: true }, data: { isActive: false } });
+  console.log(`✓ Plans: ${packs.length} packs ensured, ${retired.count} demo plans deactivated`);
+}
 
+async function seedDemo() {
   const categories = ["Demo News", "Demo Sports", "Demo Movies", "Demo Kids", "Demo Documentary"];
   for (const [i, name] of categories.entries()) {
     const slug = name.toLowerCase().replace(/\s+/g, "-");
@@ -72,11 +89,12 @@ async function seedDemo() {
       });
     }
   }
-  console.log("✓ Demo plans, categories and channels ensured (labelled “Demo”)");
+  console.log("✓ Demo categories and channels ensured (labelled “Demo”)");
 }
 
 async function main() {
   await seedFaqs();
+  await seedPlans();
   if (process.env.NODE_ENV !== "production" || process.env.SEED_DEMO === "true") await seedDemo();
   else console.log("• Skipping demo data in production (set SEED_DEMO=true to force)");
 }
