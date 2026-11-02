@@ -71,7 +71,7 @@ export function PlanCard({
     <article
       className={cn(
         "relative flex h-full flex-col rounded-lg border p-6 transition-colors sm:p-7",
-        featured ? "border-primary/60 bg-gradient-to-b from-[#12294a] to-card shadow-glow" : "border-border bg-card shadow-card hover:border-border-strong",
+        featured ? "border-primary/60 bg-gradient-to-b from-[#0b2a30] to-card shadow-glow" : "border-border bg-card shadow-card hover:border-border-strong",
       )}
     >
       {(bestValue || plan.highlighted) && (
@@ -177,7 +177,7 @@ export function CtaBand({
   return (
     <section className="py-20">
       <Container>
-        <div className="relative overflow-hidden rounded-[22px] border border-primary/30 bg-gradient-to-br from-[#0f2542] via-card to-bg-secondary px-6 py-14 text-center sm:px-12">
+        <div className="relative overflow-hidden rounded-[22px] border border-primary/30 bg-gradient-to-br from-[#0b2a30] via-card to-bg-secondary px-6 py-14 text-center sm:px-12">
           <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-primary/25 blur-3xl" aria-hidden />
           <h2 className="relative font-display text-3xl font-semibold tracking-tight text-text sm:text-4xl">{title}</h2>
           <p className="relative mx-auto mt-4 max-w-xl text-muted">{description}</p>

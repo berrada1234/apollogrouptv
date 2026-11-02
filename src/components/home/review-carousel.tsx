@@ -26,7 +26,7 @@ export function ReviewCarousel({ reviews }: { reviews: Review[] }) {
           <p className="mt-2 leading-relaxed text-muted">“{r.body}”</p>
         </blockquote>
         <figcaption className="mt-6 flex items-center gap-3 border-t border-border pt-5">
-          <span className="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-br from-accent to-primary text-sm font-semibold text-white" aria-hidden>
+          <span className="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-br from-accent to-primary text-sm font-semibold text-on-primary" aria-hidden>
             {initials(r.author)}
           </span>
           <span>

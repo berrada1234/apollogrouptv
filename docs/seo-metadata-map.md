@@ -59,4 +59,4 @@ An automated crawl (Playwright and Edge) of all 18 public pages: HTTP 200, exact
 | Apollo Group TV FAQ: Quick Answers to Common Questions | Informational: price, trial, devices, install, multi-device, channels, payment, cancel, legal, support, official site, password |
 | Start Watching with Apollo Group TV | Conversion |
 
-Each section has an original SVG illustration in `public/images/home/` with a descriptive, keyword-aware file name and alt text. Regenerate them with `node scripts/generate-home-illustrations.mjs`. Homepage copy lives in `src/content/home.ts`.
+Homepage images are limited to the hero product visual (drawn in CSS) and the supported-device logos in `public/images/devices/`, each with a descriptive, keyword-aware file name and alt text. Homepage copy lives in `src/content/home.ts`.

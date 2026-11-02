@@ -8,28 +8,29 @@
  * (py-16 / py-24 / py-28), cards 20–32px padding, gaps 12 / 16 / 24px.
  */
 :root {
-  /* Surfaces, darkest to lightest */
-  --bg: #07111f;
-  --bg-secondary: #0b1728;
-  --card: #101f33;
-  --card-hover: #13253d;
-  --raised: #162a44;
-  --inset: #091423;
+  /* Surfaces: deep black → charcoal */
+  --bg: #050607;
+  --bg-secondary: #0a0c0f;
+  --card: #0f1216;
+  --card-hover: #14181d;
+  --raised: #1a1f25;
+  --inset: #08090c;
 
-  /* Brand */
-  --primary: #3b82f6;
-  --primary-hover: #2f6fe0;
-  --accent: #60a5fa;
-  --light-blue: #93c5fd;
+  /* Brand: electric cyan */
+  --primary: #22d3ee;
+  --primary-hover: #67e8f9;
+  --on-primary: #03141a;
+  --accent: #2fd9f0;
+  --light-blue: #a5f3fc;
 
   /* Text */
-  --text: #f8fafc;
-  --text-muted: #94a3b8;
-  --text-subtle: #7a8ba3;
+  --text: #f4f6f8;
+  --text-muted: #a1a8b3;
+  --text-subtle: #7a828e;
 
   /* Lines */
-  --border: #22334a;
-  --border-strong: #2e4562;
+  --border: #1c2026;
+  --border-strong: #2a3038;
 
   /* Status */
   --success: #22c55e;
@@ -41,11 +42,11 @@
   --radius: 14px;
   --radius-lg: 20px;
 
-  /* Elevation — layered, low-opacity shadows read as real depth on navy */
-  --shadow-sm: 0 1px 2px rgb(2 6 16 / 0.4);
-  --shadow-card: inset 0 1px 0 rgb(255 255 255 / 0.03), 0 1px 2px rgb(2 6 16 / 0.35), 0 8px 24px -12px rgb(2 6 16 / 0.6);
-  --shadow-lg: inset 0 1px 0 rgb(255 255 255 / 0.04), 0 2px 4px rgb(2 6 16 / 0.3), 0 24px 48px -16px rgb(2 6 16 / 0.75);
-  --shadow-glow: 0 0 0 1px rgb(59 130 246 / 0.4), 0 16px 40px -16px rgb(59 130 246 / 0.45);
+  /* Elevation — layered, low-opacity shadows read as depth on near-black */
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.5);
+  --shadow-card: inset 0 1px 0 rgb(255 255 255 / 0.03), 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -12px rgb(0 0 0 / 0.7);
+  --shadow-lg: inset 0 1px 0 rgb(255 255 255 / 0.04), 0 2px 4px rgb(0 0 0 / 0.35), 0 24px 48px -16px rgb(0 0 0 / 0.8);
+  --shadow-glow: 0 0 0 1px rgb(34 211 238 / 0.35), 0 16px 40px -18px rgb(34 211 238 / 0.45);
 
   color-scheme: dark;
 }
@@ -59,6 +60,7 @@
   --color-inset: var(--inset);
   --color-primary: var(--primary);
   --color-primary-hover: var(--primary-hover);
+  --color-on-primary: var(--on-primary);
   --color-accent: var(--accent);
   --color-light-blue: var(--light-blue);
   --color-text: var(--text);
@@ -105,7 +107,7 @@ p {
 }
 
 ::selection {
-  background: rgb(59 130 246 / 0.4);
+  background: rgb(34 211 238 / 0.4);
 }
 
 :focus-visible {
@@ -117,15 +119,15 @@ p {
 /* Subtle grid that fades out from the top — used once per hero, never stacked. */
 .bg-grid {
   background-image:
-    linear-gradient(to right, rgb(148 163 184 / 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(148 163 184 / 0.05) 1px, transparent 1px);
+    linear-gradient(to right, rgb(160 170 185 / 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(160 170 185 / 0.05) 1px, transparent 1px);
   background-size: 56px 56px;
   mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, black 30%, transparent 75%);
 }
 
 /* A single soft light source from above; replaces ad-hoc blurred blobs. */
 .bg-spotlight {
-  background: radial-gradient(60% 50% at 50% 0%, rgb(59 130 246 / 0.16), transparent 70%);
+  background: radial-gradient(60% 50% at 50% 0%, rgb(34 211 238 / 0.16), transparent 70%);
 }
 
 .text-gradient {
@@ -149,6 +151,42 @@ p {
   display: none;
 }
 
+/*
+ * Spacing system (8px base). Sections pick one rhythm by purpose:
+ *   section-y     standard content section  56 → 72 → 88px
+ *   section-y-sm  compact strip or panel    40 → 48 → 56px
+ * Inside a section: header → content 40/48px, card grids gap 16px, two-column gap 40/64px.
+ */
+@utility section-y {
+  padding-block: 3.5rem;
+  @media (width >= 48rem) {
+    padding-block: 4.5rem;
+  }
+  @media (width >= 64rem) {
+    padding-block: 5.5rem;
+  }
+}
+@utility section-y-sm {
+  padding-block: 2.5rem;
+  @media (width >= 48rem) {
+    padding-block: 3rem;
+  }
+  @media (width >= 64rem) {
+    padding-block: 3.5rem;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* Homepage bands: one divider and an alternating tint, whatever order the sections are in.
    Unlayered, so it overrides each section's own border/background utilities. */
 .home-band {
@@ -159,7 +197,11 @@ p {
   border-top: 0;
 }
 .home-band:nth-of-type(even) {
-  background-color: rgb(11 23 40 / 0.55);
+  background-color: var(--bg-secondary);
+}
+/* The homepage ends with its own CTA, so the shared footer CTA would repeat it. */
+body:has(.home-band) .footer-cta {
+  display: none;
 }
 .home-band > section {
   border-top-width: 0;

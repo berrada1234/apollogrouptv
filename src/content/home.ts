@@ -3,10 +3,6 @@
  * Keep claims factual: prices, devices, ratings, counts and channel names are rendered from
  * the database, never written here. Links use [label](/path), bold uses **text** (see <RichText>).
  */
-export type HomeImage = { src: string; alt: string };
-
-const img = (file: string, alt: string): HomeImage => ({ src: `/images/home/${file}.svg`, alt });
-
 export const homeCopy = {
   hero: {
     h1: "Apollo Group TV: Live TV and On-Demand Streaming, Made Simple",
@@ -29,7 +25,6 @@ export const homeCopy = {
       { title: "Verified devices only", body: "Each supported device comes with an official download link and a setup guide." },
       { title: "Activation confirmed by people", body: "Our team activates your pack and stays reachable through support tickets." },
     ],
-    image: img("apollo-group-tv-streaming-overview", "Apollo Group TV interface on a television showing a featured program and rows of content"),
   },
 
   howItWorks: {
@@ -53,7 +48,7 @@ export const homeCopy = {
     h2: "Apollo Group TV vs. Cable TV: How They Compare",
     description:
       "Thinking about leaving cable? Here's how the Apollo Group TV model differs from a typical cable package — without invented numbers.",
-    footnote: "Cable terms vary by provider and region. The cable column describes common arrangements, not any specific company.",
+    footnote: "Cable and streaming terms vary by provider and region. Those columns describe common arrangements, not any specific company.",
   },
 
   devices: {
@@ -86,7 +81,6 @@ export const homeCopy = {
       { title: "Protect your account", body: "We never ask for your password. Be cautious with lookalike sites using similar names." },
     ],
     more: "Read the full explanation: [Is Apollo Group TV legal?](/is-apollo-group-tv-legal) This is general information, not legal advice.",
-    image: img("is-apollo-group-tv-legal-safe", "Security shield with a check mark representing a safe and legal Apollo Group TV service"),
   },
 
   reviews: {
@@ -103,7 +97,6 @@ export const homeCopy = {
     h2: "Apollo TV Customer Support That Follows Through",
     description:
       "Real people, a written record of every reply, and guides for the questions that come up most. Pick the route that fits what you need.",
-    image: img("apollo-tv-customer-support", "Apollo TV support conversation thread between a customer and the support team"),
   },
 
   faq: {

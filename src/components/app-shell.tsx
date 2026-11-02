@@ -121,7 +121,7 @@ export function AppShell({
                   <Icon className="h-[18px] w-[18px] shrink-0" aria-hidden />
                   <span className="flex-1">{item.label}</span>
                   {item.badge ? (
-                    <span className="rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-semibold text-white">{item.badge}</span>
+                    <span className="rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-semibold text-on-primary">{item.badge}</span>
                   ) : null}
                 </Link>
               </li>
@@ -223,7 +223,7 @@ export function AppShell({
             >
               <Bell className="h-5 w-5" aria-hidden />
               {bell.count > 0 && (
-                <span className="absolute right-1.5 top-1.5 grid h-4 min-w-4 place-items-center rounded-full bg-primary px-1 text-[10px] font-semibold text-white ring-2 ring-bg">
+                <span className="absolute right-1.5 top-1.5 grid h-4 min-w-4 place-items-center rounded-full bg-primary px-1 text-[10px] font-semibold text-on-primary ring-2 ring-bg">
                   {bell.count > 9 ? "9+" : bell.count}
                 </span>
               )}
@@ -264,7 +264,7 @@ function UserMenu({ user }: { user: { name: string; email: string; role: string 
         aria-haspopup="menu"
         className="flex items-center gap-2.5 rounded-xl px-2 py-1.5 hover:bg-card"
       >
-        <span className="grid h-8 w-8 place-items-center rounded-full bg-gradient-to-br from-accent to-primary text-xs font-semibold text-white">
+        <span className="grid h-8 w-8 place-items-center rounded-full bg-gradient-to-br from-accent to-primary text-xs font-semibold text-on-primary">
           {initials(user.name)}
         </span>
         <span className="hidden text-left sm:block">

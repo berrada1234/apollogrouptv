@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 
 const variants = {
   primary:
-    "bg-primary text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.18),0_1px_2px_rgb(2_6_16/0.4),0_8px_20px_-10px_rgb(59_130_246/0.7)] hover:bg-primary-hover disabled:bg-primary/50",
+    "bg-primary text-on-primary shadow-[inset_0_1px_0_rgb(255_255_255/0.35),0_1px_2px_rgb(0_0_0/0.4),0_8px_20px_-10px_rgb(34_211_238/0.7)] hover:bg-primary-hover disabled:bg-primary/50",
   secondary:
     "border border-border-strong bg-card text-text shadow-sm hover:border-accent/40 hover:bg-card-hover",
   ghost: "text-muted hover:bg-card hover:text-text",

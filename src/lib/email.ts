@@ -27,12 +27,12 @@ function escapeHtml(value: string) {
 
 function layout(heading: string, body: string, cta?: { label: string; url: string }) {
   const button = cta
-    ? `<p style="margin:28px 0"><a href="${escapeHtml(cta.url)}" style="background:#3B82F6;color:#fff;padding:12px 22px;border-radius:10px;text-decoration:none;font-weight:600">${escapeHtml(cta.label)}</a></p>
-       <p style="color:#94A3B8;font-size:13px">If the button does not work, copy this link:<br>${escapeHtml(cta.url)}</p>`
+    ? `<p style="margin:28px 0"><a href="${escapeHtml(cta.url)}" style="background:#22D3EE;color:#03141A;padding:12px 22px;border-radius:10px;text-decoration:none;font-weight:600">${escapeHtml(cta.label)}</a></p>
+       <p style="color:#A1A8B3;font-size:13px">If the button does not work, copy this link:<br>${escapeHtml(cta.url)}</p>`
     : "";
-  return `<div style="background:#07111F;padding:32px;font-family:Arial,sans-serif;color:#F8FAFC">
-    <div style="max-width:520px;margin:auto;background:#101F33;border:1px solid #22334A;border-radius:14px;padding:32px">
-      <p style="color:#60A5FA;font-weight:700;margin:0 0 16px">${escapeHtml(siteConfig.name)}</p>
+  return `<div style="background:#050607;padding:32px;font-family:Arial,sans-serif;color:#F4F6F8">
+    <div style="max-width:520px;margin:auto;background:#0F1216;border:1px solid #1C2026;border-radius:14px;padding:32px">
+      <p style="color:#22D3EE;font-weight:700;margin:0 0 16px">${escapeHtml(siteConfig.name)}</p>
       <h1 style="font-size:20px;margin:0 0 12px">${escapeHtml(heading)}</h1>
       <p style="color:#CBD5E1;line-height:1.6">${escapeHtml(body)}</p>${button}
     </div></div>`;

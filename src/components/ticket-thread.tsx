@@ -12,7 +12,7 @@ export function TicketThread({ messages, viewer }: { messages: Message[]; viewer
             <span
               className={cn(
                 "grid h-9 w-9 shrink-0 place-items-center rounded-full text-xs font-semibold",
-                m.isStaff ? "bg-primary text-white" : "bg-card-hover text-light-blue",
+                m.isStaff ? "bg-primary text-on-primary" : "bg-card-hover text-light-blue",
               )}
               aria-hidden
             >

@@ -94,7 +94,7 @@ export async function OverviewContent({ user }: { user: CurrentUser }) {
     <div className="space-y-6">
       <div className="grid gap-6 lg:grid-cols-[1.6fr_1fr]">
         {/* Subscription */}
-        <section aria-labelledby="sub-title" className="relative overflow-hidden rounded-lg border border-border bg-gradient-to-br from-[#10284a] via-card to-card p-6 shadow-card sm:p-7">
+        <section aria-labelledby="sub-title" className="relative overflow-hidden rounded-lg border border-border bg-gradient-to-br from-[#0b2a30] via-card to-card p-6 shadow-card sm:p-7">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
               <p className="text-sm text-muted">Your subscription</p>

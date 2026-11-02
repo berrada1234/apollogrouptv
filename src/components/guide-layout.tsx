@@ -66,7 +66,7 @@ export function GuideLayout({
             <ol className="relative mt-6 space-y-6 before:absolute before:bottom-4 before:left-[15px] before:top-4 before:w-px before:bg-border">
               {steps.map((s, i) => (
                 <li key={i} className="relative flex gap-5">
-                  <span className="relative z-10 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-primary font-display text-sm font-semibold text-white">
+                  <span className="relative z-10 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-primary font-display text-sm font-semibold text-on-primary">
                     {i + 1}
                   </span>
                   <div className="pt-1">

@@ -41,7 +41,7 @@ function GuidePreview() {
       <ol className="mt-5 space-y-3">
         {["Download the official app", "Sign in with your account", "Start browsing"].map((s, i) => (
           <li key={s} className="flex items-center gap-3 text-sm">
-            <span className={`grid h-6 w-6 place-items-center rounded-full text-[11px] font-semibold ${i < 2 ? "bg-primary text-white" : "border border-border-strong text-muted"}`}>
+            <span className={`grid h-6 w-6 place-items-center rounded-full text-[11px] font-semibold ${i < 2 ? "bg-primary text-on-primary" : "border border-border-strong text-muted"}`}>
               {i + 1}
             </span>
             <span className={i < 2 ? "text-text" : "text-muted"}>{s}</span>
@@ -153,7 +153,7 @@ export default async function AppPage() {
               <li key={t.t}>
                 <details className="group rounded-lg border border-border bg-card shadow-card open:border-border-strong">
                   <summary className="flex cursor-pointer list-none items-center gap-4 p-5 [&::-webkit-details-marker]:hidden">
-                    <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-inset text-xs font-semibold text-muted group-open:bg-primary group-open:text-white">
+                    <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-inset text-xs font-semibold text-muted group-open:bg-primary group-open:text-on-primary">
                       {i + 1}
                     </span>
                     <span className="flex-1 font-medium text-text">{t.t}</span>

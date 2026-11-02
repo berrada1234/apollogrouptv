@@ -6,8 +6,8 @@ import { footerNav, siteConfig } from "@/lib/site";
 export function SiteFooter() {
   return (
     <footer className="mt-auto border-t border-border bg-bg-secondary">
-      <div className="mx-auto max-w-7xl px-4 pt-10 sm:px-6 lg:px-8">
-        <div className="flex flex-col gap-5 rounded-lg border border-primary/25 bg-gradient-to-r from-[#10284a] to-card px-6 py-6 shadow-card sm:flex-row sm:items-center sm:justify-between sm:px-8">
+      <div className="footer-cta mx-auto max-w-7xl px-4 pt-10 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-5 rounded-lg border border-primary/25 bg-gradient-to-r from-[#0b2a30] to-card px-6 py-6 shadow-card sm:flex-row sm:items-center sm:justify-between sm:px-8">
           <div>
             <p className="font-display text-lg font-semibold text-text">Ready when you are.</p>
             <p className="mt-1 text-sm text-muted">Create your account, pick a plan and get set up in minutes.</p>

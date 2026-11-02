@@ -1,10 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Sora } from "next/font/google";
+import { Inter, Manrope } from "next/font/google";
 import { siteConfig } from "@/lib/site";
 import "./globals.css";
 
 const body = Inter({ variable: "--font-body", subsets: ["latin"], display: "swap" });
-const display = Sora({ variable: "--font-display", subsets: ["latin"], display: "swap", weight: ["500", "600", "700"] });
+const display = Manrope({ variable: "--font-display", subsets: ["latin"], display: "swap", weight: ["500", "600", "700", "800"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#07111F",
+  themeColor: "#050607",
   colorScheme: "dark",
 };
 
@@ -32,7 +32,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="flex min-h-full flex-col bg-bg text-text antialiased">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-white"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-on-primary"
         >
           Skip to content
         </a>

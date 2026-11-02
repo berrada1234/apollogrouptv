@@ -3,15 +3,17 @@ import Link from "next/link";
 import type { Plan } from "@prisma/client";
 import {
   ArrowRight,
-  Mail,
   BookOpen,
   Check,
   CreditCard,
+  FileText,
   Gauge,
-  HelpCircle,
   KeyRound,
   LifeBuoy,
+  Lock,
+  Mail,
   MessageSquareText,
+  Minus,
   MonitorSmartphone,
   Receipt,
   ShieldCheck,
@@ -19,6 +21,9 @@ import {
   Tv,
   User,
   UserPlus,
+  X,
+  BadgeCheck,
+  Download,
 } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
 import { Container, EmptyState, Stars } from "@/components/ui/misc";
@@ -27,44 +32,72 @@ import { FaqAccordion } from "@/components/marketing/faq-list";
 import { Eyebrow } from "@/components/home/hero";
 import { ReviewCarousel } from "@/components/home/review-carousel";
 import { RichText } from "@/components/rich-text";
-import { homeCopy, homeFaq, type HomeImage } from "@/content/home";
-import { monthsFor, pricingContext, savingsPct } from "@/lib/pricing";
+import { homeCopy, homeFaq } from "@/content/home";
+import { pricingContext, savingsPct } from "@/lib/pricing";
 import { cn } from "@/lib/utils";
 
-function Heading({
+// ─── Design-system primitives ───────────────────────────────────────────────
+// One heading scale, one body measure, one header→content gap, one card style.
+
+const h2Class = "font-display text-[1.875rem] font-bold leading-[1.15] tracking-[-0.02em] text-text sm:text-4xl lg:text-[2.625rem]";
+const leadClass = "text-base leading-7 text-muted sm:text-[17px] sm:leading-8";
+/** Gap between a section header and the content it introduces. */
+const afterHeader = "mt-10 lg:mt-12";
+const cardClass = "rounded-[14px] border border-border bg-card shadow-card";
+const cardHover = "transition-[border-color,background-color,transform] duration-200 hover:-translate-y-0.5 hover:border-border-strong hover:bg-card-hover";
+
+function Section({ compact, className, children }: { compact?: boolean; className?: string; children: React.ReactNode }) {
+  return (
+    <section className={cn("relative", compact ? "section-y-sm" : "section-y", className)}>
+      <Container className="relative">{children}</Container>
+    </section>
+  );
+}
+
+function SectionHeader({
   eyebrow,
   title,
   description,
-  align = "center",
+  align = "left",
+  action,
 }: {
   eyebrow: string;
   title: string;
   description?: React.ReactNode;
-  align?: "center" | "left";
+  align?: "left" | "center";
+  /** Shown to the right of a left-aligned header on large screens. */
+  action?: React.ReactNode;
 }) {
-  return (
+  const text = (
     <div className={cn("max-w-2xl", align === "center" && "mx-auto text-center")}>
       <Eyebrow>{eyebrow}</Eyebrow>
-      <h2 className="mt-4 font-display text-3xl font-semibold leading-tight tracking-tight text-text sm:text-[2.5rem]">{title}</h2>
-      {description && <p className="mt-4 leading-relaxed text-muted sm:text-lg">{description}</p>}
+      <h2 className={cn(h2Class, "mt-3")}>{title}</h2>
+      {description && <p className={cn(leadClass, "mt-4")}>{description}</p>}
+    </div>
+  );
+  if (!action) return text;
+  return (
+    <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+      {text}
+      <div className="flex shrink-0 flex-wrap gap-3">{action}</div>
     </div>
   );
 }
 
-function IconBox({ icon: Icon, solid }: { icon: typeof Tv; solid?: boolean }) {
+function IconBox({ icon: Icon, size = "md" }: { icon: typeof Tv; size?: "sm" | "md" }) {
   return (
     <span
       className={cn(
-        "grid h-10 w-10 shrink-0 place-items-center rounded-xl",
-        solid ? "bg-primary text-white shadow-[0_8px_20px_-10px_rgb(59_130_246/0.8)]" : "border border-primary/20 bg-primary/10 text-accent",
+        "grid shrink-0 place-items-center rounded-[10px] border border-primary/20 bg-primary/10 text-accent",
+        size === "sm" ? "h-9 w-9" : "h-11 w-11",
       )}
     >
-      <Icon className="h-5 w-5" aria-hidden />
+      <Icon className={size === "sm" ? "h-4 w-4" : "h-5 w-5"} aria-hidden />
     </span>
   );
 }
 
-// ─── 2. Social-proof bar ────────────────────────────────────────────────────
+// ─── Highlights bar (directly under the hero) ───────────────────────────────
 
 /** Abbreviates real member counts: 1,240 → "1.2K+", 87 → "80+". */
 function formatMembers(n: number) {
@@ -72,51 +105,42 @@ function formatMembers(n: number) {
   return `${Math.floor(n / 10) * 10}+`;
 }
 
-export function SocialProofBar({
-  members,
-  rating,
-}: {
-  members: number;
-  rating: { average: number | null; total: number };
-}) {
+export function SocialProofBar({ members, rating }: { members: number; rating: { average: number | null; total: number } }) {
   // Below this, a member count reads as noise rather than proof — show an honest invitation instead.
   const showMembers = members >= 50;
   return (
-    <section aria-label="At a glance" className="relative border-y border-border bg-gradient-to-r from-bg-secondary via-[#0d1d33] to-bg-secondary">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" aria-hidden />
+    <section aria-label="At a glance" className="relative border-y border-border bg-bg-secondary">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" aria-hidden />
       <Container>
-        <div className="grid divide-y divide-border lg:grid-cols-3 lg:divide-x lg:divide-y-0">
-          {/* Members */}
-          <div className="flex items-center justify-center gap-4 py-6 lg:justify-start lg:py-7">
-            <div className="flex -space-x-2.5" aria-hidden>
-              {["from-[#60a5fa] to-[#1d4ed8]", "from-[#93c5fd] to-[#3b82f6]", "from-[#38bdf8] to-[#0369a1]", "from-[#818cf8] to-[#4338ca]", "from-[#7dd3fc] to-[#2563eb]"].map((g) => (
-                <span key={g} className={`grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br ${g} text-white ring-2 ring-bg-secondary`}>
-                  <User className="h-4 w-4" />
+        <div className="grid divide-y divide-border lg:grid-cols-[1fr_1.3fr_1fr] lg:divide-x lg:divide-y-0">
+          <div className="flex items-center justify-center gap-4 py-5 lg:justify-start lg:pr-6">
+            <div className="flex -space-x-2" aria-hidden>
+              {["from-[#67e8f9] to-[#0891b2]", "from-[#a5f3fc] to-[#22d3ee]", "from-[#5eead4] to-[#0f766e]", "from-[#22d3ee] to-[#0e7490]"].map((g) => (
+                <span key={g} className={`grid h-8 w-8 place-items-center rounded-full bg-gradient-to-br ${g} text-on-primary ring-2 ring-bg-secondary`}>
+                  <User className="h-3.5 w-3.5" />
                 </span>
               ))}
             </div>
             <div>
-              <p className="font-display text-base font-semibold text-text">
+              <p className="text-sm font-semibold text-text">
                 {showMembers ? <>Joined by <span className="tabular-nums">{formatMembers(members)}</span> members</> : "Be one of our first members"}
               </p>
               <p className="text-xs text-subtle">Every account is email-verified</p>
             </div>
           </div>
 
-          {/* Devices */}
-          <Link href="/app" className="group flex flex-col items-center justify-center gap-3 py-6 lg:py-7">
+          <Link href="/app" className="group flex flex-col items-center justify-center gap-2.5 py-5 lg:px-6">
             <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3" aria-label="Supported devices">
               {homeCopy.devices.logos.map((d) => (
                 <li key={d.name} className="flex items-center">
-                  <Image src={d.src} alt={d.alt} width={d.width} height={d.height} title={d.name} className="h-7 w-auto object-contain opacity-90 transition-opacity group-hover:opacity-100" />
+                  <Image src={d.src} alt={d.alt} width={d.width} height={d.height} title={d.name} className="h-6 w-auto object-contain opacity-80 transition-opacity group-hover:opacity-100 sm:h-7" />
                 </li>
               ))}
             </ul>
-            <span className="text-center text-xs text-subtle group-hover:text-light-blue">Works on your TV, phone and computer</span>
+            <span className="text-center text-xs text-subtle transition-colors group-hover:text-light-blue">Works on your TV, phone and computer</span>
           </Link>
 
-          {/* Rating */}
-          <div className="flex items-center justify-center gap-3 py-6 lg:justify-end lg:py-7">
+          <div className="flex items-center justify-center py-5 lg:justify-end lg:pl-6">
             {rating.total > 0 && rating.average != null ? (
               <Link href="/reviews" className="flex items-center gap-3 hover:opacity-90">
                 <Stars rating={Math.round(rating.average)} size="h-4 w-4" />
@@ -143,125 +167,27 @@ export function SocialProofBar({
   );
 }
 
-// ─── Shared building blocks ─────────────────────────────────────────────────
-
-/** Section illustration: original SVG art with descriptive, keyword-aware alt text. */
-function SectionImage({ image, className }: { image: HomeImage; className?: string }) {
-  return (
-    <Image
-      src={image.src}
-      alt={image.alt}
-      width={640}
-      height={440}
-      unoptimized
-      loading="lazy"
-      className={cn("h-auto w-full rounded-[22px] shadow-lg", className)}
-    />
-  );
-}
-
-/** Heading + description beside an illustration. */
-function SplitHeader({
-  eyebrow,
-  title,
-  description,
-  image,
-  imageFirst,
-}: {
-  eyebrow: string;
-  title: string;
-  description?: string;
-  image: HomeImage;
-  imageFirst?: boolean;
-}) {
-  return (
-    <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-      <div className={cn(imageFirst && "lg:order-2")}>
-        <Heading align="left" eyebrow={eyebrow} title={title} description={description ? <RichText text={description} /> : undefined} />
-      </div>
-      <SectionImage image={image} className="mx-auto max-w-lg lg:max-w-none" />
-    </div>
-  );
-}
-
-/** Text-led section: heading, paragraphs and optional item grid beside an illustration. */
-function ContentSection({
-  copy,
-  imageFirst,
-  tinted,
-  itemCols = 1,
-  children,
-}: {
-  copy: { eyebrow: string; h2: string; paragraphs: string[]; items?: { title: string; body: string }[]; image: HomeImage; more?: string };
-  imageFirst?: boolean;
-  tinted?: boolean;
-  itemCols?: 1 | 2;
-  children?: React.ReactNode;
-}) {
-  return (
-    <section className={cn("py-20 sm:py-24", tinted && "border-t border-border bg-bg-secondary/50")}>
-      <Container className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16 [&>*]:min-w-0">
-        <div className={cn(imageFirst && "lg:order-2")}>
-          <Eyebrow>{copy.eyebrow}</Eyebrow>
-          <h2 className="mt-4 font-display text-3xl font-semibold leading-tight tracking-tight text-text sm:text-[2.5rem]">{copy.h2}</h2>
-          <div className="mt-5 space-y-4 leading-relaxed text-muted sm:text-lg">
-            {copy.paragraphs.map((p, i) => (
-              <p key={i}>
-                <RichText text={p} />
-              </p>
-            ))}
-          </div>
-          {copy.items && (
-            <ul className={cn("mt-7 grid gap-3", itemCols === 2 && "sm:grid-cols-2")}>
-              {copy.items.map((it) => (
-                <li key={it.title} className="flex gap-3 rounded-lg border border-border bg-card p-4 shadow-card">
-                  <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-primary/15 text-accent">
-                    <Check className="h-3.5 w-3.5" strokeWidth={3} aria-hidden />
-                  </span>
-                  <span>
-                    <span className="block font-semibold text-text">{it.title}</span>
-                    <span className="mt-0.5 block text-sm leading-relaxed text-muted">
-                      <RichText text={it.body} />
-                    </span>
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
-          {copy.more && (
-            <p className="mt-6 text-sm text-subtle">
-              <RichText text={copy.more} />
-            </p>
-          )}
-          {children}
-        </div>
-        <SectionImage image={copy.image} className="mx-auto max-w-lg lg:max-w-none" />
-      </Container>
-    </section>
-  );
-}
-
-// ─── What is Apollo Group TV ────────────────────────────────────────────────
+// ─── Overview: what is Apollo Group TV ──────────────────────────────────────
 
 const highlightIcons = [Tv, Receipt, MonitorSmartphone, KeyRound];
 
 export function IntroSection() {
   const c = homeCopy.intro;
   return (
-    <section className="py-20 sm:py-24">
-      <Container className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16 [&>*]:min-w-0">
-        <div>
+    <Section>
+      <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-16 [&>*]:min-w-0">
+        <div className="lg:col-span-6">
           <Eyebrow>{c.eyebrow}</Eyebrow>
-          <h2 className="mt-4 font-display text-3xl font-semibold leading-tight tracking-tight text-text sm:text-[2.5rem]">{c.h2}</h2>
-          <div className="mt-5 space-y-4 leading-relaxed text-muted sm:text-lg">
+          <h2 className={cn(h2Class, "mt-3")}>{c.h2}</h2>
+          <div className={cn(leadClass, "mt-5 space-y-4")}>
             {c.paragraphs.map((p, i) => (
               <p key={i}>
                 <RichText text={p} />
               </p>
             ))}
           </div>
-          <p className="mt-6 font-display text-lg font-semibold text-light-blue">{c.tagline}</p>
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+          <p className="mt-6 border-l-2 border-primary pl-4 font-display text-lg font-semibold text-text">{c.tagline}</p>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <ButtonLink href="/plans" size="lg">
               Choose your pack <ArrowRight className="h-4 w-4" aria-hidden />
             </ButtonLink>
@@ -270,23 +196,228 @@ export function IntroSection() {
             </ButtonLink>
           </div>
         </div>
-        <SectionImage image={c.image} className="mx-auto max-w-lg lg:max-w-none" />
-      </Container>
-      <Container className="mt-12">
-        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+
+        <ul className="grid gap-4 sm:grid-cols-2 lg:col-span-6">
           {c.highlights.map((h, i) => {
             const Icon = highlightIcons[i % highlightIcons.length];
             return (
-              <li key={h.title} className="rounded-lg border border-border bg-card p-5 shadow-card">
+              <li key={h.title} className={cn(cardClass, "flex flex-col p-6")}>
                 <IconBox icon={Icon} />
-                <h3 className="mt-4 font-semibold text-text">{h.title}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-muted">{h.body}</p>
+                <h3 className="mt-5 font-display text-base font-bold text-text">{h.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-muted">{h.body}</p>
               </li>
             );
           })}
         </ul>
-      </Container>
-    </section>
+      </div>
+    </Section>
+  );
+}
+
+// ─── Devices ────────────────────────────────────────────────────────────────
+
+export function DevicesSection() {
+  const c = homeCopy.devices;
+  return (
+    <Section>
+      <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-16 [&>*]:min-w-0">
+        <div className="lg:col-span-5">
+          <SectionHeader eyebrow={c.eyebrow} title={c.h2} description={c.description} />
+          <p className="mt-6 flex gap-3 text-sm leading-6 text-muted">
+            <MessageSquareText className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden />
+            <span>
+              Device not listed? <Link href="/contact" className="font-medium text-text underline-offset-4 hover:text-light-blue hover:underline">Ask us before subscribing</Link> —
+              we&apos;ll tell you honestly whether it works.
+            </span>
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <ButtonLink href="/app">
+              Apollo TV app details <ArrowRight className="h-4 w-4" aria-hidden />
+            </ButtonLink>
+            <ButtonLink href="/guides" variant="secondary">
+              Installation guides
+            </ButtonLink>
+          </div>
+        </div>
+
+        <div className="lg:col-span-7">
+          <h3 className="sr-only">{c.supportedTitle}</h3>
+          <ul className="grid grid-cols-2 gap-4 sm:grid-cols-6">
+            {c.logos.map((d, i) => (
+              <li
+                key={d.name}
+                className={cn(
+                  cardClass,
+                  cardHover,
+                  "flex h-28 flex-col items-center justify-center gap-3 p-4 sm:h-36 sm:gap-4 sm:p-5",
+                  i < 3 ? "sm:col-span-2" : "sm:col-span-3",
+                  i === 0 && "col-span-2",
+                )}
+              >
+                <Image src={d.src} alt={d.alt} width={d.width} height={d.height} className="h-10 w-auto max-w-full object-contain sm:h-12" />
+                <span className="text-sm font-medium text-muted">{d.name}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-4 text-xs leading-5 text-subtle">{c.trademarks}</p>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+// ─── Apollo vs cable ────────────────────────────────────────────────────────
+
+type Mark = "win" | "same" | "short";
+const markIcon = { win: Check, same: Minus, short: X } as const;
+const markTone = { win: "text-accent", same: "text-warning", short: "text-error" } as const;
+const markLabel = { win: "Apollo wins", same: "Comparable", short: "Falls short" } as const;
+
+function Cell({ mark, children, strong }: { mark: Mark; children: React.ReactNode; strong?: boolean }) {
+  const Icon = markIcon[mark];
+  return (
+    <span className="flex items-start gap-2.5">
+      <Icon className={cn("mt-0.5 h-4 w-4 shrink-0", markTone[mark])} strokeWidth={2.5} aria-hidden />
+      <span className="sr-only">{markLabel[mark]}: </span>
+      <span className={strong ? "font-semibold text-text" : "text-muted"}>{children}</span>
+    </span>
+  );
+}
+
+export function CompareSection({
+  fromMonthly,
+  liveChannels,
+  moviesShows,
+}: {
+  fromMonthly: string | null;
+  /** Owner-set catalog sizes (Admin → Settings → Homepage highlights); blank falls back to plain wording. */
+  liveChannels: string;
+  moviesShows: string;
+}) {
+  const c = homeCopy.compare;
+  // Competitor columns describe common arrangements in general terms — no invented prices or counts.
+  const rows: { k: string; apollo: string; cable: [Mark, string]; other: [Mark, string] }[] = [
+    { k: "Monthly cost", apollo: fromMonthly ? `From ${fromMonthly}/mo` : "Shown before you buy", cable: ["short", "Monthly bill plus add-on fees"], other: ["same", "A monthly fee per service"] },
+    { k: "Live channels", apollo: liveChannels || "Full live channel guide", cable: ["same", "Fixed channel packages"], other: ["short", "Mostly on-demand; live TV varies"] },
+    { k: "Movies & shows", apollo: moviesShows || "On-demand library", cable: ["short", "Limited on-demand"], other: ["same", "Large on-demand libraries"] },
+    { k: "4K quality", apollo: "Where available", cable: ["short", "Often an extra cost"], other: ["same", "On some plans"] },
+    { k: "TV guide (EPG)", apollo: "Searchable channel guide", cable: ["same", "On-screen guide"], other: ["same", "Varies by service"] },
+    { k: "Equipment", apollo: "The app on your own device", cable: ["short", "Set-top box, often rented"], other: ["same", "The app on your own device"] },
+    { k: "Support", apollo: "Tickets with full reply history", cable: ["same", "Phone queues"], other: ["same", "Email or help center"] },
+    { k: "Contract", apollo: "None — pay once per pack", cable: ["short", "Long-term contracts are common"], other: ["same", "Monthly, renews automatically"] },
+  ];
+  return (
+    <Section>
+      <SectionHeader align="center" eyebrow={c.eyebrow} title={c.h2} description={c.description} />
+
+      <p className={cn(afterHeader, "mb-3 text-center text-xs text-subtle md:hidden")} aria-hidden>
+        Swipe the table to compare all columns →
+      </p>
+      <div className={cn("md:mt-10 lg:mt-12", cardClass, "relative overflow-x-auto")}>
+        <table className="w-full min-w-[720px] text-sm">
+          <caption className="sr-only">Apollo Group TV compared with cable TV and other streaming services</caption>
+          <thead>
+            <tr className="border-b border-border text-left">
+              <th scope="col" className="w-[22%] px-6 py-5 text-[11px] font-semibold uppercase tracking-[0.12em] text-subtle">Feature</th>
+              <th scope="col" className="w-[28%] border-x border-primary/20 bg-primary/[0.07] px-6 py-4">
+                <Image src="/brand/apollo-logo.webp" alt="Apollo Group TV" width={155} height={32} className="h-8 w-auto" />
+              </th>
+              <th scope="col" className="w-[25%] px-6 py-5 text-sm font-semibold text-muted">Cable TV</th>
+              <th scope="col" className="w-[25%] px-6 py-5 text-sm font-semibold text-muted">Other streaming</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((r) => (
+              <tr key={r.k} className="border-b border-border transition-colors last:border-0 hover:bg-white/[0.015]">
+                <th scope="row" className="px-6 py-4 text-left font-medium text-muted">{r.k}</th>
+                <td className="border-x border-primary/20 bg-primary/[0.04] px-6 py-4">
+                  <Cell mark="win" strong>
+                    {r.apollo}
+                  </Cell>
+                </td>
+                <td className="px-6 py-4">
+                  <Cell mark={r.cable[0]}>{r.cable[1]}</Cell>
+                </td>
+                <td className="px-6 py-4">
+                  <Cell mark={r.other[0]}>{r.other[1]}</Cell>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <ul className="mt-5 flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs text-subtle" aria-label="Legend">
+        {(Object.keys(markIcon) as Mark[]).map((m) => {
+          const Icon = markIcon[m];
+          return (
+            <li key={m} className="inline-flex items-center gap-1.5">
+              <Icon className={cn("h-3.5 w-3.5", markTone[m])} strokeWidth={2.5} aria-hidden /> {markLabel[m]}
+            </li>
+          );
+        })}
+      </ul>
+      <p className="mx-auto mt-3 max-w-3xl text-center text-xs leading-5 text-subtle">{c.footnote}</p>
+    </Section>
+  );
+}
+
+// ─── Plans & pricing ────────────────────────────────────────────────────────
+
+export function PlansSection({ plans, checkout }: { plans: Plan[]; checkout: boolean }) {
+  const c = homeCopy.plans;
+  const { baseMonthly, bestValueId } = pricingContext(plans);
+  const maxSave = Math.max(0, ...plans.map((p) => savingsPct(p, baseMonthly)));
+  const allOneTime = plans.length > 0 && plans.every((p) => p.oneTime);
+
+  const hooks = [
+    allOneTime ? { icon: Receipt, t: "Pay once", b: "No automatic renewals" } : { icon: Receipt, t: "Clear billing", b: "Price shown before you pay" },
+    maxSave > 0 ? { icon: Sparkles, t: `Save up to ${maxSave}%`, b: "On longer packs" } : null,
+    { icon: KeyRound, t: "Fast activation", b: "Confirmed by our team" },
+    { icon: LifeBuoy, t: "Real support", b: "Setup help on every pack" },
+  ].filter((h): h is { icon: typeof Receipt; t: string; b: string } => h !== null);
+
+  return (
+    <Section>
+      <SectionHeader align="center" eyebrow={c.eyebrow} title={c.h2} description={<RichText text={c.description} />} />
+
+      <ul className="mx-auto mt-8 flex flex-wrap justify-center gap-x-8 gap-y-3">
+        {hooks.map((h) => (
+          <li key={h.t} className="flex items-center gap-2.5">
+            <h.icon className="h-4 w-4 shrink-0 text-accent" aria-hidden />
+            <span className="text-sm">
+              <span className="font-semibold text-text">{h.t}</span> <span className="text-subtle">· {h.b}</span>
+            </span>
+          </li>
+        ))}
+      </ul>
+
+      <h3 className="sr-only">Available Apollo Group TV packs</h3>
+      {plans.length > 0 ? (
+        <div className={cn("mt-12 grid items-stretch gap-5 pt-3 sm:grid-cols-2", plans.length >= 4 ? "xl:grid-cols-4" : "lg:grid-cols-3")}>
+          {plans.map((p) => (
+            <PlanCard key={p.id} plan={p} baseMonthly={baseMonthly} bestValue={p.id === bestValueId} />
+          ))}
+        </div>
+      ) : (
+        <EmptyState icon={CreditCard} title="Plans are being finalized" description="Pricing will be published here soon." className={afterHeader} />
+      )}
+
+      <div className={cn(cardClass, "mt-8 flex flex-col items-center justify-between gap-4 px-6 py-5 md:flex-row")}>
+        <p className="text-center text-sm leading-6 text-muted md:text-left">
+          <span className="font-semibold text-text">Not sure which pack fits?</span>{" "}
+          {checkout ? "Our team is happy to help you choose." : "No card needed to start — our team confirms activation and payment options with you."}
+        </p>
+        <div className="flex shrink-0 flex-wrap justify-center gap-2">
+          <ButtonLink href="/plans" variant="secondary" size="sm">
+            Compare all packs
+          </ButtonLink>
+          <ButtonLink href="/contact" variant="ghost" size="sm">
+            Ask support
+          </ButtonLink>
+        </div>
+      </div>
+    </Section>
   );
 }
 
@@ -301,172 +432,33 @@ export function StepsSection() {
     { icon: Tv, t: "Start watching", b: "Install the Apollo TV app on your verified device and sign in." },
   ];
   return (
-    <section className="py-20 sm:py-24">
-      <Container>
-        <Heading eyebrow={c.eyebrow} title={c.h2} description={c.description} />
-        <ol className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {steps.map((s, i) => (
-            <li key={s.t} className="relative rounded-lg border border-border bg-card p-6 shadow-card">
-              <div className="flex items-center justify-between">
-                <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary font-display text-sm font-semibold text-white shadow-[0_8px_20px_-10px_rgb(59_130_246/0.8)]">
-                  {i + 1}
-                </span>
-                <s.icon className="h-5 w-5 text-subtle" aria-hidden />
-              </div>
-              <h3 className="mt-5 font-display text-base font-semibold text-text">{s.t}</h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-muted">{s.b}</p>
-            </li>
-          ))}
-        </ol>
-      </Container>
-    </section>
-  );
-}
-
-// ─── Plans & pricing ────────────────────────────────────────────────────────
-
-export function PlansSection({ plans, checkout }: { plans: Plan[]; checkout: boolean }) {
-  const c = homeCopy.plans;
-  const { baseMonthly, bestValueId } = pricingContext(plans);
-  const maxSave = Math.max(0, ...plans.map((p) => savingsPct(p, baseMonthly)));
-  const allOneTime = plans.length > 0 && plans.every((p) => p.oneTime);
-  const shortest = [...plans].sort((x, y) => monthsFor(x.interval) - monthsFor(y.interval))[0];
-  const best = plans.find((p) => p.id === bestValueId);
-  const middle = plans.find((p) => p.id !== shortest?.id && p.id !== bestValueId);
-
-  const hooks = [
-    allOneTime ? { icon: Receipt, t: "Pay once", b: "No automatic renewals or surprise charges" } : { icon: Receipt, t: "Clear billing", b: "Price and period shown before you pay" },
-    maxSave > 0 ? { icon: Sparkles, t: `Save up to ${maxSave}%`, b: "The longer the pack, the lower the monthly cost" } : null,
-    { icon: KeyRound, t: "Fast activation", b: "Our team confirms your pack and you're ready to watch" },
-    { icon: LifeBuoy, t: "Real support", b: "Help with setup on every pack" },
-  ].filter((h): h is { icon: typeof Receipt; t: string; b: string } => h !== null);
-
-  const guide = [
-    shortest && { who: "Trying it out", why: "Start with one month and see how it fits your routine.", plan: shortest },
-    middle && { who: "Watching every week", why: "A longer pack lowers your monthly cost without a big commitment.", plan: middle },
-    best && { who: "Want the best price", why: "The lowest cost per month of any pack.", plan: best },
-  ].filter(Boolean) as { who: string; why: string; plan: Plan }[];
-
-  return (
-    <section className="relative overflow-hidden border-t border-border bg-bg-secondary/50 py-20 sm:py-24">
-      <div className="bg-spotlight pointer-events-none absolute inset-0" aria-hidden />
-      <Container className="relative">
-        <Heading eyebrow={c.eyebrow} title={c.h2} description={<RichText text={c.description} />} />
-
-        <ul className="mx-auto mt-10 grid max-w-5xl grid-cols-2 gap-3 lg:grid-cols-4">
-          {hooks.map((h) => (
-            <li key={h.t} className="flex items-start gap-3 rounded-xl border border-border bg-card/80 p-4">
-              <h.icon className="mt-0.5 h-5 w-5 shrink-0 text-accent" aria-hidden />
-              <span>
-                <span className="block text-sm font-semibold text-text">{h.t}</span>
-                <span className="block text-xs leading-relaxed text-muted">{h.b}</span>
-              </span>
-            </li>
-          ))}
-        </ul>
-
-        <h3 className="sr-only">Available Apollo Group TV packs</h3>
-        {plans.length > 0 ? (
-          <div className={cn("mt-14 grid items-stretch gap-5 sm:grid-cols-2", plans.length >= 4 ? "xl:grid-cols-4" : "lg:grid-cols-3")}>
-            {plans.map((p) => (
-              <PlanCard key={p.id} plan={p} baseMonthly={baseMonthly} bestValue={p.id === bestValueId} />
-            ))}
-          </div>
-        ) : (
-          <EmptyState icon={CreditCard} title="Plans are being finalized" description="Pricing will be published here soon." className="mt-12" />
-        )}
-
-        {guide.length > 1 && (
-          <div className="mt-14">
-            <h3 className="text-center font-display text-xl font-semibold text-text">Which pack is right for you?</h3>
-            <ul className="mx-auto mt-6 grid max-w-5xl gap-3 md:grid-cols-3">
-              {guide.map((g) => (
-                <li key={g.who}>
-                  <Link
-                    href={`/create-account?plan=${g.plan.slug}`}
-                    className="group flex h-full flex-col rounded-lg border border-border bg-card p-5 shadow-card transition-colors hover:border-accent/40"
-                  >
-                    <span className="text-xs font-semibold uppercase tracking-[0.14em] text-accent">{g.who}</span>
-                    <span className="mt-2 font-display text-lg font-semibold text-text">{g.plan.name}</span>
-                    <span className="mt-1 flex-1 text-sm text-muted">{g.why}</span>
-                    <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-accent">
-                      Get {g.plan.name.replace(/\s+(pack|plan)$/i, "")} <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden />
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        <div className="mx-auto mt-10 flex max-w-5xl flex-col items-center justify-between gap-4 rounded-lg border border-primary/25 bg-card px-6 py-5 shadow-card md:flex-row">
-          <p className="text-center text-sm text-muted md:text-left">
-            <span className="font-semibold text-text">Questions before you buy?</span>{" "}
-            {checkout ? "Our team is happy to help you choose." : "No card needed to start — our team confirms activation and payment options with you."}
-          </p>
-          <div className="flex shrink-0 flex-wrap justify-center gap-2">
-            <ButtonLink href="/plans" variant="secondary" size="sm">
-              Compare all packs
-            </ButtonLink>
-            <ButtonLink href="/contact" variant="ghost" size="sm">
-              Ask support
-            </ButtonLink>
-          </div>
-        </div>
-      </Container>
-    </section>
-  );
-}
-
-// ─── Apps & devices ─────────────────────────────────────────────────────────
-
-export function DevicesSection() {
-  const c = homeCopy.devices;
-  return (
-    <section className="border-t border-border bg-bg-secondary/50 py-20 sm:py-24">
-      <Container className="grid gap-10 lg:grid-cols-2 lg:gap-16 [&>*]:min-w-0">
-        <div>
-          <Heading align="left" eyebrow={c.eyebrow} title={c.h2} description={c.description} />
-        </div>
-        <div className="self-center">
-          <h3 className="font-display text-lg font-semibold text-text">{c.supportedTitle}</h3>
-          <ul className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {c.logos.map((d, i) => (
-              <li
-                key={d.name}
-                className={cn(
-                  "flex flex-col items-center justify-between gap-3 rounded-lg border border-border bg-card p-4 shadow-card transition-colors hover:border-border-strong",
-                  i === 0 && "col-span-2 sm:col-span-1",
-                )}
-              >
-                <span className="flex h-14 w-full items-center justify-center">
-                  <Image src={d.src} alt={d.alt} width={d.width} height={d.height} className="max-h-14 w-auto object-contain" />
-                </span>
-                <span className="text-sm font-medium text-text">{d.name}</span>
-              </li>
-            ))}
-          </ul>
-          <p className="mt-3 text-xs text-subtle">{c.trademarks}</p>
-          <div className="mt-4 rounded-lg border border-border bg-card p-5 shadow-card">
-            <div className="flex items-start gap-4">
-              <IconBox icon={HelpCircle} />
-              <div>
-                <p className="font-semibold text-text">Is your device supported?</p>
-                <p className="mt-1 text-sm text-muted">If it isn&apos;t listed yet, ask us before subscribing — we&apos;ll tell you honestly whether it works.</p>
-              </div>
-            </div>
-          </div>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <ButtonLink href="/app">
-              Apollo TV app details <ArrowRight className="h-4 w-4" aria-hidden />
-            </ButtonLink>
-            <ButtonLink href="/guides" variant="ghost">
-              Installation guides
-            </ButtonLink>
-          </div>
-        </div>
-      </Container>
-    </section>
+    <Section>
+      <SectionHeader
+        eyebrow={c.eyebrow}
+        title={c.h2}
+        description={c.description}
+        action={
+          <ButtonLink href="/create-account">
+            Create your account <ArrowRight className="h-4 w-4" aria-hidden />
+          </ButtonLink>
+        }
+      />
+      <ol className={cn(afterHeader, "relative grid gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6")}>
+        {/* Connector line through the step markers on large screens */}
+        <span className="pointer-events-none absolute left-6 right-6 top-6 hidden h-px bg-gradient-to-r from-primary/60 via-border-strong to-border lg:block" aria-hidden />
+        {steps.map((s, i) => (
+          <li key={s.t} className="relative">
+            <span className="relative grid h-12 w-12 place-items-center rounded-full border border-primary/40 bg-bg font-display text-base font-bold text-accent shadow-[0_0_0_6px_var(--bg)]">
+              {i + 1}
+            </span>
+            <h3 className="mt-5 flex items-center gap-2 font-display text-base font-bold text-text">
+              <s.icon className="h-4 w-4 text-subtle" aria-hidden /> {s.t}
+            </h3>
+            <p className="mt-2 text-sm leading-6 text-muted">{s.b}</p>
+          </li>
+        ))}
+      </ol>
+    </Section>
   );
 }
 
@@ -478,90 +470,127 @@ export function ReviewsSection({
   reviews: { id: string; rating: number; title: string; body: string; isVerified: boolean; author: string; date: string }[];
 }) {
   const c = homeCopy.reviews;
-  return (
-    <section className="border-t border-border bg-bg-secondary/50 py-20 sm:py-24">
-      <Container>
-        <Heading eyebrow={c.eyebrow} title={c.h2} description={c.description} />
-        <div className="mt-12">
-          {reviews.length > 0 ? (
-            <ReviewCarousel reviews={reviews} />
-          ) : (
-            <EmptyState
-              icon={MessageSquareText}
-              title="No reviews published yet"
-              description="Reviews appear here once registered customers share them and they pass moderation."
-              className="mx-auto max-w-xl"
-            />
-          )}
-        </div>
-        <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-          <ButtonLink href="/reviews">Read all Apollo Group TV reviews</ButtonLink>
-          <ButtonLink href="/reviews#write" variant="ghost">
-            Write a review
-          </ButtonLink>
-        </div>
-      </Container>
-    </section>
+  const actions = (
+    <>
+      <ButtonLink href="/reviews" variant="secondary">
+        Read all reviews
+      </ButtonLink>
+      <ButtonLink href="/reviews#write" variant="ghost">
+        Write a review
+      </ButtonLink>
+    </>
   );
-}
 
-// ─── Apollo vs cable ────────────────────────────────────────────────────────
+  if (reviews.length > 0) {
+    return (
+      <Section>
+        <SectionHeader eyebrow={c.eyebrow} title={c.h2} description={c.description} action={actions} />
+        <div className={afterHeader}>
+          <ReviewCarousel reviews={reviews} />
+        </div>
+      </Section>
+    );
+  }
 
-export function CompareSection({ fromMonthly }: { fromMonthly: string | null }) {
-  const c = homeCopy.compare;
-  const rows = [
-    { k: "Price", apollo: fromMonthly ? `Shown before you buy — from ${fromMonthly}/mo equivalent` : "Shown before you buy", cable: "Monthly bill; add-on fees are common" },
-    { k: "Commitment", apollo: "Pay once per pack, no automatic renewal", cable: "Long-term contracts are common" },
-    { k: "Equipment", apollo: "The app on a verified device", cable: "Set-top box, often rented" },
-    { k: "Where you watch", apollo: "TV, streaming stick or phone (verified devices)", cable: "Mostly the TV connected to the box" },
-    { k: "Setup", apollo: "Self-install with step-by-step guides", cable: "May need an installation appointment" },
-    { k: "Managing your plan", apollo: "Self-service dashboard", cable: "Many changes need a phone call" },
-    { k: "Support record", apollo: "Every reply saved in a ticket thread", cable: "Varies by provider" },
-    { k: "Stopping service", apollo: "Nothing to cancel — packs simply end", cable: "Early cancellation fees are common" },
+  // No published reviews yet: explain how reviews work instead of showing an empty box.
+  const rules = [
+    { icon: User, t: "Registered accounts only", b: "Every review is tied to a real Apollo Group TV account." },
+    { icon: ShieldCheck, t: "Moderated before publishing", b: "We check each review for spam and abuse — never for being positive." },
+    { icon: BadgeCheck, t: "“Verified customer” means it", b: "The badge appears only when the reviewer has a subscription on record." },
   ];
   return (
-    <section className="border-t border-border bg-bg-secondary/50 py-20 sm:py-24">
-      <Container className="grid gap-10 lg:grid-cols-[1fr_1.5fr] lg:gap-14 [&>*]:min-w-0">
-        <div>
-          <Heading align="left" eyebrow={c.eyebrow} title={c.h2} description={c.description} />
+    <Section>
+      <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-16 [&>*]:min-w-0">
+        <div className="lg:col-span-6">
+          <SectionHeader eyebrow={c.eyebrow} title={c.h2} description={c.description} />
+          <div className="mt-8 flex flex-wrap gap-3">{actions}</div>
         </div>
-        <div className="self-center">
-          <div className="overflow-x-auto rounded-lg border border-border bg-card shadow-card">
-            <table className="w-full min-w-[520px] text-sm">
-              <caption className="sr-only">Apollo Group TV compared with a typical cable TV package</caption>
-              <thead className="border-b border-border bg-inset/60 text-left text-[11px] uppercase tracking-[0.08em] text-subtle">
-                <tr>
-                  <th scope="col" className="px-4 py-3 font-semibold">Feature</th>
-                  <th scope="col" className="bg-primary/10 px-4 py-3 font-semibold text-light-blue">Apollo Group TV</th>
-                  <th scope="col" className="px-4 py-3 font-semibold">Typical cable TV</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((r) => (
-                  <tr key={r.k} className="border-b border-border last:border-0">
-                    <th scope="row" className="px-4 py-3.5 text-left font-medium text-text">{r.k}</th>
-                    <td className="bg-primary/5 px-4 py-3.5 text-text/90">
-                      <span className="flex items-start gap-2">
-                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-success" aria-hidden /> {r.apollo}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3.5 text-muted">{r.cable}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <p className="mt-3 text-xs text-subtle">{c.footnote}</p>
-        </div>
-      </Container>
-    </section>
+        <ul className={cn(cardClass, "divide-y divide-border lg:col-span-6")}>
+          {rules.map((r) => (
+            <li key={r.t} className="flex gap-4 p-6">
+              <IconBox icon={r.icon} size="sm" />
+              <div>
+                <h3 className="font-semibold text-text">{r.t}</h3>
+                <p className="mt-1 text-sm leading-6 text-muted">{r.b}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </Section>
   );
 }
 
 // ─── Legal & safety ─────────────────────────────────────────────────────────
 
+const safetyIcons = [FileText, Download, Lock];
+
 export function LegalSection() {
-  return <ContentSection copy={homeCopy.legal} />;
+  const c = homeCopy.legal;
+  return (
+    <Section>
+      <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-16 [&>*]:min-w-0">
+        <div className="lg:col-span-6">
+          <Eyebrow>{c.eyebrow}</Eyebrow>
+          <h2 className={cn(h2Class, "mt-3")}>{c.h2}</h2>
+          <div className={cn(leadClass, "mt-5 space-y-4")}>
+            {c.paragraphs.map((p, i) => (
+              <p key={i}>
+                <RichText text={p} />
+              </p>
+            ))}
+          </div>
+          <p className="mt-6 text-sm leading-6 text-subtle">
+            <RichText text={c.more} />
+          </p>
+        </div>
+        <ul className={cn(cardClass, "divide-y divide-border lg:col-span-6")}>
+          {c.items.map((it, i) => (
+            <li key={it.title} className="flex gap-4 p-6">
+              <IconBox icon={safetyIcons[i % safetyIcons.length]} size="sm" />
+              <div>
+                <h3 className="font-semibold text-text">{it.title}</h3>
+                <p className="mt-1 text-sm leading-6 text-muted">
+                  <RichText text={it.body} />
+                </p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </Section>
+  );
+}
+
+// ─── FAQ ────────────────────────────────────────────────────────────────────
+
+export function FaqSection() {
+  const c = homeCopy.faq;
+  const items = homeFaq.map((f, i) => ({ id: `home-${i}`, category: "Home", question: f.q, answer: f.a }));
+  return (
+    <Section>
+      <div className="grid gap-10 lg:grid-cols-12 lg:gap-16 [&>*]:min-w-0">
+        <div className="lg:sticky lg:top-36 lg:col-span-5 lg:self-start">
+          <SectionHeader eyebrow={c.eyebrow} title={c.h2} description={<RichText text={c.description} />} />
+          <div className={cn(cardClass, "mt-8 p-5")}>
+            <p className="font-semibold text-text">Still have a question?</p>
+            <p className="mt-1 text-sm leading-6 text-muted">Our team answers every message — usually with a written reply you can come back to.</p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <ButtonLink href="/contact" size="sm">
+                Contact support
+              </ButtonLink>
+              <ButtonLink href="/faq" variant="ghost" size="sm">
+                Full FAQ
+              </ButtonLink>
+            </div>
+          </div>
+        </div>
+        <div className="lg:col-span-7">
+          <FaqAccordion items={items} />
+        </div>
+      </div>
+    </Section>
+  );
 }
 
 // ─── Support ────────────────────────────────────────────────────────────────
@@ -575,52 +604,33 @@ export function SupportSection({ guideCount, faqCount }: { guideCount: number; f
     { icon: BookOpen, t: "Help center", meta: `${guideCount} guides · ${faqCount} answers`, b: "Step-by-step setup guides, troubleshooting and the full FAQ.", href: "/guides", cta: "Browse guides" },
   ];
   return (
-    <section className="py-20 sm:py-24">
-      <Container>
-        <SplitHeader eyebrow={c.eyebrow} title={c.h2} description={c.description} image={c.image} imageFirst />
-        <ul className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {routes.map((r) => (
-            <li key={r.t}>
-              <Link href={r.href} className="group flex h-full flex-col rounded-lg border border-border bg-card p-5 shadow-card transition-colors hover:border-accent/40">
-                <div className="flex items-center justify-between gap-3">
-                  <IconBox icon={r.icon} />
-                  <span className="text-xs text-subtle">{r.meta}</span>
-                </div>
-                <h3 className="mt-4 font-semibold text-text group-hover:text-light-blue">{r.t}</h3>
-                <p className="mt-1.5 flex-1 text-sm leading-relaxed text-muted">{r.b}</p>
-                <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-accent">
-                  {r.cta} <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden />
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-        <p className="mt-6 text-sm text-muted">
-          Can&apos;t sign in? Reset your password from the <Link href="/sign-in" className="text-accent hover:text-light-blue">Sign in</Link> page — the link is
-          valid for 30 minutes.
-        </p>
-      </Container>
-    </section>
-  );
-}
-
-// ─── FAQ ────────────────────────────────────────────────────────────────────
-
-export function FaqSection() {
-  const c = homeCopy.faq;
-  const items = homeFaq.map((f, i) => ({ id: `home-${i}`, category: "Home", question: f.q, answer: f.a }));
-  return (
-    <section className="border-t border-border bg-bg-secondary/50 py-20 sm:py-24">
-      <Container className="grid gap-10 lg:grid-cols-[1fr_1.6fr] lg:gap-14 [&>*]:min-w-0">
-        <div className="lg:sticky lg:top-24 lg:self-start">
-          <Heading align="left" eyebrow={c.eyebrow} title={c.h2} description={<RichText text={c.description} />} />
-          <ButtonLink href="/faq" variant="secondary" className="mt-8">
-            See the full FAQ
-          </ButtonLink>
-        </div>
-        <FaqAccordion items={items} />
-      </Container>
-    </section>
+    <Section>
+      <SectionHeader eyebrow={c.eyebrow} title={c.h2} description={c.description} />
+      <ul className={cn(afterHeader, "grid gap-4 sm:grid-cols-2 lg:grid-cols-4")}>
+        {routes.map((r) => (
+          <li key={r.t}>
+            <Link href={r.href} className={cn(cardClass, cardHover, "group flex h-full flex-col p-6")}>
+              <div className="flex items-start justify-between gap-3">
+                <IconBox icon={r.icon} />
+                <span className="pt-1 text-right text-xs text-subtle">{r.meta}</span>
+              </div>
+              <h3 className="mt-5 font-display text-base font-bold text-text">{r.t}</h3>
+              <p className="mt-2 flex-1 text-sm leading-6 text-muted">{r.b}</p>
+              <span className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-accent">
+                {r.cta} <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden />
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+      <p className="mt-6 text-sm text-muted">
+        Can&apos;t sign in? Reset your password from the{" "}
+        <Link href="/sign-in" className="font-medium text-accent hover:text-light-blue">
+          Sign in
+        </Link>{" "}
+        page — the link is valid for 30 minutes.
+      </p>
+    </Section>
   );
 }
 
@@ -630,15 +640,15 @@ export function FinalCta({ fromMonthly, maxSave }: { fromMonthly: string | null;
   const c = homeCopy.cta;
   const badges = ["One-time payment", "No automatic renewal", "No contracts", "Activation by our team"];
   return (
-    <section className="py-20 sm:py-28">
+    <section className="section-y relative border-t border-border">
       <Container>
-        <div className="relative overflow-hidden rounded-[22px] border border-primary/30 bg-card px-6 py-14 text-center shadow-lg sm:px-12 sm:py-16">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_80%_at_50%_0%,rgb(59_130_246/0.28),transparent_70%)]" aria-hidden />
-          <div className="bg-grid pointer-events-none absolute inset-0" aria-hidden />
-          <div className="relative">
+        <div className="relative overflow-hidden rounded-[20px] border border-primary/25 bg-[#07191d] px-6 py-12 text-center sm:px-12 sm:py-16">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_90%_at_50%_0%,rgb(34_211_238/0.25),transparent_70%)]" aria-hidden />
+          <div className="bg-grid pointer-events-none absolute inset-0 opacity-70" aria-hidden />
+          <div className="relative mx-auto max-w-2xl">
             <Eyebrow>{c.eyebrow}</Eyebrow>
-            <h2 className="mt-4 font-display text-3xl font-semibold tracking-tight text-text sm:text-4xl">{c.h2}</h2>
-            <p className="mx-auto mt-4 max-w-xl text-muted">
+            <h2 className={cn(h2Class, "mt-3")}>{c.h2}</h2>
+            <p className={cn(leadClass, "mt-4")}>
               {c.body}
               {fromMonthly && (
                 <>
@@ -659,7 +669,7 @@ export function FinalCta({ fromMonthly, maxSave }: { fromMonthly: string | null;
             <ul className="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-muted">
               {badges.map((b) => (
                 <li key={b} className="inline-flex items-center gap-1.5">
-                  <Check className="h-4 w-4 text-success" aria-hidden /> {b}
+                  <Check className="h-4 w-4 text-accent" strokeWidth={2.5} aria-hidden /> {b}
                 </li>
               ))}
             </ul>

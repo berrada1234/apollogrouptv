@@ -15,16 +15,16 @@ export default function OpengraphImage() {
           flexDirection: "column",
           justifyContent: "center",
           padding: "80px",
-          background: "linear-gradient(135deg, #07111F 0%, #0B1728 55%, #12305a 100%)",
-          color: "#F8FAFC",
+          background: "linear-gradient(135deg, #050607 0%, #0A0C0F 55%, #0B3A46 100%)",
+          color: "#F4F6F8",
           fontFamily: "sans-serif",
         }}
       >
-        <div style={{ fontSize: 28, color: "#60A5FA", fontWeight: 700, letterSpacing: 4 }}>APOLLO GROUP TV</div>
+        <div style={{ fontSize: 28, color: "#22D3EE", fontWeight: 700, letterSpacing: 4 }}>APOLLO GROUP TV</div>
         <div style={{ fontSize: 72, fontWeight: 700, marginTop: 24, lineHeight: 1.1, maxWidth: 900 }}>
           Entertainment, beautifully organized.
         </div>
-        <div style={{ fontSize: 30, color: "#94A3B8", marginTop: 28 }}>Flexible plans · Organized catalog · Real support</div>
+        <div style={{ fontSize: 30, color: "#A1A8B3", marginTop: 28 }}>Flexible plans · Organized catalog · Real support</div>
       </div>
     ),
     size,

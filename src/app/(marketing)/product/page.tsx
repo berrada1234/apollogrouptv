@@ -62,7 +62,7 @@ function MockCatalog() {
       <div className="mt-3 grid grid-cols-2 gap-2">
         {[0, 1, 2, 3].map((i) => (
           <div key={i} className="flex items-center gap-2.5 rounded-lg border border-border bg-card p-2.5">
-            <span className="grid h-8 w-8 place-items-center rounded-md bg-gradient-to-br from-[#1d4ed8] to-[#60a5fa] text-[10px] font-semibold text-white">
+            <span className="grid h-8 w-8 place-items-center rounded-md bg-gradient-to-br from-[#0891b2] to-[#2fd9f0] text-[10px] font-semibold text-on-primary">
               S{i + 1}
             </span>
             <span className="space-y-1">
@@ -173,7 +173,7 @@ export default function ProductPage() {
               <li key={s.t} className="relative flex gap-4 md:flex-col md:items-center md:text-center">
                 <span className="relative grid h-12 w-12 shrink-0 place-items-center rounded-full border border-primary/40 bg-bg text-accent shadow-sm">
                   <s.icon className="h-5 w-5" aria-hidden />
-                  <span className="absolute -right-1 -top-1 grid h-5 w-5 place-items-center rounded-full bg-primary text-[10px] font-semibold text-white">
+                  <span className="absolute -right-1 -top-1 grid h-5 w-5 place-items-center rounded-full bg-primary text-[10px] font-semibold text-on-primary">
                     {i + 1}
                   </span>
                 </span>

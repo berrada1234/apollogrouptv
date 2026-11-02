@@ -82,8 +82,11 @@ describe("homepage content", async () => {
     expect(h2s).toContain("Apollo Group TV Subscription Plans & Pricing");
     expect(new Set(h2s).size).toBe(h2s.length);
   });
-  it("gives every illustrated section a descriptive alt text", () => {
-    for (const s of Object.values(homeCopy)) if ("image" in s) expect(s.image.alt.length).toBeGreaterThan(25);
+  it("gives every device logo a descriptive, keyword-aware alt text", () => {
+    for (const d of homeCopy.devices.logos) {
+      expect(d.alt.length).toBeGreaterThan(25);
+      expect(d.alt).toMatch(/Apollo (Group )?TV/);
+    }
   });
   it("keeps homepage FAQ factual and distinct from /faq", () => {
     const faqQuestions = new Set(faqSeed.map((f) => f.question));

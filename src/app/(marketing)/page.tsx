@@ -113,13 +113,13 @@ export default async function HomePage() {
         <IntroSection />
       </Band>
       <Band id="sports">
-        <SportsSection />
+        <SportsSection limit={6} />
       </Band>
       <Band id="devices">
         <DevicesSection />
       </Band>
       <Band id="compare">
-        <CompareSection fromMonthly={fromMonthly} />
+        <CompareSection fromMonthly={fromMonthly} liveChannels={highlights.liveChannels} moviesShows={highlights.moviesShows} />
       </Band>
       <Band id="plans">
         <PlansSection plans={plans.slice(0, 4)} checkout={isCheckoutEnabled()} />

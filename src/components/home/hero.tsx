@@ -1,52 +1,17 @@
 import Link from "next/link";
-import { ArrowRight, Film, Newspaper, Play, ShieldCheck, Trophy } from "lucide-react";
+import { ArrowRight, Check, ShieldCheck } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
 import { Container } from "@/components/ui/misc";
+import { ProductVisual } from "@/components/home/product-visual";
 import { homeCopy } from "@/content/home";
 
+/** Small uppercase label above a heading: a cyan dot and tracked text, no box. */
 export function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-flex items-center rounded-full border border-primary/35 bg-primary/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-light-blue">
+    <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-accent">
+      <span className="h-1.5 w-1.5 rounded-full bg-primary shadow-[0_0_8px_rgb(34_211_238/0.8)]" aria-hidden />
       {children}
     </span>
-  );
-}
-
-/** Concentric "broadcast" rings around a play button, with a few floating category chips. Decorative. */
-function SignalVisual() {
-  return (
-    <div className="relative mx-auto aspect-square w-full max-w-[520px]" aria-hidden>
-      <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle,rgb(59_130_246/0.22),transparent_62%)]" />
-      {[100, 80, 62, 46].map((size, i) => (
-        <div
-          key={size}
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border"
-          style={{
-            width: `${size}%`,
-            height: `${size}%`,
-            borderColor: `rgb(96 165 250 / ${0.1 + i * 0.08})`,
-            borderStyle: i === 0 ? "dashed" : "solid",
-          }}
-        />
-      ))}
-      <div className="absolute left-1/2 top-1/2 grid h-[26%] w-[26%] -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-accent/50 bg-[radial-gradient(circle_at_30%_30%,#1e3a8a,#0b1728)] shadow-[0_0_60px_-10px_rgb(59_130_246/0.7)]">
-        <span className="grid h-[52%] w-[52%] place-items-center rounded-full bg-white text-bg shadow-lg">
-          <Play className="ml-[6%] h-1/2 w-1/2 fill-current" />
-        </span>
-      </div>
-      {[
-        { icon: Trophy, label: "Sports", pos: "left-[4%] top-[22%]" },
-        { icon: Newspaper, label: "News", pos: "right-[2%] top-[34%]" },
-        { icon: Film, label: "Movies", pos: "bottom-[14%] left-[14%]" },
-      ].map((c) => (
-        <div key={c.label} className={`absolute ${c.pos} flex items-center gap-2 rounded-xl border border-border-strong bg-card/90 px-3 py-2 text-xs font-medium text-text shadow-lg backdrop-blur`}>
-          <span className="grid h-7 w-7 place-items-center rounded-lg bg-primary/15 text-accent">
-            <c.icon className="h-4 w-4" />
-          </span>
-          {c.label}
-        </div>
-      ))}
-    </div>
   );
 }
 
@@ -61,15 +26,23 @@ export function HomeHero({
 }) {
   return (
     <section className="relative overflow-hidden">
-      <div className="bg-spotlight pointer-events-none absolute inset-0" aria-hidden />
-      <div className="bg-grid pointer-events-none absolute inset-0" aria-hidden />
-      <Container className="relative grid items-center gap-10 pb-14 pt-10 sm:pb-20 sm:pt-16 lg:grid-cols-[1.35fr_1fr] lg:gap-8">
-        <div>
+      {/* Cinematic backdrop: one cyan light source behind the product, a faint grid, and a fade into the page. */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_70%_at_78%_35%,rgb(34_211_238/0.13),transparent_70%),radial-gradient(40%_50%_at_10%_0%,rgb(34_211_238/0.06),transparent_70%)]" aria-hidden />
+      <div className="bg-grid pointer-events-none absolute inset-0 opacity-60" aria-hidden />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-bg" aria-hidden />
+
+      <Container className="relative grid items-center gap-12 pb-14 pt-10 sm:pb-16 sm:pt-14 lg:grid-cols-[1.05fr_1fr] lg:gap-10 lg:pb-20 lg:pt-16">
+        <div className="motion-safe:animate-[fade-up_0.6s_ease-out_both]">
           <Eyebrow>{tagline}</Eyebrow>
-          <h1 className="mt-5 font-display text-[2.4rem] font-semibold leading-[1.06] tracking-tight text-text sm:text-[3.4rem] lg:text-[3.3rem] xl:text-[3.6rem]">
-            Apollo Group TV: Live TV and <span className="text-gradient"><span className="whitespace-nowrap">On-Demand</span> Streaming</span>, Made Simple
+          <h1 className="mt-5 font-display text-[2.375rem] font-extrabold leading-[1.05] tracking-[-0.03em] text-text sm:text-[3.25rem] xl:text-[3.75rem]">
+            Apollo Group TV: Live TV and{" "}
+            <span className="bg-gradient-to-r from-primary to-light-blue bg-clip-text text-transparent">
+              <span className="whitespace-nowrap">On-Demand</span> Streaming
+            </span>
+            , Made Simple
           </h1>
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">{homeCopy.hero.lead}</p>
+          <p className="mt-5 max-w-xl text-base leading-7 text-muted sm:text-lg sm:leading-8">{homeCopy.hero.lead}</p>
+
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
             <ButtonLink href="/plans" size="lg">
               View plans <ArrowRight className="h-4 w-4" aria-hidden />
@@ -78,34 +51,40 @@ export function HomeHero({
               Explore features
             </ButtonLink>
           </div>
-          <p className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted">
-            <ShieldCheck className="h-4 w-4 shrink-0 text-accent" aria-hidden />
-            {badges.map((b, i) => (
-              <span key={b} className="flex items-center gap-2">
-                {i > 0 && <span className="text-subtle" aria-hidden>·</span>}
+
+          <ul className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted">
+            {badges.map((b) => (
+              <li key={b} className="inline-flex items-center gap-1.5">
                 {b.includes("money-back") ? (
-                  <Link href="/refund-policy" className="font-medium text-text underline-offset-4 hover:text-light-blue hover:underline">
-                    {b}
-                  </Link>
+                  <>
+                    <ShieldCheck className="h-4 w-4 shrink-0 text-accent" aria-hidden />
+                    <Link href="/refund-policy" className="font-medium text-text underline-offset-4 hover:text-light-blue hover:underline">
+                      {b}
+                    </Link>
+                  </>
                 ) : (
-                  b
+                  <>
+                    <Check className="h-4 w-4 shrink-0 text-accent" strokeWidth={2.5} aria-hidden /> {b}
+                  </>
                 )}
-              </span>
+              </li>
             ))}
-          </p>
+          </ul>
+
           {stats.length > 0 && (
-            <dl className="mt-10 flex max-w-xl divide-x divide-border rounded-2xl border border-border bg-card/70 py-4 shadow-sm">
+            <dl className="mt-8 flex max-w-lg gap-8 border-t border-border pt-6">
               {stats.map((s) => (
-                <div key={s.label} className="flex min-w-0 flex-1 flex-col-reverse px-3 text-center sm:px-5">
-                  <dt className="mt-1 text-[11px] text-subtle sm:text-xs">{s.label}</dt>
-                  <dd className="font-display text-xl font-semibold text-text tabular-nums sm:text-2xl">{s.value}</dd>
+                <div key={s.label} className="flex min-w-0 flex-col-reverse">
+                  <dt className="mt-1 text-xs text-subtle sm:text-sm">{s.label}</dt>
+                  <dd className="font-display text-2xl font-bold tracking-tight text-text tabular-nums sm:text-[1.75rem]">{s.value}</dd>
                 </div>
               ))}
             </dl>
           )}
         </div>
-        <div className="hidden sm:block">
-          <SignalVisual />
+
+        <div className="motion-safe:animate-[fade-up_0.8s_ease-out_0.1s_both] lg:pl-4">
+          <ProductVisual />
         </div>
       </Container>
     </section>

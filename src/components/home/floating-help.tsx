@@ -24,7 +24,7 @@ export function FloatingHelp({ whatsapp }: { whatsapp: string }) {
       tabIndex={visible ? undefined : -1}
       aria-hidden={visible ? undefined : true}
       className={cn(
-        "fixed bottom-5 right-5 z-40 grid h-14 w-14 place-items-center rounded-full bg-primary text-white shadow-[0_12px_30px_-8px_rgb(59_130_246/0.8)] transition-all duration-200 hover:-translate-y-0.5",
+        "fixed bottom-5 right-5 z-40 grid h-14 w-14 place-items-center rounded-full bg-primary text-on-primary shadow-[0_12px_30px_-8px_rgb(34_211_238/0.8)] transition-all duration-200 hover:-translate-y-0.5",
         visible ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-4 opacity-0",
       )}
     >
