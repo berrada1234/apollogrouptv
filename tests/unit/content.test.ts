@@ -95,3 +95,11 @@ describe("homepage content", async () => {
     expect(shared.length).toBeLessThanOrEqual(2);
   });
 });
+
+describe("homepage copy guardrails", () => {
+  it("contains no hard-coded audience or catalog figures", async () => {
+    const src = (await import("node:fs")).readFileSync("src/content/home.ts", "utf8");
+    expect(src).not.toMatch(/\b\d{1,3},\d{3}\+|\b\d+\+ (channels|movies|countries|subscribers)/i);
+    expect(src).not.toMatch(/money-back|24\/7|anti-freeze/i);
+  });
+});

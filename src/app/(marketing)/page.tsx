@@ -3,7 +3,7 @@ import { FloatingHelp } from "@/components/home/floating-help";
 import { HomeHero } from "@/components/home/hero";
 import { SportsSection } from "@/components/sports-section";
 import {
-  CategoriesSection,
+  ChannelsShowcase,
   CompareSection,
   DevicesSection,
   FaqSection,
@@ -12,19 +12,20 @@ import {
   IntroSection,
   LegalSection,
   PlansSection,
-  ReferralSection,
-  RequirementsSection,
   ReviewsSection,
   SocialProofBar,
   StepsSection,
   SupportSection,
 } from "@/components/home/sections";
+import { generalGuides } from "@/content/guides";
+import { getDeviceGuides } from "@/lib/guides";
+import { monthlyCents, pricingContext, savingsPct } from "@/lib/pricing";
 import { db } from "@/lib/db";
 import { isCheckoutEnabled } from "@/lib/payments";
 import { displayName, getActivePlans, getApprovedReviews, getChannelCategories } from "@/lib/queries";
 import { getSettings } from "@/lib/settings";
 import { siteConfig } from "@/lib/site";
-import { formatDate } from "@/lib/utils";
+import { formatDate, formatMoney } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -42,13 +43,27 @@ export const metadata: Metadata = {
 
 
 export default async function HomePage() {
-  const [plans, { reviews, total: reviewTotal, average }, categories, settings, members] = await Promise.all([
+  const [plans, { reviews, total: reviewTotal, average }, categories, settings, members, sampleChannels, deviceGuides, faqCount] = await Promise.all([
     getActivePlans(),
     getApprovedReviews({ take: 8 }),
     getChannelCategories(),
     getSettings(),
     db.user.count({ where: { emailVerified: true, status: "ACTIVE" } }),
+    db.channel.findMany({
+      where: { isActive: true },
+      orderBy: { name: "asc" },
+      take: 24,
+      select: { id: true, name: true, logoUrl: true, category: { select: { name: true } } },
+    }),
+    getDeviceGuides(),
+    db.faq.count({ where: { isPublished: true } }),
   ]);
+
+  // Price hooks computed from the real price list.
+  const pricing = pricingContext(plans);
+  const monthlies = plans.map(monthlyCents).filter((m): m is number => m !== null);
+  const fromMonthly = monthlies.length ? formatMoney(Math.min(...monthlies), plans[0]?.currency ?? "USD") : null;
+  const maxSave = Math.max(0, ...plans.map((p) => savingsPct(p, pricing.baseMonthly)));
 
   const visibleCategories = categories.filter((c) => c._count.channels > 0).map((c) => ({ id: c.id, slug: c.slug, name: c.name, count: c._count.channels }));
   const totalChannels = visibleCategories.reduce((n, c) => n + c.count, 0);
@@ -82,13 +97,15 @@ export default async function HomePage() {
       <IntroSection />
       <FeaturesSection />
       <StepsSection />
+      <ChannelsShowcase
+        channels={sampleChannels.map((c) => ({ id: c.id, name: c.name, logoUrl: c.logoUrl, category: c.category.name }))}
+        categories={visibleCategories}
+      />
       <PlansSection plans={plans.slice(0, 4)} checkout={isCheckoutEnabled()} />
-      <CategoriesSection categories={visibleCategories} />
+      <CompareSection fromMonthly={fromMonthly} />
       <SportsSection />
       <DevicesSection platforms={platforms} />
-      <RequirementsSection />
       <LegalSection />
-      <CompareSection />
       <ReviewsSection
         reviews={reviews.map((r) => ({
           id: r.id,
@@ -100,10 +117,9 @@ export default async function HomePage() {
           date: formatDate(r.createdAt),
         }))}
       />
-      <SupportSection />
-      <ReferralSection rewardText={settings.referral.enabled && settings.referral.rewardDescription ? settings.referral.rewardDescription : undefined} />
+      <SupportSection guideCount={generalGuides.length + deviceGuides.length} faqCount={faqCount} />
       <FaqSection />
-      <FinalCta />
+      <FinalCta fromMonthly={fromMonthly} maxSave={maxSave} />
       <FloatingHelp whatsapp={settings.general.whatsapp} />
     </>
   );

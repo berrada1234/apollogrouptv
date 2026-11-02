@@ -149,6 +149,16 @@ p {
   display: none;
 }
 
+/* Channel showcase: two copies of a row slide left by one copy width for a seamless loop. */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
 /* Native <dialog> backdrop */
 dialog::backdrop {
   background: rgb(2 6 16 / 0.7);
