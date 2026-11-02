@@ -1,0 +1,71 @@
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { describe, expect, it } from "vitest";
+import { RichText, stripRich } from "@/components/rich-text";
+import { FAQ_CATEGORIES, faqSeed } from "@/content/faqs";
+import { legalDocs } from "@/content/legal";
+import { contactSchema } from "@/lib/validators";
+
+const html = (text: string, tokens = {}) => renderToStaticMarkup(createElement(RichText, { text, tokens }));
+
+describe("RichText", () => {
+  it("renders internal links", () => {
+    expect(html("See the [Plans page](/plans).")).toMatch(/<a [^>]*href="\/plans"[^>]*>Plans page<\/a>/);
+  });
+  it("never renders external or script links", () => {
+    const out = html("[x](https://evil.example) [y](javascript:alert(1))");
+    expect(out).not.toContain("<a");
+    expect(out).toContain("[x](https://evil.example)");
+  });
+  it("escapes HTML in editable content", () => {
+    expect(html("<img src=x onerror=alert(1)>")).not.toContain("<img");
+  });
+  it("fills tokens and marks missing ones as owner placeholders", () => {
+    const tokens = { entityName: { value: "Acme LLC", placeholder: "legal entity name" }, supportEmail: { value: "", placeholder: "support email address" } };
+    const out = html("Operated by {{entityName}}. Write to {{supportEmail}}.", tokens);
+    expect(out).toContain("Acme LLC");
+    expect(out).toContain("[Owner to provide: support email address]");
+  });
+  it("strips formatting for search and snippets", () => {
+    expect(stripRich("Go to [Plans](/plans) now {{x}}")).toBe("Go to Plans now ");
+  });
+});
+
+describe("FAQ content", () => {
+  it("uses only the defined categories and covers each of them", () => {
+    for (const f of faqSeed) expect(FAQ_CATEGORIES).toContain(f.category);
+    for (const c of FAQ_CATEGORIES) expect(faqSeed.some((f) => f.category === c)).toBe(true);
+  });
+  it("has no duplicate questions", () => {
+    expect(new Set(faqSeed.map((f) => f.question)).size).toBe(faqSeed.length);
+  });
+  it("does not state prices or refund windows (those live in their own pages)", () => {
+    for (const f of faqSeed) expect(f.answer).not.toMatch(/\$\d|\d+[- ]day (refund|money)/i);
+  });
+  it("links only to same-site paths", () => {
+    for (const f of faqSeed) for (const m of f.answer.matchAll(/\]\(([^)]+)\)/g)) expect(m[1].startsWith("/")).toBe(true);
+  });
+});
+
+describe("Legal content", () => {
+  it("has unique slugs and descriptions", () => {
+    expect(new Set(legalDocs.map((d) => d.slug)).size).toBe(legalDocs.length);
+    expect(new Set(legalDocs.map((d) => d.description)).size).toBe(legalDocs.length);
+  });
+});
+
+describe("contactSchema", () => {
+  const valid = { name: "Jane Doe", email: "jane@example.com", topic: "Setup help", subject: "TV setup", message: "My app shows an error after sign-in." };
+  it("accepts a complete message", () => {
+    expect(contactSchema.safeParse(valid).success).toBe(true);
+  });
+  it("rejects a filled honeypot", () => {
+    const r = contactSchema.safeParse({ ...valid, website: "http://spam.example" });
+    expect(r.success).toBe(false);
+    expect(r.error?.issues[0].path[0]).toBe("website");
+  });
+  it("rejects unknown topics and short messages", () => {
+    expect(contactSchema.safeParse({ ...valid, topic: "Hacking" }).success).toBe(false);
+    expect(contactSchema.safeParse({ ...valid, message: "help" }).success).toBe(false);
+  });
+});

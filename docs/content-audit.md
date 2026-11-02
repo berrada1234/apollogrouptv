@@ -1,0 +1,37 @@
+# Content audit
+
+**Status key:** ✅ ready to publish · 🟡 publishable, but contains statements the owner must confirm (see `content-verification-checklist.md`) · 🔶 draft, blocked on owner information (noindex until approved).
+
+| Page | Purpose | Target keyword | Intent | H1 | Main sections | Key internal links | Claims needing verification | Missing information | Duplicate-content risk | Status |
+|---|---|---|---|---|---|---|---|---|---|---|
+| `/` | Brand hub and routing | Apollo Group TV | Navigational | Apollo Group TV: live TV and on-demand streaming, made simple | Hero · social-proof bar · intro · key features · product experience · devices · plans preview · catalog · why choose · reviews · FAQ (7) · final CTA | Product, App, Plans, Channels, Reviews, FAQ, About, Guides | "Only authorized, properly licensed content" | Real plans, verified devices, genuine reviews (empty states shown until then) | FAQ subset also on /faq. The homepage shows 7 short items, /faq is canonical. | 🟡 |
+| `/product` | Feature depth and audience | Apollo Group TV features | Commercial investigation | Apollo Group TV features, explained | Timeline · 3 deep dives · extras · use cases · plan evaluation · product Q&A · related | App, Plans, Channels, FAQ, Guides, legal explainer | Same licensing statement | — | Low: deep dives aren't repeated elsewhere | 🟡 |
+| `/app` | App hub | Apollo Group TV app | How-to | The Apollo Group TV app | Verified devices (per-device guide links) · troubleshooting · compatibility FAQ · related help | Guides, troubleshooting guide, Product | None beyond verified list | Verified platforms and official links (admin) | Troubleshooting here is short and links to the full guide | ✅ |
+| `/plans` | Pricing | Apollo Group TV plans | Transactional | Apollo Group TV plans and pricing | Cards · comparison table · billing terms · pricing FAQ | Product, Refund policy, Create account, FAQ | Prices and features are DB-driven (demo data locally) | Approved real plans | Low | 🟡 (after real plans) |
+| `/channels` | Catalog search | Apollo Group TV channel guide | Informational | Apollo Group TV channel guide | Search · categories (sidebar or chips) · results · pagination · related | Plans, Product, FAQ | Licensing statement. Every listed channel must be authorized. | Real licensed catalog | Low | 🟡 |
+| `/reviews` | Trust | Apollo Group TV reviews | Investigation | Apollo Group TV reviews | How reviews work · rating summary (real) · list · submission | Product, Plans | None (all data real) | — | Low | ✅ |
+| `/refer-a-friend` | Referral program | Apollo Group TV referral program | Informational | The Apollo Group TV referral program | Steps · eligibility · rewards state · panel or sign-in CTA | Terms, Create account, Dashboard | Reward text shown only when enabled | Approved reward rules | Low | ✅ (rewards off) |
+| `/faq` | Support answers | Apollo Group TV FAQ | Informational | Apollo Group TV FAQ | 25 Q&As in 9 categories, search, topic filter | Contact, Guides, Refund, all deep pages | Licensing answer | — | Answers written separately from the per-page FAQs | 🟡 |
+| `/about-us` | Trust and transparency | About Apollo Group TV | Trust | About Apollo Group TV | Purpose · audience · approach (4 principles) · what to expect · transparency, support, privacy · business details | Product, App, Plans, FAQ, Contact, legal explainer | Licensing statement | Legal entity, address, official domain (admin) | Low | 🟡 |
+| `/contact` | Support routing and form | Apollo Group TV customer support | Navigational | Contact Apollo Group TV | Channel router · form · contact methods (from settings) · safety · DMCA pointer | Tickets, Guides, Refund, FAQ, DMCA | No response times stated | Support email, phone, hours, WhatsApp (admin) | Low | ✅ |
+| `/guides` | Guides index | Apollo Group TV setup guide | How-to | Setup guides | Device guides (verified only) · general guides | Device guides, FAQ, Contact | — | Verified devices | Low | ✅ |
+| `/guides/account-setup` | Account onboarding | create Apollo Group TV account | How-to | Create and verify your Apollo Group TV account | Requirements · 5 steps · fixes · security · related FAQ | Create account, Verify email, Guides | None (describes this site's real flow) | — | Steps differ from FAQ answers | ✅ |
+| `/guides/troubleshooting` | Problem solving | Apollo Group TV troubleshooting | How-to | Troubleshooting sign-in and playback | Requirements · 6 steps · fixes · security · related FAQ | My Plan, Tickets | Generic network advice only | — | Expands the shorter troubleshooting on /app | ✅ |
+| `/guides/[device]` | Device install | Apollo Group TV {device} setup | How-to | Set up Apollo Group TV on {Device} | Requirements · official download · admin steps · sign in · fixes · security | Other guides, App, Contact | Admin-entered steps and link | Per-device instructions | Generated per device, so text is unique per device name | ✅ (when verified) |
+| `/is-apollo-group-tv-legal` | Legality explainer | is Apollo Group TV legal | Informational | Is Apollo Group TV legal? | Short answer · technology vs rights · 5-point checklist · commitments · not legal advice · Q&A | Terms, DMCA, Privacy, Contact, FAQ, About | Licensing commitment | Owner confirmation of licensing | Distinct from Terms and DMCA | 🟡 |
+| `/privacy-policy` | Legal | Apollo Group TV privacy policy | Legal | Privacy Policy | 10 sections matching the implemented data flows | Contact, other policies | Data flows match the code. Processors must be named. | Entity, address, support email, hosting and email processors | — | 🔶 |
+| `/terms-and-conditions` | Legal | Apollo Group TV terms | Legal | Terms and Conditions | 8 sections | Plans, Refund, DMCA, Contact | Liability cap (3 months' fees) is a proposal | Entity, governing law, lawyer review | — | 🔶 |
+| `/refund-policy` | Legal | Apollo Group TV refund policy | Legal | Refund Policy | Eligibility (owner text) · how to request · provider refunds · questions | Plans, Contact | — | **Approved refund rules** | — | 🔶 |
+| `/dmca` | Legal | Apollo Group TV DMCA | Legal | Copyright and DMCA Policy | Notice requirements · agent · next steps · counter-notice · misrepresentation | Terms, legal explainer, Contact | — | Designated agent (and US Copyright Office registration if applicable) | — | 🔶 |
+
+## Originality review (practical, not a plagiarism tool)
+
+- All copy was written fresh for this project. The reference audit captured **headings and labels only**. No body text was stored or used.
+- I compared our H1s and section headings with the reference outlines in `reference-site-audit.md`. Shared wording is limited to generic page names (Privacy Policy, Refund Policy, FAQ) and the brand name.
+- Our structure intentionally diverges: no numeric hype sections, no competitor comparison, no sideloading or crypto guides, policy pages driven by settings, and a transparency-based About page.
+- **Limitation:** no external plagiarism checker was available, so originality hasn't been conclusively verified against the wider web. Run a tool such as Copyscape on the live pages before launch if required.
+
+## Keyword usage review
+
+- "Apollo Group TV" appears in every public H1 except Setup guides, the legal page titles and Contact's form sections. "Apollo TV" appears naturally on Home, Product, App, Plans, About and FAQ, and nowhere is it forced into headings.
+- No page repeats the brand in every H2.

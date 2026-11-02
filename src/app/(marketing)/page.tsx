@@ -1,0 +1,111 @@
+import type { Metadata } from "next";
+import { FloatingHelp } from "@/components/home/floating-help";
+import { HomeHero } from "@/components/home/hero";
+import {
+  CategoriesSection,
+  CompareSection,
+  DevicesSection,
+  FaqSection,
+  FeaturesSection,
+  FinalCta,
+  IntroSection,
+  PlansSection,
+  ReviewsSection,
+  SocialProofBar,
+  StepsSection,
+} from "@/components/home/sections";
+import { db } from "@/lib/db";
+import { isCheckoutEnabled } from "@/lib/payments";
+import { displayName, getActivePlans, getApprovedReviews, getChannelCategories, getPublishedFaqs } from "@/lib/queries";
+import { getSettings } from "@/lib/settings";
+import { siteConfig } from "@/lib/site";
+import { formatDate } from "@/lib/utils";
+
+export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: { absolute: "Apollo Group TV — Live TV & On-Demand Streaming" },
+  description:
+    "Apollo Group TV brings live channels and on-demand viewing together with clear plans, verified device guides and support you can track.",
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: "Apollo Group TV — Live TV & On-Demand Streaming",
+    description: "Live channels and on-demand viewing with clear plans, verified device guides and trackable support.",
+    url: "/",
+  },
+};
+
+// Questions shown on the homepage; the full set lives on /faq.
+const HOME_FAQ = [
+  "What is Apollo Group TV?",
+  "Is Apollo TV the same as Apollo Group TV?",
+  "Where can I find current prices?",
+  "Which devices are supported?",
+  "How do I create an account?",
+  "Where do I download the app?",
+  "What is the refund policy?",
+];
+
+export default async function HomePage() {
+  const [plans, { reviews, total: reviewTotal, average }, categories, faqs, settings, members] = await Promise.all([
+    getActivePlans(),
+    getApprovedReviews({ take: 8 }),
+    getChannelCategories(),
+    getPublishedFaqs(),
+    getSettings(),
+    db.user.count({ where: { emailVerified: true, status: "ACTIVE" } }),
+  ]);
+
+  const visibleCategories = categories.filter((c) => c._count.channels > 0).map((c) => ({ id: c.id, slug: c.slug, name: c.name, count: c._count.channels }));
+  const totalChannels = visibleCategories.reduce((n, c) => n + c.count, 0);
+  const platforms = settings.apps.platforms.filter((p) => p.verified);
+
+  // Hero stats come straight from the database — nothing is hard-coded.
+  const stats = [
+    { label: "Channels listed", value: totalChannels > 0 ? String(totalChannels) : "Soon" },
+    { label: "Plans", value: plans.length > 0 ? String(plans.length) : "Soon" },
+    { label: "Support", value: "Tickets" },
+  ];
+
+  const orgJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: siteConfig.name,
+    url: siteConfig.url,
+    logo: `${siteConfig.url}/brand/apollo-mark.png`,
+    ...(settings.general.supportEmail
+      ? { contactPoint: { "@type": "ContactPoint", contactType: "customer support", email: settings.general.supportEmail } }
+      : {}),
+  };
+
+  const siteJsonLd = { "@context": "https://schema.org", "@type": "WebSite", name: siteConfig.name, alternateName: "Apollo TV", url: siteConfig.url };
+
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([orgJsonLd, siteJsonLd]).replace(/</g, "\\u003c") }} />
+      <HomeHero tagline={settings.general.tagline} stats={stats} />
+      <SocialProofBar members={members} platforms={platforms} rating={{ average, total: reviewTotal }} />
+      <IntroSection />
+      <FeaturesSection />
+      <StepsSection />
+      <DevicesSection platforms={platforms} />
+      <PlansSection plans={plans.slice(0, 3)} checkout={isCheckoutEnabled()} />
+      <CategoriesSection categories={visibleCategories} />
+      <CompareSection />
+      <ReviewsSection
+        reviews={reviews.map((r) => ({
+          id: r.id,
+          rating: r.rating,
+          title: r.title,
+          body: r.body,
+          isVerified: r.isVerified,
+          author: displayName(r.user.name),
+          date: formatDate(r.createdAt),
+        }))}
+      />
+      <FaqSection faqs={HOME_FAQ.map((q) => faqs.find((f) => f.question === q)).filter((f) => f !== undefined)} />
+      <FinalCta />
+      <FloatingHelp whatsapp={settings.general.whatsapp} />
+    </>
+  );
+}

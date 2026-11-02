@@ -1,0 +1,474 @@
+// Apollo Group TV — database schema (MySQL / MariaDB on Hostinger)
+// Auth models (User, Session, Account, Verification, RateLimit) follow the
+// Better Auth core schema. Everything else is application data.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "foreignKeys"
+}
+
+// ─── Enums ──────────────────────────────────────────────────────────────────
+
+enum Role {
+  USER
+  SUPPORT
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+enum BillingInterval {
+  MONTHLY
+  QUARTERLY
+  SEMIANNUAL
+  YEARLY
+  ONE_TIME
+}
+
+enum SubscriptionStatus {
+  PENDING
+  ACTIVE
+  PAST_DUE
+  CANCELED
+  EXPIRED
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+  REFUNDED
+  PARTIALLY_REFUNDED
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  FAILED
+  CANCELED
+}
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum ReferralStatus {
+  PENDING
+  QUALIFIED
+  REWARDED
+  REJECTED
+}
+
+enum RewardStatus {
+  PENDING
+  APPROVED
+  ISSUED
+  REJECTED
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  WAITING_ON_CUSTOMER
+  RESOLVED
+  CLOSED
+}
+
+enum TicketPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+// ─── Auth (Better Auth) ─────────────────────────────────────────────────────
+
+model User {
+  id            String     @id
+  name          String     @db.VarChar(120)
+  email         String     @unique @db.VarChar(255)
+  emailVerified Boolean    @default(false)
+  image         String?    @db.VarChar(512)
+  role          Role       @default(USER)
+  status        UserStatus @default(ACTIVE)
+  referralCode  String?    @unique @db.VarChar(16)
+  marketingOptIn       Boolean @default(false)
+  productUpdatesOptIn  Boolean @default(true)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  sessions         Session[]
+  accounts         Account[]
+  subscriptions    Subscription[]
+  orders           Order[]
+  payments         Payment[]
+  reviews          Review[]
+  referralsMade    Referral[]       @relation("Referrer")
+  referredBy       Referral?        @relation("Referee")
+  rewards          ReferralReward[]
+  tickets          SupportTicket[]  @relation("TicketOwner")
+  assignedTickets  SupportTicket[]  @relation("TicketAssignee")
+  supportMessages  SupportMessage[]
+  notifications    Notification[]
+  auditLogs        AuditLog[]
+
+  @@index([role])
+  @@index([status])
+  @@index([createdAt])
+  @@map("users")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique @db.VarChar(255)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?  @db.VarChar(64)
+  userAgent String?  @db.Text
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?   @db.Text
+  refreshToken          String?   @db.Text
+  idToken               String?   @db.Text
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?   @db.Text
+  password              String?   @db.Text
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("accounts")
+}
+
+model Verification {
+  id         String   @id
+  identifier String   @db.VarChar(255)
+  value      String   @db.Text
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verifications")
+}
+
+model RateLimit {
+  id          String @id
+  key         String @unique @db.VarChar(255)
+  count       Int
+  lastRequest BigInt
+
+  @@map("rate_limits")
+}
+
+// ─── Catalog ────────────────────────────────────────────────────────────────
+
+model Plan {
+  id          String          @id @default(cuid())
+  slug        String          @unique @db.VarChar(80)
+  name        String          @db.VarChar(120)
+  description String          @db.Text
+  priceCents  Int
+  currency    String          @default("USD") @db.Char(3)
+  interval    BillingInterval
+  features    Json
+  highlighted Boolean         @default(false)
+  isActive    Boolean         @default(true)
+  sortOrder   Int             @default(0)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  subscriptions Subscription[]
+  orders        Order[]
+
+  @@index([isActive, sortOrder])
+  @@map("plans")
+}
+
+model ChannelCategory {
+  id        String    @id @default(cuid())
+  slug      String    @unique @db.VarChar(80)
+  name      String    @db.VarChar(120)
+  sortOrder Int       @default(0)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  channels  Channel[]
+
+  @@map("channel_categories")
+}
+
+model Channel {
+  id          String          @id @default(cuid())
+  slug        String          @unique @db.VarChar(120)
+  name        String          @db.VarChar(160)
+  description String?         @db.Text
+  logoUrl     String?         @db.VarChar(512)
+  country     String?         @db.VarChar(64)
+  language    String?         @db.VarChar(64)
+  isHd        Boolean         @default(false)
+  isActive    Boolean         @default(true)
+  categoryId  String
+  category    ChannelCategory @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([categoryId])
+  @@index([isActive, name])
+  @@map("channels")
+}
+
+// ─── Commerce ───────────────────────────────────────────────────────────────
+
+model Subscription {
+  id                     String             @id @default(cuid())
+  userId                 String
+  user                   User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  planId                 String
+  plan                   Plan               @relation(fields: [planId], references: [id], onDelete: Restrict)
+  status                 SubscriptionStatus @default(PENDING)
+  currentPeriodStart     DateTime?
+  currentPeriodEnd       DateTime?
+  cancelAtPeriodEnd      Boolean            @default(false)
+  providerSubscriptionId String?            @unique @db.VarChar(255)
+  createdAt              DateTime           @default(now())
+  updatedAt              DateTime           @updatedAt
+  payments               Payment[]
+
+  @@index([userId, status])
+  @@index([status])
+  @@map("subscriptions")
+}
+
+model Order {
+  id          String      @id @default(cuid())
+  userId      String
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  planId      String
+  plan        Plan        @relation(fields: [planId], references: [id], onDelete: Restrict)
+  amountCents Int
+  currency    String      @db.Char(3)
+  status      OrderStatus @default(PENDING)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  payments    Payment[]
+
+  @@index([userId])
+  @@index([status])
+  @@map("orders")
+}
+
+// Payment rows are written only by verified payment-provider webhooks.
+model Payment {
+  id                String        @id @default(cuid())
+  userId            String
+  user              User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orderId           String?
+  order             Order?        @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  subscriptionId    String?
+  subscription      Subscription? @relation(fields: [subscriptionId], references: [id], onDelete: SetNull)
+  amountCents       Int
+  currency          String        @db.Char(3)
+  status            PaymentStatus
+  provider          String        @db.VarChar(40)
+  providerReference String        @unique @db.VarChar(255)
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("payments")
+}
+
+// ─── Content ────────────────────────────────────────────────────────────────
+
+model Review {
+  id         String       @id @default(cuid())
+  userId     String
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rating     Int
+  title      String       @db.VarChar(120)
+  body       String       @db.Text
+  status     ReviewStatus @default(PENDING)
+  isVerified Boolean      @default(false)
+  moderatedAt DateTime?
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+
+  @@index([status, createdAt])
+  @@index([userId])
+  @@map("reviews")
+}
+
+model Faq {
+  id          String   @id @default(cuid())
+  category    String   @db.VarChar(80)
+  question    String   @db.VarChar(255)
+  answer      String   @db.Text
+  sortOrder   Int      @default(0)
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isPublished, category, sortOrder])
+  @@map("faqs")
+}
+
+// ─── Referrals ──────────────────────────────────────────────────────────────
+
+model Referral {
+  id         String           @id @default(cuid())
+  referrerId String
+  referrer   User             @relation("Referrer", fields: [referrerId], references: [id], onDelete: Cascade)
+  refereeId  String           @unique
+  referee    User             @relation("Referee", fields: [refereeId], references: [id], onDelete: Cascade)
+  status     ReferralStatus   @default(PENDING)
+  qualifiedAt DateTime?
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+  rewards    ReferralReward[]
+
+  @@index([referrerId, status])
+  @@map("referrals")
+}
+
+model ReferralReward {
+  id          String       @id @default(cuid())
+  referralId  String
+  referral    Referral     @relation(fields: [referralId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  description String       @db.VarChar(255)
+  status      RewardStatus @default(PENDING)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([userId])
+  @@index([referralId])
+  @@map("referral_rewards")
+}
+
+// ─── Support ────────────────────────────────────────────────────────────────
+
+model SupportTicket {
+  id          String           @id @default(cuid())
+  userId      String
+  user        User             @relation("TicketOwner", fields: [userId], references: [id], onDelete: Cascade)
+  assigneeId  String?
+  assignee    User?            @relation("TicketAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+  subject     String           @db.VarChar(160)
+  status      TicketStatus     @default(OPEN)
+  priority    TicketPriority   @default(NORMAL)
+  resolvedAt  DateTime?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  messages    SupportMessage[]
+
+  @@index([userId, status])
+  @@index([status, updatedAt])
+  @@index([assigneeId])
+  @@map("support_tickets")
+}
+
+model SupportMessage {
+  id         String        @id @default(cuid())
+  ticketId   String
+  ticket     SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  authorId   String
+  author     User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  body       String        @db.Text
+  isStaff    Boolean       @default(false)
+  createdAt  DateTime      @default(now())
+
+  @@index([ticketId, createdAt])
+  @@map("support_messages")
+}
+
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String    @db.VarChar(160)
+  body      String    @db.Text
+  href      String?   @db.VarChar(255)
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId, readAt])
+  @@map("notifications")
+}
+
+// ─── Contact ────────────────────────────────────────────────────────────────
+
+enum ContactStatus {
+  NEW
+  READ
+  ARCHIVED
+}
+
+// Messages from the public contact form (visitors may not have an account).
+model ContactMessage {
+  id        String        @id @default(cuid())
+  name      String        @db.VarChar(120)
+  email     String        @db.VarChar(255)
+  topic     String        @db.VarChar(40)
+  subject   String        @db.VarChar(160)
+  message   String        @db.Text
+  status    ContactStatus @default(NEW)
+  userId    String?       @db.VarChar(64)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@index([status, createdAt])
+  @@map("contact_messages")
+}
+
+// ─── Admin ──────────────────────────────────────────────────────────────────
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?
+  actor      User?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
+  action     String   @db.VarChar(80)
+  targetType String   @db.VarChar(40)
+  targetId   String?  @db.VarChar(64)
+  metadata   Json?
+  ipAddress  String?  @db.VarChar(64)
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([actorId])
+  @@index([targetType, targetId])
+  @@map("audit_logs")
+}
+
+model SiteSetting {
+  key       String   @id @db.VarChar(80)
+  value     Json
+  updatedAt DateTime @updatedAt
+
+  @@map("site_settings")
+}
