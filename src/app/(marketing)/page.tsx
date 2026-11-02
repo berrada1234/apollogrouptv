@@ -3,11 +3,9 @@ import { FloatingHelp } from "@/components/home/floating-help";
 import { HomeHero } from "@/components/home/hero";
 import { SportsSection } from "@/components/sports-section";
 import {
-  ChannelsShowcase,
   CompareSection,
   DevicesSection,
   FaqSection,
-  FeaturesSection,
   FinalCta,
   IntroSection,
   LegalSection,
@@ -22,7 +20,7 @@ import { getDeviceGuides } from "@/lib/guides";
 import { monthlyCents, pricingContext, savingsPct } from "@/lib/pricing";
 import { db } from "@/lib/db";
 import { isCheckoutEnabled } from "@/lib/payments";
-import { displayName, getActivePlans, getApprovedReviews, getChannelCategories } from "@/lib/queries";
+import { displayName, getActivePlans, getApprovedReviews } from "@/lib/queries";
 import { getSettings } from "@/lib/settings";
 import { siteConfig } from "@/lib/site";
 import { formatDate, formatMoney } from "@/lib/utils";
@@ -43,18 +41,11 @@ export const metadata: Metadata = {
 
 
 export default async function HomePage() {
-  const [plans, { reviews, total: reviewTotal, average }, categories, settings, members, sampleChannels, deviceGuides, faqCount] = await Promise.all([
+  const [plans, { reviews, total: reviewTotal, average }, settings, members, deviceGuides, faqCount] = await Promise.all([
     getActivePlans(),
     getApprovedReviews({ take: 8 }),
-    getChannelCategories(),
     getSettings(),
     db.user.count({ where: { emailVerified: true, status: "ACTIVE" } }),
-    db.channel.findMany({
-      where: { isActive: true },
-      orderBy: { name: "asc" },
-      take: 24,
-      select: { id: true, name: true, logoUrl: true, category: { select: { name: true } } },
-    }),
     getDeviceGuides(),
     db.faq.count({ where: { isPublished: true } }),
   ]);
@@ -65,7 +56,6 @@ export default async function HomePage() {
   const fromMonthly = monthlies.length ? formatMoney(Math.min(...monthlies), plans[0]?.currency ?? "USD") : null;
   const maxSave = Math.max(0, ...plans.map((p) => savingsPct(p, pricing.baseMonthly)));
 
-  const visibleCategories = categories.filter((c) => c._count.channels > 0).map((c) => ({ id: c.id, slug: c.slug, name: c.name, count: c._count.channels }));
   const platforms = settings.apps.platforms.filter((p) => p.verified);
 
   // Hero stats: catalog sizes are set in Admin → Settings → Homepage highlights; the rating is the real review average.
@@ -98,12 +88,7 @@ export default async function HomePage() {
       <HomeHero tagline={settings.general.tagline} stats={stats} badges={badges} />
       <SocialProofBar members={members} platforms={platforms} rating={{ average, total: reviewTotal }} />
       <IntroSection />
-      <FeaturesSection />
       <StepsSection />
-      <ChannelsShowcase
-        channels={sampleChannels.map((c) => ({ id: c.id, name: c.name, logoUrl: c.logoUrl, category: c.category.name }))}
-        categories={visibleCategories}
-      />
       <PlansSection plans={plans.slice(0, 4)} checkout={isCheckoutEnabled()} />
       <CompareSection fromMonthly={fromMonthly} />
       <SportsSection />

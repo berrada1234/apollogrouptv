@@ -32,40 +32,12 @@ export const homeCopy = {
     image: img("apollo-group-tv-streaming-overview", "Apollo Group TV interface on a television showing a featured program and rows of content"),
   },
 
-  account: {
-    intent: "Commercial investigation — features",
-    eyebrow: "Inside your account",
-    h2: "Built Around the Way You Use Apollo TV",
-    description:
-      "Your Apollo Group TV account does more than hold a password. These are the tools you'll use to stay in control — all available from the moment you sign up.",
-    items: [
-      { title: "Plan status at a glance", body: "See your active pack, start date and how many days are left." },
-      { title: "Complete billing history", body: "Every recorded payment, with amount, status and reference." },
-      { title: "Support tickets with history", body: "One thread per question, with a notification when we reply." },
-      { title: "In-dashboard notifications", body: "Updates about your account and support requests in one feed." },
-      { title: "Searchable channel guide", body: "Find any listed channel by name or browse by category." },
-      { title: "Verified device guides", body: "Numbered installation steps and official download links." },
-      { title: "Personal referral link", body: "Share your link and track every friend who signs up." },
-      { title: "Security and sessions", body: "Change your password and sign out of devices you don't use." },
-    ],
-    image: img("apollo-group-tv-features-dashboard", "Apollo Group TV account dashboard with plan status, renewal date and recent activity"),
-  },
-
   howItWorks: {
     intent: "Informational — how does it work",
     eyebrow: "How it works",
     h2: "How Apollo TV Works in Four Simple Steps",
     description: "From creating an account to pressing play, here's what getting started with Apollo TV looks like.",
     image: img("apollo-tv-how-it-works", "Four numbered steps showing how to get started with Apollo TV"),
-  },
-
-  channels: {
-    intent: "Informational — what can I watch",
-    eyebrow: "Channel guide",
-    h2: "Explore the Apollo Group TV Channel Guide",
-    description:
-      "Live channels stream as they air and on-demand programs start when you're ready, where licensing allows. Here's a glimpse of what's listed right now — browse by category or search the full guide.",
-    disclaimer: "Channel names and logos belong to their respective owners. Listings reflect current licensing and can change.",
   },
 
   plans: {
@@ -117,7 +89,6 @@ export const homeCopy = {
     h2: "Apollo Group TV Reviews from Real Customers",
     description:
       "Every review comes from a registered Apollo Group TV account and is moderated before it appears — no paid testimonials, no invented names. “Verified customer” means the reviewer has a subscription on record.",
-    image: img("apollo-group-tv-customer-reviews", "Two Apollo Group TV customer review cards with star ratings and a verified badge"),
   },
 
   support: {
@@ -134,7 +105,6 @@ export const homeCopy = {
     eyebrow: "FAQ",
     h2: "Apollo Group TV FAQ: Straight Answers to Common Questions",
     description: "What people ask most before and after signing up. The [full FAQ](/faq) goes deeper on billing, privacy and troubleshooting.",
-    image: img("apollo-group-tv-faq", "Expandable list of frequently asked questions about Apollo Group TV"),
   },
 
   cta: {

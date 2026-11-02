@@ -3,8 +3,6 @@ import Link from "next/link";
 import type { Plan } from "@prisma/client";
 import {
   ArrowRight,
-  Bell,
-  Gift,
   Mail,
   BookOpen,
   Check,
@@ -13,12 +11,10 @@ import {
   HelpCircle,
   KeyRound,
   LifeBuoy,
-  Lock,
   MessageSquareText,
   Monitor,
   MonitorSmartphone,
   Receipt,
-  Search,
   ShieldCheck,
   Smartphone,
   Sparkles,
@@ -334,41 +330,6 @@ export function IntroSection() {
   );
 }
 
-// ─── Inside your account ────────────────────────────────────────────────────
-
-const accountIcons = [Gauge, Receipt, LifeBuoy, Bell, Search, MonitorSmartphone, Gift, Lock];
-
-export function FeaturesSection() {
-  const c = homeCopy.account;
-  return (
-    <section className="border-t border-border bg-bg-secondary/50 py-20 sm:py-24">
-      <Container>
-        <SplitHeader eyebrow={c.eyebrow} title={c.h2} description={c.description} image={c.image} imageFirst />
-        <ul className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {c.items.map((it, i) => {
-            const Icon = accountIcons[i % accountIcons.length];
-            return (
-              <li key={it.title} className="rounded-lg border border-border bg-card p-5 shadow-card transition-colors hover:border-border-strong">
-                <IconBox icon={Icon} />
-                <h3 className="mt-4 font-semibold text-text">{it.title}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-muted">{it.body}</p>
-              </li>
-            );
-          })}
-        </ul>
-        <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-          <ButtonLink href="/create-account">
-            Create your account <ArrowRight className="h-4 w-4" aria-hidden />
-          </ButtonLink>
-          <ButtonLink href="/product" variant="ghost">
-            Explore all features
-          </ButtonLink>
-        </div>
-      </Container>
-    </section>
-  );
-}
-
 // ─── How it works ───────────────────────────────────────────────────────────
 
 export function StepsSection() {
@@ -397,97 +358,6 @@ export function StepsSection() {
             </li>
           ))}
         </ol>
-      </Container>
-    </section>
-  );
-}
-
-// ─── Channel showcase ───────────────────────────────────────────────────────
-
-function ChannelTile({ name, category, logoUrl }: { name: string; category: string; logoUrl: string | null }) {
-  const initials = name.replace(/[^A-Za-z0-9 ]/g, "").split(" ").filter(Boolean).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
-  return (
-    <li className="flex w-56 shrink-0 items-center gap-3 rounded-xl border border-border bg-card px-3 py-2.5 shadow-card">
-      <span className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-lg border border-border bg-inset">
-        {logoUrl ? (
-          <Image src={logoUrl} alt="" width={40} height={40} unoptimized={logoUrl.startsWith("http")} className="h-full w-full object-contain p-1" />
-        ) : (
-          <span className="font-display text-xs font-semibold text-accent">{initials}</span>
-        )}
-      </span>
-      <span className="min-w-0">
-        <span className="block truncate text-sm font-medium text-text">{name}</span>
-        <span className="block truncate text-xs text-subtle">{category}</span>
-      </span>
-    </li>
-  );
-}
-
-export function ChannelsShowcase({
-  channels,
-  categories,
-}: {
-  channels: { id: string; name: string; logoUrl: string | null; category: string }[];
-  categories: { id: string; slug: string; name: string; count: number }[];
-}) {
-  const c = homeCopy.channels;
-  const total = categories.reduce((n, x) => n + x.count, 0);
-  const half = Math.ceil(channels.length / 2);
-  const rows = [channels.slice(0, half), channels.slice(half)].filter((r) => r.length > 0);
-
-  return (
-    <section className="overflow-hidden border-t border-border py-20 sm:py-24">
-      <Container>
-        <Heading eyebrow={c.eyebrow} title={c.h2} description={c.description} />
-      </Container>
-
-      {channels.length > 0 ? (
-        <div className="mt-12 space-y-3 [mask-image:linear-gradient(90deg,transparent,black_8%,black_92%,transparent)]">
-          <h3 className="sr-only">A sample of channels listed in the Apollo Group TV guide</h3>
-          {rows.map((row, i) => (
-            <div key={i} className="flex">
-              {/* Two copies make the loop seamless; the copy is hidden from assistive tech. */}
-              {[0, 1].map((copy) => (
-                <ul
-                  key={copy}
-                  aria-hidden={copy === 1 || undefined}
-                  className={cn("flex shrink-0 gap-3 pr-3 motion-safe:animate-[marquee_60s_linear_infinite]", i === 1 && "motion-safe:[animation-direction:reverse]")}
-                >
-                  {row.map((ch) => (
-                    <ChannelTile key={`${copy}-${ch.id}`} name={ch.name} category={ch.category} logoUrl={ch.logoUrl} />
-                  ))}
-                </ul>
-              ))}
-            </div>
-          ))}
-        </div>
-      ) : (
-        <Container>
-          <EmptyState icon={Tv} title="Channel listings coming soon" description="The channel guide will be published here." className="mt-12" />
-        </Container>
-      )}
-
-      <Container>
-        {categories.length > 0 && (
-          <nav aria-label="Browse by category" className="mt-10 flex flex-wrap justify-center gap-2">
-            {categories.map((cat) => (
-              <Link
-                key={cat.id}
-                href={`/channels?category=${cat.slug}`}
-                className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm text-muted transition-colors hover:border-accent/40 hover:text-text"
-              >
-                {cat.name} <span className="text-xs text-subtle tabular-nums">{cat.count}</span>
-              </Link>
-            ))}
-          </nav>
-        )}
-        <div className="mt-8 flex flex-col items-center gap-4">
-          <ButtonLink href="/channels">
-            <Search className="h-4 w-4" aria-hidden /> Search the full channel guide
-          </ButtonLink>
-          {total > 0 && <p className="text-sm text-subtle tabular-nums">{total} channels listed across {categories.length} categories</p>}
-          <p className="max-w-xl text-center text-xs text-subtle">{c.disclaimer}</p>
-        </div>
       </Container>
     </section>
   );
@@ -650,7 +520,7 @@ export function ReviewsSection({
   return (
     <section className="border-t border-border bg-bg-secondary/50 py-20 sm:py-24">
       <Container>
-        <SplitHeader eyebrow={c.eyebrow} title={c.h2} description={c.description} image={c.image} imageFirst />
+        <Heading eyebrow={c.eyebrow} title={c.h2} description={c.description} />
         <div className="mt-12">
           {reviews.length > 0 ? (
             <ReviewCarousel reviews={reviews} />
@@ -784,7 +654,6 @@ export function FaqSection() {
       <Container className="grid gap-10 lg:grid-cols-[1fr_1.6fr] lg:gap-14 [&>*]:min-w-0">
         <div className="lg:sticky lg:top-24 lg:self-start">
           <Heading align="left" eyebrow={c.eyebrow} title={c.h2} description={<RichText text={c.description} />} />
-          <SectionImage image={c.image} className="mt-8 hidden lg:block" />
           <ButtonLink href="/faq" variant="secondary" className="mt-8">
             See the full FAQ
           </ButtonLink>
