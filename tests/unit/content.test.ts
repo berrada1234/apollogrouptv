@@ -106,3 +106,21 @@ describe("homepage copy guardrails", () => {
     expect(src).not.toMatch(/money-back|24\/7|anti-freeze/i);
   });
 });
+
+describe("channels page content", () => {
+  it("stays brand-free: no channel, network, league or streaming-service names", async () => {
+    const fs = await import("node:fs");
+    const src = fs.readFileSync("src/content/channels.ts", "utf8");
+    const brands = /\b(ESPN|CNN|HBO|BBC|Sky|Fox|NBC|CBS|ABC|MSNBC|beIN|DAZN|Netflix|Disney|Hulu|Prime Video|Paramount|Peacock|Nickelodeon|Cartoon Network|Discovery|National Geographic|MTV|TSN|Sportsnet|Al Jazeera|NFL|NBA|MLB|NHL|UFC|Premier League|La Liga|Champions League|Formula 1|F1)\b/;
+    expect(src).not.toMatch(brands);
+  });
+  it("gives every category a summary and program types, and every FAQ a real answer", async () => {
+    const { channelCategories, channelFaq } = await import("@/content/channels");
+    expect(new Set(channelCategories.map((c) => c.key)).size).toBe(channelCategories.length);
+    for (const c of channelCategories) {
+      expect(c.summary.length).toBeGreaterThan(40);
+      expect(c.covers.length).toBeGreaterThanOrEqual(3);
+    }
+    for (const f of channelFaq) expect(stripRich(f.a).length).toBeGreaterThan(60);
+  });
+});

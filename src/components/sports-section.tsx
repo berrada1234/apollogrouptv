@@ -106,7 +106,7 @@ export function SportsSection({ headingLevel = "h2", limit }: { headingLevel?: "
             </p>
           </div>
           <div className="flex shrink-0 flex-wrap gap-2">
-            <ButtonLink href="/channels">
+            <ButtonLink href="/channels#sports">
               <Tv className="h-4 w-4" aria-hidden /> Find sports channels
             </ButtonLink>
             <ButtonLink href="/plans" variant="ghost">
