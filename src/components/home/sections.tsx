@@ -301,7 +301,7 @@ export function StepsSection() {
     { icon: Tv, t: "Start watching", b: "Install the Apollo TV app on your verified device and sign in." },
   ];
   return (
-    <section id="how-it-works" className="scroll-mt-20 py-20 sm:py-24">
+    <section className="py-20 sm:py-24">
       <Container>
         <Heading eyebrow={c.eyebrow} title={c.h2} description={c.description} />
         <ol className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -348,7 +348,7 @@ export function PlansSection({ plans, checkout }: { plans: Plan[]; checkout: boo
   ].filter(Boolean) as { who: string; why: string; plan: Plan }[];
 
   return (
-    <section id="plans" className="relative overflow-hidden border-t border-border bg-bg-secondary/50 py-20 sm:py-24">
+    <section className="relative overflow-hidden border-t border-border bg-bg-secondary/50 py-20 sm:py-24">
       <div className="bg-spotlight pointer-events-none absolute inset-0" aria-hidden />
       <Container className="relative">
         <Heading eyebrow={c.eyebrow} title={c.h2} description={<RichText text={c.description} />} />

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { FloatingHelp } from "@/components/home/floating-help";
+import { HomeQuickNav } from "@/components/home/quick-nav";
 import { HomeHero } from "@/components/home/hero";
 import { SportsSection } from "@/components/sports-section";
 import {
@@ -39,6 +40,26 @@ export const metadata: Metadata = {
   },
 };
 
+
+const quickNav = [
+  { id: "overview", label: "Overview" },
+  { id: "sports", label: "Live sports" },
+  { id: "devices", label: "Devices" },
+  { id: "plans", label: "Pricing" },
+  { id: "how-it-works", label: "How it works" },
+  { id: "reviews", label: "Reviews" },
+  { id: "faq", label: "FAQ" },
+  { id: "support", label: "Support" },
+];
+
+/** One homepage band: anchor target for the quick nav; alternating tint comes from .home-band in globals.css. */
+function Band({ id, children }: { id: string; children: React.ReactNode }) {
+  return (
+    <div id={id} className="home-band">
+      {children}
+    </div>
+  );
+}
 
 export default async function HomePage() {
   const [plans, { reviews, total: reviewTotal, average }, settings, members, deviceGuides, faqCount] = await Promise.all([
@@ -86,26 +107,48 @@ export default async function HomePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([orgJsonLd, siteJsonLd]).replace(/</g, "\\u003c") }} />
       <HomeHero tagline={settings.general.tagline} stats={stats} badges={badges} />
       <SocialProofBar members={members} rating={{ average, total: reviewTotal }} />
-      <IntroSection />
-      <StepsSection />
-      <PlansSection plans={plans.slice(0, 4)} checkout={isCheckoutEnabled()} />
-      <CompareSection fromMonthly={fromMonthly} />
-      <SportsSection />
-      <DevicesSection />
-      <LegalSection />
-      <ReviewsSection
-        reviews={reviews.map((r) => ({
-          id: r.id,
-          rating: r.rating,
-          title: r.title,
-          body: r.body,
-          isVerified: r.isVerified,
-          author: displayName(r.user.name),
-          date: formatDate(r.createdAt),
-        }))}
-      />
-      <SupportSection guideCount={generalGuides.length + deviceGuides.length} faqCount={faqCount} />
-      <FaqSection />
+      <HomeQuickNav items={quickNav} />
+      {/* Buyer journey: what it is → what you get → why switch → price → how to start → trust → answers → help. */}
+      <Band id="overview">
+        <IntroSection />
+      </Band>
+      <Band id="sports">
+        <SportsSection />
+      </Band>
+      <Band id="devices">
+        <DevicesSection />
+      </Band>
+      <Band id="compare">
+        <CompareSection fromMonthly={fromMonthly} />
+      </Band>
+      <Band id="plans">
+        <PlansSection plans={plans.slice(0, 4)} checkout={isCheckoutEnabled()} />
+      </Band>
+      <Band id="how-it-works">
+        <StepsSection />
+      </Band>
+      <Band id="reviews">
+        <ReviewsSection
+          reviews={reviews.map((r) => ({
+            id: r.id,
+            rating: r.rating,
+            title: r.title,
+            body: r.body,
+            isVerified: r.isVerified,
+            author: displayName(r.user.name),
+            date: formatDate(r.createdAt),
+          }))}
+        />
+      </Band>
+      <Band id="safety">
+        <LegalSection />
+      </Band>
+      <Band id="faq">
+        <FaqSection />
+      </Band>
+      <Band id="support">
+        <SupportSection guideCount={generalGuides.length + deviceGuides.length} faqCount={faqCount} />
+      </Band>
       <FinalCta fromMonthly={fromMonthly} maxSave={maxSave} />
       <FloatingHelp whatsapp={settings.general.whatsapp} />
     </>

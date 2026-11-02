@@ -149,6 +149,23 @@ p {
   display: none;
 }
 
+/* Homepage bands: one divider and an alternating tint, whatever order the sections are in.
+   Unlayered, so it overrides each section's own border/background utilities. */
+.home-band {
+  scroll-margin-top: 2.5rem; /* adds to html scroll-padding: clears header + quick nav */
+  border-top: 1px solid var(--border);
+}
+.home-band:first-of-type {
+  border-top: 0;
+}
+.home-band:nth-of-type(even) {
+  background-color: rgb(11 23 40 / 0.55);
+}
+.home-band > section {
+  border-top-width: 0;
+  background-color: transparent;
+}
+
 /* Native <dialog> backdrop */
 dialog::backdrop {
   background: rgb(2 6 16 / 0.7);
