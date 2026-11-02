@@ -5,21 +5,29 @@ import { PageHeader } from "@/components/page-header";
 import { Card } from "@/components/ui/card";
 import { StatusBadge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
-import { EmptyState } from "@/components/ui/misc";
+import { EmptyState, Pagination } from "@/components/ui/misc";
 import { db } from "@/lib/db";
 import { requireUser } from "@/lib/session";
 import { formatDateTime } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Support Tickets" };
 
-export default async function SupportPage() {
+const PAGE_SIZE = 15;
+
+export default async function SupportPage({ searchParams }: PageProps<"/dashboard/support">) {
   const user = await requireUser("/dashboard/support");
-  const tickets = await db.supportTicket.findMany({
-    where: { userId: user.id },
-    orderBy: { updatedAt: "desc" },
-    take: 100,
-    include: { _count: { select: { messages: true } } },
-  });
+  const sp = await searchParams;
+  const page = Math.max(1, Number.parseInt(String(sp.page ?? "1"), 10) || 1);
+  const [tickets, total] = await Promise.all([
+    db.supportTicket.findMany({
+      where: { userId: user.id },
+      orderBy: { updatedAt: "desc" },
+      skip: (page - 1) * PAGE_SIZE,
+      take: PAGE_SIZE,
+      include: { _count: { select: { messages: true } } },
+    }),
+    db.supportTicket.count({ where: { userId: user.id } }),
+  ]);
 
   return (
     <>
@@ -61,6 +69,7 @@ export default async function SupportPage() {
           ))}
         </Card>
       )}
+      <Pagination page={page} totalPages={Math.ceil(total / PAGE_SIZE)} total={total} pageSize={PAGE_SIZE} hrefFor={(p) => `/dashboard/support?page=${p}`} />
     </>
   );
 }

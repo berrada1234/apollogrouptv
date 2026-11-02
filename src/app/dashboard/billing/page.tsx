@@ -3,7 +3,8 @@ import { Receipt } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import { Card } from "@/components/ui/card";
 import { StatusBadge } from "@/components/ui/badge";
-import { EmptyState, Pagination } from "@/components/ui/misc";
+import { EmptyState, Notice, Pagination } from "@/components/ui/misc";
+import { getPaymentProvider } from "@/lib/payments";
 import { db } from "@/lib/db";
 import { requireUser } from "@/lib/session";
 import { formatDate, formatMoney, humanize } from "@/lib/utils";
@@ -30,8 +31,16 @@ export default async function BillingPage({ searchParams }: PageProps<"/dashboar
   return (
     <>
       <PageHeader title="Billing History" description="All payments recorded on your account." />
+      {!getPaymentProvider() && (
+        <div className="mb-6">
+          <Notice title="Online checkout isn't connected yet">
+            Payments are arranged with our team through a support ticket for now. Every confirmed payment is recorded here with its amount, status and reference —
+            nothing is shown until it has actually been recorded.
+          </Notice>
+        </div>
+      )}
       {payments.length === 0 ? (
-        <EmptyState icon={Receipt} title="No billing records yet" description="Payments will be listed here after they're processed by our payment provider." />
+        <EmptyState icon={Receipt} title="No billing records yet" description="Payments appear here once they’re confirmed and recorded on your account." />
       ) : (
         <Card className="overflow-hidden">
           <div className="overflow-x-auto">
