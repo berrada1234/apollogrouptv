@@ -45,6 +45,14 @@ describe("FAQ content", () => {
   it("links only to same-site paths", () => {
     for (const f of faqSeed) for (const m of f.answer.matchAll(/\]\(([^)]+)\)/g)) expect(m[1].startsWith("/")).toBe(true);
   });
+  it("covers every topic in depth with substantial answers", () => {
+    for (const c of FAQ_CATEGORIES) expect(faqSeed.filter((f) => f.category === c).length).toBeGreaterThanOrEqual(3);
+    for (const f of faqSeed) expect(stripRich(f.answer).length).toBeGreaterThan(120);
+  });
+  it("never names channels, networks, leagues or studios", () => {
+    const brands = /\b(ESPN|CNN|HBO|BBC|Showtime|Starz|Paramount|Netflix|Disney|beIN|DAZN|NFL|NBA|MLB|NHL|UFC|Premier League|Champions League)\b/;
+    for (const f of faqSeed) expect(`${f.question} ${f.answer}`).not.toMatch(brands);
+  });
 });
 
 describe("Legal content", () => {

@@ -1,181 +1,323 @@
 /**
  * Canonical FAQ set, seeded into the database (admins edit it from /admin/faq afterwards).
- * Answers may contain internal links written as [label](/path) — only same-site paths are rendered as links.
- * Every answer describes how this website actually works; nothing here states prices, refund windows
- * or device support, which live in the plans table, the refund policy and the verified-device list.
+ * Grouped into topics that match what people search for. Answers may contain internal links written
+ * as [label](/path) — only same-site paths are rendered as links.
+ *
+ * Rules: describe how this website actually works. Never hard-code prices, refund windows or device
+ * limits (they live in the plans table, the refund policy and pack details and are shown on the FAQ
+ * page from live data), and never name channels, networks, leagues or studios.
  */
-export const FAQ_CATEGORIES = [
-  "General Information",
-  "Plans and Pricing",
-  "App and Device Compatibility",
-  "Account Access",
-  "Installation",
-  "Troubleshooting",
-  "Billing and Refunds",
-  "Privacy and Security",
-  "Legal and Copyright Questions",
+export const FAQ_TOPICS = [
+  { name: "About Apollo Group TV", slug: "about", blurb: "What the service is, who runs it and whether it's legitimate" },
+  { name: "Plans & Billing", slug: "plans-billing", blurb: "What it costs, how you pay and what renews (nothing does)" },
+  { name: "Installation & Setup", slug: "installation-setup", blurb: "Getting the app onto your TV, streaming stick, phone or computer" },
+  { name: "Channels & Content", slug: "channels-content", blurb: "What you can watch and how the lineup is organized" },
+  { name: "App & Playback", slug: "app-playback", blurb: "How the app behaves once it's installed" },
+  { name: "Account & Security", slug: "account-security", blurb: "Signing in, passwords, privacy and keeping your account safe" },
+  { name: "Refunds & Cancellation", slug: "refunds-cancellation", blurb: "Refund requests and what happens when a pack ends" },
+  { name: "Troubleshooting", slug: "troubleshooting", blurb: "When something stops working — quick checks that fix most issues" },
 ] as const;
 
-export type FaqSeed = { category: (typeof FAQ_CATEGORIES)[number]; question: string; answer: string };
+export const FAQ_CATEGORIES = FAQ_TOPICS.map((t) => t.name) as [(typeof FAQ_TOPICS)[number]["name"], ...(typeof FAQ_TOPICS)[number]["name"][]];
+
+export type FaqCategory = (typeof FAQ_TOPICS)[number]["name"];
+export type FaqSeed = { category: FaqCategory; question: string; answer: string };
 
 export const faqSeed: FaqSeed[] = [
-  // General Information
+  // ── About Apollo Group TV ────────────────────────────────────────────────
   {
-    category: "General Information",
-    question: "What is Apollo Group TV?",
+    category: "About Apollo Group TV",
+    question: "What exactly is Apollo Group TV?",
     answer:
-      "Apollo Group TV is a streaming service for live channels and on-demand viewing, managed through one account. On this website you can compare plans, browse the channel catalog, find setup help for verified devices and handle billing and support from your dashboard. The [product overview](/product) walks through each part.",
+      "Apollo Group TV is an internet TV service: live channels and an on-demand library delivered through the Apollo TV app, with your pack, payments and support managed from one online account. It replaces a cable box with an app on devices you already own. The [Features page](/product) walks through each part of the service.",
   },
   {
-    category: "General Information",
-    question: "Is Apollo TV the same as Apollo Group TV?",
+    category: "About Apollo Group TV",
+    question: "Are Apollo TV and Apollo Group TV the same service?",
     answer:
-      "Many people shorten the name to “Apollo TV” when they search. This website is the Apollo Group TV service. The name Apollo TV is also used by unrelated apps and sites, so check that you're on this website before you create an account or pay — our [About page](/about-us) explains how to recognize official communication.",
+      "People often shorten the name to “Apollo TV”, and this website is the Apollo Group TV service. The same name is also used by unrelated apps and lookalike sites, so make sure you're on this website before creating an account or paying. Our [About page](/about-us) explains how to recognize official communication from us.",
   },
   {
-    category: "General Information",
-    question: "Where can I see everything the service includes?",
+    category: "About Apollo Group TV",
+    question: "Is it legal to use Apollo Group TV?",
     answer:
-      "The [Features page](/product) covers the catalog, the account dashboard and support. Each plan's exact inclusions are listed on the [Plans page](/plans).",
-  },
-  // Plans and Pricing
-  {
-    category: "Plans and Pricing",
-    question: "Where can I find current prices?",
-    answer:
-      "Current prices are on the [Plans page](/plans), which reads them directly from our plan list. If a price appears anywhere else — including on other websites using a similar name — the Plans page is the one that applies.",
+      "Streaming TV over the internet is a mainstream, lawful technology. What matters is whether a provider has permission to distribute what it offers, and our policy is to list only authorized, properly licensed content and to act on valid copyright notices. Our [plain-English explainer](/is-apollo-group-tv-legal) covers the details. This is general information, not legal advice.",
   },
   {
-    category: "Plans and Pricing",
-    question: "What is the difference between the plans?",
+    category: "About Apollo Group TV",
+    question: "Is Apollo Group TV a legitimate company, or a scam?",
     answer:
-      "Plans differ by billing period and by the features listed on each card. The comparison table on the [Plans page](/plans) shows every feature side by side so you can see exactly what changes.",
+      "You can judge us on what's published: prices shown before you buy, public [terms](/terms-and-conditions), a [privacy policy](/privacy-policy), a [refund policy](/refund-policy) and a [copyright process](/dmca). Accounts are email-verified, payments are recorded in your dashboard, and every support reply is kept in writing. We never ask for your password.",
   },
   {
-    category: "Plans and Pricing",
-    question: "How do I choose or change a plan?",
+    category: "About Apollo Group TV",
+    question: "How do I report a copyright concern?",
     answer:
-      "Create an account, then open Dashboard → My Plan and pick a plan. While online checkout is being set up, our team confirms activation with you through a support ticket. To switch later, open a ticket from your [dashboard](/dashboard/support/new).",
+      "Rights holders can send a notice through our [copyright and DMCA page](/dmca), which lists exactly what a valid notice needs to include. We review every notice and remove material that shouldn't be listed.",
   },
-  // App and Device Compatibility
+
+  // ── Plans & Billing ──────────────────────────────────────────────────────
   {
-    category: "App and Device Compatibility",
-    question: "Which devices are supported?",
+    category: "Plans & Billing",
+    question: "What does an Apollo Group TV subscription cost?",
     answer:
-      "The [App page](/app) lists every device we have verified, each with its own setup guide. We add a device only after testing it, so if yours isn't listed yet, [ask us](/contact) before subscribing.",
-  },
-  {
-    category: "App and Device Compatibility",
-    question: "Why isn't my device on the list?",
-    answer:
-      "A device is listed only once we have confirmed it works and have an official download source for it. Not being listed doesn't always mean it won't work — it means we haven't verified it yet. [Contact support](/contact) with the model name and we'll tell you what we know.",
+      "It depends on how long you want access for. There are four packs — 1, 3, 6 and 12 months — and the longer the pack, the lower the cost per month. Every pack includes the same lineup; there's no cheaper tier with fewer channels. Current prices are shown at the top of this page and on the [Plans page](/plans).",
   },
   {
-    category: "App and Device Compatibility",
-    question: "Where do I download the app?",
+    category: "Plans & Billing",
+    question: "Does my Apollo Group TV pack renew automatically?",
     answer:
-      "Only from the official links shown in our [setup guides](/guides) or from official app stores. Avoid download codes, mirrors or APK files shared elsewhere; we can't vouch for their safety.",
-  },
-  // Account Access
-  {
-    category: "Account Access",
-    question: "How do I create an account?",
-    answer:
-      "Go to [Create account](/create-account), enter your name, email and a password with at least 10 characters including upper- and lowercase letters and a number, then open the verification link we email you.",
+      "No. Each pack is a one-time payment for a fixed period and nothing renews behind your back. When the period ends, access stops until you choose a new pack — you'll see the days remaining in your [dashboard](/dashboard/plan).",
   },
   {
-    category: "Account Access",
-    question: "I didn't get the verification email. What now?",
+    category: "Plans & Billing",
+    question: "How do I pay for Apollo Group TV?",
     answer:
-      "Check spam and promotions folders first. Verification links expire after 24 hours; you can request a fresh one on the [Verify email](/verify-email) page.",
+      "Choose your pack from the dashboard and our team confirms the available payment options with you through a support ticket while online checkout is being set up. Every confirmed payment then appears in your billing history with its amount, status and reference.",
   },
   {
-    category: "Account Access",
-    question: "How do I reset my password?",
+    category: "Plans & Billing",
+    question: "Can I use a debit or credit card?",
     answer:
-      "Use “Forgot password?” on the [Sign in](/sign-in) page. The reset link is valid for 30 minutes, and resetting your password signs out your other devices.",
+      "Our team will tell you which payment methods are available when you request a pack. Please never send card numbers, CVV codes or bank details by email, chat or a support ticket — we will never ask for them that way.",
   },
   {
-    category: "Account Access",
-    question: "What is the client portal?",
+    category: "Plans & Billing",
+    question: "What will appear on my bank or card statement?",
     answer:
-      "The [client portal](/client-portal) is a quick overview of your account — plan, billing, support and referrals — with shortcuts into the full dashboard.",
+      "The payment descriptor depends on the payment method used, and our team confirms it with you before you pay. Each payment is also listed in your [billing history](/dashboard/billing) with a reference you can match against your statement.",
   },
-  // Installation
   {
-    category: "Installation",
+    category: "Plans & Billing",
+    question: "Is there a trial before I pay?",
+    answer:
+      "We don't currently offer a free trial. If you're unsure, the 1-month pack is the lowest-commitment way to start, and our [Refund Policy](/refund-policy) explains how refund requests are handled. You can also [ask us](/contact) about your device before buying.",
+  },
+  {
+    category: "Plans & Billing",
+    question: "What's the difference between the four packs?",
+    answer:
+      "Only the access period and the price. Every pack includes the same live channels, on-demand library, device allowance, setup guides and support. Longer packs simply cost less per month — the [Plans page](/plans) shows the monthly equivalent and the saving for each.",
+  },
+  {
+    category: "Plans & Billing",
+    question: "Can I switch to a longer pack later?",
+    answer:
+      "Yes. Request the pack you want from [My Plan](/dashboard/plan) and our team will confirm how the change is applied — for example, whether the new period starts now or when your current pack ends — before anything is charged.",
+  },
+
+  // ── Installation & Setup ─────────────────────────────────────────────────
+  {
+    category: "Installation & Setup",
+    question: "How do I set up Apollo Group TV on an Amazon Fire TV Stick?",
+    answer:
+      "Fire TV setup steps and the official download link are published on the [App page](/app) once the device is verified. Install only from that link or an official app store, then sign in with your Apollo Group TV account. If the guide isn't live yet, [contact us](/contact) and we'll walk you through it.",
+  },
+  {
+    category: "Installation & Setup",
+    question: "Is there an Apollo Group TV downloader code?",
+    answer:
+      "No — we don't distribute the app through downloader codes or shared files. Codes posted on forums, videos or social media aren't from us and can install modified apps that put your device and account at risk. Use the official links in our [setup guides](/guides).",
+  },
+  {
+    category: "Installation & Setup",
+    question: "How do I watch Apollo Group TV on iPhone or iPad?",
+    answer:
+      "Follow the iPhone & iPad steps on the [App page](/app), which include the official way to install and sign in. The app uses a touch-friendly layout on phones and tablets with the same account and lineup as your TV.",
+  },
+  {
+    category: "Installation & Setup",
+    question: "Can I use Apollo Group TV on a Roku or Smart TV?",
+    answer:
+      "We list a device only after verifying it. Check the [App page](/app) for the current list — if your Roku, Samsung, LG or other smart TV isn't shown, [ask us before subscribing](/contact) and we'll tell you honestly what works today.",
+  },
+  {
+    category: "Installation & Setup",
+    question: "Which devices can run the Apollo TV app?",
+    answer:
+      "The [App page](/app) lists every verified device type — currently streaming sticks and TV boxes, Android devices, iPhone and iPad, and Windows computers — each with its own setup guide. New devices are added once they've been tested.",
+  },
+  {
+    category: "Installation & Setup",
+    question: "How do I sign in on the app after installing it?",
+    answer:
+      "Open the app and sign in with the same email and password you use on this website. Your email must be verified and a pack must be active — both are shown in your [dashboard](/dashboard). One account works on all your devices.",
+  },
+  {
+    category: "Installation & Setup",
     question: "How long does setup take?",
     answer:
-      "Creating and verifying an account takes a few minutes. Device setup time depends on the device; each [setup guide](/guides) lists what you need before you start.",
+      "Creating an account takes about a minute. Installing the app usually takes a few minutes per device once your pack is active — each [device guide](/guides) lists the steps in order so you can follow along on screen.",
+  },
+
+  // ── Channels & Content ───────────────────────────────────────────────────
+  {
+    category: "Channels & Content",
+    question: "How many channels are included with Apollo Group TV?",
+    answer:
+      "The size of the live lineup and on-demand library is shown on our [homepage](/) and reflects the current catalog, which changes as licensing changes. Every pack includes the full lineup. The [channel guide](/channels) explains how channels are organized.",
   },
   {
-    category: "Installation",
-    question: "Can someone help me install the app?",
+    category: "Channels & Content",
+    question: "Does Apollo Group TV include major sports leagues and premium movie channels?",
     answer:
-      "Yes. [Open a support ticket](/dashboard/support/new) with your device model and where you got stuck, and our team will walk you through it. Every reply stays in the ticket thread.",
+      "Sports and movie channels are among the categories in the lineup, but we don't publish channel, league or network names — they're trademarks of their owners and availability depends on licensing in your region. If one specific channel or league matters to you, [ask us first](/contact) and we'll confirm.",
   },
-  // Troubleshooting
+  {
+    category: "Channels & Content",
+    question: "Are there Spanish, Arabic, Indian or other international channels?",
+    answer:
+      "International and foreign-language programming is one of the channel categories, and where licensing allows channels are grouped by region and language. Availability differs by country, so check the [channel guide](/channels) or [ask us](/contact) about a specific language.",
+  },
+  {
+    category: "Channels & Content",
+    question: "Can I watch in 4K?",
+    answer:
+      "Yes, where available. Channels show HD, Full HD or 4K labels when the broadcast supports it. You'll also need a 4K-capable TV and device and a fast, stable connection — see the requirements on the [App page](/app).",
+  },
+  {
+    category: "Channels & Content",
+    question: "Can I record shows or watch them later?",
+    answer:
+      "We don't currently advertise a recording feature for live TV. The on-demand library lets you watch movies and series whenever you like while your pack is active.",
+  },
+  {
+    category: "Channels & Content",
+    question: "Does the lineup change over time?",
+    answer:
+      "Yes. Channels and titles are added or removed as rights agreements change, which is why the [channel guide](/channels) describes categories rather than a fixed list of names. Customers always see the current lineup in the app.",
+  },
+
+  // ── App & Playback ───────────────────────────────────────────────────────
+  {
+    category: "App & Playback",
+    question: "Why does my stream buffer or freeze?",
+    answer:
+      "Most interruptions come from the connection: busy Wi-Fi, other downloads on the network, or several streams at once. A wired connection, a router restart and the latest app version fix most cases. The [troubleshooting guide](/guides/troubleshooting) walks through each check in order.",
+  },
+  {
+    category: "App & Playback",
+    question: "How many devices can stream on one account?",
+    answer:
+      "Each pack includes a device allowance, listed in the pack details on the [Plans page](/plans) and shown at the top of this page. Sign in with the same account on each device up to that limit. Accounts are for one household, as set out in our [terms](/terms-and-conditions).",
+  },
+  {
+    category: "App & Playback",
+    question: "Will Apollo Group TV work when I travel abroad?",
+    answer:
+      "The app works wherever you have a good internet connection, but some channels are licensed for specific regions and may not be available in every country. If you're planning a trip, [ask us](/contact) what to expect.",
+  },
+  {
+    category: "App & Playback",
+    question: "Do I need a VPN to use Apollo Group TV?",
+    answer:
+      "No, a VPN isn't required. Channel availability follows licensing for the region you're in, and routing through another country can hide channels or slow playback. Using a VPN to get around regional licensing isn't permitted under our [terms](/terms-and-conditions).",
+  },
+  {
+    category: "App & Playback",
+    question: "The TV guide looks empty the first time I open the app. Is that normal?",
+    answer:
+      "Guide information can take a little time to load on first launch, especially on slower connections. Give it a few minutes, then restart the app. If the guide stays empty, update the app and [open a ticket](/dashboard/support/new) with your device model.",
+  },
+
+  // ── Account & Security ───────────────────────────────────────────────────
+  {
+    category: "Account & Security",
+    question: "How do I sign in to my Apollo Group TV account?",
+    answer:
+      "Use your email and password on the [Sign in](/sign-in) page. If you haven't verified your email yet, use the link we sent you — or request a new one on the [Verify email](/verify-email) page.",
+  },
+  {
+    category: "Account & Security",
+    question: "I forgot my password or lost my login details. How do I get back in?",
+    answer:
+      "Request a reset link from the [Sign in](/sign-in) page; it's valid for 30 minutes. We don't issue downloader codes or separate app credentials — your website email and password are all you need. If you no longer have access to your email, [contact support](/contact).",
+  },
+  {
+    category: "Account & Security",
+    question: "I didn't receive my verification email.",
+    answer:
+      "Check your spam or promotions folder first. Verification links are valid for 24 hours; if yours expired, request a fresh one from the [Verify email](/verify-email) page. Still nothing? [Message us](/contact) with the address you signed up with.",
+  },
+  {
+    category: "Account & Security",
+    question: "How is my Apollo Group TV account protected?",
+    answer:
+      "Passwords are stored as one-way hashes, accounts are email-verified, sign-in attempts are rate-limited, and you can review and sign out of your active sessions from [Security](/dashboard/security). We never ask for your password by email, chat or ticket.",
+  },
+  {
+    category: "Account & Security",
+    question: "What personal information does Apollo Group TV collect?",
+    answer:
+      "Only what's needed to run your account: your name and email, your pack and payment records, your support messages, and basic technical data used for security. The [Privacy Policy](/privacy-policy) explains each type, why we keep it and the choices you have.",
+  },
+  {
+    category: "Account & Security",
+    question: "Can I delete my account?",
+    answer:
+      "Yes. [Open a ticket](/dashboard/support/new) asking for deletion and we'll confirm the request. Some records, such as payment history, may need to be kept for a period for legal and accounting reasons, as described in the [Privacy Policy](/privacy-policy).",
+  },
+
+  // ── Refunds & Cancellation ───────────────────────────────────────────────
+  {
+    category: "Refunds & Cancellation",
+    question: "How do I ask for a refund?",
+    answer:
+      "Open a support ticket from your [dashboard](/dashboard/support/new) and include your payment reference. Our [Refund Policy](/refund-policy) sets out the eligibility window, what's covered and how long processing takes — please read it before you buy.",
+  },
+  {
+    category: "Refunds & Cancellation",
+    question: "If I stop using a 12-month pack halfway through, do I get money back?",
+    answer:
+      "Refunds follow the [Refund Policy](/refund-policy), which doesn't promise a pro-rated refund for unused time. If you're not sure a long pack is right for you, start with a shorter one — you can move to a longer pack later.",
+  },
+  {
+    category: "Refunds & Cancellation",
+    question: "How do I cancel Apollo Group TV?",
+    answer:
+      "There's nothing to cancel: packs don't renew automatically, so access simply ends when your period runs out. If you also want your account removed, [open a ticket](/dashboard/support/new) and ask for deletion.",
+  },
+
+  // ── Troubleshooting ──────────────────────────────────────────────────────
   {
     category: "Troubleshooting",
-    question: "Playback keeps buffering. What should I try?",
+    question: "Apollo Group TV stopped working. What should I check first?",
     answer:
-      "Restart the device and your router, close other apps using bandwidth, and try a wired connection if you can. The [troubleshooting guide](/guides/troubleshooting) has the full checklist.",
+      "Work through these in order: confirm your pack is active in the [dashboard](/dashboard/plan), restart your device and router, update the app from its official link, then sign out and back in. The [troubleshooting guide](/guides/troubleshooting) covers each step in detail.",
   },
   {
     category: "Troubleshooting",
-    question: "The app won't sign me in.",
+    question: "What does a 403 or “access denied” error mean?",
     answer:
-      "Make sure your email is verified and you're using the newest version of the app from the official link. If a password reset doesn't fix it, [contact support](/contact).",
-  },
-  // Billing and Refunds
-  {
-    category: "Billing and Refunds",
-    question: "Where can I see my payments?",
-    answer: "Every recorded payment appears under Dashboard → [Billing History](/dashboard/billing), with the date, amount, status and a payment reference.",
+      "It means the service refused the request — most often because your pack has expired, too many devices are signed in, or the app is out of date. Check your pack status, sign out on devices you don't use from [Security](/dashboard/security), and update the app. If the error continues, [open a ticket](/dashboard/support/new) with a photo of the message.",
   },
   {
-    category: "Billing and Refunds",
-    question: "What is the refund policy?",
+    category: "Troubleshooting",
+    question: "The sound is out of sync with the picture. How do I fix it?",
     answer:
-      "Refund terms are published on the [Refund Policy](/refund-policy) page. That page is the only place we state refund rules, so it always reflects the current policy.",
+      "Try another channel first — if only one is affected, it's usually that broadcast. Otherwise, restart the app, turn off any audio processing or surround modes on your TV or soundbar, and check the audio-delay setting on your TV. If it continues across channels, let us know your device model.",
   },
   {
-    category: "Billing and Refunds",
-    question: "Do you store my card details?",
-    answer: "No. When online payments are enabled, cards are handled by our payment provider and we keep only a reference to each transaction.",
-  },
-  // Privacy and Security
-  {
-    category: "Privacy and Security",
-    question: "How is my account protected?",
+    category: "Troubleshooting",
+    question: "Is the Apollo Group TV service down?",
     answer:
-      "Passwords are stored as salted hashes, email verification is required, sign-in attempts are rate-limited, and you can review and sign out of devices under Dashboard → [Security](/dashboard/security).",
+      "Check your own connection first by opening another streaming app or website. If everything else works, [open a ticket](/dashboard/support/new) or [message us](/contact) — we'll confirm whether there's an issue on our side and keep you updated in the same thread.",
   },
   {
-    category: "Privacy and Security",
-    question: "What personal data do you collect?",
-    answer: "Only what the service needs to run your account. The [Privacy Policy](/privacy-policy) lists each type of data and why we keep it.",
-  },
-  {
-    category: "Privacy and Security",
-    question: "Will you ever ask for my password?",
-    answer: "Never — not by email, chat or phone. If someone asks, don't share it, and let us know through the [contact page](/contact).",
-  },
-  // Legal and Copyright
-  {
-    category: "Legal and Copyright Questions",
-    question: "Is Apollo Group TV legal?",
+    category: "Troubleshooting",
+    question: "Why does one particular channel keep buffering?",
     answer:
-      "Streaming over the internet is a delivery method; what matters legally is whether the provider has the rights to the content it distributes. We list only authorized, properly licensed content. Our [legal explainer](/is-apollo-group-tv-legal) goes into more detail.",
+      "When only one channel struggles, the cause is usually that channel's source rather than your setup. Try it again later and compare with a few other channels. If it keeps happening, tell us which category it's in and when it buffers so our team can look into it.",
   },
   {
-    category: "Legal and Copyright Questions",
-    question: "How do I report a copyright concern?",
-    answer: "Follow the notice process on our [Copyright and DMCA page](/dmca). It lists what a complete notice must include.",
+    category: "Troubleshooting",
+    question: "How do I reach Apollo Group TV support?",
+    answer:
+      "Customers can [open a ticket](/dashboard/support/new) from the dashboard — every reply stays in one thread and you're notified when we answer. Not a customer yet? Use the [contact form](/contact) and we'll reply by email.",
   },
 ];
 
-/** Questions seeded by earlier versions — replaced by the set above. */
+/** First-generation questions that later sets replaced; the seed removes them so the FAQ doesn't drift. */
 export const legacyFaqQuestions = [
   "How do I create an account?",
   "I didn't receive the verification email.",
@@ -186,4 +328,45 @@ export const legacyFaqQuestions = [
   "The app isn't working. What should I do?",
   "How do I contact support?",
   "How does the referral program work?",
+];
+
+/** The second-generation set (nine categories) replaced by the topic-based set above. */
+export const previousFaqQuestions = [
+  "What is Apollo Group TV?",
+  "Is Apollo TV the same as Apollo Group TV?",
+  "Where can I see everything the service includes?",
+  "Where can I find current prices?",
+  "What is the difference between the plans?",
+  "How do I choose or change a plan?",
+  "How do I create an account?",
+  "How do I reset my password?",
+  "Which devices are supported?",
+  "Why isn't my device on the list?",
+  "Where do I download the app?",
+  "I didn't get the verification email. What now?",
+  "What is the client portal?",
+  "How long does setup take?",
+  "Can someone help me install the app?",
+  "Playback keeps buffering. What should I try?",
+  "The app won't sign me in.",
+  "Where can I see my payments?",
+  "What is the refund policy?",
+  "Do you store my card details?",
+  "How is my account protected?",
+  "What personal data do you collect?",
+  "Will you ever ask for my password?",
+  "Is Apollo Group TV legal?",
+  "How do I report a copyright concern?",
+];
+
+export const previousFaqCategories = [
+  "General Information",
+  "Plans and Pricing",
+  "App and Device Compatibility",
+  "Account Access",
+  "Installation",
+  "Troubleshooting",
+  "Billing and Refunds",
+  "Privacy and Security",
+  "Legal and Copyright Questions",
 ];

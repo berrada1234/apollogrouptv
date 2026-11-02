@@ -39,7 +39,7 @@ export const generalGuides: Guide[] = [
       { q: "I can't sign in after verifying", a: "Use “Forgot password?” on the Sign in page to set a new password, then try again." },
     ],
     security: ["Use a password you don't use anywhere else.", "We will never ask for your password by email, chat or phone.", "Review signed-in devices any time under Dashboard → Security."],
-    faqCategories: ["Account Access", "Plans and Pricing"],
+    faqCategories: ["Account & Security", "Plans & Billing"],
   },
   {
     slug: "troubleshooting",
@@ -62,7 +62,7 @@ export const generalGuides: Guide[] = [
       { q: "A channel won't play but others do", a: "Content availability can change. Let us know in a ticket which channel and when, so we can check." },
     ],
     security: ["Only install the app from official links or app stores.", "Avoid “fixes” that ask you to install unknown files or share your password."],
-    faqCategories: ["Troubleshooting", "App and Device Compatibility"],
+    faqCategories: ["Troubleshooting", "App & Playback"],
   },
 ];
 

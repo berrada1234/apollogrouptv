@@ -50,10 +50,18 @@ export function FaqAccordion({ items }: { items: Faq[] }) {
   );
 }
 
-export function FaqExplorer({ items, aside }: { items: Faq[]; aside?: React.ReactNode }) {
+export type FaqTopic = { name: string; slug: string; blurb?: string };
+
+export function FaqExplorer({ items, aside, topics = [] }: { items: Faq[]; aside?: React.ReactNode; /** Fixes topic order and adds anchors + a one-line intro per topic. */ topics?: readonly FaqTopic[] }) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All");
-  const categories = useMemo(() => ["All", ...Array.from(new Set(items.map((i) => i.category)))], [items]);
+  const order = useMemo(() => {
+    const known = topics.map((t) => t.name);
+    const extra = Array.from(new Set(items.map((i) => i.category))).filter((c) => !known.includes(c));
+    return [...known.filter((c) => items.some((i) => i.category === c)), ...extra];
+  }, [items, topics]);
+  const categories = useMemo(() => ["All", ...order], [order]);
+  const topicFor = (name: string) => topics.find((t) => t.name === name);
   const countFor = (c: string) => (c === "All" ? items.length : items.filter((i) => i.category === c).length);
 
   const filtered = useMemo(() => {
@@ -66,8 +74,8 @@ export function FaqExplorer({ items, aside }: { items: Faq[]; aside?: React.Reac
   const grouped = useMemo(() => {
     const map = new Map<string, Faq[]>();
     for (const i of filtered) map.set(i.category, [...(map.get(i.category) ?? []), i]);
-    return [...map.entries()];
-  }, [filtered]);
+    return order.filter((c) => map.has(c)).map((c) => [c, map.get(c)!] as const);
+  }, [filtered, order]);
 
   return (
     <div className="grid gap-8 lg:grid-cols-[260px_1fr] lg:gap-12 [&>*]:min-w-0">
@@ -113,15 +121,18 @@ export function FaqExplorer({ items, aside }: { items: Faq[]; aside?: React.Reac
         <p className="sr-only" aria-live="polite">
           {filtered.length} questions shown
         </p>
-        <div className="space-y-10">
+        <div className="space-y-12">
           {grouped.length === 0 ? (
             <EmptyState icon={Search} title="No matching questions" description="Try a different search term or topic." />
           ) : (
             grouped.map(([cat, list]) => (
-              <section key={cat} aria-labelledby={`faq-${cat}`}>
-                <h2 id={`faq-${cat}`} className="mb-4 font-display text-lg font-semibold text-text">
-                  {cat}
-                </h2>
+              <section key={cat} id={topicFor(cat)?.slug} aria-labelledby={`faq-${topicFor(cat)?.slug ?? cat}`} className="scroll-mt-24">
+                <div className="mb-4">
+                  <h2 id={`faq-${topicFor(cat)?.slug ?? cat}`} className="font-display text-xl font-bold text-text sm:text-2xl">
+                    {cat}
+                  </h2>
+                  {topicFor(cat)?.blurb && <p className="mt-1 text-sm text-muted">{topicFor(cat)?.blurb}</p>}
+                </div>
                 <FaqAccordion items={list} />
               </section>
             ))

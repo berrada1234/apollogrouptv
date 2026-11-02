@@ -80,7 +80,7 @@ export default async function GuidePage({ params }: PageProps<"/guides/[slug]">)
         { q: "Sign-in fails", a: "Reset your password on the [Sign in](/sign-in) page and try again. See the [troubleshooting guide](/guides/troubleshooting) for more." },
       ]}
       security={["Install only from the official link on this page.", "Don't share your account password with anyone.", "Remove the app from devices you no longer use and sign them out under Dashboard → Security."]}
-      faqs={pick(["App and Device Compatibility", "Installation"])}
+      faqs={pick(["Installation & Setup", "App & Playback"])}
       related={related}
       download={d.downloadUrl ? { url: d.downloadUrl, label: `Official download for ${d.name}` } : undefined}
     />
