@@ -42,6 +42,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     ...(isAdmin
       ? ([
           { href: "/admin/settings", label: "Settings", icon: "settings" },
+          { href: "/admin/seo", label: "SEO", icon: "seo" },
           { href: "/admin/audit-logs", label: "Audit Logs", icon: "audit" },
         ] satisfies NavItem[])
       : []),

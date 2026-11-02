@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
+  Search,
   Bell,
   ChevronDown,
   ClipboardList,
@@ -50,6 +51,7 @@ const icons = {
   audit: FileClock,
   home: Home,
   mail: Mail,
+  seo: Search,
 };
 
 export type NavIcon = keyof typeof icons;

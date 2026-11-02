@@ -5,6 +5,7 @@ import { PageHeader } from "@/components/page-header";
 import { Card, CardBody, CardHeader } from "@/components/ui/card";
 import { StatusBadge } from "@/components/ui/badge";
 import { Checkbox, Field, Input, Textarea } from "@/components/ui/form";
+import { FAQ_CATEGORIES } from "@/content/faqs";
 import { db } from "@/lib/db";
 import { requireRole } from "@/lib/session";
 import type { Faq } from "@prisma/client";
@@ -43,15 +44,16 @@ function FaqFields({ faq, categories }: { faq?: Faq; categories: string[] }) {
 export default async function AdminFaqPage() {
   await requireRole("ADMIN");
   const faqs = await db.faq.findMany({ orderBy: [{ category: "asc" }, { sortOrder: "asc" }, { createdAt: "asc" }] });
-  const categories = [...new Set(faqs.map((f) => f.category))];
+  // Suggest the site topics first so new entries land in the right section of /faq.
+  const categories = [...new Set([...FAQ_CATEGORIES, ...faqs.map((f) => f.category)])];
 
   return (
     <>
       <PageHeader title="FAQ" description="Questions shown on the FAQ page and in previews across the site." />
       <div className="grid gap-6 xl:grid-cols-[1.5fr_1fr]">
         <div className="space-y-8">
-          {categories.length === 0 && <p className="text-sm text-muted">No FAQ entries yet.</p>}
-          {categories.map((cat) => (
+          {faqs.length === 0 && <p className="text-sm text-muted">No FAQ entries yet.</p>}
+          {categories.filter((cat) => faqs.some((f) => f.category === cat)).map((cat) => (
             <section key={cat}>
               <h2 className="mb-3 font-display text-lg font-semibold text-text">{cat}</h2>
               <div className="space-y-3">

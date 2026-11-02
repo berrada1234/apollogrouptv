@@ -38,6 +38,10 @@ No default admin exists. That's deliberate, so there's never a known password.
    ```
 3. Sign out and back in, then open `/admin`. Further roles are assigned from **Admin → Users** (audit-logged).
 
+Safeguards: the script only promotes an existing, email-verified account and never sets a password; the change is written to the audit log. In the admin, nobody can change their own role or suspend themselves, the last active administrator can't be demoted, and every admin operation re-checks the role on the server.
+
+**Local testing only:** `AUTH_SKIP_EMAIL_VERIFICATION="true"` in `.env` lets new accounts sign in without the email step. It is ignored unless `BETTER_AUTH_URL` points at localhost.
+
 ## Scripts
 
 | Command | What it does |
@@ -62,7 +66,7 @@ src/proxy.ts         optimistic route guard, noindex headers, referral cookie
 src/app/(marketing)  public pages: / product app plans channels reviews refer-a-friend faq account client-portal terms privacy
 src/app/(auth)       sign-in create-account forgot-password reset-password verify-email
 src/app/dashboard    customer dashboard (overview, profile, plan, subscription, billing, referrals, support, notifications, security)
-src/app/admin        admin dashboard (users, plans, subscriptions, payments, channels, reviews, faq, referrals, support, settings, audit-logs)
+src/app/admin        admin dashboard (users, plans, subscriptions, payments, channels, reviews, faq, referrals, support, messages, settings, seo, audit-logs)
 src/app/api          auth handler, payment-webhook placeholder
 src/actions          server actions (user.ts, admin.ts), each one authorizes on the server
 src/components       UI primitives (ui/), marketing sections, dashboard shell, forms

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { saveSettings } from "@/actions/admin";
 import { ActionForm } from "@/components/admin/action-form";
+import { ButtonLink } from "@/components/ui/button";
 import { AppsEditor } from "@/components/admin/apps-editor";
 import { PageHeader } from "@/components/page-header";
 import { Card, CardBody, CardHeader } from "@/components/ui/card";
@@ -35,7 +36,7 @@ export default async function SettingsPage() {
 
   return (
     <>
-      <PageHeader title="Settings" description="Branding, contact details, SEO defaults and program configuration." />
+      <PageHeader title="Settings" description="Branding, contact details, policies and program configuration." />
       <div className="space-y-6">
         <Section id="integrations" title="Integrations status" description="Read from server environment variables. Secrets are never shown.">
           <ul className="divide-y divide-border">
@@ -78,15 +79,8 @@ export default async function SettingsPage() {
           </ActionForm>
         </Section>
 
-        <Section id="seo" title="SEO defaults">
-          <ActionForm action={saveSettings} submitLabel="Save SEO defaults">
-            <input type="hidden" name="settingsKey" value="seo" />
-            <Field label="Default title (max 70)" htmlFor="defaultTitle"><Input id="defaultTitle" name="defaultTitle" defaultValue={s.seo.defaultTitle} maxLength={70} /></Field>
-            <Field label="Default description (max 170)" htmlFor="defaultDescription"><Textarea id="defaultDescription" name="defaultDescription" defaultValue={s.seo.defaultDescription} maxLength={170} rows={2} /></Field>
-            <Field label="Google site verification token" htmlFor="googleSiteVerification" hint="Prefer the GOOGLE_SITE_VERIFICATION environment variable; this field is kept for reference.">
-              <Input id="googleSiteVerification" name="googleSiteVerification" defaultValue={s.seo.googleSiteVerification} />
-            </Field>
-          </ActionForm>
+        <Section id="seo" title="SEO settings" description="Default titles, descriptions and search-engine verification now have their own page.">
+          <ButtonLink href="/admin/seo" variant="secondary">Open SEO settings</ButtonLink>
         </Section>
 
         <Section id="referral" title="Referral program" description="Rewards are only advertised and issued while the program is enabled.">
