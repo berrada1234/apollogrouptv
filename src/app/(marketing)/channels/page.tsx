@@ -209,8 +209,7 @@ export default function ChannelsPage() {
                   More answers about billing, devices and setup are in the{" "}
                   <Link href="/faq" className="text-accent hover:text-light-blue">
                     full FAQ
-                  </Link>
-                  .
+                  </Link>.
                 </>
               }
             />

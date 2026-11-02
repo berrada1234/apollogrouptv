@@ -124,3 +124,20 @@ describe("channels page content", () => {
     for (const f of channelFaq) expect(stripRich(f.a).length).toBeGreaterThan(60);
   });
 });
+
+describe("app page content", () => {
+  it("avoids unverifiable stats, titles, brands and risky install advice", async () => {
+    const fs = await import("node:fs");
+    const src = fs.readFileSync("src/content/app.ts", "utf8").split("\n").filter((l) => !l.trim().startsWith("*")).join("\n");
+    expect(src).not.toMatch(/\d+\s*(K|M)\+|\d\.\d\s*\/\s*5|\d+\s*(ms|Mbps|seconds?)\b|downloads?\s+\d/i);
+    expect(src).not.toMatch(/\b(VPN|sideload|APK|M3U|MAC address|TestFlight|anti-freeze|catch-?up|DVR|PVR|24\/7)\b/i);
+    expect(src).not.toMatch(/\b(Dark Knight|Interstellar|Inception|Shawshank|IMDB|TMDB|ESPN|HBO|BBC|Netflix|Disney)\b/i);
+    // Downloader codes may only be mentioned as something to avoid.
+    expect(src).not.toMatch(/(enter|use) (a|the) downloader code/i);
+  });
+  it("answers every app FAQ with substance", async () => {
+    const { appFaq } = await import("@/content/app");
+    expect(appFaq.length).toBeGreaterThanOrEqual(6);
+    for (const f of appFaq) expect(stripRich(f.a).length).toBeGreaterThan(60);
+  });
+});
