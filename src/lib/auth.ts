@@ -25,6 +25,20 @@ async function assignReferralCode(userId: string) {
   }
 }
 
+/**
+ * Local testing switch: AUTH_SKIP_EMAIL_VERIFICATION="true" lets new accounts sign in straight away.
+ * It only takes effect when the site runs on localhost, so it can never weaken a deployed site.
+ */
+function isLocalUrl(url: string | undefined) {
+  try {
+    return ["localhost", "127.0.0.1", "[::1]"].includes(new URL(url ?? "").hostname);
+  } catch {
+    return false;
+  }
+}
+export const skipEmailVerification =
+  process.env.AUTH_SKIP_EMAIL_VERIFICATION === "true" && isLocalUrl(process.env.BETTER_AUTH_URL ?? siteConfig.url);
+
 export const auth = betterAuth({
   appName: siteConfig.name,
   baseURL: process.env.BETTER_AUTH_URL ?? siteConfig.url,
@@ -34,10 +48,10 @@ export const auth = betterAuth({
 
   emailAndPassword: {
     enabled: true,
-    requireEmailVerification: true,
+    requireEmailVerification: !skipEmailVerification,
     minPasswordLength: 10,
     maxPasswordLength: 128,
-    autoSignIn: false,
+    autoSignIn: skipEmailVerification,
     revokeSessionsOnPasswordReset: true,
     resetPasswordTokenExpiresIn: 60 * 30,
     sendResetPassword: async ({ user, url }) => {
@@ -52,8 +66,8 @@ export const auth = betterAuth({
   },
 
   emailVerification: {
-    sendOnSignUp: true,
-    sendOnSignIn: true,
+    sendOnSignUp: !skipEmailVerification,
+    sendOnSignIn: !skipEmailVerification,
     autoSignInAfterVerification: true,
     expiresIn: 60 * 60 * 24,
     sendVerificationEmail: async ({ user, url }) => {
@@ -103,6 +117,8 @@ export const auth = betterAuth({
   databaseHooks: {
     user: {
       create: {
+        // In local testing mode accounts start verified, so dashboards and admin promotion work without email.
+        before: async (user) => (skipEmailVerification ? { data: { ...user, emailVerified: true } } : undefined),
         after: async (user, ctx) => {
           await assignReferralCode(user.id);
           const code = readCookie(ctx?.headers?.get("cookie"), REFERRAL_COOKIE);

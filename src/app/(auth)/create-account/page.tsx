@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { CreateAccountForm } from "@/components/forms/auth-forms";
+import { skipEmailVerification } from "@/lib/auth";
 import { isValidReferralCode } from "@/lib/referral";
 import { getCurrentUser } from "@/lib/session";
 
@@ -19,9 +20,13 @@ export default async function CreateAccountPage({ searchParams }: PageProps<"/cr
   return (
     <>
       <h1 className="font-display text-3xl font-semibold tracking-tight text-text">Create your account</h1>
-      <p className="mt-2 text-muted">It takes less than a minute. We’ll ask you to verify your email.</p>
+      <p className="mt-2 text-muted">
+        {skipEmailVerification
+          ? "Local testing mode: email verification is off, so you'll go straight to your dashboard."
+          : "It takes less than a minute. We’ll ask you to verify your email."}
+      </p>
       <div className="mt-8">
-        <CreateAccountForm referralCode={ref && isValidReferralCode(ref) ? ref : undefined} />
+        <CreateAccountForm referralCode={ref && isValidReferralCode(ref) ? ref : undefined} verifyEmail={!skipEmailVerification} />
       </div>
       <p className="mt-8 text-center text-sm text-muted">
         Already have an account?{" "}
