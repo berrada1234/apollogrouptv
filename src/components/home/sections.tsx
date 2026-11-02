@@ -12,11 +12,9 @@ import {
   KeyRound,
   LifeBuoy,
   MessageSquareText,
-  Monitor,
   MonitorSmartphone,
   Receipt,
   ShieldCheck,
-  Smartphone,
   Sparkles,
   Tv,
   User,
@@ -68,22 +66,6 @@ function IconBox({ icon: Icon, solid }: { icon: typeof Tv; solid?: boolean }) {
 
 // ─── 2. Social-proof bar ────────────────────────────────────────────────────
 
-function WindowsGlyph({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 16 16" className={className} aria-hidden>
-      <path fill="currentColor" d="M0 0h7.5v7.5H0zM8.5 0H16v7.5H8.5zM0 8.5h7.5V16H0zM8.5 8.5H16V16H8.5z" />
-    </svg>
-  );
-}
-
-function platformIcon(name: string) {
-  const n = name.toLowerCase();
-  if (/windows|pc/.test(n)) return WindowsGlyph;
-  if (/android|iphone|ios|phone|mobile/.test(n)) return Smartphone;
-  if (/mac|laptop|web|browser/.test(n)) return Monitor;
-  return Tv;
-}
-
 /** Abbreviates real member counts: 1,240 → "1.2K+", 87 → "80+". */
 function formatMembers(n: number) {
   if (n >= 1000) return `${(Math.floor(n / 100) / 10).toString().replace(/\.0$/, "")}K+`;
@@ -92,11 +74,9 @@ function formatMembers(n: number) {
 
 export function SocialProofBar({
   members,
-  platforms,
   rating,
 }: {
   members: number;
-  platforms: { name: string }[];
   rating: { average: number | null; total: number };
 }) {
   // Below this, a member count reads as noise rather than proof — show an honest invitation instead.
@@ -124,36 +104,16 @@ export function SocialProofBar({
           </div>
 
           {/* Devices */}
-          <div className="flex flex-col items-center justify-center gap-2.5 py-6 lg:py-7">
-            {platforms.length > 0 ? (
-              <>
-                <ul className="flex flex-wrap items-center justify-center gap-2">
-                  {platforms.slice(0, 5).map((p) => {
-                    const Icon = platformIcon(p.name);
-                    return (
-                      <li key={p.name} className="inline-flex items-center gap-1.5 rounded-lg border border-border-strong bg-card/80 px-2.5 py-1.5 text-xs font-medium text-text">
-                        <Icon className="h-3.5 w-3.5 text-accent" /> {p.name}
-                      </li>
-                    );
-                  })}
-                  {platforms.length > 5 && <li className="text-xs text-subtle">+{platforms.length - 5} more</li>}
-                </ul>
-                <p className="text-xs text-subtle">Verified devices with setup guides</p>
-              </>
-            ) : (
-              <Link href="/app" className="group flex items-center gap-3">
-                <span className="flex gap-1.5 text-accent" aria-hidden>
-                  <Tv className="h-5 w-5" />
-                  <Smartphone className="h-5 w-5" />
-                  <Monitor className="h-5 w-5" />
-                </span>
-                <span>
-                  <span className="block text-sm font-semibold text-text group-hover:text-light-blue">Step-by-step device guides</span>
-                  <span className="block text-xs text-subtle">Supported devices are listed once verified</span>
-                </span>
-              </Link>
-            )}
-          </div>
+          <Link href="/app" className="group flex flex-col items-center justify-center gap-3 py-6 lg:py-7">
+            <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3" aria-label="Supported devices">
+              {homeCopy.devices.logos.map((d) => (
+                <li key={d.name} className="flex items-center">
+                  <Image src={d.src} alt={d.alt} width={d.width} height={d.height} title={d.name} className="h-7 w-auto object-contain opacity-90 transition-opacity group-hover:opacity-100" />
+                </li>
+              ))}
+            </ul>
+            <span className="text-center text-xs text-subtle group-hover:text-light-blue">Works on your TV, phone and computer</span>
+          </Link>
 
           {/* Rating */}
           <div className="flex items-center justify-center gap-3 py-6 lg:justify-end lg:py-7">
@@ -343,7 +303,7 @@ export function StepsSection() {
   return (
     <section id="how-it-works" className="scroll-mt-20 py-20 sm:py-24">
       <Container>
-        <SplitHeader eyebrow={c.eyebrow} title={c.h2} description={c.description} image={c.image} />
+        <Heading eyebrow={c.eyebrow} title={c.h2} description={c.description} />
         <ol className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((s, i) => (
             <li key={s.t} className="relative rounded-lg border border-border bg-card p-6 shadow-card">
@@ -467,9 +427,8 @@ export function DevicesSection() {
       <Container className="grid gap-10 lg:grid-cols-2 lg:gap-16 [&>*]:min-w-0">
         <div>
           <Heading align="left" eyebrow={c.eyebrow} title={c.h2} description={c.description} />
-          <SectionImage image={c.image} className="mt-8" />
         </div>
-        <div className="lg:pt-24">
+        <div className="self-center">
           <h3 className="font-display text-lg font-semibold text-text">{c.supportedTitle}</h3>
           <ul className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
             {c.logos.map((d, i) => (
@@ -565,7 +524,6 @@ export function CompareSection({ fromMonthly }: { fromMonthly: string | null }) 
       <Container className="grid gap-10 lg:grid-cols-[1fr_1.5fr] lg:gap-14 [&>*]:min-w-0">
         <div>
           <Heading align="left" eyebrow={c.eyebrow} title={c.h2} description={c.description} />
-          <SectionImage image={c.image} className="mt-8 hidden lg:block" />
         </div>
         <div className="self-center">
           <div className="overflow-x-auto rounded-lg border border-border bg-card shadow-card">

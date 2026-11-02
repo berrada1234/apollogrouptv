@@ -37,7 +37,6 @@ export const homeCopy = {
     eyebrow: "How it works",
     h2: "How Apollo TV Works in Four Simple Steps",
     description: "From creating an account to pressing play, here's what getting started with Apollo TV looks like.",
-    image: img("apollo-tv-how-it-works", "Four numbered steps showing how to get started with Apollo TV"),
   },
 
   plans: {
@@ -55,7 +54,6 @@ export const homeCopy = {
     description:
       "Thinking about leaving cable? Here's how the Apollo Group TV model differs from a typical cable package — without invented numbers.",
     footnote: "Cable terms vary by provider and region. The cable column describes common arrangements, not any specific company.",
-    image: img("why-choose-apollo-group-tv", "Checklist comparing Apollo Group TV with a typical cable TV package"),
   },
 
   devices: {
@@ -64,10 +62,9 @@ export const homeCopy = {
     h2: "Apollo TV App: Supported Devices and Installation",
     description:
       "The Apollo TV app is how you watch on your TV, streaming stick or phone. We list a device only after verifying it, each with an official download link and a step-by-step setup guide.",
-    image: img("apollo-tv-app-supported-devices", "Apollo TV app running on a television, a smartphone and a laptop"),
     supportedTitle: "Supported devices",
     logos: [
-      { name: "Fire TV Stick", src: "/images/devices/apollo-group-tv-firestick.webp", width: 379, height: 120, alt: "Amazon Fire TV Stick logo — install Apollo Group TV on Firestick" },
+      { name: "Fire TV Stick", src: "/images/devices/apollo-group-tv-fire-tv-stick.webp", width: 379, height: 120, alt: "Amazon Fire TV Stick logo — install Apollo Group TV on Firestick" },
       { name: "Fire TV", src: "/images/devices/apollo-group-tv-fire-tv.webp", width: 316, height: 160, alt: "Amazon Fire TV logo — Apollo Group TV app for Fire TV devices" },
       { name: "Android", src: "/images/devices/apollo-group-tv-android.webp", width: 147, height: 160, alt: "Android logo — Apollo TV app for Android phones, tablets and Android TV" },
       { name: "iPhone & iPad", src: "/images/devices/apollo-group-tv-apple-ios.webp", width: 115, height: 160, alt: "Apple logo — watch Apollo Group TV on iPhone, iPad and Apple TV" },

@@ -56,7 +56,6 @@ export default async function HomePage() {
   const fromMonthly = monthlies.length ? formatMoney(Math.min(...monthlies), plans[0]?.currency ?? "USD") : null;
   const maxSave = Math.max(0, ...plans.map((p) => savingsPct(p, pricing.baseMonthly)));
 
-  const platforms = settings.apps.platforms.filter((p) => p.verified);
 
   // Hero stats: catalog sizes are set in Admin → Settings → Homepage highlights; the rating is the real review average.
   const { highlights } = settings;
@@ -86,7 +85,7 @@ export default async function HomePage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([orgJsonLd, siteJsonLd]).replace(/</g, "\\u003c") }} />
       <HomeHero tagline={settings.general.tagline} stats={stats} badges={badges} />
-      <SocialProofBar members={members} platforms={platforms} rating={{ average, total: reviewTotal }} />
+      <SocialProofBar members={members} rating={{ average, total: reviewTotal }} />
       <IntroSection />
       <StepsSection />
       <PlansSection plans={plans.slice(0, 4)} checkout={isCheckoutEnabled()} />
