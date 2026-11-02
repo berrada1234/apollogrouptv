@@ -92,7 +92,7 @@ export default async function HomePage() {
       <PlansSection plans={plans.slice(0, 4)} checkout={isCheckoutEnabled()} />
       <CompareSection fromMonthly={fromMonthly} />
       <SportsSection />
-      <DevicesSection platforms={platforms} />
+      <DevicesSection />
       <LegalSection />
       <ReviewsSection
         reviews={reviews.map((r) => ({

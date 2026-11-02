@@ -65,6 +65,15 @@ export const homeCopy = {
     description:
       "The Apollo TV app is how you watch on your TV, streaming stick or phone. We list a device only after verifying it, each with an official download link and a step-by-step setup guide.",
     image: img("apollo-tv-app-supported-devices", "Apollo TV app running on a television, a smartphone and a laptop"),
+    supportedTitle: "Supported devices",
+    logos: [
+      { name: "Fire TV Stick", src: "/images/devices/apollo-group-tv-firestick.webp", width: 379, height: 120, alt: "Amazon Fire TV Stick logo — install Apollo Group TV on Firestick" },
+      { name: "Fire TV", src: "/images/devices/apollo-group-tv-fire-tv.webp", width: 316, height: 160, alt: "Amazon Fire TV logo — Apollo Group TV app for Fire TV devices" },
+      { name: "Android", src: "/images/devices/apollo-group-tv-android.webp", width: 147, height: 160, alt: "Android logo — Apollo TV app for Android phones, tablets and Android TV" },
+      { name: "iPhone & iPad", src: "/images/devices/apollo-group-tv-apple-ios.webp", width: 115, height: 160, alt: "Apple logo — watch Apollo Group TV on iPhone, iPad and Apple TV" },
+      { name: "Windows PC", src: "/images/devices/apollo-group-tv-windows.webp", width: 163, height: 160, alt: "Microsoft Windows logo — stream Apollo Group TV on a Windows PC or laptop" },
+    ],
+    trademarks: "Fire TV, Android, Apple and Windows are trademarks of their respective owners and are shown only to indicate compatibility.",
   },
 
   legal: {

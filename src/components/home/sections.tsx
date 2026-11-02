@@ -460,7 +460,7 @@ export function PlansSection({ plans, checkout }: { plans: Plan[]; checkout: boo
 
 // ─── Apps & devices ─────────────────────────────────────────────────────────
 
-export function DevicesSection({ platforms }: { platforms: { name: string }[] }) {
+export function DevicesSection() {
   const c = homeCopy.devices;
   return (
     <section className="border-t border-border bg-bg-secondary/50 py-20 sm:py-24">
@@ -470,22 +470,24 @@ export function DevicesSection({ platforms }: { platforms: { name: string }[] })
           <SectionImage image={c.image} className="mt-8" />
         </div>
         <div className="lg:pt-24">
-          <h3 className="font-display text-lg font-semibold text-text">Verified devices</h3>
-          {platforms.length > 0 ? (
-            <ul className="mt-4 grid grid-cols-2 gap-3">
-              {platforms.map((p) => (
-                <li key={p.name} className="flex items-center gap-3 rounded-lg border border-border bg-card p-4 shadow-card">
-                  <IconBox icon={MonitorSmartphone} />
-                  <span>
-                    <span className="block text-sm font-semibold text-text">{p.name}</span>
-                    <span className="text-xs text-success">Verified</span>
-                  </span>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <EmptyState icon={MonitorSmartphone} title="Supported devices coming soon" description="Devices appear here as soon as compatibility is verified." className="mt-4" />
-          )}
+          <h3 className="font-display text-lg font-semibold text-text">{c.supportedTitle}</h3>
+          <ul className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
+            {c.logos.map((d, i) => (
+              <li
+                key={d.name}
+                className={cn(
+                  "flex flex-col items-center justify-between gap-3 rounded-lg border border-border bg-card p-4 shadow-card transition-colors hover:border-border-strong",
+                  i === 0 && "col-span-2 sm:col-span-1",
+                )}
+              >
+                <span className="flex h-14 w-full items-center justify-center">
+                  <Image src={d.src} alt={d.alt} width={d.width} height={d.height} className="max-h-14 w-auto object-contain" />
+                </span>
+                <span className="text-sm font-medium text-text">{d.name}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-3 text-xs text-subtle">{c.trademarks}</p>
           <div className="mt-4 rounded-lg border border-border bg-card p-5 shadow-card">
             <div className="flex items-start gap-4">
               <IconBox icon={HelpCircle} />
