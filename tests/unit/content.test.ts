@@ -69,3 +69,29 @@ describe("contactSchema", () => {
     expect(contactSchema.safeParse({ ...valid, message: "help" }).success).toBe(false);
   });
 });
+
+describe("homepage content", async () => {
+  const { homeCopy, homeFaq } = await import("@/content/home");
+  it("renders **bold** as strong text", () => {
+    expect(html("Search for **Apollo TV** here")).toContain("<strong");
+  });
+  it("uses the brand keyword in the H1 and in section H2s", () => {
+    expect(homeCopy.hero.h1).toContain("Apollo Group TV");
+    const h2s = Object.values(homeCopy).flatMap((s) => ("h2" in s ? [s.h2] : []));
+    expect(h2s.filter((h) => /Apollo Group TV|Apollo TV/.test(h)).length).toBeGreaterThanOrEqual(10);
+    expect(h2s).toContain("Apollo Group TV Subscription Plans & Pricing");
+    expect(new Set(h2s).size).toBe(h2s.length);
+  });
+  it("gives every illustrated section a descriptive alt text", () => {
+    for (const s of Object.values(homeCopy)) if ("image" in s) expect(s.image.alt.length).toBeGreaterThan(25);
+  });
+  it("keeps homepage FAQ factual and distinct from /faq", () => {
+    const faqQuestions = new Set(faqSeed.map((f) => f.question));
+    for (const f of homeFaq) {
+      expect(f.a).not.toMatch(/\$\d|\d+[- ]day (refund|money|trial)/i);
+      for (const m of f.a.matchAll(/\]\(([^)]+)\)/g)) expect(m[1].startsWith("/")).toBe(true);
+    }
+    const shared = homeFaq.filter((f) => faqQuestions.has(f.q));
+    expect(shared.length).toBeLessThanOrEqual(2);
+  });
+});

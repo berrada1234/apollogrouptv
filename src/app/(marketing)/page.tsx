@@ -9,14 +9,18 @@ import {
   FeaturesSection,
   FinalCta,
   IntroSection,
+  LegalSection,
   PlansSection,
+  ReferralSection,
+  RequirementsSection,
   ReviewsSection,
   SocialProofBar,
   StepsSection,
+  SupportSection,
 } from "@/components/home/sections";
 import { db } from "@/lib/db";
 import { isCheckoutEnabled } from "@/lib/payments";
-import { displayName, getActivePlans, getApprovedReviews, getChannelCategories, getPublishedFaqs } from "@/lib/queries";
+import { displayName, getActivePlans, getApprovedReviews, getChannelCategories } from "@/lib/queries";
 import { getSettings } from "@/lib/settings";
 import { siteConfig } from "@/lib/site";
 import { formatDate } from "@/lib/utils";
@@ -24,9 +28,9 @@ import { formatDate } from "@/lib/utils";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: { absolute: "Apollo Group TV — Live TV & On-Demand Streaming" },
+  title: { absolute: "Apollo Group TV — Live TV & On-Demand Streaming Plans" },
   description:
-    "Apollo Group TV brings live channels and on-demand viewing together with clear plans, verified device guides and support you can track.",
+    "Apollo Group TV (Apollo TV) brings live channels and on-demand viewing together: clear subscription plans and pricing, verified device setup and real support.",
   alternates: { canonical: "/" },
   openGraph: {
     title: "Apollo Group TV — Live TV & On-Demand Streaming",
@@ -35,23 +39,12 @@ export const metadata: Metadata = {
   },
 };
 
-// Questions shown on the homepage; the full set lives on /faq.
-const HOME_FAQ = [
-  "What is Apollo Group TV?",
-  "Is Apollo TV the same as Apollo Group TV?",
-  "Where can I find current prices?",
-  "Which devices are supported?",
-  "How do I create an account?",
-  "Where do I download the app?",
-  "What is the refund policy?",
-];
 
 export default async function HomePage() {
-  const [plans, { reviews, total: reviewTotal, average }, categories, faqs, settings, members] = await Promise.all([
+  const [plans, { reviews, total: reviewTotal, average }, categories, settings, members] = await Promise.all([
     getActivePlans(),
     getApprovedReviews({ take: 8 }),
     getChannelCategories(),
-    getPublishedFaqs(),
     getSettings(),
     db.user.count({ where: { emailVerified: true, status: "ACTIVE" } }),
   ]);
@@ -88,9 +81,11 @@ export default async function HomePage() {
       <IntroSection />
       <FeaturesSection />
       <StepsSection />
-      <DevicesSection platforms={platforms} />
-      <PlansSection plans={plans.slice(0, 3)} checkout={isCheckoutEnabled()} />
+      <PlansSection plans={plans.slice(0, 4)} checkout={isCheckoutEnabled()} />
       <CategoriesSection categories={visibleCategories} />
+      <DevicesSection platforms={platforms} />
+      <RequirementsSection />
+      <LegalSection />
       <CompareSection />
       <ReviewsSection
         reviews={reviews.map((r) => ({
@@ -103,7 +98,9 @@ export default async function HomePage() {
           date: formatDate(r.createdAt),
         }))}
       />
-      <FaqSection faqs={HOME_FAQ.map((q) => faqs.find((f) => f.question === q)).filter((f) => f !== undefined)} />
+      <SupportSection />
+      <ReferralSection rewardText={settings.referral.enabled && settings.referral.rewardDescription ? settings.referral.rewardDescription : undefined} />
+      <FaqSection />
       <FinalCta />
       <FloatingHelp whatsapp={settings.general.whatsapp} />
     </>

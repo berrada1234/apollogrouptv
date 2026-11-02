@@ -5,9 +5,10 @@ import { Fragment } from "react";
  * Minimal, safe inline formatter for editable content.
  *  - [label](/path)  → internal link (only same-site paths starting with "/")
  *  - {{token}}       → value from `tokens`; a missing value renders as a highlighted owner placeholder
+ *  - **text**        → bold
  * Everything else is plain text (React escapes it), so admin-entered content can't inject HTML.
  */
-const PATTERN = /\[([^\]]{1,120})\]\((\/[A-Za-z0-9\-/_#?=&.]*)\)|\{\{(\w+)\}\}/g;
+const PATTERN = /\[([^\]]{1,120})\]\((\/[A-Za-z0-9\-/_#?=&.]*)\)|\{\{(\w+)\}\}|\*\*([^*]{1,120})\*\*/g;
 
 export type Tokens = Record<string, { value: string; placeholder: string }>;
 
@@ -21,6 +22,12 @@ export function RichText({ text, tokens = {} }: { text: string; tokens?: Tokens 
         <Link key={m.index} href={m[2]} className="font-medium text-accent underline-offset-2 hover:text-light-blue hover:underline">
           {m[1]}
         </Link>,
+      );
+    } else if (m[4]) {
+      parts.push(
+        <strong key={m.index} className="font-semibold text-text">
+          {m[4]}
+        </strong>,
       );
     } else {
       const t = tokens[m[3]];
@@ -42,5 +49,8 @@ export function RichText({ text, tokens = {} }: { text: string; tokens?: Tokens 
 
 /** Plain-text version (for search indexing and meta descriptions). */
 export function stripRich(text: string) {
-  return text.replace(/\[([^\]]+)\]\((\/[^)]*)\)/g, "$1").replace(/\{\{\w+\}\}/g, "");
+  return text
+    .replace(/\[([^\]]+)\]\((\/[^)]*)\)/g, "$1")
+    .replace(/\*\*([^*]+)\*\*/g, "$1")
+    .replace(/\{\{\w+\}\}/g, "");
 }

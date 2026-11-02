@@ -4,7 +4,7 @@ Canonicals are generated from `NEXT_PUBLIC_SITE_URL` through `metadataBase` in `
 
 | URL | Title tag | Meta description | H1 | Indexing | Structured data |
 |---|---|---|---|---|---|
-| `/` | Apollo Group TV — Live TV & On-Demand Streaming | Apollo Group TV brings live channels and on-demand viewing together with clear plans, verified device guides and support you can track. | Apollo Group TV: live TV and on-demand streaming, made simple | index | Organization, WebSite (`alternateName: Apollo TV`) |
+| `/` | Apollo Group TV — Live TV & On-Demand Streaming Plans | Apollo Group TV (Apollo TV) brings live channels and on-demand viewing together: clear subscription plans and pricing, verified device setup and real support. | Apollo Group TV: Live TV and On-Demand Streaming, Made Simple | index | Organization, WebSite (`alternateName: Apollo TV`) |
 | `/product` | Apollo Group TV Features — How the Service Works | See what Apollo Group TV includes: an organized channel catalog, a self-service account dashboard, ticket support and setup help for verified devices. | Apollo Group TV features, explained | index | BreadcrumbList |
 | `/app` | Apollo Group TV App — Devices, Setup & Troubleshooting | How to get the Apollo Group TV app: verified devices, official download links, installation steps and fixes for common sign-in and playback problems. | The Apollo Group TV app | index | BreadcrumbList |
 | `/plans` | Apollo Group TV Plans & Pricing | Compare Apollo Group TV plans side by side: price, billing period and what each includes. See how activation and billing work before you sign up. | Apollo Group TV plans and pricing | index | BreadcrumbList |
@@ -39,3 +39,24 @@ Canonicals are generated from `NEXT_PUBLIC_SITE_URL` through `metadataBase` in `
 ## QA performed (2026-11-02, local production build)
 
 An automated crawl (Playwright and Edge) of all 18 public pages: HTTP 200, exactly one H1, `lang=en`, self-canonical, descriptions 70–170 characters, `og:title` present, every `<img>` has alt text, no heading-level skips, drafts noindex and others indexable, unique titles and descriptions, every internal link resolves (no 404s and no unnecessary redirect hops), redirects return 308 to the correct target, private routes redirect anonymous visitors to sign-in, the sitemap includes new pages and excludes drafts and private routes, an unknown guide returns 404, and the contact form submits (saved row confirmed in the database) and shows validation errors. **Result: 180/180 checks passed.**
+
+## Homepage H2 outline (search intent → section)
+
+| H2 | Intent |
+|---|---|
+| What Is Apollo Group TV? | Informational: what it is, brand disambiguation (Apollo TV) |
+| Apollo Group TV Features That Make Streaming Simpler | Commercial investigation |
+| How Apollo TV Works in Four Simple Steps | Informational: how it works |
+| Apollo Group TV Subscription Plans & Pricing | Transactional: price, plans |
+| What Can You Watch on Apollo Group TV? | Informational: channels, live vs on-demand |
+| Apollo TV App: Supported Devices and Installation | Navigational / how-to: app, devices |
+| What You Need to Start Streaming with Apollo TV | Informational: requirements |
+| Is Apollo Group TV Legal and Safe to Use? | Trust / safety |
+| Why Choose Apollo Group TV? | Commercial investigation |
+| Apollo Group TV Reviews from Real Customers | Trust: reviews |
+| Apollo TV Customer Support and Account Help | Support: contact, login help |
+| Share Apollo Group TV with Friends | Transactional: referral |
+| Apollo Group TV FAQ: Quick Answers to Common Questions | Informational: price, trial, devices, install, multi-device, channels, payment, cancel, legal, support, official site, password |
+| Start Watching with Apollo Group TV | Conversion |
+
+Each section has an original SVG illustration in `public/images/home/` with a descriptive, keyword-aware file name and alt text. Regenerate them with `node scripts/generate-home-illustrations.mjs`. Homepage copy lives in `src/content/home.ts`.

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 440" role="img">
+<defs>
+  <radialGradient id="apollotvcu-glow" cx="50%" cy="0%" r="80%"><stop offset="0" stop-color="#3B82F6" stop-opacity=".28"/><stop offset="1" stop-color="#3B82F6" stop-opacity="0"/></radialGradient>
+  <linearGradient id="apollotvcu-art" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1E3A8A"/><stop offset=".55" stop-color="#3B82F6"/><stop offset="1" stop-color="#93C5FD"/></linearGradient>
+  <linearGradient id="apollotvcu-art2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#172554"/><stop offset="1" stop-color="#6366F1"/></linearGradient>
+  <linearGradient id="apollotvcu-art3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0C4A6E"/><stop offset="1" stop-color="#7DD3FC"/></linearGradient>
+</defs>
+<rect width="640" height="440" rx="28" fill="#0B1728"/>
+<rect width="640" height="440" rx="28" fill="url(#apollotvcu-glow)"/>
+<rect x=".5" y=".5" width="639" height="439" rx="27.5" fill="none" stroke="#22334A"/>
+<rect x="90" y="50" width="460" height="340" rx="18" fill="#101F33" stroke="#22334A"/>
+<rect x="116" y="78" width="150" height="10" rx="4" fill="#F8FAFC"/><rect x="440" y="72" width="86" height="22" rx="11" fill="#3B82F6" fill-opacity=".25"/>
+<path d="M90 110H550" stroke="#22334A"/>
+<rect x="116" y="130" width="250" height="64" rx="14" fill="#162A44"/><rect x="132" y="148" width="180" height="7" rx="4" fill="#F8FAFC"/><rect x="132" y="166" width="140" height="6" rx="4" fill="#2E4562"/>
+<rect x="274" y="210" width="250" height="64" rx="14" fill="#3B82F6" fill-opacity=".2" stroke="#3B82F6" stroke-opacity=".5"/><rect x="290" y="228" width="200" height="7" rx="4" fill="#93C5FD"/><rect x="290" y="246" width="150" height="6" rx="4" fill="#60A5FA"/>
+<rect x="116" y="290" width="200" height="40" rx="14" fill="#162A44"/><circle cx="140" cy="310" r="4" fill="#94A3B8"/><circle cx="156" cy="310" r="4" fill="#94A3B8"/><circle cx="172" cy="310" r="4" fill="#94A3B8"/>
+<rect x="116" y="344" width="408" height="30" rx="10" fill="#091423" stroke="#2E4562"/><rect x="474" y="349" width="44" height="20" rx="6" fill="#3B82F6"/>
+</svg>

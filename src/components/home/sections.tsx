@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { Plan } from "@prisma/client";
 import {
@@ -32,6 +33,8 @@ import { PlanCard } from "@/components/marketing/sections";
 import { FaqAccordion } from "@/components/marketing/faq-list";
 import { Eyebrow } from "@/components/home/hero";
 import { ReviewCarousel } from "@/components/home/review-carousel";
+import { RichText } from "@/components/rich-text";
+import { homeCopy, homeFaq, type HomeImage } from "@/content/home";
 import { cn } from "@/lib/utils";
 
 function Heading({
@@ -184,116 +187,176 @@ export function SocialProofBar({
   );
 }
 
-// ─── Introduction ───────────────────────────────────────────────────────────
+// ─── Shared building blocks ─────────────────────────────────────────────────
 
-export function IntroSection() {
-  const paths = [
-    { icon: LayoutGrid, t: "See what's included", b: "Features, the catalog and the account dashboard.", href: "/product", cta: "Features" },
-    { icon: CreditCard, t: "Compare plans", b: "Prices, billing periods and inclusions side by side.", href: "/plans", cta: "Plans" },
-    { icon: MonitorSmartphone, t: "Check your device", b: "Verified devices with official downloads.", href: "/app", cta: "App & devices" },
-  ];
+/** Section illustration: original SVG art with descriptive, keyword-aware alt text. */
+function SectionImage({ image, className }: { image: HomeImage; className?: string }) {
   return (
-    <section className="py-20 sm:py-24">
-      <Container className="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
-        <div>
-          <Eyebrow>Start here</Eyebrow>
-          <h2 className="mt-4 font-display text-3xl font-semibold leading-tight tracking-tight text-text sm:text-[2.5rem]">What is Apollo Group TV?</h2>
-          <div className="mt-5 space-y-4 leading-relaxed text-muted sm:text-lg">
-            <p>
-              Apollo Group TV is a streaming service that puts live channels and on-demand viewing behind a single account. You pick a plan, install
-              the app on a supported device, and manage everything else — renewal dates, payments, support — from your own dashboard.
-            </p>
-            <p>
-              You may also see it called <strong className="font-semibold text-text">Apollo TV</strong>. Because several unrelated sites use similar
-              names, this website keeps every price, policy and supported device in one place, so you can check the facts before you sign up.
-            </p>
-          </div>
-        </div>
-        <ul className="space-y-3 self-center">
-          {paths.map((p) => (
-            <li key={p.href}>
-              <Link href={p.href} className="group flex items-center gap-4 rounded-lg border border-border bg-card p-5 shadow-card transition-colors hover:border-accent/40">
-                <IconBox icon={p.icon} />
-                <span className="min-w-0 flex-1">
-                  <span className="block font-semibold text-text group-hover:text-light-blue">{p.t}</span>
-                  <span className="block text-sm text-muted">{p.b}</span>
-                </span>
-                <span className="hidden text-sm font-medium text-accent sm:inline">{p.cta} →</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </Container>
-    </section>
+    <Image
+      src={image.src}
+      alt={image.alt}
+      width={640}
+      height={440}
+      unoptimized
+      loading="lazy"
+      className={cn("h-auto w-full rounded-[22px] shadow-lg", className)}
+    />
   );
 }
 
-// ─── 3. Plans ───────────────────────────────────────────────────────────────
-
-export function PlansSection({ plans, checkout }: { plans: Plan[]; checkout: boolean }) {
+/** Heading + description beside an illustration. */
+function SplitHeader({
+  eyebrow,
+  title,
+  description,
+  image,
+  imageFirst,
+}: {
+  eyebrow: string;
+  title: string;
+  description?: string;
+  image: HomeImage;
+  imageFirst?: boolean;
+}) {
   return (
-    <section id="plans" className="relative py-20 sm:py-28">
-      <div className="bg-spotlight pointer-events-none absolute inset-0 opacity-60" aria-hidden />
-      <Container className="relative">
-        <Heading
-          eyebrow="Pricing"
-          title="Subscription plans and pricing"
-          description="Every plan shows its price, billing period and exactly what's included. Longer billing periods show their monthly equivalent."
-        />
-        {plans.length > 0 ? (
-          <div className={cn("mt-14 grid items-stretch gap-5 sm:grid-cols-2", plans.length >= 4 ? "lg:grid-cols-4" : "lg:grid-cols-3 lg:mx-auto lg:max-w-5xl")}>
-            {plans.map((p) => (
-              <PlanCard key={p.id} plan={p} />
+    <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+      <div className={cn(imageFirst && "lg:order-2")}>
+        <Heading align="left" eyebrow={eyebrow} title={title} description={description ? <RichText text={description} /> : undefined} />
+      </div>
+      <SectionImage image={image} className="mx-auto max-w-lg lg:max-w-none" />
+    </div>
+  );
+}
+
+/** Text-led section: heading, paragraphs and optional item grid beside an illustration. */
+function ContentSection({
+  copy,
+  imageFirst,
+  tinted,
+  itemCols = 1,
+  children,
+}: {
+  copy: { eyebrow: string; h2: string; paragraphs: string[]; items?: { title: string; body: string }[]; image: HomeImage; more?: string };
+  imageFirst?: boolean;
+  tinted?: boolean;
+  itemCols?: 1 | 2;
+  children?: React.ReactNode;
+}) {
+  return (
+    <section className={cn("py-20 sm:py-24", tinted && "border-t border-border bg-bg-secondary/50")}>
+      <Container className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16 [&>*]:min-w-0">
+        <div className={cn(imageFirst && "lg:order-2")}>
+          <Eyebrow>{copy.eyebrow}</Eyebrow>
+          <h2 className="mt-4 font-display text-3xl font-semibold leading-tight tracking-tight text-text sm:text-[2.5rem]">{copy.h2}</h2>
+          <div className="mt-5 space-y-4 leading-relaxed text-muted sm:text-lg">
+            {copy.paragraphs.map((p, i) => (
+              <p key={i}>
+                <RichText text={p} />
+              </p>
             ))}
           </div>
-        ) : (
-          <EmptyState icon={CreditCard} title="Plans are being finalized" description="Pricing will be published here soon." className="mx-auto mt-12 max-w-xl" />
-        )}
-        <div className="mx-auto mt-10 max-w-3xl space-y-3">
-          {!checkout && (
-            <div className="flex items-start gap-3 rounded-lg border border-success/30 bg-success/5 px-5 py-4 text-sm">
-              <Check className="mt-0.5 h-5 w-5 shrink-0 text-success" aria-hidden />
-              <p className="text-muted">
-                <span className="font-semibold text-text">No card needed to get started.</span> Create an account and choose a plan — our
-                team confirms activation and payment options with you through the client portal.
-              </p>
-            </div>
+          {copy.items && (
+            <ul className={cn("mt-7 grid gap-3", itemCols === 2 && "sm:grid-cols-2")}>
+              {copy.items.map((it) => (
+                <li key={it.title} className="flex gap-3 rounded-lg border border-border bg-card p-4 shadow-card">
+                  <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-primary/15 text-accent">
+                    <Check className="h-3.5 w-3.5" strokeWidth={3} aria-hidden />
+                  </span>
+                  <span>
+                    <span className="block font-semibold text-text">{it.title}</span>
+                    <span className="mt-0.5 block text-sm leading-relaxed text-muted">
+                      <RichText text={it.body} />
+                    </span>
+                  </span>
+                </li>
+              ))}
+            </ul>
           )}
-          <Link href="/plans" className="flex items-center justify-center gap-2 rounded-lg border border-border bg-card px-5 py-3.5 text-sm font-medium text-text transition-colors hover:border-accent/40">
-            Compare plans and features side by side <ArrowRight className="h-4 w-4" aria-hidden />
-          </Link>
-          <div className="flex flex-col gap-3 rounded-lg border border-border bg-card px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <p className="text-sm font-semibold text-text">Not sure which plan fits?</p>
-              <p className="text-sm text-muted">Ask us — we&apos;ll help you choose.</p>
-            </div>
-            <ButtonLink href="/dashboard/support/new" variant="secondary" size="sm">
-              Ask support
-            </ButtonLink>
-          </div>
+          {copy.more && (
+            <p className="mt-6 text-sm text-subtle">
+              <RichText text={copy.more} />
+            </p>
+          )}
+          {children}
         </div>
+        <SectionImage image={copy.image} className="mx-auto max-w-lg lg:max-w-none" />
       </Container>
     </section>
   );
 }
 
-// ─── 4. How it works ────────────────────────────────────────────────────────
+// ─── What is Apollo Group TV ────────────────────────────────────────────────
 
-export function StepsSection() {
-  const steps = [
-    { icon: UserPlus, t: "Create your account", b: "Sign up with your email and verify it in one click." },
-    { icon: CreditCard, t: "Choose your plan", b: "Pick the billing period that suits you and request activation." },
-    { icon: KeyRound, t: "Get activated", b: "We confirm your plan and you'll see it live in your dashboard." },
-    { icon: Tv, t: "Start watching", b: "Install the app on your verified device and sign in." },
+export function IntroSection() {
+  const c = homeCopy.intro;
+  const paths = [
+    { icon: LayoutGrid, t: "See what's included", href: "/product" },
+    { icon: CreditCard, t: "Compare plans", href: "/plans" },
+    { icon: MonitorSmartphone, t: "Check your device", href: "/app" },
   ];
+  return (
+    <ContentSection copy={c}>
+      <ul className="mt-8 flex flex-wrap gap-2.5">
+        {paths.map((p) => (
+          <li key={p.href}>
+            <Link href={p.href} className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-medium text-text transition-colors hover:border-accent/40">
+              <p.icon className="h-4 w-4 text-accent" aria-hidden /> {p.t}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </ContentSection>
+  );
+}
+
+// ─── Features ───────────────────────────────────────────────────────────────
+
+const features = [
+  { icon: Search, t: "A catalog you can search", b: "Find a channel by name or narrow the list by category in seconds.", href: "/channels" },
+  { icon: Receipt, t: "Prices without fine print", b: "Each plan states its price, billing period and inclusions before you commit.", href: "/plans" },
+  { icon: MonitorSmartphone, t: "Device guides you can trust", b: "Numbered setup steps and official downloads for every verified device.", href: "/guides" },
+  { icon: LifeBuoy, t: "Support that keeps a record", b: "Tickets hold every reply in one thread, and you're notified when we answer.", href: "/contact" },
+  { icon: Gauge, t: "A dashboard that answers questions", b: "Plan status, renewal dates, payments and referrals — no emails to dig through.", href: "/product" },
+  { icon: Lock, t: "Security built in", b: "Email verification, rate-limited sign-in and control over signed-in devices.", href: "/faq" },
+];
+
+export function FeaturesSection() {
+  const c = homeCopy.features;
   return (
     <section className="border-t border-border bg-bg-secondary/50 py-20 sm:py-24">
       <Container>
-        <Heading
-          eyebrow="Product experience"
-          title="From sign-up to screen in four steps"
-          description="Here's what using Apollo Group TV actually looks like, start to finish."
-        />
+        <SplitHeader eyebrow={c.eyebrow} title={c.h2} description={c.description} image={c.image} imageFirst />
+        <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {features.map((f) => (
+            <article key={f.t} className="rounded-lg border border-border bg-card p-6 shadow-card transition-colors hover:border-border-strong">
+              <IconBox icon={f.icon} />
+              <h3 className="mt-5 font-semibold text-text">{f.t}</h3>
+              <p className="mt-1.5 text-sm leading-relaxed text-muted">{f.b}</p>
+              <Link href={f.href} className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-accent hover:text-light-blue">
+                Learn more <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+              </Link>
+            </article>
+          ))}
+        </div>
+      </Container>
+    </section>
+  );
+}
+
+// ─── How it works ───────────────────────────────────────────────────────────
+
+export function StepsSection() {
+  const c = homeCopy.howItWorks;
+  const steps = [
+    { icon: UserPlus, t: "Create your account", b: "Sign up with your email and confirm it with one click." },
+    { icon: CreditCard, t: "Choose your plan", b: "Pick the billing period that suits you and request activation." },
+    { icon: KeyRound, t: "Get activated", b: "We confirm your plan and it shows as active in your dashboard." },
+    { icon: Tv, t: "Start watching", b: "Install the Apollo TV app on your verified device and sign in." },
+  ];
+  return (
+    <section className="py-20 sm:py-24">
+      <Container>
+        <SplitHeader eyebrow={c.eyebrow} title={c.h2} description={c.description} image={c.image} />
         <ol className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((s, i) => (
             <li key={s.t} className="relative rounded-lg border border-border bg-card p-6 shadow-card">
@@ -308,12 +371,12 @@ export function StepsSection() {
             </li>
           ))}
         </ol>
-        <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <div className="mt-10 flex flex-col gap-3 sm:flex-row">
           <ButtonLink href="/create-account">
             Create your account <ArrowRight className="h-4 w-4" aria-hidden />
           </ButtonLink>
-          <ButtonLink href="/guides" variant="ghost">
-            Browse setup guides
+          <ButtonLink href="/guides/account-setup" variant="ghost">
+            Read the account setup guide
           </ButtonLink>
         </div>
       </Container>
@@ -321,37 +384,133 @@ export function StepsSection() {
   );
 }
 
-// ─── 5. Devices ─────────────────────────────────────────────────────────────
+// ─── Plans & pricing ────────────────────────────────────────────────────────
+
+export function PlansSection({ plans, checkout }: { plans: Plan[]; checkout: boolean }) {
+  const c = homeCopy.plans;
+  return (
+    <section id="plans" className="relative border-t border-border bg-bg-secondary/50 py-20 sm:py-24">
+      <Container className="relative">
+        <SplitHeader eyebrow={c.eyebrow} title={c.h2} description={c.description} image={c.image} imageFirst />
+        <h3 className="sr-only">Available Apollo Group TV plans</h3>
+        {plans.length > 0 ? (
+          <div className={cn("mt-14 grid items-stretch gap-5 sm:grid-cols-2", plans.length >= 4 ? "lg:grid-cols-4" : "lg:grid-cols-3")}>
+            {plans.map((p) => (
+              <PlanCard key={p.id} plan={p} />
+            ))}
+          </div>
+        ) : (
+          <EmptyState icon={CreditCard} title="Plans are being finalized" description="Pricing will be published here soon." className="mt-12" />
+        )}
+        <div className="mt-10 grid gap-3 md:grid-cols-3">
+          {!checkout && (
+            <div className="flex items-start gap-3 rounded-lg border border-success/30 bg-success/5 px-5 py-4 text-sm">
+              <Check className="mt-0.5 h-5 w-5 shrink-0 text-success" aria-hidden />
+              <p className="text-muted">
+                <span className="font-semibold text-text">No card needed to start.</span> Our team confirms activation and payment options with you.
+              </p>
+            </div>
+          )}
+          <Link href="/plans" className="flex items-center justify-between gap-2 rounded-lg border border-border bg-card px-5 py-4 text-sm font-medium text-text transition-colors hover:border-accent/40">
+            Compare every plan side by side <ArrowRight className="h-4 w-4 shrink-0" aria-hidden />
+          </Link>
+          <Link href="/refund-policy" className="flex items-center justify-between gap-2 rounded-lg border border-border bg-card px-5 py-4 text-sm font-medium text-text transition-colors hover:border-accent/40">
+            Read the refund policy <ArrowRight className="h-4 w-4 shrink-0" aria-hidden />
+          </Link>
+        </div>
+      </Container>
+    </section>
+  );
+}
+
+// ─── Catalog ────────────────────────────────────────────────────────────────
+
+const categoryIcons = [Newspaper, Trophy, Film, Sparkles, BookOpen, Tv, LayoutGrid];
+
+export function CategoriesSection({ categories }: { categories: { id: string; slug: string; name: string; count: number }[] }) {
+  const c = homeCopy.catalog;
+  const total = categories.reduce((n, x) => n + x.count, 0);
+  return (
+    <>
+      <ContentSection copy={c}>
+        <div className="mt-8 flex flex-wrap gap-3">
+          <ButtonLink href="/channels">
+            <Search className="h-4 w-4" aria-hidden /> Open the channel guide
+          </ButtonLink>
+        </div>
+      </ContentSection>
+      <section aria-label="Channel categories" className="pb-20 sm:pb-24">
+        <Container>
+          {categories.length > 0 ? (
+            <ul className="grid grid-cols-2 gap-3 md:grid-cols-4">
+              {categories.map((cat, i) => {
+                const Icon = categoryIcons[i % categoryIcons.length];
+                const featured = i === 0;
+                const last = i === categories.length - 1 && i > 0;
+                // First tile spans two columns; the last tile stretches so no row is left with a gap.
+                const mdRemainder = (categories.length + 1) % 4;
+                const mobileOdd = (categories.length - 1) % 2 === 1;
+                return (
+                  <li
+                    key={cat.id}
+                    className={cn(
+                      featured && "col-span-2",
+                      last && mobileOdd && "col-span-2",
+                      last && mdRemainder === 0 && "md:col-span-1",
+                      last && mdRemainder === 1 && "md:col-span-4",
+                      last && mdRemainder === 2 && "md:col-span-3",
+                      last && mdRemainder === 3 && "md:col-span-2",
+                    )}
+                  >
+                    <Link
+                      href={`/channels?category=${cat.slug}`}
+                      className={cn(
+                        "group flex h-full items-center gap-4 rounded-lg border p-4 shadow-card transition-colors",
+                        featured ? "border-primary/40 bg-gradient-to-br from-[#12294a] to-card hover:border-primary/70" : "border-border bg-card hover:border-accent/40 hover:bg-card-hover",
+                      )}
+                    >
+                      <IconBox icon={Icon} solid={featured} />
+                      <span className="min-w-0">
+                        <span className="block truncate font-semibold text-text">{cat.name}</span>
+                        <span className="text-xs text-muted tabular-nums">
+                          {cat.count} {cat.count === 1 ? "channel" : "channels"}
+                        </span>
+                      </span>
+                      <ArrowRight className="ml-auto h-4 w-4 shrink-0 text-subtle opacity-0 transition-opacity group-hover:opacity-100" aria-hidden />
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <EmptyState icon={Tv} title="Catalog coming soon" description="Channel listings will be published here." />
+          )}
+          {total > 0 && (
+            <p className="mt-6 text-sm text-subtle tabular-nums">
+              {total} channels across {categories.length} categories · availability may change as licensing changes
+            </p>
+          )}
+        </Container>
+      </section>
+    </>
+  );
+}
+
+// ─── Apps & devices ─────────────────────────────────────────────────────────
 
 export function DevicesSection({ platforms }: { platforms: { name: string }[] }) {
+  const c = homeCopy.devices;
   return (
-    <section className="py-20 sm:py-28">
-      <Container className="grid gap-10 lg:grid-cols-2 lg:gap-14">
+    <section className="border-t border-border bg-bg-secondary/50 py-20 sm:py-24">
+      <Container className="grid gap-10 lg:grid-cols-2 lg:gap-16 [&>*]:min-w-0">
         <div>
-          <Heading
-            align="left"
-            eyebrow="Devices"
-            title="Watch on the devices you already own"
-            description="We list a device only after its compatibility is verified, each with an official download link and step-by-step instructions."
-          />
-          <div className="mt-8 rounded-lg border border-border bg-card p-6 shadow-card">
-            <div className="flex items-start gap-4">
-              <IconBox icon={HelpCircle} />
-              <div>
-                <p className="font-semibold text-text">Is your device supported?</p>
-                <p className="mt-1 text-sm text-muted">
-                  If it&apos;s not on the list yet, ask us before subscribing — we&apos;ll tell you honestly whether it works.
-                </p>
-                <ButtonLink href="/dashboard/support/new" variant="secondary" size="sm" className="mt-4">
-                  Ask about my device
-                </ButtonLink>
-              </div>
-            </div>
-          </div>
+          <Heading align="left" eyebrow={c.eyebrow} title={c.h2} description={c.description} />
+          <SectionImage image={c.image} className="mt-8" />
         </div>
-        <div>
+        <div className="lg:pt-24">
+          <h3 className="font-display text-lg font-semibold text-text">Verified devices</h3>
           {platforms.length > 0 ? (
-            <ul className="grid grid-cols-2 gap-3">
+            <ul className="mt-4 grid grid-cols-2 gap-3">
               {platforms.map((p) => (
                 <li key={p.name} className="flex items-center gap-3 rounded-lg border border-border bg-card p-4 shadow-card">
                   <IconBox icon={MonitorSmartphone} />
@@ -363,24 +522,23 @@ export function DevicesSection({ platforms }: { platforms: { name: string }[] })
               ))}
             </ul>
           ) : (
-            <EmptyState icon={MonitorSmartphone} title="Supported devices coming soon" description="Devices appear here as soon as compatibility is verified." />
+            <EmptyState icon={MonitorSmartphone} title="Supported devices coming soon" description="Devices appear here as soon as compatibility is verified." className="mt-4" />
           )}
-          <div className="mt-4 rounded-lg border border-border bg-inset/60 p-5">
-            <p className="text-sm font-semibold text-text">Before you install</p>
-            <ul className="mt-3 grid gap-2 text-sm text-muted sm:grid-cols-2">
-              {["Use the official download link", "Keep the app up to date", "Sign in with your verified email", "Use a stable internet connection"].map((t) => (
-                <li key={t} className="flex items-center gap-2">
-                  <Check className="h-4 w-4 shrink-0 text-accent" aria-hidden /> {t}
-                </li>
-              ))}
-            </ul>
+          <div className="mt-4 rounded-lg border border-border bg-card p-5 shadow-card">
+            <div className="flex items-start gap-4">
+              <IconBox icon={HelpCircle} />
+              <div>
+                <p className="font-semibold text-text">Is your device supported?</p>
+                <p className="mt-1 text-sm text-muted">If it isn&apos;t listed yet, ask us before subscribing — we&apos;ll tell you honestly whether it works.</p>
+              </div>
+            </div>
           </div>
           <div className="mt-6 flex flex-wrap gap-3">
             <ButtonLink href="/app">
-              App &amp; device support <ArrowRight className="h-4 w-4" aria-hidden />
+              Apollo TV app details <ArrowRight className="h-4 w-4" aria-hidden />
             </ButtonLink>
             <ButtonLink href="/guides" variant="ghost">
-              Setup guides
+              Installation guides
             </ButtonLink>
           </div>
         </div>
@@ -389,102 +547,71 @@ export function DevicesSection({ platforms }: { platforms: { name: string }[] })
   );
 }
 
-// ─── 6. Categories ──────────────────────────────────────────────────────────
+// ─── Requirements / legal / support / referral ─────────────────────────────
 
-const categoryIcons = [Newspaper, Trophy, Film, Sparkles, BookOpen, Tv, LayoutGrid];
+export function RequirementsSection() {
+  return <ContentSection copy={homeCopy.requirements} imageFirst itemCols={2} />;
+}
 
-export function CategoriesSection({ categories }: { categories: { id: string; slug: string; name: string; count: number }[] }) {
-  const total = categories.reduce((n, c) => n + c.count, 0);
+export function LegalSection() {
+  return <ContentSection copy={homeCopy.legal} tinted />;
+}
+
+export function SupportSection() {
+  return <ContentSection copy={homeCopy.support} imageFirst itemCols={2} />;
+}
+
+export function ReferralSection({ rewardText }: { rewardText?: string }) {
+  const c = homeCopy.referral;
   return (
-    <section className="border-t border-border bg-bg-secondary/50 py-20 sm:py-24">
-      <Container>
-        <Heading
-          eyebrow="Catalog"
-          title="Live TV and on-demand categories"
-          description="Our catalog is organized by category so you can find what you want quickly. Only authorized, properly licensed content is listed."
-        />
-        {categories.length > 0 ? (
-          <ul className="mt-14 grid grid-cols-2 gap-3 md:grid-cols-4">
-            {categories.map((c, i) => {
-              const Icon = categoryIcons[i % categoryIcons.length];
-              const featured = i === 0;
-              const last = i === categories.length - 1 && i > 0;
-              // First tile spans two columns; the last tile stretches so no row is left with a gap.
-              const mdRemainder = (categories.length + 1) % 4;
-              const mobileOdd = (categories.length - 1) % 2 === 1;
-              return (
-                <li
-                  key={c.id}
-                  className={cn(
-                    featured && "col-span-2",
-                    last && mobileOdd && "col-span-2",
-                    last && mdRemainder === 0 && "md:col-span-1",
-                    last && mdRemainder === 1 && "md:col-span-4",
-                    last && mdRemainder === 2 && "md:col-span-3",
-                    last && mdRemainder === 3 && "md:col-span-2",
-                  )}
-                >
-                  <Link
-                    href={`/channels?category=${c.slug}`}
-                    className={cn(
-                      "group flex h-full items-center gap-4 rounded-lg border p-4 shadow-card transition-colors",
-                      featured ? "border-primary/40 bg-gradient-to-br from-[#12294a] to-card hover:border-primary/70" : "border-border bg-card hover:border-accent/40 hover:bg-card-hover",
-                    )}
-                  >
-                    <IconBox icon={Icon} solid={featured} />
-                    <span className="min-w-0">
-                      <span className="block truncate font-semibold text-text">{c.name}</span>
-                      <span className="text-xs text-muted tabular-nums">
-                        {c.count} {c.count === 1 ? "channel" : "channels"}
-                      </span>
-                    </span>
-                    <ArrowRight className="ml-auto h-4 w-4 shrink-0 text-subtle opacity-0 transition-opacity group-hover:opacity-100" aria-hidden />
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        ) : (
-          <EmptyState icon={Tv} title="Catalog coming soon" description="Channel listings will be published here." className="mx-auto mt-12 max-w-xl" />
-        )}
-        {total > 0 && (
-          <p className="mt-6 text-center text-sm text-subtle tabular-nums">
-            {total} channels across {categories.length} categories · availability may change as licensing changes
-          </p>
-        )}
-        <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <ButtonLink href="/channels">
-            <Search className="h-4 w-4" aria-hidden /> Search the catalog
-          </ButtonLink>
-          <ButtonLink href="/plans" variant="ghost">
-            See plans
-          </ButtonLink>
-        </div>
-      </Container>
-    </section>
+    <ContentSection
+      tinted
+      copy={{
+        ...c,
+        paragraphs: [
+          ...c.paragraphs,
+          rewardText || "Referral rewards aren't active yet — the rules will be published on the referral page before any reward is offered.",
+        ],
+      }}
+    >
+      <div className="mt-8 flex flex-wrap gap-3">
+        <ButtonLink href="/refer-a-friend">
+          How referrals work <ArrowRight className="h-4 w-4" aria-hidden />
+        </ButtonLink>
+        <ButtonLink href="/create-account" variant="ghost">
+          Create an account
+        </ButtonLink>
+      </div>
+    </ContentSection>
   );
 }
 
-// ─── 8. Reviews ─────────────────────────────────────────────────────────────
+// ─── Reviews ────────────────────────────────────────────────────────────────
 
 export function ReviewsSection({
   reviews,
 }: {
   reviews: { id: string; rating: number; title: string; body: string; isVerified: boolean; author: string; date: string }[];
 }) {
+  const c = homeCopy.reviews;
   return (
     <section className="border-t border-border bg-bg-secondary/50 py-20 sm:py-24">
       <Container>
-        <Heading eyebrow="Reviews" title="Customer experiences" description="Written by registered customers and moderated before they appear." />
+        <SplitHeader eyebrow={c.eyebrow} title={c.h2} description={c.description} image={c.image} imageFirst />
         <div className="mt-12">
           {reviews.length > 0 ? (
             <ReviewCarousel reviews={reviews} />
           ) : (
-            <EmptyState icon={MessageSquareText} title="No reviews published yet" description="Customers can share their experience once signed in." className="mx-auto max-w-xl" />
+            <EmptyState
+              icon={MessageSquareText}
+              title="No reviews published yet"
+              description="Reviews appear here once registered customers share them and they pass moderation."
+              className="mx-auto max-w-xl"
+            />
           )}
         </div>
-        <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <ButtonLink href="/reviews">Read all reviews</ButtonLink>
+        <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+          <ButtonLink href="/reviews">Read all Apollo Group TV reviews</ButtonLink>
           <ButtonLink href="/reviews#write" variant="ghost">
             Write a review
           </ButtonLink>
@@ -494,7 +621,7 @@ export function ReviewsSection({
   );
 }
 
-// ─── 10. Compare ────────────────────────────────────────────────────────────
+// ─── Why choose ─────────────────────────────────────────────────────────────
 
 const compareRows = [
   { k: "Published prices", v: "Every plan lists price, period and inclusions" },
@@ -506,16 +633,15 @@ const compareRows = [
 ];
 
 export function CompareSection() {
+  const c = homeCopy.why;
   return (
-    <section className="border-t border-border bg-bg-secondary/50 py-20 sm:py-24">
-      <Container className="grid gap-10 lg:grid-cols-[1fr_1.5fr] lg:gap-14">
-        <Heading
-          align="left"
-          eyebrow="Why Apollo"
-          title="Why choose Apollo Group TV?"
-          description="Not bigger numbers — clearer answers. These are the standards we hold ourselves to, and each one can be checked on this site."
-        />
-        <div className="overflow-hidden rounded-lg border border-border bg-card shadow-card">
+    <section className="py-20 sm:py-24">
+      <Container className="grid gap-10 lg:grid-cols-[1fr_1.3fr] lg:gap-14 [&>*]:min-w-0">
+        <div>
+          <Heading align="left" eyebrow={c.eyebrow} title={c.h2} description={c.description} />
+          <SectionImage image={c.image} className="mt-8 hidden lg:block" />
+        </div>
+        <div className="self-center overflow-hidden rounded-lg border border-border bg-card shadow-card">
           <table className="w-full text-sm">
             <caption className="sr-only">What Apollo Group TV offers for each buying criterion</caption>
             <thead className="border-b border-border bg-inset/60 text-left text-[11px] uppercase tracking-[0.08em] text-subtle">
@@ -543,77 +669,39 @@ export function CompareSection() {
   );
 }
 
-// ─── 11. FAQ ────────────────────────────────────────────────────────────────
+// ─── FAQ ────────────────────────────────────────────────────────────────────
 
-export function FaqSection({ faqs }: { faqs: { id: string; category: string; question: string; answer: string }[] }) {
-  if (faqs.length === 0) return null;
+export function FaqSection() {
+  const c = homeCopy.faq;
+  const items = homeFaq.map((f, i) => ({ id: `home-${i}`, category: "Home", question: f.q, answer: f.a }));
   return (
-    <section className="py-20 sm:py-28">
-      <Container className="grid gap-10 lg:grid-cols-[1fr_1.6fr] lg:gap-14">
+    <section className="border-t border-border bg-bg-secondary/50 py-20 sm:py-24">
+      <Container className="grid gap-10 lg:grid-cols-[1fr_1.6fr] lg:gap-14 [&>*]:min-w-0">
         <div className="lg:sticky lg:top-24 lg:self-start">
-          <Heading align="left" eyebrow="FAQ" title="Questions before you start" description="Short answers to what new visitors ask most. The full FAQ covers billing, privacy and troubleshooting." />
+          <Heading align="left" eyebrow={c.eyebrow} title={c.h2} description={<RichText text={c.description} />} />
+          <SectionImage image={c.image} className="mt-8 hidden lg:block" />
           <ButtonLink href="/faq" variant="secondary" className="mt-8">
-            See all questions
+            See the full FAQ
           </ButtonLink>
         </div>
-        <FaqAccordion items={faqs} />
+        <FaqAccordion items={items} />
       </Container>
     </section>
   );
 }
 
-// ─── 13. Features ───────────────────────────────────────────────────────────
-
-const features = [
-  { icon: Search, t: "A catalog you can search", b: "Find a channel by name or narrow the list by category in seconds.", href: "/channels" },
-  { icon: Receipt, t: "Prices without fine print", b: "Each plan states its price, billing period and inclusions before you commit.", href: "/plans" },
-  { icon: MonitorSmartphone, t: "Device guides you can trust", b: "Numbered setup steps and official downloads for every verified device.", href: "/guides" },
-  { icon: LifeBuoy, t: "Support that keeps a record", b: "Tickets hold every reply in one thread, and you're notified when we answer.", href: "/contact" },
-  { icon: Gauge, t: "A dashboard that answers questions", b: "Plan status, renewal dates, payments and referrals — no emails to dig through.", href: "/product" },
-  { icon: Lock, t: "Security built in", b: "Email verification, rate-limited sign-in and control over signed-in devices.", href: "/faq" },
-];
-
-export function FeaturesSection() {
-  return (
-    <section className="py-20 sm:py-28">
-      <Container>
-        <Heading
-          align="left"
-          eyebrow="Key features"
-          title="Built around clarity and control"
-          description="The parts of Apollo Group TV you'll use every week, and where to learn more about each."
-        />
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((f) => (
-            <article key={f.t} className="rounded-lg border border-border bg-card p-6 shadow-card transition-colors hover:border-border-strong">
-              <IconBox icon={f.icon} />
-              <h3 className="mt-5 font-semibold text-text">{f.t}</h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-muted">{f.b}</p>
-              <Link href={f.href} className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-accent hover:text-light-blue">
-                Learn more <ArrowRight className="h-3.5 w-3.5" aria-hidden />
-              </Link>
-            </article>
-          ))}
-        </div>
-        <Link href="/product" className="mt-8 inline-flex items-center gap-1 text-sm font-medium text-accent hover:text-light-blue">
-          Explore all features <ArrowRight className="h-3.5 w-3.5" aria-hidden />
-        </Link>
-      </Container>
-    </section>
-  );
-}
-
-// ─── 16. Final CTA ──────────────────────────────────────────────────────────
+// ─── Final CTA ──────────────────────────────────────────────────────────────
 
 export function FinalCta() {
+  const c = homeCopy.cta;
   return (
-    <section className="pb-20 sm:pb-28">
+    <section className="py-20 sm:py-28">
       <Container>
         <div className="relative overflow-hidden rounded-[22px] border border-primary/30 bg-card px-6 py-14 text-center shadow-lg sm:px-12 sm:py-16">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_80%_at_50%_0%,rgb(59_130_246/0.28),transparent_70%)]" aria-hidden />
           <div className="bg-grid pointer-events-none absolute inset-0" aria-hidden />
-          <h2 className="relative font-display text-3xl font-semibold tracking-tight text-text sm:text-4xl">Ready to take the next step?</h2>
-          <p className="relative mx-auto mt-4 max-w-xl text-muted">Compare plans, look closer at the features, or sign in to manage your account.</p>
+          <h2 className="relative font-display text-3xl font-semibold tracking-tight text-text sm:text-4xl">{c.h2}</h2>
+          <p className="relative mx-auto mt-4 max-w-xl text-muted">{c.body}</p>
           <div className="relative mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <ButtonLink href="/plans" size="lg">
               Compare plans <ArrowRight className="h-4 w-4" aria-hidden />

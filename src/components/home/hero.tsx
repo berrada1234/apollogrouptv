@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, Film, Newspaper, Play, ShieldCheck, Trophy } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
 import { Container } from "@/components/ui/misc";
+import { homeCopy } from "@/content/home";
 
 export function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
@@ -64,12 +65,9 @@ export function HomeHero({
         <div>
           <Eyebrow>{tagline}</Eyebrow>
           <h1 className="mt-5 font-display text-[2.4rem] font-semibold leading-[1.06] tracking-tight text-text sm:text-[3.4rem] lg:text-[3.3rem] xl:text-[3.6rem]">
-            Apollo Group TV: live TV and <span className="text-gradient"><span className="whitespace-nowrap">on-demand</span> streaming</span>, made simple
+            Apollo Group TV: Live TV and <span className="text-gradient"><span className="whitespace-nowrap">On-Demand</span> Streaming</span>, Made Simple
           </h1>
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
-            One account for live channels and on-demand viewing. Compare plans with prices shown up front, install the app on a verified
-            device, and keep billing and support in a dashboard you control.
-          </p>
+          <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">{homeCopy.hero.lead}</p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
             <ButtonLink href="/plans" size="lg">
               View plans <ArrowRight className="h-4 w-4" aria-hidden />

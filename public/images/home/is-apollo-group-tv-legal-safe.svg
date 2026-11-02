@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 440" role="img">
+<defs>
+  <radialGradient id="isapollogr-glow" cx="50%" cy="0%" r="80%"><stop offset="0" stop-color="#3B82F6" stop-opacity=".28"/><stop offset="1" stop-color="#3B82F6" stop-opacity="0"/></radialGradient>
+  <linearGradient id="isapollogr-art" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1E3A8A"/><stop offset=".55" stop-color="#3B82F6"/><stop offset="1" stop-color="#93C5FD"/></linearGradient>
+  <linearGradient id="isapollogr-art2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#172554"/><stop offset="1" stop-color="#6366F1"/></linearGradient>
+  <linearGradient id="isapollogr-art3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0C4A6E"/><stop offset="1" stop-color="#7DD3FC"/></linearGradient>
+</defs>
+<rect width="640" height="440" rx="28" fill="#0B1728"/>
+<rect width="640" height="440" rx="28" fill="url(#isapollogr-glow)"/>
+<rect x=".5" y=".5" width="639" height="439" rx="27.5" fill="none" stroke="#22334A"/>
+<path d="M320 70l120 44v86c0 80-52 130-120 158-68-28-120-78-120-158v-86z" fill="#101F33" stroke="#3B82F6" stroke-width="3"/>
+<path d="M320 100l92 34v66c0 62-40 100-92 122-52-22-92-60-92-122v-66z" fill="url(#isapollogr-art)" fill-opacity=".35"/>
+<path d="M286 215.2l16 16 32-35.2" fill="none" stroke="#F8FAFC" stroke-width="9.600000000000001" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="70" y="120" width="140" height="110" rx="14" fill="#162A44" stroke="#22334A"/><rect x="88" y="142" width="70" height="8" rx="4" fill="#F8FAFC"/><rect x="88" y="162" width="100" height="6" rx="4" fill="#2E4562"/><rect x="88" y="176" width="88" height="6" rx="4" fill="#2E4562"/><rect x="88" y="190" width="76" height="6" rx="4" fill="#2E4562"/><rect x="88" y="204" width="64" height="6" rx="4" fill="#2E4562"/>
+<rect x="430" y="230" width="150" height="96" rx="14" fill="#162A44" stroke="#22334A"/><circle cx="460" cy="262" r="14" fill="none" stroke="#60A5FA" stroke-width="3"/><path d="M455 262h10M460 257v10" stroke="#60A5FA" stroke-width="3" stroke-linecap="round"/><rect x="484" y="256" width="76" height="8" rx="4" fill="#F8FAFC"/><rect x="452" y="292" width="108" height="6" rx="4" fill="#2E4562"/><rect x="452" y="306" width="80" height="6" rx="4" fill="#2E4562"/>
+</svg>
