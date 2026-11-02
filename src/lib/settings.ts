@@ -59,6 +59,12 @@ export const settingsSchemas = {
     dmcaAgentEmail: z.union([z.literal(""), z.email()]),
     dmcaAgentAddress: z.string().trim().max(300),
   }),
+  // Homepage hero claims. The owner is responsible for keeping these true; blank hides an item.
+  highlights: z.object({
+    moneyBackDays: z.union([z.literal(""), z.string().trim().regex(/^\d{1,3}$/, "Days as a number, e.g. 7")]),
+    liveChannels: z.string().trim().max(20),
+    moviesShows: z.string().trim().max(20),
+  }),
   notifications: z.object({
     adminEmail: z.union([z.literal(""), z.email()]),
     notifyOnNewTicket: z.boolean(),
@@ -88,6 +94,7 @@ export const defaultSettings: Settings = {
   },
   referral: { enabled: false, rewardDescription: "", qualifyingRule: "" },
   apps: { platforms: [] },
+  highlights: { moneyBackDays: "7", liveChannels: "22,000+", moviesShows: "90,000+" },
   notifications: { adminEmail: "", notifyOnNewTicket: false, notifyOnNewReview: false },
   legal: {
     approved: false,

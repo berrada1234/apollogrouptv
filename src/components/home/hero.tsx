@@ -53,9 +53,11 @@ function SignalVisual() {
 export function HomeHero({
   tagline,
   stats,
+  badges,
 }: {
   tagline: string;
   stats: { label: string; value: string }[];
+  badges: string[];
 }) {
   return (
     <section className="relative overflow-hidden">
@@ -76,21 +78,31 @@ export function HomeHero({
               Explore features
             </ButtonLink>
           </div>
-          <p className="mt-4 flex items-center gap-2 text-sm text-subtle">
+          <p className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted">
             <ShieldCheck className="h-4 w-4 shrink-0 text-accent" aria-hidden />
-            Prices, policies and supported devices are all published on this site.{" "}
-            <Link href="/about-us" className="whitespace-nowrap text-accent hover:text-light-blue">
-              Why that matters
-            </Link>
-          </p>
-          <dl className="mt-10 grid max-w-xl grid-cols-3 gap-3">
-            {stats.map((s) => (
-              <div key={s.label} className="rounded-xl border border-border bg-card/70 px-3 py-3 shadow-sm sm:px-4">
-                <dt className="text-[11px] text-subtle sm:text-xs">{s.label}</dt>
-                <dd className="mt-1 font-display text-base font-semibold text-text tabular-nums sm:text-lg">{s.value}</dd>
-              </div>
+            {badges.map((b, i) => (
+              <span key={b} className="flex items-center gap-2">
+                {i > 0 && <span className="text-subtle" aria-hidden>·</span>}
+                {b.includes("money-back") ? (
+                  <Link href="/refund-policy" className="font-medium text-text underline-offset-4 hover:text-light-blue hover:underline">
+                    {b}
+                  </Link>
+                ) : (
+                  b
+                )}
+              </span>
             ))}
-          </dl>
+          </p>
+          {stats.length > 0 && (
+            <dl className="mt-10 flex max-w-xl divide-x divide-border rounded-2xl border border-border bg-card/70 py-4 shadow-sm">
+              {stats.map((s) => (
+                <div key={s.label} className="flex min-w-0 flex-1 flex-col-reverse px-3 text-center sm:px-5">
+                  <dt className="mt-1 text-[11px] text-subtle sm:text-xs">{s.label}</dt>
+                  <dd className="font-display text-xl font-semibold text-text tabular-nums sm:text-2xl">{s.value}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
         </div>
         <div className="hidden sm:block">
           <SignalVisual />

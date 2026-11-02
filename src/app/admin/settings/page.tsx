@@ -143,6 +143,26 @@ export default async function SettingsPage() {
           </ActionForm>
         </Section>
 
+        <Section
+          id="highlights"
+          title="Homepage highlights"
+          description="Shown in the homepage hero. Leave a field blank to hide it. The rating is always the real average of approved reviews."
+        >
+          <div className="mb-4">
+            <Notice tone="warning" title="Only publish what you can back up">
+              Catalog sizes must match what customers actually get, and the money-back window must match the refund terms in Legal &amp; policies.
+            </Notice>
+          </div>
+          <ActionForm action={saveSettings} submitLabel="Save highlights">
+            <input type="hidden" name="settingsKey" value="highlights" />
+            <div className="grid gap-4 sm:grid-cols-3">
+              <Field label="Money-back window (days)" htmlFor="moneyBackDays"><Input id="moneyBackDays" name="moneyBackDays" inputMode="numeric" defaultValue={s.highlights.moneyBackDays} /></Field>
+              <Field label="Live channels" htmlFor="liveChannels"><Input id="liveChannels" name="liveChannels" defaultValue={s.highlights.liveChannels} placeholder="e.g. 22,000+" /></Field>
+              <Field label="Movies & shows" htmlFor="moviesShows"><Input id="moviesShows" name="moviesShows" defaultValue={s.highlights.moviesShows} placeholder="e.g. 90,000+" /></Field>
+            </div>
+          </ActionForm>
+        </Section>
+
         <Section id="notifications" title="Staff notifications" description="Requires SMTP to be configured.">
           <ActionForm action={saveSettings} submitLabel="Save notification settings">
             <input type="hidden" name="settingsKey" value="notifications" />

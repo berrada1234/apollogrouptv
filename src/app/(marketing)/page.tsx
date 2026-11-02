@@ -66,15 +66,18 @@ export default async function HomePage() {
   const maxSave = Math.max(0, ...plans.map((p) => savingsPct(p, pricing.baseMonthly)));
 
   const visibleCategories = categories.filter((c) => c._count.channels > 0).map((c) => ({ id: c.id, slug: c.slug, name: c.name, count: c._count.channels }));
-  const totalChannels = visibleCategories.reduce((n, c) => n + c.count, 0);
   const platforms = settings.apps.platforms.filter((p) => p.verified);
 
-  // Hero stats come straight from the database — nothing is hard-coded.
+  // Hero stats: catalog sizes are set in Admin → Settings → Homepage highlights; the rating is the real review average.
+  const { highlights } = settings;
   const stats = [
-    { label: "Channels listed", value: totalChannels > 0 ? String(totalChannels) : "Soon" },
-    { label: "Plans", value: plans.length > 0 ? String(plans.length) : "Soon" },
-    { label: "Support", value: "Tickets" },
-  ];
+    highlights.liveChannels && { label: "Live Channels", value: highlights.liveChannels },
+    highlights.moviesShows && { label: "Movies & Shows", value: highlights.moviesShows },
+    reviewTotal > 0 && average !== null && { label: `Rating · ${reviewTotal} review${reviewTotal === 1 ? "" : "s"}`, value: `${average.toFixed(1)}/5` },
+  ].filter((s): s is { label: string; value: string } => Boolean(s));
+  const badges = [highlights.moneyBackDays && `${highlights.moneyBackDays}-day money-back`, "No contracts", "Cancel anytime"].filter(
+    (b): b is string => Boolean(b),
+  );
 
   const orgJsonLd = {
     "@context": "https://schema.org",
@@ -92,7 +95,7 @@ export default async function HomePage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([orgJsonLd, siteJsonLd]).replace(/</g, "\\u003c") }} />
-      <HomeHero tagline={settings.general.tagline} stats={stats} />
+      <HomeHero tagline={settings.general.tagline} stats={stats} badges={badges} />
       <SocialProofBar members={members} platforms={platforms} rating={{ average, total: reviewTotal }} />
       <IntroSection />
       <FeaturesSection />
