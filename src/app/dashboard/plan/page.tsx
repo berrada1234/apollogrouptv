@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { AlertTriangle, Check, CreditCard, ExternalLink, Gift, Lock, Package, ShieldCheck, Sparkles, Tag, UserPlus, Zap } from "lucide-react";
 import { InvoiceActions, ReservationTimer, SubscribeButton } from "@/components/checkout/checkout-client";
 import { CheckoutSection } from "@/components/checkout/checkout-section";
@@ -11,10 +12,10 @@ import { EmptyState } from "@/components/ui/misc";
 import { getCurrentSubscription } from "@/components/dashboard/overview";
 import { ReferralClaimForm } from "@/components/dashboard/referral-claim";
 import { db } from "@/lib/db";
-import { paymentsSandbox } from "@/lib/checkout/chain";
 import { invoiceStatusLabels } from "@/lib/checkout/labels";
 import { getCustomerMethods } from "@/lib/checkout/methods";
-import { getOpenInvoice } from "@/lib/checkout/service";
+import { CheckoutError, createInvoice, getOpenInvoice } from "@/lib/checkout/service";
+import { rateLimit } from "@/lib/rate-limit";
 import { accessLabel, monthlyCents, pricingContext, savingsPct } from "@/lib/pricing";
 import { getActivePlans } from "@/lib/queries";
 import { requireUser } from "@/lib/session";
@@ -46,6 +47,18 @@ export default async function PlansBillingPage({ searchParams }: PageProps<"/das
   const methods = await getCustomerMethods(settings);
   // Self-serve checkout needs at least one usable payment method; otherwise packs go through an activation ticket.
   const checkout = methods.length > 0;
+  // A pack chosen on the Plans page (carried through sign-up or sign-in) becomes the unpaid invoice straight away.
+  // The redirect drops ?plan, so refreshing the page never creates another one.
+  if (selected) {
+    if (checkout && invoice?.planId !== selected.id && (await rateLimit(`invoice:${user.id}`, 10, 60 * 10)).ok) {
+      try {
+        await createInvoice(user.id, selected.slug);
+      } catch (e) {
+        if (!(e instanceof CheckoutError)) throw e;
+      }
+    }
+    redirect("/dashboard/plan");
+  }
   const payable = invoice?.status === "PENDING" ? invoice : null;
   const live = subscription && (subscription.status === "ACTIVE" || subscription.status === "PAST_DUE");
   const { baseMonthly, bestValueId } = pricingContext(plans);
@@ -122,21 +135,6 @@ export default async function PlansBillingPage({ searchParams }: PageProps<"/das
             </div>
           </div>
         </section>
-      )}
-
-      {checkout && selected && !invoice && (
-        <div className="mb-6 flex flex-wrap items-center justify-between gap-4 rounded-[14px] border border-primary/40 bg-gradient-to-r from-[#0b2a30] to-card p-5 shadow-glow">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent">Ready to check out</p>
-            <p className="mt-1 font-display text-lg font-bold text-text">
-              {selected.name} — {formatMoney(selected.priceCents, selected.currency)}
-            </p>
-            <p className="text-sm text-muted">{accessLabel(selected.interval)} · We&apos;ll hold this price for {settings.crypto.reservationMinutes} minutes while you pay.</p>
-          </div>
-          <div className="w-full sm:w-auto">
-            <SubscribeButton plan={selected.slug} label="Continue to payment" primary />
-          </div>
-        </div>
       )}
 
       {/* Packs */}
@@ -258,7 +256,7 @@ export default async function PlansBillingPage({ searchParams }: PageProps<"/das
 
       {checkout && (
         <div className={cn(panel, "mt-6 p-5 sm:p-6")}>
-          <CheckoutSection methods={methods} orderId={payable?.id ?? null} sandbox={paymentsSandbox} supportHours={settings.general.supportHours} />
+          <CheckoutSection methods={methods} orderId={payable?.id ?? null} supportHours={settings.general.supportHours} />
           {!payable && (
             <p className="mt-4 text-sm text-muted">
               {invoice ? "Your payment is being confirmed." : "Choose a pack above to create your invoice, then pay with any method here."}

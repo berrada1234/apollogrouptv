@@ -62,7 +62,6 @@ export default async function PaymentMethodsPage() {
             id="methods"
             methods={methods}
             orderId={null}
-            sandbox={false}
             supportHours={settings.general.supportHours}
             payHref="/dashboard/plan#checkout"
           />

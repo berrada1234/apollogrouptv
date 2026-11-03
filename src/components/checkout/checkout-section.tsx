@@ -8,14 +8,12 @@ import {
 export function CheckoutSection({
   methods,
   orderId,
-  sandbox,
   supportHours,
   id = "checkout",
   payHref,
 }: {
   methods: CheckoutMethod[];
   orderId: string | null;
-  sandbox: boolean;
   supportHours: string;
   id?: string;
   payHref?: string;
@@ -57,7 +55,6 @@ export function CheckoutSection({
       <MethodGrid
         methods={methods}
         orderId={orderId}
-        sandbox={sandbox}
         payHref={payHref}
       />
     </section>

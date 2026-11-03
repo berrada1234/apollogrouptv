@@ -2,7 +2,6 @@
 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { db } from "@/lib/db";
 import {
   fail,
   handleActionError,
@@ -11,13 +10,11 @@ import {
 } from "@/lib/action";
 import { rateLimit } from "@/lib/rate-limit";
 import { assertUser } from "@/lib/session";
-import { paymentsSandbox } from "@/lib/checkout/chain";
 import {
   cancelInvoice,
   CheckoutError,
   createInvoice,
   getRequestView,
-  refreshRequest,
   reportManualPayment,
   startPayment,
   type RequestView,
@@ -125,51 +122,6 @@ export async function reportPayment(
     return view
       ? { ok: true, view }
       : { ok: false, message: "Something went wrong. Please try again." };
-  } catch (e) {
-    return payFail(e);
-  }
-}
-
-/** Local sandbox only: pretends the customer's wallet broadcast a transaction, or that a block confirmed it. */
-export async function sandboxPay(
-  requestId: string,
-  mode: "exact" | "under" | "over" | "confirm",
-): Promise<PayResult> {
-  try {
-    if (!paymentsSandbox)
-      return { ok: false, message: "The payments sandbox is off." };
-    const user = await assertUser();
-    const request = await db.paymentRequest.findFirst({
-      where: { id: requestId, order: { userId: user.id }, kind: "BITCOIN" },
-    });
-    if (!request?.address || !request.amountSats)
-      return { ok: false, message: "No Bitcoin payment to simulate." };
-    if (mode === "confirm") {
-      if (!request.txid)
-        return { ok: false, message: "Send a sandbox payment first." };
-      await db.sandboxTransaction.updateMany({
-        where: { txid: request.txid },
-        data: { confirmations: { increment: 1 } },
-      });
-    } else {
-      const value =
-        mode === "exact"
-          ? request.amountSats
-          : mode === "under"
-            ? Math.floor(request.amountSats * 0.8)
-            : Math.ceil(request.amountSats * 1.2);
-      const txid = `sandbox-${Date.now().toString(16)}-${Math.random().toString(16).slice(2, 10)}`;
-      await db.sandboxTransaction.create({
-        data: { address: request.address, txid, valueSats: value },
-      });
-    }
-    await db.paymentRequest.update({
-      where: { id: request.id },
-      data: { lastCheckedAt: null },
-    });
-    await refreshRequest(user.id, request.id);
-    const view = await getRequestView(user.id, request.id);
-    return view ? { ok: true, view } : { ok: false, message: "Not found." };
   } catch (e) {
     return payFail(e);
   }

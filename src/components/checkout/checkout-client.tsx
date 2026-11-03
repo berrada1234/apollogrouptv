@@ -29,7 +29,6 @@ import {
   cancelInvoiceAction,
   createInvoiceAction,
   reportPayment,
-  sandboxPay,
   type PayResult,
 } from "@/actions/checkout";
 import { MethodLogo } from "@/components/checkout/method-logo";
@@ -86,6 +85,8 @@ export function ReservationTimer({ expiresAt }: { expiresAt: string }) {
       )}
       role="timer"
       aria-label="Time left on your reservation"
+      // Server and browser clocks render a second apart; the browser value wins.
+      suppressHydrationWarning
     >
       <Clock className="h-3.5 w-3.5" aria-hidden /> Reservation: {mmss(left)}
     </span>
@@ -203,12 +204,10 @@ export type CheckoutMethod = {
 export function MethodGrid({
   methods,
   orderId,
-  sandbox,
   payHref,
 }: {
   methods: CheckoutMethod[];
   orderId: string | null;
-  sandbox: boolean;
   /** Without an invoice, "Pay Now" links here (the public Payment Methods page). */
   payHref?: string;
 }) {
@@ -286,7 +285,6 @@ export function MethodGrid({
         <PaymentModal
           method={active.method}
           orderId={active.orderId}
-          sandbox={sandbox}
           onClose={() => setActive(null)}
         />
       )}
@@ -297,12 +295,10 @@ export function MethodGrid({
 function PaymentModal({
   method,
   orderId,
-  sandbox,
   onClose,
 }: {
   method: CheckoutMethod;
   orderId: string;
-  sandbox: boolean;
   onClose: () => void;
 }) {
   const router = useRouter();
@@ -431,8 +427,6 @@ function PaymentModal({
               view={view}
               onRequote={start}
               busy={busy}
-              sandbox={sandbox}
-              onUpdate={apply}
             />
           )}
           {view && !paid && view.kind === "MANUAL" && (
@@ -474,14 +468,10 @@ function BitcoinPanel({
   view,
   onRequote,
   busy,
-  sandbox,
-  onUpdate,
 }: {
   view: RequestView;
   onRequote: () => void;
   busy: boolean;
-  sandbox: boolean;
-  onUpdate: (r: PayResult) => void;
 }) {
   const now = useNow(view.status === "AWAITING");
   const [qr, setQr] = useState<string | null>(null);
@@ -658,80 +648,6 @@ function BitcoinPanel({
         )}
       </div>
 
-      {sandbox && (
-        <SandboxPanel
-          requestId={view.id}
-          detected={view.status === "DETECTED"}
-          onUpdate={onUpdate}
-        />
-      )}
-    </div>
-  );
-}
-
-function SandboxPanel({
-  requestId,
-  detected,
-  onUpdate,
-}: {
-  requestId: string;
-  detected: boolean;
-  onUpdate: (r: PayResult) => void;
-}) {
-  const [busy, setBusy] = useState(false);
-  const run = async (mode: "exact" | "under" | "over" | "confirm") => {
-    setBusy(true);
-    onUpdate(await sandboxPay(requestId, mode));
-    setBusy(false);
-  };
-  return (
-    <div className="rounded-xl border border-dashed border-warning/50 p-3 text-xs">
-      <p className="font-semibold text-warning">
-        Local sandbox — no real Bitcoin
-      </p>
-      <div className="mt-2 flex flex-wrap gap-2">
-        {detected ? (
-          <Button
-            type="button"
-            size="sm"
-            variant="secondary"
-            disabled={busy}
-            onClick={() => run("confirm")}
-          >
-            Add a confirmation
-          </Button>
-        ) : (
-          <>
-            <Button
-              type="button"
-              size="sm"
-              variant="secondary"
-              disabled={busy}
-              onClick={() => run("exact")}
-            >
-              Send exact amount
-            </Button>
-            <Button
-              type="button"
-              size="sm"
-              variant="secondary"
-              disabled={busy}
-              onClick={() => run("under")}
-            >
-              Send 80%
-            </Button>
-            <Button
-              type="button"
-              size="sm"
-              variant="secondary"
-              disabled={busy}
-              onClick={() => run("over")}
-            >
-              Send 120%
-            </Button>
-          </>
-        )}
-      </div>
     </div>
   );
 }

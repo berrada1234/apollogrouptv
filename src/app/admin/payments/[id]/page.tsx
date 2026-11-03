@@ -5,6 +5,7 @@ import { ArrowLeft, ExternalLink } from "lucide-react";
 import {
   checkOrderNow,
   confirmOrderPayment,
+  sandboxSimulate,
   setOrderStatus,
 } from "@/actions/payments-admin";
 import { ActionForm } from "@/components/admin/action-form";
@@ -19,6 +20,7 @@ import {
   formatBtc,
   type BtcNetwork,
 } from "@/lib/checkout/bitcoin";
+import { paymentsSandbox } from "@/lib/checkout/chain";
 import { invoiceStatusLabels } from "@/lib/checkout/labels";
 import { requireRole } from "@/lib/session";
 import { formatDateTime, formatMoney, humanize } from "@/lib/utils";
@@ -140,6 +142,19 @@ export default async function AdminInvoicePage({
                 submitVariant="secondary"
               >
                 <input type="hidden" name="orderId" value={order.id} />
+              </ActionForm>
+            )}
+            {paymentsSandbox && hasBitcoin && open && (
+              <ActionForm action={sandboxSimulate} submitLabel="Simulate" submitVariant="secondary">
+                <input type="hidden" name="orderId" value={order.id} />
+                <Field label="Local sandbox (no real Bitcoin)" htmlFor="sim" hint="Only available on localhost with PAYMENTS_SANDBOX on.">
+                  <Select id="sim" name="mode" defaultValue="exact">
+                    <option value="exact">Customer sends the exact amount</option>
+                    <option value="under">Customer sends 80% (underpaid)</option>
+                    <option value="over">Customer sends 120% (overpaid)</option>
+                    <option value="confirm">Add one block confirmation</option>
+                  </Select>
+                </Field>
               </ActionForm>
             )}
             {open ? (

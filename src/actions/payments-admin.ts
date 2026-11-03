@@ -1,5 +1,6 @@
 "use server";
 
+import { randomBytes } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import type { Prisma } from "@prisma/client";
@@ -15,6 +16,7 @@ import {
 import { assertRole } from "@/lib/session";
 import { settingsSchemas } from "@/lib/settings";
 import { isValidBtcAddress } from "@/lib/checkout/bitcoin";
+import { paymentsSandbox } from "@/lib/checkout/chain";
 import { finalizePaid, syncAddress } from "@/lib/checkout/service";
 
 const id = z.string().min(1).max(64);
@@ -433,6 +435,35 @@ export async function setOrderStatus(
     ]);
     revalidatePath(`/admin/payments/${order.id}`);
     return success("Invoice updated.");
+  } catch (e) {
+    return handleActionError(e);
+  }
+}
+
+/** Local sandbox only: simulates the customer's Bitcoin transaction (or a block confirming it) for the invoice's latest quote. */
+export async function sandboxSimulate(_: ActionState, fd: FormData): Promise<ActionState> {
+  try {
+    await assertRole("ADMIN");
+    if (!paymentsSandbox) return fail("The payments sandbox is off.");
+    const mode = z.enum(["exact", "under", "over", "confirm"]).safeParse(str(fd, "mode"));
+    if (!mode.success) return fail("Choose what to simulate.");
+    const request = await db.paymentRequest.findFirst({
+      where: { orderId: str(fd, "orderId"), kind: "BITCOIN", address: { not: null } },
+      orderBy: { createdAt: "desc" },
+    });
+    if (!request?.address || !request.amountSats) return fail("The customer hasn't opened a Bitcoin payment window yet.");
+    if (mode.data === "confirm") {
+      if (!request.txid) return fail("Simulate a payment first.");
+      await db.sandboxTransaction.updateMany({ where: { txid: request.txid }, data: { confirmations: { increment: 1 } } });
+    } else {
+      const factor = { exact: 1, under: 0.8, over: 1.2 }[mode.data];
+      await db.sandboxTransaction.create({
+        data: { address: request.address, txid: `sandbox-${Date.now().toString(16)}-${randomBytes(4).toString("hex")}`, valueSats: Math.round(request.amountSats * factor) },
+      });
+    }
+    await syncAddress(request.address);
+    revalidatePath(`/admin/payments/${request.orderId}`);
+    return success("Simulated. The customer's payment window updates on its next check.");
   } catch (e) {
     return handleActionError(e);
   }
