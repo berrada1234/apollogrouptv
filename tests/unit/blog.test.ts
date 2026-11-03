@@ -22,13 +22,20 @@ const reservedKeywords = [
   "how to download apollo group tv on android",
   "how to download apollo group tv on fire tv",
   "how to install apollo tv",
+  "how much does apollo group tv cost",
+  "how to contact apollo group tv",
+  "how to install apollo group tv on iphone",
+  "how to install apollo group tv on firestick",
+  "how to install apollo group tv on apple tv",
+  "how to install apollo group tv on android phone",
+  "does apollo group tv have a free trial",
 ];
 
 describe("blog", () => {
   const posts = getPosts();
 
-  it("has twenty published articles with unique slugs, H1s, SEO titles and focus keywords", () => {
-    expect(posts).toHaveLength(20);
+  it("has twenty-four published articles with unique slugs, H1s, SEO titles and focus keywords", () => {
+    expect(posts).toHaveLength(24);
     for (const key of ["slug", "title", "seoTitle", "description", "keyword"] as const) {
       expect(new Set(posts.map((p) => p[key].toLowerCase())).size, key).toBe(posts.length);
     }
