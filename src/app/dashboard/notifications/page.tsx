@@ -21,9 +21,9 @@ export default async function NotificationsPage({ searchParams }: PageProps<"/da
   const sp = await searchParams;
   const page = Math.max(1, Number.parseInt(String(sp.page ?? "1"), 10) || 1);
   const [notifications, total, unreadCount] = await Promise.all([
-    db.notification.findMany({ where: { userId: user.id }, orderBy: { createdAt: "desc" }, skip: (page - 1) * PAGE_SIZE, take: PAGE_SIZE }),
-    db.notification.count({ where: { userId: user.id } }),
-    db.notification.count({ where: { userId: user.id, readAt: null } }),
+    db.notification.findMany({ where: { userId: user.id, audience: "USER" }, orderBy: { createdAt: "desc" }, skip: (page - 1) * PAGE_SIZE, take: PAGE_SIZE }),
+    db.notification.count({ where: { userId: user.id, audience: "USER" } }),
+    db.notification.count({ where: { userId: user.id, audience: "USER", readAt: null } }),
   ]);
   const emailReady = isEmailConfigured();
 
@@ -58,7 +58,8 @@ export default async function NotificationsPage({ searchParams }: PageProps<"/da
                   </>
                 );
                 return n.href?.startsWith("/") ? (
-                  <Link key={n.id} href={n.href} className="block px-5 py-4 hover:bg-card-hover">
+                  // Opening marks it read, then continues to the details.
+                  <Link key={n.id} href={`/api/notifications/${n.id}`} prefetch={false} className="block px-5 py-4 hover:bg-card-hover">
                     {inner}
                   </Link>
                 ) : (

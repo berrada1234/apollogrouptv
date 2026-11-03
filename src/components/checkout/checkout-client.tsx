@@ -28,7 +28,7 @@ import {
   beginPayment,
   cancelInvoiceAction,
   createInvoiceAction,
-  reportPayment,
+  submitPaymentReviewAction,
   type PayResult,
 } from "@/actions/checkout";
 import { MethodLogo } from "@/components/checkout/method-logo";
@@ -93,6 +93,88 @@ export function ReservationTimer({ expiresAt }: { expiresAt: string }) {
   );
 }
 
+/** "I Have Paid": asks our team to review the payment, then opens the Payment Under Review page. */
+export function IHavePaidButton({ orderId, requestId = null, className, variant = "secondary" }: { orderId: string; requestId?: string | null; className?: string; variant?: "primary" | "secondary" }) {
+  const router = useRouter();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  return (
+    <div className={className}>
+      <Button
+        type="button"
+        variant={variant}
+        loading={busy}
+        onClick={async () => {
+          setBusy(true);
+          const r = await submitPaymentReviewAction(orderId, requestId, "");
+          if (r.ok) return router.push(r.href);
+          setBusy(false);
+          setError(r.message);
+        }}
+      >
+        <CheckCircle2 className="h-4 w-4" aria-hidden /> I Have Paid
+      </Button>
+      {error && <p className="mt-2 text-xs text-error">{error}</p>}
+    </div>
+  );
+}
+
+/** Shown once after a pack is chosen: the order summary with the next steps. */
+export function OrderPopup({ orderId, title, amount, expiresAt }: { orderId: string; title: string; amount: string; expiresAt: string | null }) {
+  const router = useRouter();
+  const ref = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    ref.current?.showModal();
+  }, []);
+  const close = (thenScroll = false) => {
+    ref.current?.close();
+    router.replace("/dashboard/plan", { scroll: false });
+    if (thenScroll) setTimeout(() => document.getElementById("checkout")?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+  };
+  return (
+    <dialog
+      ref={ref}
+      aria-labelledby="order-title"
+      onCancel={(e) => {
+        e.preventDefault();
+        close();
+      }}
+      className="m-auto w-[min(94vw,28rem)] rounded-[18px] border border-border-strong bg-card p-0 text-text shadow-lg backdrop:bg-black/70 backdrop:backdrop-blur-sm"
+    >
+      <div className="p-6">
+        <div className="flex items-start justify-between gap-3">
+          <h2 id="order-title" className="font-display text-xl font-bold">
+            Your Subscription Order
+          </h2>
+          <button type="button" onClick={() => close()} className="grid h-9 w-9 place-items-center rounded-lg text-muted hover:bg-inset hover:text-text" aria-label="Close">
+            <X className="h-5 w-5" aria-hidden />
+          </button>
+        </div>
+        <div className="mt-4 rounded-[14px] border border-primary/30 bg-primary/[0.06] p-4">
+          <p className="font-semibold text-text">
+            {title} — <span className="font-display text-lg font-extrabold">{amount}</span>
+          </p>
+          <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
+            <span className="text-muted">Status:</span>
+            <span className="rounded-full border border-warning/35 bg-warning/10 px-2.5 py-0.5 text-xs font-medium text-warning">Pending Payment</span>
+            {expiresAt && <ReservationTimer expiresAt={expiresAt} />}
+          </div>
+        </div>
+        <p className="mt-4 text-sm leading-6 text-muted">
+          <span className="font-semibold text-text">Payment Instructions:</span> Choose your preferred payment method, send the payment, then press I Have Paid so our team
+          can review it.
+        </p>
+        <div className="mt-5 flex flex-col gap-2.5 sm:flex-row">
+          <Button type="button" className="sm:flex-1" onClick={() => close(true)}>
+            Choose Payment Method <ArrowRight className="h-4 w-4" aria-hidden />
+          </Button>
+          <IHavePaidButton orderId={orderId} className="sm:flex-1 [&>button]:w-full" />
+        </div>
+      </div>
+    </dialog>
+  );
+}
+
 export function InvoiceActions({
   orderId,
   cancellable,
@@ -120,6 +202,7 @@ export function InvoiceActions({
       >
         Continue Payment <ArrowRight className="h-4 w-4" aria-hidden />
       </Button>
+      <IHavePaidButton orderId={orderId} />
       {cancellable && (
         <form ref={form} action={formAction}>
           <input type="hidden" name="orderId" value={orderId} />
@@ -165,12 +248,11 @@ export function SubscribeButton({
     createInvoiceAction,
     idle,
   );
+  const router = useRouter();
   useEffect(() => {
-    if (state.ok)
-      document
-        .getElementById("invoice")
-        ?.scrollIntoView({ behavior: "smooth", block: "start" });
-  }, [state]);
+    // Opens the order summary popup for the new invoice.
+    if (state.ok) router.replace("/dashboard/plan?order=new", { scroll: false });
+  }, [state, router]);
   return (
     <form action={formAction} className="w-full">
       <input type="hidden" name="plan" value={plan} />
@@ -430,7 +512,7 @@ function PaymentModal({
             />
           )}
           {view && !paid && view.kind === "MANUAL" && (
-            <ManualPanel view={view} onUpdate={apply} />
+            <ManualPanel view={view} />
           )}
         </div>
       </div>
@@ -446,15 +528,14 @@ function PaidPanel({ onClose }: { onClose: () => void }) {
         Payment Successful!
       </h3>
       <p className="mt-2 text-sm leading-6 text-muted">
-        Your payment has been confirmed successfully. Your subscription is now
-        active.
+        Your payment has been confirmed successfully. We&apos;re activating your IPTV account now; your login details will appear in My Subscription as soon as it&apos;s ready.
       </p>
       <div className="mt-5 flex flex-wrap justify-center gap-3">
         <Link
-          href="/dashboard/apps"
+          href="/dashboard/subscription"
           className="inline-flex h-11 items-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-on-primary"
         >
-          Set up the app <ArrowRight className="h-4 w-4" aria-hidden />
+          My Subscription <ArrowRight className="h-4 w-4" aria-hidden />
         </Link>
         <Button type="button" variant="secondary" onClick={onClose}>
           Close
@@ -643,6 +724,7 @@ function BitcoinPanel({
               <p className="mt-1 text-xs text-muted">
                 Checking the blockchain automatically every 15 seconds.
               </p>
+              <IHavePaidButton orderId={view.orderId} requestId={view.id} className="mt-4" />
             </>
           )
         )}
@@ -652,13 +734,8 @@ function BitcoinPanel({
   );
 }
 
-function ManualPanel({
-  view,
-  onUpdate,
-}: {
-  view: RequestView;
-  onUpdate: (r: PayResult) => void;
-}) {
+function ManualPanel({ view }: { view: RequestView }) {
+  const router = useRouter();
   const [reference, setReference] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -672,9 +749,7 @@ function ManualPanel({
         <ShieldCheck className="mx-auto h-8 w-8 text-accent" aria-hidden />
         <p className="mt-3 font-semibold">Pending Confirmation</p>
         <p className="mt-2 text-sm leading-6 text-muted">
-          Thanks. We&apos;re checking that your payment arrived. Your pack
-          activates as soon as we&apos;ve confirmed it, and you&apos;ll get a
-          notification.
+          Thanks. We&apos;re checking that your payment arrived and will notify you as soon as it&apos;s verified.
         </p>
       </div>
     );
@@ -720,10 +795,10 @@ function ManualPanel({
         onSubmit={async (e) => {
           e.preventDefault();
           setBusy(true);
-          const r = await reportPayment(view.id, reference);
+          const r = await submitPaymentReviewAction(view.orderId, view.id, reference);
+          if (r.ok) return router.push(r.href);
           setBusy(false);
-          if (r.ok) onUpdate(r);
-          else setError(r.message);
+          setError(r.message);
         }}
       >
         <label htmlFor="pay-ref" className="block text-sm font-medium">
@@ -741,11 +816,10 @@ function ManualPanel({
         />
         {error && <p className="text-sm text-error">{error}</p>}
         <Button type="submit" className="w-full" loading={busy}>
-          I&apos;ve sent the payment
+          I Have Paid
         </Button>
         <p className="text-xs leading-5 text-subtle">
-          Your pack activates after our team confirms the payment arrived. Only
-          send to the details shown here.
+          This sends your payment for review; it isn&apos;t confirmed until our team verifies it arrived. Only send to the details shown here.
         </p>
       </form>
     </div>

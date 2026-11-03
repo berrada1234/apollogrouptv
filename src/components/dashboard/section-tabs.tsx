@@ -34,5 +34,5 @@ export const accountTabs = (unread = 0) => [
 
 export const planTabs = [
   { href: "/dashboard/plan", label: "My plan" },
-  { href: "/dashboard/subscription", label: "Subscription details" },
+  { href: "/dashboard/subscription", label: "My Subscription" },
 ];

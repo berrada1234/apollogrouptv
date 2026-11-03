@@ -128,7 +128,7 @@ export async function markNotificationsRead(ids?: string[]): Promise<ActionState
   try {
     const user = await assertUser();
     await db.notification.updateMany({
-      where: { userId: user.id, readAt: null, ...(ids ? { id: { in: ids.slice(0, 100) } } : {}) },
+      where: { userId: user.id, audience: "USER", readAt: null, ...(ids ? { id: { in: ids.slice(0, 100) } } : {}) },
       data: { readAt: new Date() },
     });
     revalidatePath("/dashboard", "layout");

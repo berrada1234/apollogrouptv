@@ -17,7 +17,7 @@ export const metadata: Metadata = { title: "Security Settings" };
 
 export default async function SecurityPage() {
   const user = await requireUser("/dashboard/security");
-  const unread = await db.notification.count({ where: { userId: user.id, readAt: null } });
+  const unread = await db.notification.count({ where: { userId: user.id, audience: "USER", readAt: null } });
 
   const emailReady = isEmailConfigured();
   return (

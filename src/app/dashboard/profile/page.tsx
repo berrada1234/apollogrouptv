@@ -26,7 +26,7 @@ export default async function ProfilePage() {
     ? decryptSecret(credential.m3uUrlEnc)
     : null;
   const unread = await db.notification.count({
-    where: { userId: user.id, readAt: null },
+    where: { userId: user.id, audience: "USER", readAt: null },
   });
 
   return (

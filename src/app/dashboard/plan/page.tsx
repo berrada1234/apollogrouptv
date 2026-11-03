@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { AlertTriangle, Check, CreditCard, ExternalLink, Gift, Lock, Package, ShieldCheck, Sparkles, Tag, UserPlus, Zap } from "lucide-react";
-import { InvoiceActions, ReservationTimer, SubscribeButton } from "@/components/checkout/checkout-client";
+import { InvoiceActions, OrderPopup, ReservationTimer, SubscribeButton } from "@/components/checkout/checkout-client";
 import { CheckoutSection } from "@/components/checkout/checkout-section";
 import { findSelectedPlan } from "@/components/checkout/selected-plan";
 import { planTabs, SectionTabs } from "@/components/dashboard/section-tabs";
@@ -50,14 +51,17 @@ export default async function PlansBillingPage({ searchParams }: PageProps<"/das
   // A pack chosen on the Plans page (carried through sign-up or sign-in) becomes the unpaid invoice straight away.
   // The redirect drops ?plan, so refreshing the page never creates another one.
   if (selected) {
+    let created = false;
     if (checkout && invoice?.planId !== selected.id && (await rateLimit(`invoice:${user.id}`, 10, 60 * 10)).ok) {
       try {
         await createInvoice(user.id, selected.slug);
+        created = true;
       } catch (e) {
         if (!(e instanceof CheckoutError)) throw e;
       }
     }
-    redirect("/dashboard/plan");
+    // ?order=new opens the order summary popup once.
+    redirect(created || invoice?.planId === selected.id ? "/dashboard/plan?order=new" : "/dashboard/plan");
   }
   const payable = invoice?.status === "PENDING" ? invoice : null;
   const live = subscription && (subscription.status === "ACTIVE" || subscription.status === "PAST_DUE");
@@ -96,6 +100,15 @@ export default async function PlansBillingPage({ searchParams }: PageProps<"/das
         {subscription && <StatusBadge status={subscription.status} />}
       </div>
 
+      {payable && sp.order === "new" && (
+        <OrderPopup
+          orderId={payable.id}
+          title={`${payable.plan.name} · ${accessLabel(payable.plan.interval)}`}
+          amount={formatMoney(payable.amountCents, payable.currency)}
+          expiresAt={payable.expiresAt?.toISOString() ?? null}
+        />
+      )}
+
       {invoice && (
         <section id="invoice" aria-labelledby="invoice-heading" className={cn(panel, "mb-6 scroll-mt-24 p-5 sm:p-6")}>
           <div className="flex items-start gap-4">
@@ -113,7 +126,7 @@ export default async function PlansBillingPage({ searchParams }: PageProps<"/das
                   ? "You have an unpaid invoice"
                   : invoice.status === "UNDERPAID"
                     ? "Your payment was short"
-                    : "We're confirming your payment"}
+                    : "Your payment is under review"}
               </h2>
               <p className="mt-0.5 text-sm text-muted">
                 {invoice.plan.name} · {accessLabel(invoice.plan.interval)} — <span className="font-semibold text-text">{formatMoney(invoice.amountCents, invoice.currency)}</span>
@@ -129,7 +142,10 @@ export default async function PlansBillingPage({ searchParams }: PageProps<"/das
                 <p className="mt-3 text-sm leading-6 text-muted">
                   {invoice.status === "UNDERPAID"
                     ? "We received less than the invoice amount. Our team has been notified and will contact you to complete or refund it."
-                    : "Your pack activates automatically as soon as the payment is confirmed. You'll get a notification."}
+                    : "Our team is reviewing your payment. Your IPTV login details will appear in My Subscription once it's verified and activated."}{" "}
+                  <Link href={`/dashboard/payment-review/${invoice.id}`} className="font-medium text-accent hover:text-light-blue">
+                    View status
+                  </Link>
                 </p>
               )}
             </div>

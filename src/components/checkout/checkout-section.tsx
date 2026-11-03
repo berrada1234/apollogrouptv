@@ -23,7 +23,7 @@ export function CheckoutSection({
     {
       icon: Zap,
       label: methods.some((m) => m.kind === "BITCOIN")
-        ? "Automatic activation"
+        ? "Fast activation"
         : "Fast activation",
     },
     {

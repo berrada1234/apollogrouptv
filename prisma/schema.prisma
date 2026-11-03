@@ -276,9 +276,15 @@ model Subscription {
   currentPeriodEnd       DateTime?
   cancelAtPeriodEnd      Boolean            @default(false)
   providerSubscriptionId String?            @unique @db.VarChar(255)
+  // IPTV login details (username, password, M3U/MAG URLs, Xtream login), AES-256-GCM encrypted JSON.
+  accessEnc              String?            @db.Text
+  connectionLimit        Int                @default(1)
+  activatedAt            DateTime?
+  expiryNotifiedAt       DateTime?
   createdAt              DateTime           @default(now())
   updatedAt              DateTime           @updatedAt
   payments               Payment[]
+  order                  Order?
 
   @@index([userId, status])
   @@index([status])
@@ -304,8 +310,11 @@ model Order {
   // Reference the customer gave for a manual payment (unverified until an admin confirms).
   customerReference String?          @db.VarChar(255)
   note              String?          @db.Text
+  // When the customer pressed "I Have Paid" (a request for review, not a confirmation).
+  reportedAt        DateTime?
   paidAt            DateTime?
   subscriptionId    String?          @unique
+  subscription      Subscription?    @relation(fields: [subscriptionId], references: [id], onDelete: SetNull)
   createdAt         DateTime         @default(now())
   updatedAt         DateTime         @updatedAt
   payments          Payment[]
@@ -513,17 +522,25 @@ model SupportMessage {
   @@map("support_messages")
 }
 
+// ADMIN notifications go to each admin's admin bell, separate from their own customer notifications.
+enum NotificationAudience {
+  USER
+  ADMIN
+}
+
 model Notification {
-  id        String    @id @default(cuid())
+  id        String               @id @default(cuid())
   userId    String
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  title     String    @db.VarChar(160)
-  body      String    @db.Text
-  href      String?   @db.VarChar(255)
+  user      User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  audience  NotificationAudience @default(USER)
+  title     String               @db.VarChar(160)
+  body      String               @db.Text
+  href      String?              @db.VarChar(255)
   readAt    DateTime?
-  createdAt DateTime  @default(now())
+  createdAt DateTime             @default(now())
 
   @@index([userId, readAt])
+  @@index([userId, audience, readAt])
   @@map("notifications")
 }
 

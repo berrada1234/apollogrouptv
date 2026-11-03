@@ -5,6 +5,7 @@ import { APIError } from "better-auth/api";
 import { nextCookies } from "better-auth/next-js";
 import { db } from "@/lib/db";
 import { sendEmail } from "@/lib/email";
+import { notifyAdmins, notifyUser } from "@/lib/notify";
 import { generateReferralCode, REFERRAL_COOKIE } from "@/lib/referral";
 import { isLocalUrl, siteConfig } from "@/lib/site";
 
@@ -29,6 +30,20 @@ async function assignReferralCode(userId: string) {
  * Local testing switch: AUTH_SKIP_EMAIL_VERIFICATION="true" lets new accounts sign in straight away.
  * It only takes effect when the site runs on localhost, so it can never weaken a deployed site.
  */
+/** Welcome note for the customer and a "new registration" alert for admins. */
+async function notifyNewAccount(user: { id: string; name: string; email: string; createdAt: Date }) {
+  await notifyUser(user.id, {
+    title: "Account Successfully Created",
+    body: "Welcome to Apollo Group TV. Choose a pack in Plans & Billing whenever you're ready.",
+    href: "/dashboard/plan",
+  });
+  await notifyAdmins({
+    title: "New Customer Registration",
+    body: `${user.name} · ${user.email} · Registered ${user.createdAt.toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" })} · Status: Active`,
+    href: `/admin/users/${user.id}`,
+  });
+}
+
 export const skipEmailVerification =
   process.env.AUTH_SKIP_EMAIL_VERIFICATION === "true" && isLocalUrl(process.env.BETTER_AUTH_URL ?? siteConfig.url);
 
@@ -114,6 +129,7 @@ export const auth = betterAuth({
         before: async (user) => (skipEmailVerification ? { data: { ...user, emailVerified: true } } : undefined),
         after: async (user, ctx) => {
           await assignReferralCode(user.id);
+          await notifyNewAccount(user).catch((e) => console.error("[auth] signup notifications", e instanceof Error ? e.message : e));
           const code = readCookie(ctx?.headers?.get("cookie"), REFERRAL_COOKIE);
           if (!code) return;
           const referrer = await db.user.findUnique({ where: { referralCode: code }, select: { id: true } });

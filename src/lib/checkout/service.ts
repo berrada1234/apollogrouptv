@@ -5,6 +5,7 @@ import { db } from "@/lib/db";
 import { sendEmail } from "@/lib/email";
 import { monthsFor } from "@/lib/pricing";
 import { getSettings, type Settings } from "@/lib/settings";
+import { notifyAdmins, notifyUser } from "@/lib/notify";
 import { absoluteUrl } from "@/lib/site";
 import { isValidBtcAddress, usdToSats } from "@/lib/checkout/bitcoin";
 import { addressTransactions, fetchBtcUsd } from "@/lib/checkout/chain";
@@ -159,6 +160,14 @@ export async function createInvoice(userId: string, planSlug: string) {
         replaced: open?.number,
       },
       userId,
+    );
+    await notifyAdmins(
+      {
+        title: "New Subscription Order",
+        body: `${created.number} · ${plan.name} · ${(plan.priceCents / 100).toFixed(2)} ${plan.currency} · awaiting payment`,
+        href: `/admin/payments/${created.id}`,
+      },
+      tx,
     );
     return created;
   });
@@ -318,68 +327,63 @@ export async function startPayment(
   });
 }
 
-/** The customer says they've paid manually. This only flags the invoice for an admin to check. */
-export async function reportManualPayment(
-  userId: string,
-  requestId: string,
-  reference: string,
-) {
-  const request = await db.paymentRequest.findFirst({
-    where: { id: requestId, order: { userId } },
-    include: { order: true, method: true },
-  });
-  if (
-    !request ||
-    request.kind !== "MANUAL" ||
-    request.status !== "AWAITING" ||
-    request.order.status !== "PENDING"
-  )
-    throw new CheckoutError(
-      "This payment can't be reported. Refresh the page and try again.",
-    );
+/**
+ * "I Have Paid": the customer asks us to review their payment. This never marks the
+ * invoice paid; it moves it to Pending Confirmation for an admin (Bitcoin payments
+ * keep being checked on-chain in the background).
+ */
+export async function submitPaymentReview(userId: string, orderId: string, opts: { requestId?: string | null; reference?: string }) {
+  const order = await db.order.findFirst({ where: { id: orderId, userId }, include: { plan: true, user: { select: { name: true, email: true } } } });
+  if (!order || order.status !== "PENDING") throw new CheckoutError("This invoice can't be sent for review. Refresh the page and try again.");
+  const request = opts.requestId ? await db.paymentRequest.findFirst({ where: { id: opts.requestId, orderId: order.id }, include: { method: true } }) : null;
+  const reference = opts.reference?.trim() || null;
+  const now = new Date();
+
   await db.$transaction(async (tx) => {
-    await tx.paymentRequest.update({
-      where: { id: request.id },
-      data: { status: "REPORTED" },
+    if (request?.kind === "MANUAL" && request.status === "AWAITING") {
+      await tx.paymentRequest.update({ where: { id: request.id }, data: { status: "REPORTED" } });
+    }
+    const { count } = await tx.order.updateMany({
+      where: { id: order.id, status: "PENDING" },
+      data: { status: "PENDING_CONFIRMATION", reportedAt: now, customerReference: reference, ...(request?.methodId ? { methodId: request.methodId } : {}) },
     });
-    await tx.order.update({
-      where: { id: request.orderId },
-      data: {
-        status: "PENDING_CONFIRMATION",
-        customerReference: reference || null,
-      },
-    });
-    await systemAudit(
-      tx,
-      "payment.report",
-      request.orderId,
-      { method: request.method?.name, reference },
+    if (count === 0) throw new CheckoutError("This invoice changed. Refresh the page and try again.");
+    await systemAudit(tx, "payment.report", order.id, { method: request?.method?.name ?? null, reference }, userId);
+    await notifyUser(
       userId,
+      {
+        title: "Payment Confirmation Received",
+        body: `Your payment for invoice ${order.number} is under review. We'll notify you as soon as it's verified.`,
+        href: `/dashboard/payment-review/${order.id}`,
+      },
+      tx,
+    );
+    await notifyAdmins(
+      {
+        title: "Customer Submitted Payment Confirmation",
+        body: `${order.user.name} (${order.user.email}) · ${order.number} · ${order.plan.name} · ${(order.amountCents / 100).toFixed(2)} ${order.currency}${request?.method ? ` via ${request.method.name}` : ""}${reference ? ` · Ref ${reference}` : ""}`,
+        href: `/admin/payments/${order.id}`,
+      },
+      tx,
     );
   });
+
   const settings = await getSettings();
   if (settings.notifications.adminEmail) {
     await sendEmail({
       to: settings.notifications.adminEmail,
-      subject: `Payment to confirm: ${request.order.number}`,
-      heading: "A customer reported a payment",
-      body: `Invoice ${request.order.number} (${(request.usdCents / 100).toFixed(2)} USD) via ${request.method?.name ?? "manual payment"}. Reference: ${reference || "none given"}. Check your account, then confirm it in Orders & Payments.`,
-      cta: {
-        label: "Open the invoice",
-        url: absoluteUrl(`/admin/payments/${request.orderId}`),
-      },
-    }).catch((e) =>
-      console.error(
-        "[checkout] admin email",
-        e instanceof Error ? e.message : e,
-      ),
-    );
+      subject: `Payment to confirm: ${order.number}`,
+      heading: "A customer submitted a payment for review",
+      body: `Invoice ${order.number} (${(order.amountCents / 100).toFixed(2)} ${order.currency}) via ${request?.method?.name ?? "an unspecified method"}. Reference: ${reference ?? "none given"}. Check your account, then confirm it in Orders & Payments.`,
+      cta: { label: "Open the invoice", url: absoluteUrl(`/admin/payments/${order.id}`) },
+    }).catch((e) => console.error("[checkout] admin email", e instanceof Error ? e.message : e));
   }
 }
 
 /**
- * Marks an invoice paid and activates the pack, exactly once. Extensions start
- * when the customer's current access ends. `reference` must be unique per real
+ * Marks an invoice paid, exactly once, and opens a subscription waiting for an admin
+ * to add the IPTV login and activate it. Default dates follow the pack length;
+ * extensions start when the customer's current access ends. `reference` must be unique per real
  * payment (txid or provider transaction ID), which blocks double-counting.
  */
 export async function finalizePaid(
@@ -426,7 +430,7 @@ export async function finalizePaid(
       data: {
         userId: order.userId,
         planId: order.planId,
-        status: "ACTIVE",
+        status: "PENDING",
         currentPeriodStart: start,
         currentPeriodEnd: end,
       },
@@ -447,14 +451,23 @@ export async function finalizePaid(
         providerReference: opts.reference.slice(0, 255),
       },
     });
-    await tx.notification.create({
-      data: {
-        userId: order.userId,
-        title: "Payment Successful!",
-        body: `Invoice ${order.number} is paid and your ${order.plan.name} is active${end ? ` until ${end.toDateString()}` : ""}.`,
+    await notifyUser(
+      order.userId,
+      {
+        title: "Payment Approved",
+        body: `Invoice ${order.number} is paid. We're setting up your ${order.plan.name}; your IPTV login details will appear in My Subscription as soon as it's active.`,
         href: "/dashboard/subscription",
       },
-    });
+      tx,
+    );
+    await notifyAdmins(
+      {
+        title: "Subscription Waiting for Activation",
+        body: `${order.user.name} (${order.user.email}) · ${order.number} · ${order.plan.name} is paid. Add the IPTV login and activate it.`,
+        href: `/admin/subscriptions/${subscription.id}`,
+      },
+      tx,
+    );
     await systemAudit(
       tx,
       "invoice.paid",
@@ -475,7 +488,7 @@ export async function finalizePaid(
       to: result.order.user.email,
       subject: `Payment confirmed: ${result.order.plan.name}`,
       heading: "Payment Successful!",
-      body: `Your payment for invoice ${result.order.number} has been confirmed and your ${result.order.plan.name} is now active${result.end ? ` until ${result.end.toDateString()}` : ""}.`,
+      body: `Your payment for invoice ${result.order.number} has been confirmed. We're activating your ${result.order.plan.name} now; your login details will appear in My Subscription on your dashboard.`,
       cta: {
         label: "Open your dashboard",
         url: absoluteUrl("/dashboard/subscription"),
@@ -705,6 +718,7 @@ export async function sweepPayments() {
 /** What the payment window needs, safe to send to the invoice owner. */
 export type RequestView = {
   id: string;
+  orderId: string;
   kind: "BITCOIN" | "MANUAL";
   status: string;
   orderStatus: OrderStatus;
@@ -745,6 +759,7 @@ export async function getRequestView(
   if (!request) return null;
   return {
     id: request.id,
+    orderId: request.orderId,
     kind: request.kind,
     status: request.status,
     orderStatus: request.order.status,

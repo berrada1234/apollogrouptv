@@ -18,6 +18,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     db.review.count({ where: { status: "PENDING" } }),
     db.contactMessage.count({ where: { status: "NEW" } }),
   ]);
+  const adminUnread = isAdmin ? await db.notification.count({ where: { userId: user.id, audience: "ADMIN", readAt: null } }) : 0;
 
   const nav: NavItem[] = [
     { href: "/admin", label: "Overview", icon: "overview", short: "Home" },
@@ -58,6 +59,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         { href: "/", label: "View website", icon: "home" },
       ]}
       user={{ name: user.name, email: user.email, role: user.role }}
+      bell={isAdmin ? { href: "/admin/notifications", count: adminUnread } : undefined}
       mobileTabs={isAdmin ? ["/admin", "/admin/users", "/admin/support", "/admin/reviews"] : ["/admin", "/admin/support", "/admin/reviews"]}
     >
       {children}

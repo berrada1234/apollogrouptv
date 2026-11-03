@@ -1,12 +1,14 @@
 import { timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
 import { sweepPayments } from "@/lib/checkout/service";
+import { sweepSubscriptions } from "@/lib/subscriptions";
 
 export const dynamic = "force-dynamic";
 
 /**
- * Background payment check for a cron job (e.g. every 5 minutes), so Bitcoin
- * payments are confirmed even after the customer closes the page:
+ * Background job for a cron (e.g. every 5 minutes): confirms Bitcoin payments even
+ * after the customer closes the page, expires lapsed subscriptions and sends
+ * "expiring soon" reminders:
  *   curl -H "Authorization: Bearer $CRON_SECRET" https://your-domain/api/cron/payments
  */
 export async function GET(req: Request) {
@@ -19,5 +21,7 @@ export async function GET(req: Request) {
     timingSafeEqual(Buffer.from(given), Buffer.from(secret));
   if (!valid)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  return NextResponse.json(await sweepPayments());
+  const payments = await sweepPayments();
+  const subscriptions = await sweepSubscriptions();
+  return NextResponse.json({ payments, subscriptions });
 }

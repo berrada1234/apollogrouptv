@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const user = await requireUser("/dashboard");
   const [unread, openTickets, settings] = await Promise.all([
-    db.notification.count({ where: { userId: user.id, readAt: null } }),
+    db.notification.count({ where: { userId: user.id, audience: "USER", readAt: null } }),
     db.supportTicket.count({ where: { userId: user.id, status: "WAITING_ON_CUSTOMER" } }),
     getSettings(),
   ]);
@@ -50,7 +50,8 @@ export default async function DashboardLayout({ children }: { children: React.Re
     { href: "/dashboard", label: "Dashboard", icon: "overview", short: "Home" },
     { href: "/dashboard/profile", label: "My Accounts", icon: "profile", short: "Account", badge: unread, match: ["/dashboard/security", "/dashboard/notifications"] },
     { href: "/dashboard/apps", label: "Apps & Guides", icon: "apps", short: "Apps" },
-    { href: "/dashboard/plan", label: "Plans & Billing", icon: "plan", short: "Plans", match: ["/dashboard/subscription"] },
+    { href: "/dashboard/subscription", label: "My Subscription", icon: "subscription", match: ["/dashboard/payment-review"] },
+    { href: "/dashboard/plan", label: "Plans & Billing", icon: "plan", short: "Plans" },
     { href: "/dashboard/billing", label: "Transactions", icon: "billing" },
     { href: "/dashboard/referrals", label: "Referrals & Gifts", icon: "referrals" },
     { href: "/dashboard/support", label: "Support", icon: "support", badge: openTickets, short: "Support" },

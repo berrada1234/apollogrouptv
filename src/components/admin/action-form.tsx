@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useRef, useState } from "react";
+import { startTransition, useActionState, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { FormMessage } from "@/components/ui/form";
@@ -12,7 +12,7 @@ type Action = (state: ActionState, formData: FormData) => Promise<ActionState>;
 export type Confirm = string | { title: string; description?: string; confirmLabel?: string; tone?: "danger" | "primary" };
 
 /**
- * Progressive-enhancement form for admin server actions.
+ * Form for admin server actions.
  * Shows the action's message and the first error of each invalid field;
  * destructive actions can require confirmation through an accessible dialog.
  */
@@ -51,14 +51,17 @@ export function ActionForm({
     <>
       <form
         ref={ref}
-        action={formAction}
+        // Submitted through a transition rather than `action`, so React doesn't clear what
+        // the admin typed when the server rejects it; resetOnSuccess clears it explicitly.
         onSubmit={(e) => {
+          e.preventDefault();
           if (c && !confirmed.current) {
-            e.preventDefault();
             setAsking(true);
             return;
           }
           confirmed.current = false;
+          const data = new FormData(e.currentTarget);
+          startTransition(() => formAction(data));
         }}
         className={cn(inline ? "inline-flex flex-wrap items-center gap-2" : "space-y-4", className)}
       >

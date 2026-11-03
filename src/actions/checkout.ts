@@ -15,8 +15,8 @@ import {
   CheckoutError,
   createInvoice,
   getRequestView,
-  reportManualPayment,
   startPayment,
+  submitPaymentReview,
   type RequestView,
 } from "@/lib/checkout/service";
 
@@ -101,28 +101,19 @@ export async function beginPayment(
   }
 }
 
-export async function reportPayment(
-  requestId: string,
-  reference: string,
-): Promise<PayResult> {
+export type ReviewResult = { ok: true; href: string } | { ok: false; message: string };
+
+/** "I Have Paid": sends the invoice for payment review and returns the Payment Under Review page. */
+export async function submitPaymentReviewAction(orderId: string, requestId: string | null, reference: string): Promise<ReviewResult> {
   try {
     const user = await assertUser();
-    const input = z
-      .object({ requestId: id, reference: z.string().trim().max(120) })
-      .safeParse({ requestId, reference });
-    if (!input.success)
-      return { ok: false, message: "Keep the reference under 120 characters." };
-    await reportManualPayment(
-      user.id,
-      input.data.requestId,
-      input.data.reference,
-    );
-    revalidatePath("/dashboard/plan");
-    const view = await getRequestView(user.id, input.data.requestId);
-    return view
-      ? { ok: true, view }
-      : { ok: false, message: "Something went wrong. Please try again." };
+    const input = z.object({ orderId: id, requestId: id.nullable(), reference: z.string().trim().max(120) }).safeParse({ orderId, requestId, reference });
+    if (!input.success) return { ok: false, message: "Keep the reference under 120 characters." };
+    if (!(await rateLimit(`review:${user.id}`, 10, 60 * 10)).ok) return { ok: false, message: "Too many attempts. Please wait a few minutes." };
+    await submitPaymentReview(user.id, input.data.orderId, { requestId: input.data.requestId, reference: input.data.reference });
+    revalidatePath("/dashboard", "layout");
+    return { ok: true, href: `/dashboard/payment-review/${input.data.orderId}` };
   } catch (e) {
-    return payFail(e);
+    return { ok: false, message: checkoutFail(e).message ?? "Something went wrong. Please try again." };
   }
 }
