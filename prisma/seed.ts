@@ -101,8 +101,18 @@ async function seedDemo() {
 async function main() {
   await seedFaqs();
   await seedPlans();
-  if (process.env.NODE_ENV !== "production" || process.env.SEED_DEMO === "true") await seedDemo();
-  else console.log("• Skipping demo data in production (set SEED_DEMO=true to force)");
+  // Demo channels only go into a local database. Checking the host (not NODE_ENV) means running the seed
+  // from a dev machine against the production database never adds them.
+  const dbHost = (() => {
+    try {
+      return new URL(process.env.DATABASE_URL ?? "").hostname;
+    } catch {
+      return "";
+    }
+  })();
+  const localDb = ["localhost", "127.0.0.1", "::1", "[::1]"].includes(dbHost) && process.env.NODE_ENV !== "production";
+  if (localDb || process.env.SEED_DEMO === "true") await seedDemo();
+  else console.log("• Skipping demo data outside a local database (set SEED_DEMO=true to force)");
 }
 
 main()
