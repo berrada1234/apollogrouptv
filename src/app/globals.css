@@ -8,45 +8,49 @@
  * (py-16 / py-24 / py-28), cards 20–32px padding, gaps 12 / 16 / 24px.
  */
 :root {
-  /* Surfaces: deep black → charcoal */
-  --bg: #050607;
-  --bg-secondary: #0a0c0f;
-  --card: #0f1216;
-  --card-hover: #14181d;
-  --raised: #1a1f25;
-  --inset: #08090c;
+  /* Surfaces: void black with a midnight-blue cast; purple lives in light, not in fills */
+  --bg: #05060f;
+  --bg-secondary: #080a1a;
+  --card: #0c1024;
+  --card-hover: #121836;
+  --raised: #161c3a;
+  --inset: #04050d;
+  --midnight: #0b1233;
+  --nebula: #1c1040;
 
-  /* Brand: electric cyan */
-  --primary: #22d3ee;
-  --primary-hover: #67e8f9;
-  --on-primary: #03141a;
-  --accent: #2fd9f0;
-  --light-blue: #a5f3fc;
+  /* Brand: signal cyan (the logo's glow) refracting into violet */
+  --primary: #46e0ff;
+  --primary-hover: #8aecff;
+  --on-primary: #05060f;
+  --accent: #5fe3ff;
+  --light-blue: #b9f3ff;
+  --violet: #9d7bff;
+  --spectrum: linear-gradient(100deg, #46e0ff 0%, #7aa2ff 50%, #9d7bff 100%);
 
   /* Text */
-  --text: #f4f6f8;
-  --text-muted: #a1a8b3;
-  --text-subtle: #7a828e;
+  --text: #eef1ff;
+  --text-muted: #a3aacb;
+  --text-subtle: #7a81a6;
 
-  /* Lines */
-  --border: #1c2026;
-  --border-strong: #2a3038;
+  /* Lines: translucent so they read the same on every surface */
+  --border: rgb(160 175 255 / 0.1);
+  --border-strong: rgb(160 175 255 / 0.18);
 
   /* Status */
-  --success: #22c55e;
-  --warning: #f59e0b;
-  --error: #ef4444;
+  --success: #34d399;
+  --warning: #fbbf24;
+  --error: #f87171;
 
-  /* Shape */
+  /* Shape: pill controls, 24px panels, 14px inner cards */
   --radius-sm: 10px;
-  --radius: 14px;
-  --radius-lg: 20px;
+  --radius: 16px;
+  --radius-lg: 24px;
 
-  /* Elevation — layered, low-opacity shadows read as depth on near-black */
+  /* Elevation: a top highlight plus a deep, cool shadow */
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.5);
-  --shadow-card: inset 0 1px 0 rgb(255 255 255 / 0.03), 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -12px rgb(0 0 0 / 0.7);
-  --shadow-lg: inset 0 1px 0 rgb(255 255 255 / 0.04), 0 2px 4px rgb(0 0 0 / 0.35), 0 24px 48px -16px rgb(0 0 0 / 0.8);
-  --shadow-glow: 0 0 0 1px rgb(34 211 238 / 0.35), 0 16px 40px -18px rgb(34 211 238 / 0.45);
+  --shadow-card: inset 0 1px 0 rgb(255 255 255 / 0.05), 0 1px 2px rgb(0 0 0 / 0.4), 0 18px 40px -24px rgb(2 4 20 / 0.9);
+  --shadow-lg: inset 0 1px 0 rgb(255 255 255 / 0.06), 0 2px 4px rgb(0 0 0 / 0.35), 0 30px 60px -20px rgb(2 4 20 / 0.95);
+  --shadow-glow: 0 0 0 1px rgb(70 224 255 / 0.35), 0 20px 50px -20px rgb(122 162 255 / 0.55);
 
   color-scheme: dark;
 }
@@ -63,6 +67,9 @@
   --color-on-primary: var(--on-primary);
   --color-accent: var(--accent);
   --color-light-blue: var(--light-blue);
+  --color-violet: var(--violet);
+  --color-midnight: var(--midnight);
+  --color-nebula: var(--nebula);
   --color-text: var(--text);
   --color-muted: var(--text-muted);
   --color-subtle: var(--text-subtle);
@@ -72,7 +79,8 @@
   --color-warning: var(--warning);
   --color-error: var(--error);
   --font-sans: var(--font-body);
-  --font-display: var(--font-display);
+  --font-display: var(--font-body);
+  --font-hero: var(--font-hero);
   --radius-sm: var(--radius-sm);
   --radius-card: var(--radius);
   --radius-lg: var(--radius-lg);
@@ -84,14 +92,13 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
+  scroll-padding-top: 6rem;
 }
 
 body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
-  font-feature-settings: "cv11", "ss01";
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -107,40 +114,337 @@ p {
 }
 
 ::selection {
-  background: rgb(34 211 238 / 0.4);
+  background: rgb(157 123 255 / 0.45);
 }
 
 :focus-visible {
   outline: 2px solid var(--accent);
-  outline-offset: 2px;
-  border-radius: 6px;
+  outline-offset: 3px;
+  border-radius: 8px;
 }
 
-/* Subtle grid that fades out from the top — used once per hero, never stacked. */
+/* ─── Atmosphere ──────────────────────────────────────────────────────────── */
+
+/* Faint perspective grid, fading from the top. Used once per hero. */
 .bg-grid {
   background-image:
-    linear-gradient(to right, rgb(160 170 185 / 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(160 170 185 / 0.05) 1px, transparent 1px);
-  background-size: 56px 56px;
+    linear-gradient(to right, rgb(160 175 255 / 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(160 175 255 / 0.05) 1px, transparent 1px);
+  background-size: 64px 64px;
   mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, black 30%, transparent 75%);
 }
 
-/* A single soft light source from above; replaces ad-hoc blurred blobs. */
 .bg-spotlight {
-  background: radial-gradient(60% 50% at 50% 0%, rgb(34 211 238 / 0.16), transparent 70%);
+  background: radial-gradient(60% 50% at 50% 0%, rgb(122 162 255 / 0.16), transparent 70%);
 }
 
-.text-gradient {
-  background: linear-gradient(110deg, var(--text) 20%, var(--light-blue) 60%, var(--accent));
+/* Starfield: one element, many box-shadows, one slow drift. Cheap enough for any device. */
+.starfield,
+.starfield::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  border-radius: 9999px;
+  background: transparent;
+  box-shadow:
+    120px 80px #cfd8ff, 340px 210px #9fb4ff, 560px 60px #ffffff, 780px 300px #b9f3ff, 990px 140px #cfd8ff,
+    1210px 260px #9d7bff, 1420px 90px #ffffff, 1640px 340px #9fb4ff, 220px 420px #b9f3ff, 460px 520px #cfd8ff,
+    700px 460px #9d7bff, 930px 600px #ffffff, 1150px 480px #cfd8ff, 1380px 560px #b9f3ff, 1600px 470px #9fb4ff,
+    60px 640px #ffffff, 300px 720px #9fb4ff, 640px 760px #cfd8ff, 880px 820px #b9f3ff, 1100px 700px #ffffff,
+    1320px 780px #9d7bff, 1540px 680px #cfd8ff, 1760px 600px #ffffff, 1840px 180px #b9f3ff, 40px 300px #cfd8ff;
+  opacity: 0.55;
+  animation: star-drift 120s linear infinite;
+}
+.starfield::after {
+  content: "";
+  transform: translate(37px, 51px) scale(1.4);
+  opacity: 0.35;
+  animation: star-twinkle 6s ease-in-out infinite alternate;
+}
+@keyframes star-drift {
+  to {
+    transform: translateY(-140px);
+  }
+}
+@keyframes star-twinkle {
+  from {
+    opacity: 0.15;
+  }
+  to {
+    opacity: 0.5;
+  }
+}
+
+/* Spectrum text and hairlines: the refraction colors, used for structure, not decoration. */
+.text-spectrum {
+  background: var(--spectrum);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
-
-/* Hairline divider with fading ends. */
+.text-gradient {
+  background: linear-gradient(110deg, var(--text) 25%, var(--light-blue) 65%, var(--violet));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
 .divider-fade {
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--border-strong), transparent);
+}
+
+/* Glass panel: translucent midnight fill with a lit top edge. Blur is reserved for floating chrome. */
+.glass {
+  background: linear-gradient(180deg, rgb(28 36 80 / 0.42), rgb(12 16 36 / 0.62));
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+}
+.glass-blur {
+  background: rgb(10 13 32 / 0.6);
+  border: 1px solid rgb(160 175 255 / 0.12);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  backdrop-filter: blur(18px) saturate(140%);
+}
+
+/* Gradient hairline border for the one panel in a section that leads. */
+.edge-spectrum {
+  position: relative;
+  isolation: isolate;
+}
+.edge-spectrum::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgb(70 224 255 / 0.7), rgb(122 162 255 / 0.15) 40%, rgb(157 123 255 / 0.6));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Pointer-following light on interactive cards (--mx/--my set by CardGlow). */
+.card-glow {
+  position: relative;
+  overflow: hidden;
+}
+.card-glow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(320px circle at var(--mx, 50%) var(--my, -20%), rgb(122 162 255 / 0.14), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.card-glow:hover::after {
+  opacity: 1;
+}
+
+/* Primary button sheen: a single light sweep on hover. */
+.btn-sheen {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.btn-sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 0.45) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.btn-sheen:hover::after {
+  transform: translateX(120%);
+}
+
+/* Icon micro-interaction: the icon lifts and glows when its card is hovered. */
+.icon-lift {
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease,
+    color 0.35s ease;
+}
+.group:hover .icon-lift {
+  transform: translateY(-3px) rotate(-6deg);
+  box-shadow: 0 10px 24px -10px rgb(70 224 255 / 0.7);
+  color: var(--light-blue);
+}
+
+/* ─── Hero prism ──────────────────────────────────────────────────────────── */
+
+.prism-stage {
+  perspective: 1200px;
+}
+.prism-body {
+  transform-style: preserve-3d;
+  transform: rotateX(calc(var(--ry, 0) * -10deg)) rotateY(calc(var(--rx, 0) * 14deg));
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.prism-float {
+  transform-style: preserve-3d;
+  animation: prism-float 9s ease-in-out infinite;
+}
+.prism-facet {
+  position: absolute;
+  inset: 0;
+  transform: translate3d(calc(var(--fx) * var(--split, 1)), calc(var(--fy) * var(--split, 1)), var(--fz));
+  transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.prism-assemble {
+  --split: 3.2;
+}
+@keyframes prism-float {
+  0%,
+  100% {
+    transform: translateY(0) rotateZ(0deg);
+  }
+  50% {
+    transform: translateY(-14px) rotateZ(1.5deg);
+  }
+}
+/* Spectrum fan leaving the prism: breathes slowly. */
+.beam-fan {
+  animation: beam-breathe 7s ease-in-out infinite;
+  transform-origin: 0% 50%;
+}
+@keyframes beam-breathe {
+  0%,
+  100% {
+    opacity: 0.75;
+    transform: scaleY(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleY(1.08);
+  }
+}
+/* Light pulse travelling along the incoming beam. */
+.beam-pulse {
+  animation: beam-pulse 3.6s cubic-bezier(0.55, 0, 0.45, 1) infinite;
+}
+@keyframes beam-pulse {
+  from {
+    transform: translateX(-30%);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  to {
+    transform: translateX(260%);
+    opacity: 0;
+  }
+}
+
+/* Hero load sequence: the one orchestrated entrance on the site. */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+.rise {
+  animation: rise-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--d, 0) * 110ms + 80ms);
+}
+/* Headline reveal: each line slides up from behind a mask. */
+.line-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+}
+.line-mask > span {
+  display: block;
+  animation: line-up 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--d, 0) * 120ms + 120ms);
+}
+@keyframes line-up {
+  from {
+    transform: translateY(105%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+/* ─── Scroll-driven motion (no JS; browsers without support show content as-is) ─── */
+
+@supports (animation-timeline: view()) {
+  /* Section headers settle into place once as they enter. */
+  .reveal {
+    animation: reveal-in linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 60%;
+  }
+  /* Gentle parallax for floating visuals. */
+  .parallax {
+    animation: parallax-y linear both;
+    animation-timeline: view();
+    animation-range: cover;
+  }
+  /* A connector line that draws itself as the steps scroll in. */
+  .draw-x {
+    transform-origin: left center;
+    animation: draw-x linear both;
+    animation-timeline: view();
+    animation-range: entry 20% cover 45%;
+  }
+}
+@keyframes reveal-in {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes parallax-y {
+  from {
+    transform: translateY(40px);
+  }
+  to {
+    transform: translateY(-40px);
+  }
+}
+@keyframes draw-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Marquee for device logos. */
+.marquee {
+  mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+}
+.marquee-track {
+  animation: marquee 38s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 /* Hide scrollbars on horizontal chip rows while keeping them scrollable. */
@@ -153,17 +457,16 @@ p {
 
 /*
  * Spacing system (8px base). Sections pick one rhythm by purpose:
- *   section-y     standard content section  56 → 72 → 88px
+ *   section-y     standard content section  64 → 88 → 112px
  *   section-y-sm  compact strip or panel    40 → 48 → 56px
- * Inside a section: header → content 40/48px, card grids gap 16px, two-column gap 40/64px.
  */
 @utility section-y {
-  padding-block: 3.5rem;
+  padding-block: 4rem;
   @media (width >= 48rem) {
-    padding-block: 4.5rem;
+    padding-block: 5.5rem;
   }
   @media (width >= 64rem) {
-    padding-block: 5.5rem;
+    padding-block: 7rem;
   }
 }
 @utility section-y-sm {
@@ -187,17 +490,16 @@ p {
   }
 }
 
-
 /* Draws the eye to the next step (I Have Paid, Get Your Login Info). */
 @keyframes attention-ring {
   0% {
-    box-shadow: 0 0 0 0 rgb(34 211 238 / 0.55);
+    box-shadow: 0 0 0 0 rgb(70 224 255 / 0.55);
   }
   70% {
-    box-shadow: 0 0 0 12px rgb(34 211 238 / 0);
+    box-shadow: 0 0 0 12px rgb(70 224 255 / 0);
   }
   100% {
-    box-shadow: 0 0 0 0 rgb(34 211 238 / 0);
+    box-shadow: 0 0 0 0 rgb(70 224 255 / 0);
   }
 }
 
@@ -219,24 +521,21 @@ p {
   animation: attention-nudge 0.9s ease-in-out infinite;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .attention,
-  .attention-hand {
-    animation: none;
-  }
-}
-
-/* Homepage bands: one divider and an alternating tint, whatever order the sections are in.
-   Unlayered, so it overrides each section's own border/background utilities. */
+/* Homepage bands: a soft gradient seam between sections instead of hard rules. */
 .home-band {
+  position: relative;
+  overflow-x: clip; /* decorative rings may extend past the edge; clip keeps sticky children working */
   scroll-margin-top: 2.5rem; /* adds to html scroll-padding: clears header + quick nav */
-  border-top: 1px solid var(--border);
 }
-.home-band:first-of-type {
-  border-top: 0;
-}
-.home-band:nth-of-type(even) {
-  background-color: var(--bg-secondary);
+.home-band + .home-band::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: min(72rem, 90%);
+  height: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, rgb(122 162 255 / 0.22), transparent);
 }
 /* Pages that end with their own CTA (the homepage and any page using CtaBand) skip the shared footer CTA. */
 body:has(.home-band, .page-cta) .footer-cta {
@@ -249,8 +548,28 @@ body:has(.home-band, .page-cta) .footer-cta {
 
 /* Native <dialog> backdrop */
 dialog::backdrop {
-  background: rgb(2 6 16 / 0.7);
-  backdrop-filter: blur(4px);
+  background: rgb(3 4 14 / 0.72);
+  backdrop-filter: blur(6px);
+}
+
+/* Route changes cross-fade with a slight lift (React <ViewTransition> in the marketing layout). */
+::view-transition-old(.page-fade) {
+  animation: vt-out 0.18s ease-in both;
+}
+::view-transition-new(.page-fade) {
+  animation: vt-in 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes vt-out {
+  to {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+@keyframes vt-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -262,6 +581,15 @@ dialog::backdrop {
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
     transition-duration: 0.01ms !important;
+  }
+  .reveal,
+  .parallax,
+  .draw-x {
+    animation: none !important;
+  }
+  .prism-assemble {
+    --split: 1;
   }
 }

@@ -30,16 +30,16 @@ export function HomeQuickNav({ items }: { items: { id: string; label: string }[]
   }, [active]);
 
   return (
-    <nav aria-label="On this page" className="sticky top-16 z-40 border-b border-border/70 bg-bg/85 backdrop-blur-xl">
-      <ul ref={listRef} className="no-scrollbar mx-auto flex max-w-7xl gap-1 overflow-x-auto px-4 py-2 sm:px-6 lg:justify-center lg:px-8">
+    <nav aria-label="On this page" className="sticky top-[4.75rem] z-40 px-3 py-2 sm:px-4">
+      <ul ref={listRef} className="glass-blur no-scrollbar mx-auto flex w-fit max-w-full gap-1 overflow-x-auto rounded-full p-1.5">
         {items.map((i) => (
           <li key={i.id} data-id={i.id} className="shrink-0">
             <a
               href={`#${i.id}`}
               aria-current={active === i.id ? "true" : undefined}
               className={cn(
-                "block rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors",
-                active === i.id ? "bg-primary/15 text-light-blue" : "text-muted hover:bg-card hover:text-text",
+                "block rounded-full px-3.5 py-1.5 text-sm font-medium transition-[background-color,color] duration-300",
+                active === i.id ? "bg-[image:var(--spectrum)] text-on-primary shadow-[0_6px_18px_-8px_rgb(122_162_255/0.9)]" : "text-muted hover:bg-white/[0.06] hover:text-text",
               )}
             >
               {i.label}

@@ -158,7 +158,7 @@ export default async function PlansBillingPage({ searchParams }: PageProps<"/das
                 key={plan.id}
                 className={cn(
                   "relative flex flex-col rounded-[16px] border p-6 text-center",
-                  best ? "border-primary/60 bg-gradient-to-b from-[#0b2a30] to-card shadow-glow" : "border-border bg-card shadow-card",
+                  best ? "border-primary/60 bg-gradient-to-b from-[#141a4a] to-card shadow-glow" : "border-border bg-card shadow-card",
                 )}
               >
                 {best && (

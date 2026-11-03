@@ -18,6 +18,7 @@ import {
   Receipt,
   ShieldCheck,
   Sparkles,
+  Star,
   Tv,
   User,
   UserPlus,
@@ -26,7 +27,9 @@ import {
   Download,
 } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
-import { Container, EmptyState, Stars } from "@/components/ui/misc";
+import { LogoMark } from "@/components/logo";
+import { ProductVisual } from "@/components/home/product-visual";
+import { Container, EmptyState } from "@/components/ui/misc";
 import { PlanCard } from "@/components/marketing/sections";
 import { FaqAccordion } from "@/components/marketing/faq-list";
 import { Eyebrow } from "@/components/home/hero";
@@ -45,51 +48,126 @@ function formatMembers(n: number) {
   return `${Math.floor(n / 10) * 10}+`;
 }
 
-export function SocialProofBar({ members, rating }: { members: number; rating: { average: number | null; total: number } }) {
-  // Below this, a member count reads as noise rather than proof — show an honest invitation instead.
-  const showMembers = members >= 50;
+/* Illustrated member avatars: drawn, not photos, so no real person is implied. */
+const avatarArt = [
+  { bg: ["#46e0ff", "#2b5cff"], skin: "#f1c7a3", hair: "#2a1a12", hairPath: "M14 19c0-6 4-10 10-10s10 4 10 10c-2-3-6-5-10-5s-8 2-10 5Z" },
+  { bg: ["#9d7bff", "#5b3fd1"], skin: "#c98d6b", hair: "#120c0a", hairPath: "M13 21c0-7 5-12 11-12s11 5 11 12c0 3-1 6-2 7 0-6-4-11-9-11s-9 5-9 11c-1-1-2-4-2-7Z" },
+  { bg: ["#7aa2ff", "#3346c8"], skin: "#8d5a3b", hair: "#0d0907", hairPath: "M15 17c1-5 5-8 9-8s8 3 9 8c-3-2-6-2-9-2s-6 0-9 2Z" },
+  { bg: ["#b9f3ff", "#46a8ff"], skin: "#f5d6bd", hair: "#b8742f", hairPath: "M13 22c0-8 5-13 11-13s11 5 11 13c-1-4-3-6-5-7-2 2-6 3-12 3-2 1-4 2-5 4Z" },
+  { bg: ["#c4a8ff", "#7a4fe0"], skin: "#e0a988", hair: "#3b2416", hairPath: "M14 18c1-6 5-9 10-9 6 0 10 4 10 9-4-1-6-3-7-5-2 3-7 5-13 5Z" },
+];
+
+function MemberAvatar({ i }: { i: number }) {
+  const a = avatarArt[i % avatarArt.length];
+  const id = `av-${i}`;
   return (
-    <section aria-label="At a glance" className="relative border-y border-border bg-bg-secondary">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" aria-hidden />
+    <svg viewBox="0 0 48 48" className="h-10 w-10 rounded-full ring-[3px] ring-[#0c1024]" aria-hidden>
+      <defs>
+        <linearGradient id={id} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor={a.bg[0]} />
+          <stop offset="1" stopColor={a.bg[1]} />
+        </linearGradient>
+        <clipPath id={`${id}c`}>
+          <circle cx="24" cy="24" r="24" />
+        </clipPath>
+      </defs>
+      <g clipPath={`url(#${id}c)`}>
+        <rect width="48" height="48" fill={`url(#${id})`} />
+        <path d="M8 48c1-9 8-14 16-14s15 5 16 14Z" fill="#0c1024" opacity="0.85" />
+        <rect x="20" y="27" width="8" height="8" rx="3" fill={a.skin} />
+        <circle cx="24" cy="21" r="9" fill={a.skin} />
+        <path d={a.hairPath} fill={a.hair} />
+      </g>
+    </svg>
+  );
+}
+
+/** Five stars with a partial fill for fractional ratings (4.8 → the last star 80% filled). */
+function RatingStars({ rating }: { rating: number }) {
+  return (
+    <span className="flex gap-0.5" aria-hidden>
+      {[0, 1, 2, 3, 4].map((n) => {
+        const fill = Math.max(0, Math.min(1, rating - n));
+        return (
+          <span key={n} className="relative h-[18px] w-[18px]">
+            <Star className="absolute inset-0 h-full w-full text-white/15" fill="currentColor" strokeWidth={0} />
+            <span className="absolute inset-y-0 left-0 overflow-hidden" style={{ width: `${fill * 100}%` }}>
+              <Star className="h-[18px] w-[18px] text-[#fbbf24] drop-shadow-[0_0_6px_rgb(251_191_36/0.55)]" fill="currentColor" strokeWidth={0} />
+            </span>
+          </span>
+        );
+      })}
+    </span>
+  );
+}
+
+export function SocialProofBar({
+  members,
+  rating,
+  overrides,
+}: {
+  members: number;
+  rating: { average: number | null; total: number };
+  /** Owner-entered figures (Admin → Settings → Homepage highlights); blank falls back to live data. */
+  overrides: { rating: string; reviewCount: string; members: string };
+}) {
+  // Below 50 a live member count reads as noise rather than proof, so the bar invites instead.
+  const memberLabel = overrides.members || (members >= 50 ? formatMembers(members) : null);
+  const score = overrides.rating ? Number(overrides.rating) : rating.total > 0 ? rating.average : null;
+  const reviewLabel = overrides.reviewCount || (rating.total > 0 ? rating.total.toLocaleString("en-US") : null);
+
+  return (
+    <section aria-label="At a glance" className="relative pb-4 pt-2">
       <Container>
-        <div className="grid divide-y divide-border lg:grid-cols-[1fr_1.3fr_1fr] lg:divide-x lg:divide-y-0">
-          <div className="flex items-center justify-center gap-4 py-5 lg:justify-start lg:pr-6">
-            <div className="flex -space-x-2" aria-hidden>
-              {["from-[#67e8f9] to-[#0891b2]", "from-[#a5f3fc] to-[#22d3ee]", "from-[#5eead4] to-[#0f766e]", "from-[#22d3ee] to-[#0e7490]"].map((g) => (
-                <span key={g} className={`grid h-8 w-8 place-items-center rounded-full bg-gradient-to-br ${g} text-on-primary ring-2 ring-bg-secondary`}>
-                  <User className="h-3.5 w-3.5" />
-                </span>
+        <div className="glass edge-spectrum grid divide-y divide-border rounded-[28px] px-6 sm:px-8 lg:grid-cols-[1.25fr_1.2fr_1fr] lg:divide-x lg:divide-y-0">
+          <div className="flex items-center justify-center gap-4 py-6 lg:justify-start lg:pr-8">
+            <div className="flex shrink-0 -space-x-3">
+              {avatarArt.map((_, i) => (
+                <MemberAvatar key={i} i={i} />
               ))}
             </div>
             <div>
-              <p className="text-sm font-semibold text-text">
-                {showMembers ? <>Joined by <span className="tabular-nums">{formatMembers(members)}</span> members</> : "Be one of our first members"}
-              </p>
-              <p className="text-xs text-subtle">Every account is email-verified</p>
+              {memberLabel ? (
+                <>
+                  <p className="whitespace-nowrap font-hero text-base font-medium tracking-[-0.03em] text-text">
+                    Joined by <span className="tabular-nums">{memberLabel}</span>
+                  </p>
+                  <p className="text-sm text-muted">cord-cutters worldwide</p>
+                </>
+              ) : (
+                <>
+                  <p className="font-hero text-base font-medium tracking-[-0.03em] text-text">Be one of our first members</p>
+                  <p className="text-sm text-muted">Every account is email-verified</p>
+                </>
+              )}
             </div>
           </div>
 
-          <Link href="/app" className="group flex flex-col items-center justify-center gap-2.5 py-5 lg:px-6">
-            <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3" aria-label="Supported devices">
+          <Link href="/app" className="group flex flex-col items-center justify-center gap-3 py-6 lg:px-8">
+            <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3" aria-label="Supported devices">
               {homeCopy.devices.logos.map((d) => (
                 <li key={d.name} className="flex items-center">
-                  <Image src={d.src} alt={d.alt} width={d.width} height={d.height} title={d.name} className="h-6 w-auto object-contain opacity-80 transition-opacity group-hover:opacity-100 sm:h-7" />
+                  <Image src={d.src} alt={d.alt} width={d.width} height={d.height} title={d.name} className="h-6 w-auto object-contain opacity-80 transition-[opacity,transform] duration-300 group-hover:opacity-100 sm:h-7" />
                 </li>
               ))}
             </ul>
             <span className="text-center text-xs text-subtle transition-colors group-hover:text-light-blue">Works on your TV, phone and computer</span>
           </Link>
 
-          <div className="flex items-center justify-center py-5 lg:justify-end lg:pl-6">
-            {rating.total > 0 && rating.average != null ? (
-              <Link href="/reviews" className="flex items-center gap-3 hover:opacity-90">
-                <Stars rating={Math.round(rating.average)} size="h-4 w-4" />
-                <span className="text-sm">
-                  <span className="font-semibold text-text tabular-nums">{rating.average.toFixed(1)}/5</span>{" "}
-                  <span className="text-subtle tabular-nums">
-                    ({rating.total} {rating.total === 1 ? "review" : "reviews"})
+          <div className="flex items-center justify-center py-6 lg:justify-end lg:pl-8">
+            {score !== null && reviewLabel ? (
+              <Link href="/reviews" className="group flex items-center gap-4">
+                <span className="font-hero text-[2rem] font-medium leading-none tracking-[-0.05em] text-text tabular-nums">
+                  {score.toFixed(1)}
+                  <span className="text-lg text-muted">/5</span>
+                </span>
+                <span className="flex flex-col gap-1.5">
+                  <RatingStars rating={score} />
+                  <span className="text-sm text-muted transition-colors group-hover:text-light-blue">
+                    ({reviewLabel} {reviewLabel === "1" ? "review" : "reviews"})
                   </span>
                 </span>
+                <span className="sr-only">Rated {score.toFixed(1)} out of 5</span>
               </Link>
             ) : (
               <Link href="/reviews" className="group flex items-center gap-3">
@@ -126,7 +204,7 @@ export function IntroSection() {
               </p>
             ))}
           </div>
-          <p className="mt-6 border-l-2 border-primary pl-4 font-display text-lg font-semibold text-text">{c.tagline}</p>
+          <p className="mt-7 border-l border-[rgb(122_162_255/0.6)] pl-5 font-hero text-lg font-medium leading-snug tracking-[-0.02em] text-text">{c.tagline}</p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <ButtonLink href="/plans" size="lg">
               Choose your pack <ArrowRight className="h-4 w-4" aria-hidden />
@@ -137,19 +215,66 @@ export function IntroSection() {
           </div>
         </div>
 
-        <ul className="grid gap-4 sm:grid-cols-2 lg:col-span-6">
-          {c.highlights.map((h, i) => {
-            const Icon = highlightIcons[i % highlightIcons.length];
-            return (
-              <li key={h.title} className={cn(cardClass, "flex flex-col p-6")}>
-                <IconBox icon={Icon} />
-                <h3 className="mt-5 font-display text-base font-bold text-text">{h.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-muted">{h.body}</p>
-              </li>
-            );
-          })}
-        </ul>
+        <div className="relative lg:col-span-6">
+          {/* Orbit rings behind the devices: one slow rotation, decorative. */}
+          <div className="pointer-events-none absolute left-1/2 top-1/2 aspect-square w-[115%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/[0.05] motion-safe:animate-[spin_90s_linear_infinite]" aria-hidden>
+            <span className="absolute left-1/2 top-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent shadow-[0_0_12px_rgb(70_224_255/0.9)]" />
+          </div>
+          <div className="pointer-events-none absolute left-1/2 top-1/2 aspect-square w-[85%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-white/[0.06]" aria-hidden />
+          <div className="parallax relative">
+            <ProductVisual />
+          </div>
+        </div>
       </div>
+    </Section>
+  );
+}
+
+// ─── Services: what every pack includes ─────────────────────────────────────
+
+export function ServicesSection() {
+  const c = homeCopy.services;
+  return (
+    <Section>
+      <SectionHeader eyebrow={c.eyebrow} title={c.h2} description={c.description} />
+      {/* Bento: the first item leads, the rest support it. */}
+      <ul className={cn(afterHeader, "grid gap-4 md:grid-cols-6")}>
+        {homeCopy.intro.highlights.map((h, i) => {
+          const Icon = highlightIcons[i % highlightIcons.length];
+          const lead = i === 0;
+          return (
+            <li
+              key={h.title}
+              className={cn(
+                cardClass,
+                cardHover,
+                "group flex flex-col p-7",
+                lead ? "edge-spectrum md:col-span-4 md:row-span-2 md:p-10" : i === 1 ? "md:col-span-2 md:row-span-2" : "md:col-span-3",
+              )}
+            >
+              <IconBox icon={Icon} />
+              <h3 className={cn("mt-6 text-text", lead ? "font-hero text-2xl font-medium tracking-[-0.03em] sm:text-[1.75rem]" : "text-lg font-semibold")}>{h.title}</h3>
+              <p className={cn("mt-3 text-muted", lead ? "max-w-md text-base leading-7" : "text-sm leading-6")}>{h.body}</p>
+              {lead && (
+                <div className="mt-auto flex flex-wrap gap-2 pt-10" aria-hidden>
+                  {["HD", "Full HD", "4K"].map((q, n) => (
+                    <span
+                      key={q}
+                      className={cn(
+                        "rounded-full border px-4 py-1.5 font-hero text-sm font-medium tracking-[-0.02em] transition-transform duration-500 group-hover:-translate-y-1",
+                        n === 2 ? "border-transparent bg-[image:var(--spectrum)] text-on-primary" : "border-border-strong text-light-blue",
+                      )}
+                      style={{ transitionDelay: `${n * 60}ms` }}
+                    >
+                      {q}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </li>
+          );
+        })}
+      </ul>
     </Section>
   );
 }
@@ -385,13 +510,13 @@ export function StepsSection() {
       />
       <ol className={cn(afterHeader, "relative grid gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6")}>
         {/* Connector line through the step markers on large screens */}
-        <span className="pointer-events-none absolute left-6 right-6 top-6 hidden h-px bg-gradient-to-r from-primary/60 via-border-strong to-border lg:block" aria-hidden />
+        <span className="draw-x pointer-events-none absolute left-6 right-6 top-6 hidden h-px bg-[image:var(--spectrum)] opacity-70 lg:block" aria-hidden />
         {steps.map((s, i) => (
-          <li key={s.t} className="relative">
-            <span className="relative grid h-12 w-12 place-items-center rounded-full border border-primary/40 bg-bg font-display text-base font-bold text-accent shadow-[0_0_0_6px_var(--bg)]">
+          <li key={s.t} className="group relative">
+            <span className="relative grid h-12 w-12 place-items-center rounded-full border border-[rgb(122_162_255/0.45)] bg-bg font-hero text-base font-medium text-light-blue shadow-[0_0_0_8px_var(--bg),0_0_24px_-4px_rgb(70_224_255/0.5)] transition-colors duration-300 group-hover:bg-[image:var(--spectrum)] group-hover:text-on-primary">
               {i + 1}
             </span>
-            <h3 className="mt-5 flex items-center gap-2 font-display text-base font-bold text-text">
+            <h3 className="mt-6 flex items-center gap-2 text-lg font-semibold text-text">
               <s.icon className="h-4 w-4 text-subtle" aria-hidden /> {s.t}
             </h3>
             <p className="mt-2 text-sm leading-6 text-muted">{s.b}</p>
@@ -582,9 +707,12 @@ export function FinalCta({ fromMonthly, maxSave }: { fromMonthly: string | null;
   return (
     <section className="section-y relative border-t border-border">
       <Container>
-        <div className="relative overflow-hidden rounded-[20px] border border-primary/25 bg-[#07191d] px-6 py-12 text-center sm:px-12 sm:py-16">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_90%_at_50%_0%,rgb(34_211_238/0.25),transparent_70%)]" aria-hidden />
-          <div className="bg-grid pointer-events-none absolute inset-0 opacity-70" aria-hidden />
+        <div className="edge-spectrum relative overflow-hidden rounded-[32px] bg-[radial-gradient(90%_120%_at_50%_0%,var(--midnight),var(--bg)_70%)] px-6 py-16 text-center sm:px-12 sm:py-24">
+          <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+            <div className="starfield" />
+          </div>
+          <div className="pointer-events-none absolute -bottom-1/2 left-1/2 h-[120%] w-[90%] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgb(157_123_255/0.3),rgb(70_224_255/0.08)_60%,transparent)] blur-2xl" aria-hidden />
+          <LogoMark size={64} className="relative mx-auto mb-8 drop-shadow-[0_0_24px_rgb(70_224_255/0.6)] motion-safe:animate-[prism-float_9s_ease-in-out_infinite]" />
           <div className="relative mx-auto max-w-2xl">
             <Eyebrow>{c.eyebrow}</Eyebrow>
             <h2 className={cn(h2Class, "mt-3")}>{c.h2}</h2>

@@ -12,6 +12,7 @@ import {
   LegalSection,
   PlansSection,
   ReviewsSection,
+  ServicesSection,
   SocialProofBar,
   StepsSection,
   SupportSection,
@@ -45,9 +46,10 @@ export const metadata: Metadata = {
 
 const quickNav = [
   { id: "overview", label: "Overview" },
+  { id: "plans", label: "Pricing" },
+  { id: "services", label: "Services" },
   { id: "sports", label: "Live sports" },
   { id: "devices", label: "Devices" },
-  { id: "plans", label: "Pricing" },
   { id: "how-it-works", label: "How it works" },
   { id: "reviews", label: "Reviews" },
   { id: "faq", label: "FAQ" },
@@ -156,18 +158,27 @@ export default async function HomePage() {
         }}
       />
       <HomeHero
-        tagline={settings.general.tagline}
         stats={stats}
         badges={badges}
       />
       <SocialProofBar
         members={members}
         rating={{ average, total: reviewTotal }}
+        overrides={{ rating: highlights.rating, reviewCount: highlights.reviewCount, members: highlights.members }}
       />
       <HomeQuickNav items={quickNav} />
-      {/* Buyer journey: what it is → what you get → why switch → price → how to start → trust → answers → help. */}
+      {/* Buyer journey: what it is → price → what you get → why switch → price → how to start → trust → answers → help. */}
       <Band id="overview">
         <IntroSection />
+      </Band>
+      <Band id="plans">
+        <PlansSection
+          plans={plans.slice(0, 4)}
+          checkout={isCheckoutEnabled()}
+        />
+      </Band>
+      <Band id="services">
+        <ServicesSection />
       </Band>
       <Band id="sports">
         <SportsSection limit={6} />
@@ -180,12 +191,6 @@ export default async function HomePage() {
           fromMonthly={fromMonthly}
           liveChannels={highlights.liveChannels}
           moviesShows={highlights.moviesShows}
-        />
-      </Band>
-      <Band id="plans">
-        <PlansSection
-          plans={plans.slice(0, 4)}
-          checkout={isCheckoutEnabled()}
         />
       </Band>
       <Band id="how-it-works">

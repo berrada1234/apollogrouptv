@@ -82,6 +82,10 @@ export const settingsSchemas = {
     moneyBackDays: z.union([z.literal(""), z.string().trim().regex(/^\d{1,3}$/, "Days as a number, e.g. 7")]),
     liveChannels: z.string().trim().max(20),
     moviesShows: z.string().trim().max(20),
+    // Proof bar under the hero. Blank = use live data (approved reviews, verified members).
+    rating: z.union([z.literal(""), z.string().trim().regex(/^([0-4](\.\d)?|5(\.0)?)$/, "A rating from 0 to 5, e.g. 4.8")]).default(""),
+    reviewCount: z.string().trim().max(20).default(""),
+    members: z.string().trim().max(20).default(""),
   }),
   // How customers pay, shown on Plans & Billing. Only list methods you actually accept.
   payments: z.object({
@@ -131,7 +135,7 @@ export const defaultSettings: Settings = {
   },
   referral: { enabled: false, rewardDescription: "", qualifyingRule: "" },
   apps: { appVersion: "", appTagline: "", releaseNotes: "", stats: "", qrUrl: "", players: "", playersNote: "", platforms: [] },
-  highlights: { moneyBackDays: "7", liveChannels: "22,000+", moviesShows: "90,000+" },
+  highlights: { moneyBackDays: "7", liveChannels: "22,000+", moviesShows: "90,000+", rating: "", reviewCount: "", members: "" },
   payments: { intro: "", methods: "", guides: "" },
   crypto: {
     btcAddress: "",

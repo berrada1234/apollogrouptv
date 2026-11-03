@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [lastPath, setLastPath] = useState(pathname);
   const { data: session, isPending } = useSession();
 
@@ -21,6 +22,14 @@ export function SiteHeader() {
     setLastPath(pathname);
     setOpen(false);
   }
+
+  // The bar condenses once the page scrolls, so the hero gets the full first screen.
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -51,11 +60,16 @@ export function SiteHeader() {
   );
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/70 bg-bg/80 backdrop-blur-xl">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-        <Logo priority />
+    <header className="sticky top-0 z-50 px-3 pt-3 sm:px-4">
+      <div
+        className={cn(
+          "mx-auto flex h-[3.75rem] max-w-7xl items-center justify-between gap-4 rounded-full pl-5 pr-2.5 transition-[background-color,border-color,box-shadow] duration-300",
+          scrolled || open ? "glass-blur shadow-[0_20px_50px_-24px_rgb(0_0_0/0.9)]" : "border border-transparent",
+        )}
+      >
+        <Logo priority height={34} />
         <nav aria-label="Main" className="hidden lg:block">
-          <ul className="flex items-center gap-0.5 xl:gap-1">
+          <ul className="flex items-center gap-0.5">
             {mainNav.map((item) => {
               const active = pathname === item.href;
               return (
@@ -64,8 +78,8 @@ export function SiteHeader() {
                     href={item.href}
                     aria-current={active ? "page" : undefined}
                     className={cn(
-                      "whitespace-nowrap rounded-lg px-2 py-2 text-[13px] font-medium transition-colors xl:px-3 xl:text-sm",
-                      active ? "text-text" : "text-muted hover:text-text",
+                      "relative whitespace-nowrap rounded-full px-2.5 py-2 text-[13px] font-medium transition-colors xl:px-3.5 xl:text-sm",
+                      active ? "bg-white/[0.07] text-text" : "text-muted hover:text-text",
                     )}
                   >
                     {item.label}
@@ -75,10 +89,10 @@ export function SiteHeader() {
             })}
           </ul>
         </nav>
-        <div className="hidden items-center gap-2 lg:flex">{authActions}</div>
+        <div className="hidden items-center gap-1.5 lg:flex">{authActions}</div>
         <button
           type="button"
-          className="grid h-10 w-10 place-items-center rounded-lg text-muted hover:bg-card hover:text-text lg:hidden"
+          className="relative z-10 grid h-11 w-11 place-items-center rounded-full text-text hover:bg-white/[0.07] lg:hidden"
           aria-expanded={open}
           aria-controls="mobile-nav"
           aria-label={open ? "Close menu" : "Open menu"}
@@ -87,23 +101,27 @@ export function SiteHeader() {
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </div>
+
       {open && (
-        <div id="mobile-nav" className="h-[calc(100dvh-4rem)] overflow-y-auto border-t border-border bg-bg lg:hidden">
-          <nav aria-label="Mobile" className="px-4 py-4">
-            <ul className="space-y-1">
-              {mainNav.map((item) => (
-                <li key={item.href}>
+        <div id="mobile-nav" className="fixed inset-x-0 bottom-0 top-[4.5rem] overflow-y-auto bg-[rgb(5_6_15/0.94)] backdrop-blur-xl lg:hidden">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_40%_at_80%_0%,rgb(122_162_255/0.18),transparent_70%)]" aria-hidden />
+          <nav aria-label="Mobile" className="relative px-6 pb-10 pt-6">
+            <ul>
+              {mainNav.map((item, i) => (
+                <li key={item.href} className="rise border-b border-border" style={{ "--d": i * 0.5 } as React.CSSProperties}>
                   <Link
                     href={item.href}
                     aria-current={pathname === item.href ? "page" : undefined}
-                    className="block rounded-lg px-3 py-3 text-base font-medium text-muted hover:bg-card hover:text-text aria-[current=page]:bg-card aria-[current=page]:text-text"
+                    className="block py-4 font-hero text-xl font-medium tracking-[-0.03em] text-muted transition-colors hover:text-text aria-[current=page]:text-text"
                   >
                     {item.label}
                   </Link>
                 </li>
               ))}
             </ul>
-            <div className="mt-6 flex flex-col gap-2 border-t border-border pt-6 [&>a]:w-full">{authActions}</div>
+            <div className="rise mt-8 flex flex-col gap-2 [&>a]:h-12 [&>a]:w-full" style={{ "--d": 4.5 } as React.CSSProperties}>
+              {authActions}
+            </div>
           </nav>
         </div>
       )}

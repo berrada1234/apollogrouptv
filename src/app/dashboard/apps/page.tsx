@@ -76,7 +76,7 @@ export default async function AppsGuidesPage({ searchParams }: PageProps<"/dashb
 
       {/* App hero */}
       <section className="relative overflow-hidden rounded-[20px] border border-border bg-[#0a0d11] p-6 sm:p-10">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_80%_at_15%_0%,rgb(34_211_238/0.14),transparent_70%)]" aria-hidden />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_80%_at_15%_0%,rgb(70_224_255/0.14),transparent_70%)]" aria-hidden />
         <div className="bg-grid pointer-events-none absolute inset-0 opacity-50" aria-hidden />
         <div className="relative grid gap-8 lg:grid-cols-[1.6fr_auto] lg:items-center">
           <div>
@@ -168,7 +168,7 @@ export default async function AppsGuidesPage({ searchParams }: PageProps<"/dashb
                       aria-current={on ? "page" : undefined}
                       className={cn(
                         "flex h-12 items-center justify-center gap-2 rounded-xl border px-3 text-sm font-semibold transition-colors",
-                        on ? "border-primary bg-primary text-on-primary shadow-[0_10px_30px_-12px_rgb(34_211_238/0.7)]" : "border-border bg-card text-muted hover:border-border-strong hover:text-text",
+                        on ? "border-primary bg-primary text-on-primary shadow-[0_10px_30px_-12px_rgb(70_224_255/0.7)]" : "border-border bg-card text-muted hover:border-border-strong hover:text-text",
                       )}
                     >
                       <Icon className="h-4 w-4 shrink-0" />

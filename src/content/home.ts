@@ -29,6 +29,13 @@ export const homeCopy = {
     ],
   },
 
+  services: {
+    intent: "Informational — what a pack includes",
+    eyebrow: "Included in every pack",
+    h2: "What You Get with Apollo TV",
+    description: "Every pack has the same service, whichever length you choose. These are the parts customers rely on most.",
+  },
+
   howItWorks: {
     intent: "Informational — how does it work",
     eyebrow: "How it works",

@@ -38,7 +38,7 @@ export default async function ReferPage() {
         }
         crumbs={[{ href: "/refer-a-friend", label: "Refer a Friend" }]}
         aside={
-          <div className="relative mx-auto max-w-sm rounded-lg border border-primary/30 bg-gradient-to-br from-[#0b2a30] to-card p-6 shadow-lg" aria-hidden>
+          <div className="relative mx-auto max-w-sm rounded-lg border border-primary/30 bg-gradient-to-br from-[#141a4a] to-card p-6 shadow-lg" aria-hidden>
             <Gift className="h-7 w-7 text-accent" />
             <p className="mt-4 text-xs text-subtle">Your referral code</p>
             <div className="mt-1.5 flex items-center justify-between rounded-xl border border-border bg-inset px-4 py-3">

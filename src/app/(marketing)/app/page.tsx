@@ -50,10 +50,10 @@ export const metadata: Metadata = {
 const whyIcons: LucideIcon[] = [LayoutGrid, Tv, UserCheck, LifeBuoy];
 const reqIcons: LucideIcon[] = [Wifi, MonitorSmartphone, UserCheck];
 const posterTones = [
-  "from-[#0e7490] via-[#0b3b47] to-[#06090c]",
-  "from-[#334155] via-[#1b2430] to-[#06090c]",
-  "from-[#0f766e] via-[#0c3532] to-[#06090c]",
-  "from-[#155e75] via-[#0f2f3a] to-[#06090c]",
+  "from-[#46e0ff] via-[#1b1f5e] to-[#05060f]",
+  "from-[#334155] via-[#1b2430] to-[#05060f]",
+  "from-[#0f766e] via-[#0c3532] to-[#05060f]",
+  "from-[#155e75] via-[#0f2f3a] to-[#05060f]",
 ];
 
 
@@ -68,7 +68,7 @@ function ScreenSketch({ variant }: { variant: number }) {
       </div>
       {variant === 0 && (
         <>
-          <div className="h-[46%] rounded-md bg-[linear-gradient(115deg,#06090c_10%,#0b3a46_60%,#22d3ee_150%)]" />
+          <div className="h-[46%] rounded-md bg-[linear-gradient(115deg,#05060f_10%,#0b3a46_60%,#22d3ee_150%)]" />
           <div className="mt-2 grid grid-cols-4 gap-1.5">
             {[0, 1, 2, 3].map((i) => (
               <div key={i} className={`aspect-video rounded bg-gradient-to-br ${posterTones[i]}`} />
@@ -152,7 +152,7 @@ export default async function AppPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(appLd).replace(/</g, "\\u003c") }} />
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-border">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_70%_at_80%_25%,rgb(34_211_238/0.12),transparent_70%)]" aria-hidden />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_70%_at_80%_25%,rgb(70_224_255/0.12),transparent_70%)]" aria-hidden />
         <div className="bg-grid pointer-events-none absolute inset-0 opacity-60" aria-hidden />
         <Container className="relative pb-12 pt-8 sm:pb-16 sm:pt-12">
           <Breadcrumbs items={[{ href: "/app", label: "App" }]} />
@@ -183,7 +183,7 @@ export default async function AppPage() {
 
             <aside className={cn(cardClass, "p-6 lg:col-span-5")} aria-label="Apollo TV app at a glance">
               <div className="flex items-center gap-3">
-                <span className="grid h-12 w-12 place-items-center rounded-xl bg-primary text-on-primary shadow-[0_10px_30px_-10px_rgb(34_211_238/0.8)]">
+                <span className="grid h-12 w-12 place-items-center rounded-xl bg-primary text-on-primary shadow-[0_10px_30px_-10px_rgb(70_224_255/0.8)]">
                   <Play className="ml-0.5 h-5 w-5 fill-current" aria-hidden />
                 </span>
                 <div>
@@ -271,11 +271,11 @@ export default async function AppPage() {
       <Section>
         <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16 [&>*]:min-w-0">
           <div className="order-2 flex justify-center lg:order-1 lg:col-span-5" aria-hidden>
-            <div className="relative w-[230px] rounded-[34px] border border-white/10 bg-[#0b0d10] p-2 shadow-[0_40px_80px_-30px_rgb(0_0_0/0.9)]">
-              <div className="absolute -inset-10 -z-10 rounded-full bg-[radial-gradient(circle,rgb(34_211_238/0.18),transparent_65%)] blur-2xl" />
+            <div className="relative w-[230px] rounded-[34px] border border-white/10 bg-[#0a0d22] p-2 shadow-[0_40px_80px_-30px_rgb(0_0_0/0.9)]">
+              <div className="absolute -inset-10 -z-10 rounded-full bg-[radial-gradient(circle,rgb(70_224_255/0.18),transparent_65%)] blur-2xl" />
               <div className="overflow-hidden rounded-[27px] bg-[#07090b] p-3">
                 <div className="mx-auto mb-3 h-1.5 w-14 rounded-full bg-white/15" />
-                <div className="aspect-video rounded-lg bg-[linear-gradient(115deg,#06090c_10%,#0b3a46_60%,#22d3ee_150%)]" />
+                <div className="aspect-video rounded-lg bg-[linear-gradient(115deg,#05060f_10%,#0b3a46_60%,#22d3ee_150%)]" />
                 <div className="mt-3 h-2 w-24 rounded bg-white/70" />
                 <div className="mt-1.5 h-1.5 w-32 rounded bg-white/25" />
                 <div className="mt-4 flex gap-1.5">
@@ -450,8 +450,8 @@ export default async function AppPage() {
       {/* CTA */}
       <section className="page-cta section-y-sm border-t border-border">
         <Container>
-          <div className="relative overflow-hidden rounded-[20px] border border-primary/25 bg-[#07191d] px-6 py-10 sm:px-10">
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_100%_at_100%_0%,rgb(34_211_238/0.2),transparent_70%)]" aria-hidden />
+          <div className="relative overflow-hidden rounded-[20px] border border-primary/25 bg-[#0d1238] px-6 py-10 sm:px-10">
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_100%_at_100%_0%,rgb(70_224_255/0.2),transparent_70%)]" aria-hidden />
             <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
               <div className="max-w-xl">
                 <h2 className="font-display text-2xl font-bold tracking-tight text-text sm:text-3xl">{c.cta.h2}</h2>

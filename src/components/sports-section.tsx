@@ -157,7 +157,7 @@ export function SportsSection({
       className="section-y relative overflow-hidden border-t border-border"
     >
       <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(45%_40%_at_85%_0%,rgb(34_211_238/0.1),transparent_70%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(45%_40%_at_85%_0%,rgb(70_224_255/0.1),transparent_70%)]"
         aria-hidden
       />
       <Container className="relative">

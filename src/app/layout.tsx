@@ -1,10 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Manrope } from "next/font/google";
+import { Instrument_Sans, Unbounded } from "next/font/google";
 import { siteConfig } from "@/lib/site";
 import "./globals.css";
 
-const body = Inter({ variable: "--font-body", subsets: ["latin"], display: "swap" });
-const display = Manrope({ variable: "--font-display", subsets: ["latin"], display: "swap", weight: ["500", "600", "700", "800"] });
+const body = Instrument_Sans({ variable: "--font-body", subsets: ["latin"], display: "swap" });
+// App UI headings use the body family (legible at small sizes); Unbounded is the wide display face for marketing headlines.
+const hero = Unbounded({ variable: "--font-hero", subsets: ["latin"], display: "swap", weight: ["400", "500", "600"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -22,13 +23,13 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#050607",
+  themeColor: "#05060f",
   colorScheme: "dark",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${body.variable} ${display.variable} h-full`}>
+    <html lang="en" className={`${body.variable} ${hero.variable} h-full`}>
       <body className="flex min-h-full flex-col bg-bg text-text antialiased">
         <a
           href="#main"

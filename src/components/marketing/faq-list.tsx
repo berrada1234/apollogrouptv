@@ -12,13 +12,13 @@ export function FaqAccordion({ items }: { items: Faq[] }) {
   const [open, setOpen] = useState<string | null>(null);
   const baseId = useId();
   return (
-    <div className="divide-y divide-border overflow-hidden rounded-lg border border-border bg-card shadow-card">
+    <div className="glass divide-y divide-border overflow-hidden rounded-[20px]">
       {items.map((item) => {
         const expanded = open === item.id;
         const panelId = `${baseId}-${item.id}`;
         const buttonId = `${panelId}-btn`;
         return (
-          <div key={item.id} className={cn("transition-colors", expanded && "bg-card-hover/50")}>
+          <div key={item.id} className={cn("transition-colors duration-300", expanded && "bg-white/[0.03]")}>
             <h3>
               <button
                 id={buttonId}
@@ -29,19 +29,24 @@ export function FaqAccordion({ items }: { items: Faq[] }) {
                 className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-[15px] font-medium text-text transition-colors hover:text-light-blue sm:px-6 sm:py-5"
               >
                 {item.question}
-                <span className={cn("grid h-7 w-7 shrink-0 place-items-center rounded-full border transition-colors", expanded ? "border-primary/40 bg-primary/10 text-accent" : "border-border text-subtle")}>
-                  <ChevronDown className={cn("h-4 w-4 transition-transform duration-200", expanded && "rotate-180")} aria-hidden />
+                <span className={cn("grid h-8 w-8 shrink-0 place-items-center rounded-full border transition-[background-color,border-color,color] duration-300", expanded ? "border-transparent bg-[image:var(--spectrum)] text-on-primary" : "border-border-strong text-subtle")}>
+                  <ChevronDown className={cn("h-4 w-4 transition-transform duration-300", expanded && "rotate-180")} aria-hidden />
                 </span>
               </button>
             </h3>
+            {/* Height animates via grid rows; closed panels stay in the DOM but are inert. */}
             <div
               id={panelId}
               role="region"
               aria-labelledby={buttonId}
-              hidden={!expanded}
-              className="px-5 pb-5 text-sm leading-relaxed whitespace-pre-line text-muted sm:px-6"
+              inert={!expanded}
+              className={cn("grid transition-[grid-template-rows,opacity] duration-300 ease-out", expanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0")}
             >
-              <RichText text={item.answer} />
+              <div className="overflow-hidden">
+                <div className="px-5 pb-5 text-sm leading-relaxed whitespace-pre-line text-muted sm:px-6">
+                  <RichText text={item.answer} />
+                </div>
+              </div>
             </div>
           </div>
         );

@@ -18,8 +18,8 @@ export default async function ReferralsPage() {
       <PageHeader title="Referrals & Gifts" description="Invite friends with your personal link, or give someone a pack of their own." />
 
       <div className="mb-6 grid gap-4 md:grid-cols-2">
-        <section className="relative overflow-hidden rounded-[14px] border border-primary/25 bg-[#07191d] p-6">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_100%_at_100%_0%,rgb(34_211_238/0.18),transparent_70%)]" aria-hidden />
+        <section className="relative overflow-hidden rounded-[14px] border border-primary/25 bg-[#0d1238] p-6">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_100%_at_100%_0%,rgb(70_224_255/0.18),transparent_70%)]" aria-hidden />
           <div className="relative">
             <Gift className="h-6 w-6 text-accent" aria-hidden />
             <h2 className="mt-3 font-display text-xl font-bold text-text">{reward ?? "Refer a friend"}</h2>

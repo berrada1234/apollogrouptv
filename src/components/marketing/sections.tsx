@@ -27,14 +27,22 @@ export function PageHero({
 }) {
   const centered = align === "center" && !aside;
   return (
-    <section className="relative overflow-hidden border-b border-border">
-      <div className="bg-spotlight pointer-events-none absolute inset-0" aria-hidden />
+    <section className="relative overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_80%_at_70%_0%,var(--midnight),transparent_70%)]" aria-hidden />
+      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+        <div className="starfield" />
+      </div>
       <div className="bg-grid pointer-events-none absolute inset-0" aria-hidden />
       <Container className={cn("relative py-12 sm:py-16 lg:py-20", aside && "grid items-center gap-10 lg:grid-cols-[1.1fr_1fr]")}>
         <div className={cn(centered && "mx-auto max-w-3xl text-center [&_nav_ol]:justify-center")}>
           <Breadcrumbs items={crumbs} />
-          {eyebrow && <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-accent">{eyebrow}</p>}
-          <h1 className={cn("max-w-3xl font-display text-[2.25rem] font-semibold leading-[1.1] tracking-tight text-text sm:text-5xl", centered && "mx-auto")}>
+          {eyebrow && (
+            <p className="mb-4 inline-flex items-center gap-2.5 text-sm font-medium text-light-blue">
+              <span className="h-px w-6 bg-[image:var(--spectrum)]" aria-hidden />
+              {eyebrow}
+            </p>
+          )}
+          <h1 className={cn("rise max-w-3xl font-hero text-[2rem] font-medium leading-[1.1] tracking-[-0.04em] text-text sm:text-[2.75rem] lg:text-[3.25rem]", centered && "mx-auto")}>
             {title}
           </h1>
           {description && <p className={cn("mt-5 max-w-2xl text-lg leading-relaxed text-muted", centered && "mx-auto")}>{description}</p>}
@@ -71,7 +79,7 @@ export function PlanCard({
     <article
       className={cn(
         "relative flex h-full flex-col rounded-lg border p-6 transition-colors sm:p-7",
-        featured ? "border-primary/60 bg-gradient-to-b from-[#0b2a30] to-card shadow-glow" : "border-border bg-card shadow-card hover:border-border-strong",
+        featured ? "border-primary/60 bg-gradient-to-b from-[#141a4a] to-card shadow-glow" : "border-border bg-card shadow-card hover:border-border-strong",
       )}
     >
       {(bestValue || plan.highlighted) && (
@@ -177,9 +185,9 @@ export function CtaBand({
   return (
     <section className="page-cta py-20">
       <Container>
-        <div className="relative overflow-hidden rounded-[22px] border border-primary/30 bg-gradient-to-br from-[#0b2a30] via-card to-bg-secondary px-6 py-14 text-center sm:px-12">
-          <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-primary/25 blur-3xl" aria-hidden />
-          <h2 className="relative font-display text-3xl font-semibold tracking-tight text-text sm:text-4xl">{title}</h2>
+        <div className="relative overflow-hidden edge-spectrum rounded-[32px] bg-[radial-gradient(90%_120%_at_50%_0%,var(--midnight),var(--bg)_70%)] px-6 py-16 text-center sm:px-12">
+          <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-[rgb(157_123_255/0.25)] blur-3xl" aria-hidden />
+          <h2 className="relative font-hero text-2xl font-medium tracking-[-0.035em] text-text sm:text-4xl">{title}</h2>
           <p className="relative mx-auto mt-4 max-w-xl text-muted">{description}</p>
           <div className="relative mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <ButtonLink href="/create-account" size="lg">

@@ -40,7 +40,7 @@ export default async function PaymentReviewPage({ params }: PageProps<"/dashboar
     <div className="mx-auto max-w-2xl">
       {(reviewing || (approved && !activated)) && <AutoRefresh seconds={30} />}
       <section className="overflow-hidden rounded-[20px] border border-border bg-card shadow-card">
-        <div className="relative border-b border-border bg-gradient-to-b from-[#0b2a30] to-card px-6 py-10 text-center sm:px-10">
+        <div className="relative border-b border-border bg-gradient-to-b from-[#141a4a] to-card px-6 py-10 text-center sm:px-10">
           {activated ? (
             <CheckCircle2 className="mx-auto h-14 w-14 text-success" aria-hidden />
           ) : (

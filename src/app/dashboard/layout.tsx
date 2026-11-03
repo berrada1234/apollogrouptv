@@ -24,7 +24,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const reward = settings.referral.enabled && settings.referral.rewardDescription ? settings.referral.rewardDescription : null;
   const sidebarFooter = (
     <div className="space-y-2">
-      <div className="rounded-xl border border-primary/25 bg-[#07191d] p-4 text-center">
+      <div className="rounded-xl border border-primary/25 bg-[#0d1238] p-4 text-center">
         <span className="mx-auto grid h-9 w-9 place-items-center rounded-lg bg-primary/15 text-accent">
           <Gift className="h-4 w-4" aria-hidden />
         </span>

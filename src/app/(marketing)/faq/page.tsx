@@ -56,7 +56,7 @@ export default async function FaqPage() {
 
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-border">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_70%_at_80%_20%,rgb(34_211_238/0.1),transparent_70%)]" aria-hidden />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_70%_at_80%_20%,rgb(70_224_255/0.1),transparent_70%)]" aria-hidden />
         <div className="bg-grid pointer-events-none absolute inset-0 opacity-60" aria-hidden />
         <Container className="relative pb-10 pt-8 sm:pb-14 sm:pt-12">
           <Breadcrumbs items={[{ href: "/faq", label: "FAQ" }]} />
@@ -170,8 +170,8 @@ export default async function FaqPage() {
       {/* Still stuck */}
       <section className="page-cta section-y-sm border-t border-border">
         <Container>
-          <div className="relative overflow-hidden rounded-[20px] border border-primary/25 bg-[#07191d] px-6 py-10 sm:px-10">
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_100%_at_100%_0%,rgb(34_211_238/0.2),transparent_70%)]" aria-hidden />
+          <div className="relative overflow-hidden rounded-[20px] border border-primary/25 bg-[#0d1238] px-6 py-10 sm:px-10">
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_100%_at_100%_0%,rgb(70_224_255/0.2),transparent_70%)]" aria-hidden />
             <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
               <div className="max-w-xl">
                 <h2 className="font-display text-2xl font-bold tracking-tight text-text sm:text-3xl">Still have a question about Apollo Group TV?</h2>
