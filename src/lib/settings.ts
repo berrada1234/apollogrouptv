@@ -62,7 +62,7 @@ export const settingsSchemas = {
       .max(20),
   }),
   legal: z.object({
-    // Policies stay marked “draft” and noindex until the owner approves them here.
+    // Policies show a “draft” notice until the owner approves them here.
     approved: z.boolean(),
     lastUpdated: z.union([z.literal(""), z.string().regex(/^\d{4}-\d{2}-\d{2}$/)]),
     entityName: z.string().trim().max(160),

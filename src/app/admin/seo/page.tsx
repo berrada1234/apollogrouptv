@@ -48,8 +48,8 @@ export default async function SeoSettingsPage() {
       ok: s.legal.approved,
       label: "Legal pages approved",
       note: s.legal.approved
-        ? "Policy pages are indexable."
-        : "Policy pages stay noindex until approved in Settings → Legal & policies.",
+        ? "Policies are approved; the draft notice is hidden."
+        : "Policy pages are indexed but still show a draft notice until approved in Settings → Legal & policies.",
     },
   ];
 
