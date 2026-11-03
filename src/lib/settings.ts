@@ -80,6 +80,14 @@ export const settingsSchemas = {
     liveChannels: z.string().trim().max(20),
     moviesShows: z.string().trim().max(20),
   }),
+  // How customers pay, shown on Plans & Billing. Only list methods you actually accept.
+  payments: z.object({
+    intro: z.string().trim().max(600).default(""),
+    // One method per line, e.g. "Bitcoin" or "Bank transfer".
+    methods: z.string().trim().max(400).default(""),
+    // "Label | https://link" per line — guides that help customers pay (e.g. how to buy crypto).
+    guides: z.string().trim().max(1200).default(""),
+  }),
   notifications: z.object({
     adminEmail: z.union([z.literal(""), z.email()]),
     notifyOnNewTicket: z.boolean(),
@@ -110,6 +118,7 @@ export const defaultSettings: Settings = {
   referral: { enabled: false, rewardDescription: "", qualifyingRule: "" },
   apps: { appVersion: "", appTagline: "", releaseNotes: "", stats: "", qrUrl: "", players: "", playersNote: "", platforms: [] },
   highlights: { moneyBackDays: "7", liveChannels: "22,000+", moviesShows: "90,000+" },
+  payments: { intro: "", methods: "", guides: "" },
   notifications: { adminEmail: "", notifyOnNewTicket: false, notifyOnNewReview: false },
   legal: {
     approved: false,

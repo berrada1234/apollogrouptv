@@ -11,6 +11,7 @@ export default async function NewTicketPage({ searchParams }: PageProps<"/dashbo
   await requireUser("/dashboard/support/new");
   const sp = await searchParams;
   const gift = sp.topic === "gift";
+  const extend = sp.mode === "extend";
   const plan =
     typeof sp.plan === "string" ? await db.plan.findFirst({ where: { slug: sp.plan, isActive: true }, select: { name: true } }) : null;
 
@@ -20,10 +21,11 @@ export default async function NewTicketPage({ searchParams }: PageProps<"/dashbo
       <Card className="max-w-3xl">
         <CardBody>
           <NewTicketForm
-            defaultSubject={plan ? `Plan activation request: ${plan.name}` : gift ? "Gift pack request" : ""}
+            defaultSubject={plan ? `${extend ? "Extension request" : "Plan activation request"}: ${plan.name}` : gift ? "Gift pack request" : ""}
             defaultMessage={
               plan
-                ? `Hello, I'd like to activate the ${plan.name} plan on my account.`
+                ? `Hello, I'd like to ${extend ? "add the" : "activate the"} ${plan.name} ${extend ? "to my current access" : "on my account"}.
+Promo code (optional): `
                 : gift
                   ? "Hello, I'd like to gift a pack. Recipient's name and email: … Pack I'd like to give: …"
                   : ""

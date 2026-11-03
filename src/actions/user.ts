@@ -8,6 +8,7 @@ import { rateLimit } from "@/lib/rate-limit";
 import { assertUser } from "@/lib/session";
 import { getSettings } from "@/lib/settings";
 import { sendEmail } from "@/lib/email";
+import { isValidReferralCode } from "@/lib/referral";
 import { preferencesSchema, profileSchema, reviewSchema, ticketReplySchema, ticketSchema } from "@/lib/validators";
 
 export async function submitReview(input: z.input<typeof reviewSchema>): Promise<ActionState> {
@@ -132,6 +133,31 @@ export async function markNotificationsRead(ids?: string[]): Promise<ActionState
     });
     revalidatePath("/dashboard", "layout");
     return success("Notifications marked as read.");
+  } catch (error) {
+    return handleActionError(error);
+  }
+}
+
+/** Lets a new customer record who referred them, if they didn't sign up through the link. */
+export async function claimReferralCode(input: { code: string }): Promise<ActionState> {
+  try {
+    const user = await assertUser();
+    const code = String(input?.code ?? "").trim().toUpperCase();
+    if (!isValidReferralCode(code)) return fail("That doesn't look like a referral code. Check it and try again.");
+    if (!(await rateLimit(`refclaim:${user.id}`, 5, 60 * 60)).ok) return fail("Too many attempts. Please try again later.");
+    const [existing, history, referrer] = await Promise.all([
+      db.referral.findUnique({ where: { refereeId: user.id } }),
+      db.subscription.count({ where: { userId: user.id } }),
+      db.user.findUnique({ where: { referralCode: code }, select: { id: true, name: true } }),
+    ]);
+    if (existing) return fail("A referral is already recorded on your account.");
+    // Referrals are for new customers: once a pack has been requested, it's too late to add one.
+    if (history > 0) return fail("Referral codes can only be added before your first pack.");
+    if (!referrer) return fail("We couldn't find that referral code.");
+    if (referrer.id === user.id) return fail("You can't use your own referral code.");
+    await db.referral.create({ data: { referrerId: referrer.id, refereeId: user.id } });
+    revalidatePath("/dashboard/plan");
+    return success(`Thanks! ${referrer.name.split(" ")[0]} is recorded as the friend who referred you.`);
   } catch (error) {
     return handleActionError(error);
   }

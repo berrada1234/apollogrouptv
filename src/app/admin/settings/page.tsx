@@ -157,6 +157,23 @@ export default async function SettingsPage() {
           </ActionForm>
         </Section>
 
+        <Section id="payments" title="Payment methods" description="Shown on Plans & Billing in the customer dashboard. List only methods you actually accept.">
+          <ActionForm action={saveSettings} submitLabel="Save payment methods">
+            <input type="hidden" name="settingsKey" value="payments" />
+            <Field label="Payment explanation" htmlFor="pay-intro" hint="Leave blank to use the default: our team confirms payment options in the activation ticket.">
+              <Textarea id="pay-intro" name="intro" rows={3} defaultValue={s.payments.intro} maxLength={600} />
+            </Field>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Field label="Accepted methods (one per line)" htmlFor="pay-methods">
+                <Textarea id="pay-methods" name="methods" rows={4} defaultValue={s.payments.methods} maxLength={400} placeholder="e.g. Bitcoin" />
+              </Field>
+              <Field label="Payment guides (“Label | https://link” per line)" htmlFor="pay-guides">
+                <Textarea id="pay-guides" name="guides" rows={4} defaultValue={s.payments.guides} maxLength={1200} placeholder="e.g. Cash App | https://…" />
+              </Field>
+            </div>
+          </ActionForm>
+        </Section>
+
         <Section id="notifications" title="Staff notifications" description="Requires SMTP to be configured.">
           <ActionForm action={saveSettings} submitLabel="Save notification settings">
             <input type="hidden" name="settingsKey" value="notifications" />
