@@ -39,7 +39,11 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
   if (!post) notFound();
   const settings = await getSettings();
   const officialDomain = settings.legal.officialDomain || new URL(siteConfig.url).host;
-  const tokens = { officialDomain };
+  // The Downloader code lives in Admin → Settings → App platforms, so articles never go stale when it changes.
+  const copyItems = settings.apps.platforms.flatMap((p) => p.copyItems.split(/\r?\n/)).map((l) => l.split("|").map((x) => x.trim()));
+  const downloaderCode = copyItems.find(([k]) => /downloader code/i.test(k))?.[1] || "shown in our Fire TV setup guide";
+  const downloaderUrl = copyItems.find(([k]) => /full url/i.test(k))?.[1] || "the address shown in our Fire TV setup guide";
+  const tokens = { officialDomain, downloaderCode, downloaderUrl };
   const url = `${siteConfig.url}/blog/${post.slug}`;
   const cover = `${url}/cover`;
 

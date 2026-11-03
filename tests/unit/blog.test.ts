@@ -16,13 +16,19 @@ const reservedKeywords = [
   "how to pay apollo group tv with cash app",
   "how to pay apollo group tv with credit card",
   "what is apollo tv",
+  "is apollo tv illegal",
+  "what is apollo group tv",
+  "how much is apollo tv",
+  "how to download apollo group tv on android",
+  "how to download apollo group tv on fire tv",
+  "how to install apollo tv",
 ];
 
 describe("blog", () => {
   const posts = getPosts();
 
-  it("has ten published articles with unique slugs, H1s, SEO titles and focus keywords", () => {
-    expect(posts).toHaveLength(10);
+  it("has twenty published articles with unique slugs, H1s, SEO titles and focus keywords", () => {
+    expect(posts).toHaveLength(20);
     for (const key of ["slug", "title", "seoTitle", "description", "keyword"] as const) {
       expect(new Set(posts.map((p) => p[key].toLowerCase())).size, key).toBe(posts.length);
     }
