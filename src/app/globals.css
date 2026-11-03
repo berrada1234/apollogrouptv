@@ -188,6 +188,44 @@ p {
 }
 
 
+/* Draws the eye to the next step (I Have Paid, Get Your Login Info). */
+@keyframes attention-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgb(34 211 238 / 0.55);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgb(34 211 238 / 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgb(34 211 238 / 0);
+  }
+}
+
+@keyframes attention-nudge {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(4px);
+  }
+}
+
+.attention {
+  animation: attention-ring 1.8s ease-out infinite;
+}
+
+.attention-hand {
+  animation: attention-nudge 0.9s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .attention,
+  .attention-hand {
+    animation: none;
+  }
+}
+
 /* Homepage bands: one divider and an alternating tint, whatever order the sections are in.
    Unlayered, so it overrides each section's own border/background utilities. */
 .home-band {

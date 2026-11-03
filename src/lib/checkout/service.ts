@@ -118,14 +118,16 @@ export async function createInvoice(userId: string, planSlug: string) {
   if (plan.priceCents < settings.crypto.minimumUsd * 100)
     throw new CheckoutError("This pack is below the minimum payment amount.");
 
-  const open = await getOpenInvoice(userId);
-  if (open && open.status !== "PENDING")
-    throw new CheckoutError(
-      "A payment for your current invoice is being confirmed. Please wait for it to finish first.",
-    );
-  if (open?.planId === plan.id) return open;
-
+  await expireStale(userId);
   const order = await db.$transaction(async (tx) => {
+    // Lock the customer's row so simultaneous requests (e.g. a redirect plus a refresh) can't create two invoices.
+    await tx.$queryRaw`SELECT id FROM users WHERE id = ${userId} FOR UPDATE`;
+    const open = await tx.order.findFirst({ where: { userId, status: { in: OPEN_STATUSES } }, orderBy: { createdAt: "desc" } });
+    if (open && open.status !== "PENDING")
+      throw new CheckoutError(
+        "A payment for your current invoice is being confirmed. Please wait for it to finish first.",
+      );
+    if (open?.planId === plan.id) return open;
     if (open) {
       await tx.order.update({
         where: { id: open.id },

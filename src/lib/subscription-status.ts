@@ -38,23 +38,6 @@ export function subscriptionDisplay(sub: SubLike, orderStatus?: string | null, n
   }
 }
 
-/** Filter values on Subscriptions Management. */
-export const subscriptionFilters = [
-  { value: "active", label: "Active" },
-  { value: "pending-payment", label: "Pending Payment" },
-  { value: "pending-review", label: "Pending Review" },
-  { value: "cancelled", label: "Cancelled" },
-  { value: "expired", label: "Expired" },
-] as const;
-
-export const filterKeys: Record<string, string> = {
-  active: "Active",
-  "pending-payment": "Pending Payment",
-  "pending-review": "Pending Review",
-  cancelled: "Cancelled",
-  expired: "Expired",
-};
-
 /** "MM/DD/YYYY" → a date at 12:00 UTC (so it never shifts a day across time zones), or null if invalid. */
 export function parseUsDate(value: string): Date | null {
   const m = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(value.trim());

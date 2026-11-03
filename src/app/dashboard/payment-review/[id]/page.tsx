@@ -76,8 +76,8 @@ export default async function PaymentReviewPage({ params }: PageProps<"/dashboar
             ))}
           </dl>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <ButtonLink href="/dashboard/subscription" className="flex-1">
-              <KeyRound className="h-4 w-4" aria-hidden /> Get Your Login Info
+            <ButtonLink href="/dashboard/subscription" className="attention flex-1">
+              <KeyRound className="attention-hand h-4 w-4" aria-hidden /> Get Your Login Info
             </ButtonLink>
             {!activated && (
               <ButtonLink href="/dashboard/support/new" variant="secondary" className="flex-1">

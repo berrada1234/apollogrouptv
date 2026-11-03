@@ -18,6 +18,7 @@ import {
   Clock,
   ExternalLink,
   Loader2,
+  Pointer,
   Radio,
   RefreshCw,
   ShieldCheck,
@@ -94,7 +95,7 @@ export function ReservationTimer({ expiresAt }: { expiresAt: string }) {
 }
 
 /** "I Have Paid": asks our team to review the payment, then opens the Payment Under Review page. */
-export function IHavePaidButton({ orderId, requestId = null, className, variant = "secondary" }: { orderId: string; requestId?: string | null; className?: string; variant?: "primary" | "secondary" }) {
+export function IHavePaidButton({ orderId, requestId = null, className, variant = "primary" }: { orderId: string; requestId?: string | null; className?: string; variant?: "primary" | "secondary" }) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -103,6 +104,7 @@ export function IHavePaidButton({ orderId, requestId = null, className, variant 
       <Button
         type="button"
         variant={variant}
+        className="attention w-full"
         loading={busy}
         onClick={async () => {
           setBusy(true);
@@ -112,7 +114,7 @@ export function IHavePaidButton({ orderId, requestId = null, className, variant 
           setError(r.message);
         }}
       >
-        <CheckCircle2 className="h-4 w-4" aria-hidden /> I Have Paid
+        <Pointer className="attention-hand h-4 w-4" aria-hidden /> I Have Paid
       </Button>
       {error && <p className="mt-2 text-xs text-error">{error}</p>}
     </div>
@@ -146,7 +148,6 @@ export function InvoiceActions({
       >
         Continue Payment <ArrowRight className="h-4 w-4" aria-hidden />
       </Button>
-      <IHavePaidButton orderId={orderId} />
       {cancellable && (
         <form ref={form} action={formAction}>
           <input type="hidden" name="orderId" value={orderId} />
@@ -597,14 +598,6 @@ function BitcoinPanel({
             compact
           />
           <CopyField label="Amount to Send (BTC)" value={btc} compact />
-          <p className="-mt-2 text-xs text-subtle">
-            {btc} BTC = {formatMoney(view.usdCents)} USD
-            {view.rateUsd
-              ? ` at ${formatMoney(Math.round(Number(view.rateUsd) * 100))}/BTC`
-              : ""}
-            . Send this exact amount in one transaction; the last digits
-            identify your invoice.
-          </p>
           <p className="flex items-center gap-2 rounded-xl border border-border bg-inset px-4 py-2.5 text-sm text-muted">
             <Radio className="h-4 w-4 text-accent" aria-hidden /> Network:{" "}
             {view.method?.networkLabel ?? "Bitcoin Network"}
@@ -757,8 +750,8 @@ function ManualPanel({ view }: { view: RequestView }) {
           autoComplete="off"
         />
         {error && <p className="text-sm text-error">{error}</p>}
-        <Button type="submit" className="w-full" loading={busy}>
-          I Have Paid
+        <Button type="submit" className="attention w-full" loading={busy}>
+          <Pointer className="attention-hand h-4 w-4" aria-hidden /> I Have Paid
         </Button>
         <p className="text-xs leading-5 text-subtle">
           This sends your payment for review; it isn&apos;t confirmed until our team verifies it arrived. Only send to the details shown here.

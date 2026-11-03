@@ -6,7 +6,17 @@ import { db } from "@/lib/db";
  * Node.js processes. Keys are namespaced with "app:" to stay clear of the
  * auth library's own entries in the same table.
  */
-export async function rateLimit(key: string, max: number, windowSeconds: number) {
+export async function rateLimit(key: string, max: number, windowSeconds: number): Promise<{ ok: boolean }> {
+  try {
+    return await attempt(key, max, windowSeconds);
+  } catch (e) {
+    // Two first requests at the same moment both try to create the row; the loser retries against it.
+    if ((e as { code?: string })?.code === "P2002") return attempt(key, max, windowSeconds);
+    throw e;
+  }
+}
+
+function attempt(key: string, max: number, windowSeconds: number) {
   const id = `app:${key}`;
   const now = Date.now();
   const windowStart = now - windowSeconds * 1000;
