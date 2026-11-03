@@ -8,15 +8,19 @@ import { PageHero } from "@/components/marketing/sections";
 import { ContactForm } from "@/components/forms/contact-form";
 import { getCurrentUser } from "@/lib/session";
 import { getSettings } from "@/lib/settings";
+import { siteConfig } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
+const title = "Contact Apollo Group TV Support: Setup, Billing & Account Help";
+const description =
+  "Reach Apollo Group TV support: open a ticket from your dashboard or send a message. What to include for a fast answer, plus setup and billing help.";
+
 export const metadata: Metadata = {
-  title: { absolute: "Contact Apollo Group TV Support" },
-  description:
-    "Contact Apollo Group TV: send a message, open a support ticket from your account, or find setup and billing help in our guides and FAQ.",
+  title: { absolute: title },
+  description,
   alternates: { canonical: "/contact" },
-  openGraph: { url: "/contact" },
+  openGraph: { title, description, url: "/contact" },
 };
 
 const routes = [
@@ -28,6 +32,18 @@ const routes = [
 
 export default async function ContactPage() {
   const [settings, user] = await Promise.all([getSettings(), getCurrentUser()]);
+  const contactLd = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    name: title,
+    url: `${siteConfig.url}/contact`,
+    about: {
+      "@type": "Organization",
+      name: siteConfig.name,
+      url: siteConfig.url,
+      ...(settings.general.supportEmail ? { contactPoint: { "@type": "ContactPoint", contactType: "customer support", email: settings.general.supportEmail } } : {}),
+    },
+  };
   const g = settings.general;
   const methods = [
     g.supportEmail && { icon: Mail, label: "Email", value: g.supportEmail, href: `mailto:${g.supportEmail}` },
@@ -38,6 +54,7 @@ export default async function ContactPage() {
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(contactLd).replace(/</g, "\\u003c") }} />
       <PageHero
         eyebrow="Support"
         title="Contact Apollo Group TV"

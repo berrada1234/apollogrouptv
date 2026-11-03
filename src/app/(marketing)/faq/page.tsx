@@ -18,7 +18,7 @@ export const dynamic = "force-dynamic";
 
 const title = "Apollo Group TV FAQ: Plans, Setup, Channels & Support Answers";
 const description =
-  "Answers to the questions people ask most about Apollo Group TV — pricing and billing, installing the app, channels, playback, account security, refunds and troubleshooting.";
+  "Answers about Apollo Group TV pricing and billing, installing the app, channels, playback, account security, refunds and troubleshooting.";
 
 export const metadata: Metadata = {
   title: { absolute: title },

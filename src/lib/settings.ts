@@ -70,6 +70,9 @@ export const settingsSchemas = {
     governingLaw: z.string().trim().max(120),
     officialDomain: z.string().trim().max(120),
     refundTerms: z.string().trim().max(4000),
+    // What the Apollo TV app itself collects (it isn't part of this codebase) and where servers are hosted.
+    appDataPractices: z.string().trim().max(1500).default(""),
+    hostingRegion: z.string().trim().max(160).default(""),
     dmcaAgentName: z.string().trim().max(160),
     dmcaAgentEmail: z.union([z.literal(""), z.email()]),
     dmcaAgentAddress: z.string().trim().max(300),
@@ -128,6 +131,8 @@ export const defaultSettings: Settings = {
     governingLaw: "",
     officialDomain: "",
     refundTerms: "",
+    appDataPractices: "",
+    hostingRegion: "",
     dmcaAgentName: "",
     dmcaAgentEmail: "",
     dmcaAgentAddress: "",

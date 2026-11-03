@@ -9,13 +9,14 @@ import { getActivePlans } from "@/lib/queries";
 import { isCheckoutEnabled } from "@/lib/payments";
 import { accessLabel, monthlyCents, monthsFor, perDayCents, pricingContext, savingsPct } from "@/lib/pricing";
 import { getSettings } from "@/lib/settings";
+import { siteConfig } from "@/lib/site";
 import { cn, formatMoney, parseFeatures } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
 const title = "Apollo Group TV Plans & Pricing: One-Time Packs Compared";
 const description =
-  "Compare Apollo Group TV packs by total price, cost per month and per day. One-time payments with no auto-renewal, the same lineup on every pack, and how activation works.";
+  "Compare Apollo Group TV packs by total price, cost per month and per day. One-time payments, no auto-renewal and the same lineup on every pack.";
 
 export const metadata: Metadata = {
   title: { absolute: title },
@@ -89,8 +90,26 @@ export default async function PlansPage() {
     },
   ];
 
+  const serviceLd = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "Apollo Group TV subscription",
+    serviceType: "Internet TV streaming",
+    provider: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
+    url: `${siteConfig.url}/plans`,
+    offers: plans.map((p) => ({
+      "@type": "Offer",
+      name: p.name,
+      price: (p.priceCents / 100).toFixed(2),
+      priceCurrency: p.currency,
+      description: `${accessLabel(p.interval)}, one-time payment`,
+      url: `${siteConfig.url}/plans`,
+    })),
+  };
+
   return (
     <>
+      {plans.length > 0 && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLd).replace(/</g, "\\u003c") }} />}
       <PageHero
         align="center"
         eyebrow="Plans"

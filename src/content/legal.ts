@@ -1,13 +1,26 @@
 /**
- * Policy content. Written to match what this application actually does (see SECURITY.md and the
- * Prisma schema). Business facts the developer cannot know — legal entity, governing law, refund
- * rules, DMCA agent — are {{tokens}} filled from Admin → Settings → Legal & policies. Until the owner
+ * Policy content. Written to match what this application actually does (Prisma schema, auth config,
+ * proxy cookies, admin actions). Business facts the developer cannot know — legal entity, governing law,
+ * refund conditions, DMCA agent, app data practices, hosting region — are {{tokens}} filled from
+ * Admin → Settings → Legal & policies (and the refund window from Homepage highlights). Until the owner
  * approves them, pages render a draft banner and are excluded from indexing.
  *
- * Not legal advice. Have a qualified lawyer review before publication.
+ * Not legal advice. Every policy needs review by a qualified lawyer before publication; clauses that
+ * most need it are listed in docs/seo-content-strategy.md.
  */
-export type LegalSection = { heading: string; paragraphs?: string[]; list?: string[] };
-export type LegalDoc = { slug: string; title: string; metaTitle: string; description: string; intro: string; sections: LegalSection[] };
+export type LegalSection = {
+  heading: string;
+  paragraphs?: string[];
+  list?: string[];
+};
+export type LegalDoc = {
+  slug: string;
+  title: string;
+  metaTitle: string;
+  description: string;
+  intro: string;
+  sections: LegalSection[];
+};
 
 export const TOKEN_LABELS: Record<string, string> = {
   entityName: "legal entity name",
@@ -18,85 +31,123 @@ export const TOKEN_LABELS: Record<string, string> = {
   dmcaAgentName: "DMCA designated agent",
   dmcaAgentEmail: "DMCA agent email",
   dmcaAgentAddress: "DMCA agent postal address",
+  refundWindow: "refund window (days)",
+  appDataPractices: "what data the Apollo TV app collects",
+  hostingRegion: "where the servers are located",
 };
 
 export const privacyPolicy: LegalDoc = {
   slug: "privacy-policy",
   title: "Privacy Policy",
-  metaTitle: "Privacy Policy — Apollo Group TV",
-  description: "How Apollo Group TV collects, uses and protects personal data across the website and account dashboard, and the choices you have.",
+  metaTitle: "Privacy Policy: How Apollo Group TV Handles Your Data",
+  description:
+    "What personal data Apollo Group TV collects through this website and your account, why, who we share it with, how long we keep it and your rights.",
   intro:
-    "This policy explains what personal data Apollo Group TV (operated by {{entityName}}) collects when you use this website and your account, why we need it, and the choices you have.",
+    "This policy explains what personal data Apollo Group TV collects when you use this website and your account dashboard, why we need it, who sees it and what you can do about it. Apollo Group TV is operated by {{entityName}}, which is responsible for your data.",
   sections: [
     {
-      heading: "Information you give us",
+      heading: "What we collect when you give it to us",
       list: [
-        "Account details: your name, email address and a password (we store only a salted hash, never the password itself).",
-        "Preferences: whether you want product updates or marketing emails.",
-        "Support conversations: the tickets and replies you send, and messages submitted through the contact form.",
-        "Reviews you choose to submit, which are published under your first name and last initial once approved.",
+        "**Account details:** your name, email address and password. We store only a salted hash of the password, never the password itself.",
+        "**Email preferences:** whether you want product updates and offers.",
+        "**Support requests:** the tickets and replies you send, and contact-form messages (name, email, topic and message). Anything you choose to include, such as a gift recipient's name, is stored with the ticket.",
+        "**Reviews:** the rating and text you submit. Approved reviews show your first name and last initial.",
+        "**Referral codes:** a friend's code if you enter it before your first pack.",
       ],
     },
     {
-      heading: "Information collected automatically",
+      heading: "What we record while you use the service",
       list: [
-        "Session data: when you sign in we store a session record with your IP address and browser user agent so you can see and sign out of devices.",
-        "Security records: request counts used to rate-limit sign-in and form submissions.",
-        "Account activity: plan, subscription status, notification history and referral relationships.",
+        "**Sessions:** when you sign in we store a session with your IP address and browser details, so you can see your signed-in devices and sign them out.",
+        "**Security counters:** short-lived request counts, keyed by IP address or account, that limit repeated sign-in attempts and form submissions.",
+        "**Packs and payments:** the packs you request, their status and dates, and payment records (amount, currency, status and a reference). We do not store card numbers.",
+        "**Player login:** if our team issues you credentials for third-party players, we store them encrypted (AES-256-GCM) and show them only to you and our administrators.",
+        "**Account activity:** notifications, referral relationships and the history of your support tickets.",
+        "**Staff actions:** when our staff change something on your account (for example activating a pack or replying to a ticket), we log who did it and when, including the staff member's IP address.",
       ],
-      paragraphs: ["We do not run advertising trackers. If analytics are added later, this policy will be updated before they go live."],
     },
     {
       heading: "Cookies",
       paragraphs: [
-        "We use essential cookies only: a session cookie that keeps you signed in, and a referral cookie set for 30 days when you open someone's referral link. You can clear cookies at any time; doing so signs you out.",
+        "We use two essential cookies. A session cookie keeps you signed in for up to 30 days. A referral cookie is set for 30 days when you open someone's referral link, so the referral can be recorded if you sign up.",
+        "We don't use advertising or analytics cookies. If we add analytics, we'll update this policy and ask for consent where the law requires it before it goes live. Clearing your cookies signs you out.",
       ],
     },
     {
-      heading: "How we use information",
+      heading: "How we use your data",
       list: [
         "To create and secure your account, including email verification and password resets.",
-        "To provide your plan, show billing history and respond to support requests.",
-        "To moderate reviews and run the referral program.",
-        "To send service emails, and product or marketing emails only if you opted in.",
-        "To detect abuse and protect the service.",
+        "To activate your pack, record payments and show your plan and transaction history.",
+        "To answer support requests and notify you of replies.",
+        "To run the referral program and moderate reviews.",
+        "To send service emails, and product or marketing emails only if you've opted in.",
+        "To detect abuse, prevent fraud and keep the service secure.",
       ],
     },
     {
-      heading: "Service providers",
+      heading: "Legal bases (EU and UK visitors)",
       paragraphs: [
-        "We share data only with providers that help us run the service: our hosting provider, our email delivery provider and — once online checkout is enabled — our payment provider. Payment card details are handled by the payment provider; we store only a transaction reference. We do not sell personal data.",
+        "We process account, pack and support data to perform our contract with you; security records and staff logs on our legitimate interest in protecting the service; marketing emails on your consent, which you can withdraw at any time; and billing records where accounting and tax law require it.",
       ],
     },
     {
-      heading: "Retention",
+      heading: "Who we share data with",
       paragraphs: [
-        "We keep account data while your account is active. Expired sessions and verification tokens are removed automatically. Billing records may be kept longer where accounting or tax rules require it. You can ask us to delete your account at any time.",
+        "Only providers that help us run the service: our hosting provider, our email delivery provider and any payment provider used for your purchase. They may process data only on our instructions. We do not sell or rent personal data.",
+        "Some devices use independent apps, such as the Downloader app on Fire TV or the UHF player on Apple devices. Those apps are run by other companies under their own privacy policies.",
+        "We may disclose data when the law requires it, to protect our rights or users' safety, or as part of a business transfer, in which case this policy continues to apply.",
       ],
     },
     {
-      heading: "Your choices and rights",
+      heading: "The Apollo TV app",
+      paragraphs: [
+        "This policy covers this website and your dashboard. About the Apollo TV app: {{appDataPractices}}",
+      ],
+    },
+    {
+      heading: "Where your data is stored",
+      paragraphs: [
+        "Our servers are located in {{hostingRegion}}. If that is outside your country, we use the safeguards the law requires for international transfers.",
+      ],
+    },
+    {
+      heading: "How long we keep it",
       list: [
-        "View and edit your name and email preferences in your dashboard.",
-        "Sign out of other devices from Dashboard → Security.",
-        "Ask for a copy of your data, a correction or deletion by contacting {{supportEmail}}.",
-        "Depending on where you live, you may have additional rights under local law (for example, in California or the EU).",
+        "Account, pack and support data: while your account is open, and deleted when you ask us to close it, except records we must keep.",
+        "Sessions: up to 30 days, or until you sign out. Verification links expire after 24 hours and password-reset links after 30 minutes.",
+        "Security counters: minutes to hours, then overwritten.",
+        "Payment records: as long as accounting and tax rules require.",
+        "Contact-form messages: as long as needed to answer and keep a record, or until you ask us to delete them.",
       ],
     },
     {
-      heading: "Security",
+      heading: "Your rights",
+      list: [
+        "Update your name, email preferences and signed-in devices yourself in your dashboard.",
+        "Ask for a copy of your data, a correction, deletion or a restriction of processing, or object to processing, by opening a ticket or writing to {{supportEmail}}.",
+        "Withdraw marketing consent at any time from My Accounts → Notifications.",
+        "If you're in the EU or UK you can complain to your local data-protection authority. Residents of some US states, such as California, have similar rights.",
+      ],
       paragraphs: [
-        "We use hashed passwords, encrypted connections (HTTPS), rate limiting and role-based access for staff. No system is perfectly secure, so we can't guarantee absolute security, but we work to protect your data and will notify you as required by law if a breach affects you.",
+        "We answer requests within the time the law sets, and may need to confirm your identity first.",
+      ],
+    },
+    {
+      heading: "How we protect it",
+      paragraphs: [
+        "Passwords are hashed, connections use HTTPS, player credentials are encrypted at rest, sign-in and forms are rate-limited, and staff access is limited by role and logged. No system is perfectly secure; if a breach affects your data, we'll notify you as the law requires.",
       ],
     },
     {
       heading: "Children",
-      paragraphs: ["The service is not directed to children under 13, and we do not knowingly collect their personal data."],
+      paragraphs: [
+        "The service is for adults. We don't knowingly collect data from children under 16, and we'll delete it if we learn we have.",
+      ],
     },
     {
       heading: "Changes and contact",
       paragraphs: [
-        "We'll post updates here and change the date at the top. Questions? Write to {{supportEmail}} or use our [contact page](/contact). Postal address: {{entityAddress}}.",
+        "We'll post changes here and update the date at the top; significant changes are also announced in your dashboard. Questions about privacy: {{supportEmail}}, the [contact page](/contact), or {{entityName}}, {{entityAddress}}. How the service itself works is set out in our [Terms and Conditions](/terms-and-conditions).",
       ],
     },
   ],
@@ -106,59 +157,106 @@ export const termsAndConditions: LegalDoc = {
   slug: "terms-and-conditions",
   title: "Terms and Conditions",
   metaTitle: "Terms and Conditions — Apollo Group TV",
-  description: "The terms that apply to Apollo Group TV accounts, plans, acceptable use and support.",
+  description:
+    "The rules for Apollo Group TV accounts and packs: one-time payments, activation, device limits, acceptable use, availability, liability and termination.",
   intro:
-    "These terms are an agreement between you and {{entityName}} (“Apollo Group TV”, “we”) covering your use of this website, your account and any plan you hold. By creating an account you accept them.",
+    "These terms are the agreement between you and {{entityName}} (“Apollo Group TV”, “we”) for using this website, your account and any pack you buy. By creating an account you accept them. If you don't agree, please don't use the service.",
   sections: [
     {
-      heading: "Your account",
-      list: [
-        "Provide accurate details and keep your email address current.",
-        "Keep your password private; you are responsible for activity on your account.",
-        "One person per account. Tell us promptly if you suspect unauthorized access.",
+      heading: "Who can use the service",
+      paragraphs: [
+        "You must be an adult able to enter a binding contract where you live. You're responsible for making sure the service can be used lawfully in your location.",
       ],
     },
     {
-      heading: "Plans and billing",
+      heading: "Your account",
+      list: [
+        "Give accurate details and keep your email address current.",
+        "Keep your password private. You're responsible for activity on your account.",
+        "An account belongs to one person and their household. Tell us straight away if you suspect someone else has access.",
+      ],
+    },
+    {
+      heading: "Packs, prices and payment",
+      list: [
+        "Each pack is a one-time payment for a fixed period. Packs do not renew automatically.",
+        "The price, length and inclusions are those shown on the [Plans page](/plans) when you request the pack. We confirm the final amount, including any tax, before you pay.",
+        "A pack starts when our team activates it after payment is confirmed. Its start and end dates appear in your dashboard.",
+        "Pay only through your account or the payment details our team gives you in your support ticket. We are not responsible for payments sent to anyone else.",
+      ],
+    },
+    {
+      heading: "Extending or changing a pack",
       paragraphs: [
-        "The price, billing period and inclusions of each plan are those shown on the [Plans page](/plans) when you subscribe. A plan becomes active once we confirm activation; its dates appear in your dashboard. Refunds are covered by the [Refund Policy](/refund-policy).",
+        "You can request another pack while one is active. We'll confirm how the extra time is added before you pay.",
+      ],
+    },
+    {
+      heading: "Refunds",
+      paragraphs: [
+        "Refunds are governed only by our [Refund Policy](/refund-policy).",
+      ],
+    },
+    {
+      heading: "Devices, apps and player logins",
+      list: [
+        "Each pack includes the device allowance shown in its details. Using more devices at once than your pack allows isn't permitted.",
+        "Install apps only from official sources listed in your dashboard or official app stores.",
+        "Third-party apps used with the service, such as Downloader or UHF, are provided by other companies under their own terms. We don't control them.",
+        "Player logins we issue are personal to your account. Don't share or publish them; we may reset them if we see misuse.",
+      ],
+    },
+    {
+      heading: "Service availability",
+      paragraphs: [
+        "The service is delivered over the internet, so quality depends on your connection and device. We aim to keep it running continuously but don't guarantee uninterrupted availability, and we may pause it for maintenance or security.",
+        "Channels, programs and picture quality can change as rights agreements change and can differ by region. No specific channel or event is guaranteed.",
       ],
     },
     {
       heading: "Acceptable use",
       list: [
-        "Don't resell, share or redistribute access to the service.",
-        "Don't attempt to bypass security controls, rate limits or account restrictions.",
-        "Don't use the service in a way that breaks the law or infringes others' rights.",
-        "Don't submit reviews, tickets or messages that are false, abusive or unlawful.",
+        "Don't resell, share, rebroadcast or redistribute the service or any content.",
+        "Don't use VPNs or other tools to get around regional licensing restrictions.",
+        "Don't attempt to bypass security, rate limits or device limits, or scrape the website.",
+        "Don't use the service in a way that breaks the law or infringes anyone's rights.",
+        "Don't submit tickets, reviews or messages that are false, abusive or unlawful.",
       ],
     },
     {
-      heading: "Content",
+      heading: "Content and intellectual property",
       paragraphs: [
-        "We list only content we are authorized to provide. Availability can change as rights agreements change, and specific channels or programs are not guaranteed. Copyright concerns are handled under our [Copyright and DMCA Policy](/dmca).",
+        "Channels and programs belong to their rights holders. The Apollo Group TV name, website, design and text belong to us. These terms don't give you any ownership of either. Copyright concerns are handled under our [Copyright and DMCA Policy](/dmca).",
+      ],
+    },
+    {
+      heading: "Reviews and referrals",
+      paragraphs: [
+        "When you submit a review, you allow us to publish it with your first name and last initial; we may reject reviews that break our rules. The referral program follows the rules on the [Refer a Friend page](/refer-a-friend), which we may change or end with notice; self-referrals and duplicate accounts are excluded.",
       ],
     },
     {
       heading: "Suspension and termination",
       paragraphs: [
-        "We may suspend or close accounts that breach these terms. You can close your account at any time by contacting support. Sections that by their nature should survive termination will do so.",
+        "We may suspend or close an account that breaches these terms, after notice where reasonable. You can stop using the service at any time and ask us to close your account. Sections that by their nature should continue after termination, such as liability and governing law, will do so.",
       ],
     },
     {
-      heading: "Disclaimers and liability",
+      heading: "Disclaimers and limitation of liability",
       paragraphs: [
-        "The service is provided on an “as is” and “as available” basis. To the extent the law allows, we are not liable for indirect or consequential losses, and our total liability is limited to the amount you paid us in the three months before the claim. Nothing in these terms limits rights you have under consumer-protection law that cannot be waived.",
+        "The service is provided “as is” and “as available”. To the extent the law allows, we aren't liable for indirect or consequential losses, and our total liability is limited to the amount you paid us in the three months before the claim. Nothing in these terms limits rights you have under consumer-protection law that can't be waived.",
       ],
     },
     {
       heading: "Governing law",
-      paragraphs: ["These terms are governed by the laws of {{governingLaw}}."],
+      paragraphs: [
+        "These terms are governed by the laws of {{governingLaw}}, without affecting mandatory consumer protections where you live.",
+      ],
     },
     {
       heading: "Changes and contact",
       paragraphs: [
-        "If we make material changes, we'll notify you in your dashboard before they take effect. Questions: {{supportEmail}} or our [contact page](/contact). {{entityName}}, {{entityAddress}}.",
+        "If we make material changes, we'll tell you in your dashboard before they take effect. How we handle personal data is explained in our [Privacy Policy](/privacy-policy). Questions: {{supportEmail}} or the [contact page](/contact). {{entityName}}, {{entityAddress}}.",
       ],
     },
   ],
@@ -167,29 +265,52 @@ export const termsAndConditions: LegalDoc = {
 export const refundPolicy: LegalDoc = {
   slug: "refund-policy",
   title: "Refund Policy",
-  metaTitle: "Refund Policy — Apollo Group TV",
-  description: "How refund requests work for Apollo Group TV plans and how to contact us about billing.",
+  metaTitle: "Refund Policy: Apollo Group TV Refund Window and Process",
+  description:
+    "When Apollo Group TV packs can be refunded, how to request a refund, how long it takes, and what to do about payment problems.",
   intro:
-    "This page is the single source of truth for Apollo Group TV refund rules. If a refund window or guarantee appears anywhere else, including on other websites using a similar name, this page is the one that applies to your account here.",
+    "This page is the only place our refund rules are set. If a different refund promise appears anywhere else, including on other websites with a similar name, this page is the one that applies to your account here.",
   sections: [
-    // The approved terms are injected from settings at render time (see RefundTerms in the page).
+    // The refund window and the owner's eligibility conditions are rendered by the page (see refund-policy/page.tsx).
     {
       heading: "How to request a refund",
       list: [
         "Open a support ticket from your dashboard with the subject “Refund request”.",
-        "Include the email on your account and, if available, the payment reference from Billing History.",
-        "We reply in the ticket thread; you'll be notified when we do.",
+        "Include the email on your account and the payment reference from Transactions, if you have it.",
+        "Tell us briefly why you're asking. If something isn't working, we may first offer to fix it.",
       ],
     },
     {
-      heading: "Payments made through a provider",
+      heading: "What happens next",
       paragraphs: [
-        "When online checkout is enabled, approved refunds are issued through the same payment provider used for the purchase. Processing times depend on that provider and your bank.",
+        "We reply in the same ticket and you're notified when we do. If the refund is approved, the pack it covers is deactivated and the refund is recorded in your Transactions.",
+      ],
+    },
+    {
+      heading: "How refunds are paid",
+      paragraphs: [
+        "Approved refunds go back through the method you paid with wherever possible. Processing times depend on that payment provider or your bank, and we'll tell you in the ticket what to expect.",
+      ],
+    },
+    {
+      heading: "Cancelling a pack",
+      paragraphs: [
+        "Packs are one-time payments and never renew, so there is nothing to cancel to avoid future charges. Your access simply ends on the date shown in Plans & Billing.",
+      ],
+    },
+    {
+      heading: "Payment problems",
+      list: [
+        "**Charged twice or the wrong amount:** open a ticket with both payment references and we'll investigate and correct it.",
+        "**Paid but not activated:** send the payment reference in your activation ticket. We'll check and activate the pack or explain what's missing.",
+        "**A payment you don't recognise:** contact us before disputing it with your bank, so we can check it quickly.",
       ],
     },
     {
       heading: "Questions",
-      paragraphs: ["Contact {{supportEmail}} or use the [contact page](/contact). For plan details see the [Plans page](/plans)."],
+      paragraphs: [
+        "Write to {{supportEmail}} or use the [contact page](/contact). Pack prices and lengths are on the [Plans page](/plans).",
+      ],
     },
   ],
 };
@@ -198,42 +319,64 @@ export const dmcaPolicy: LegalDoc = {
   slug: "dmca",
   title: "Copyright and DMCA Policy",
   metaTitle: "Copyright and DMCA Policy — Apollo Group TV",
-  description: "How to report suspected copyright infringement to Apollo Group TV and what a valid notice must include.",
+  description:
+    "How rights holders report suspected copyright infringement to Apollo Group TV, what a valid notice and counter-notice must contain, and what happens next.",
   intro:
-    "Apollo Group TV respects intellectual property rights and lists only content it is authorized to provide. If you believe material available through the service infringes your copyright, send a notice using the process below.",
+    "Apollo Group TV respects intellectual property and our policy is to list only content we're authorized to provide. If you own the rights to material that you believe is available through the service without permission, use the process below. It follows the US Digital Millennium Copyright Act, and we accept notices from rights holders in any country.",
   sections: [
     {
       heading: "What a notice must include",
       list: [
         "Your physical or electronic signature, as the rights owner or someone authorized to act for them.",
         "Identification of the copyrighted work you believe is infringed.",
-        "Identification of the material you want removed, with enough detail for us to locate it (for example, the channel or page URL).",
+        "Identification of the material you want removed, with enough detail for us to find it, such as the channel name and category.",
         "Your name, postal address, telephone number and email address.",
-        "A statement that you have a good-faith belief the use is not authorized by the copyright owner, its agent or the law.",
-        "A statement that the information in the notice is accurate and, under penalty of perjury, that you are authorized to act on the owner's behalf.",
+        "A statement that you believe in good faith that the use isn't authorized by the copyright owner, its agent or the law.",
+        "A statement that the information in the notice is accurate and, under penalty of perjury, that you're authorized to act for the owner.",
       ],
     },
     {
-      heading: "Where to send notices",
-      paragraphs: ["Designated agent: {{dmcaAgentName}} · Email: {{dmcaAgentEmail}} · Postal address: {{dmcaAgentAddress}}."],
+      heading: "Where to send it",
+      paragraphs: [
+        "Designated agent: {{dmcaAgentName}}. Email: {{dmcaAgentEmail}}. Postal address: {{dmcaAgentAddress}}.",
+      ],
     },
     {
       heading: "What happens next",
       paragraphs: [
-        "We review complete notices promptly, remove or disable access to material where appropriate, and may share the notice with the party that supplied the material. Incomplete notices may delay action.",
+        "We review complete notices promptly and remove or disable access to the material where appropriate. We may share the notice with the party that supplied the material. Incomplete notices can delay action, and we'll tell you what's missing.",
       ],
     },
     {
       heading: "Counter-notices",
       paragraphs: [
-        "If material you supplied was removed and you believe that was a mistake, you may send a counter-notice to the same agent with your contact details, identification of the removed material, a statement under penalty of perjury that you believe it was removed in error, and your consent to the appropriate jurisdiction.",
+        "If material you supplied was removed and you believe that was a mistake or misidentification, you can send a counter-notice to the same agent containing:",
+      ],
+      list: [
+        "Your physical or electronic signature, name, address and telephone number.",
+        "Identification of the material that was removed and where it appeared before removal.",
+        "A statement under penalty of perjury that you believe in good faith it was removed by mistake or misidentification.",
+        "Your consent to the jurisdiction of the appropriate court and to accept service from the person who sent the original notice.",
+      ],
+    },
+    {
+      heading: "Repeat infringers",
+      paragraphs: [
+        "We may suspend or close the accounts of users or suppliers who repeatedly infringe copyright.",
       ],
     },
     {
       heading: "Misrepresentation",
-      paragraphs: ["Knowingly misrepresenting that material is infringing, or that it was removed by mistake, can create legal liability. If you're unsure, consult a lawyer before sending a notice."],
+      paragraphs: [
+        "Knowingly claiming that material infringes, or that it was removed by mistake, can create legal liability. If you're unsure whether material infringes your rights, consult a lawyer first. Our general explanation of [how IPTV and content rights relate](/is-apollo-group-tv-legal) may also help.",
+      ],
     },
   ],
 };
 
-export const legalDocs = [privacyPolicy, termsAndConditions, refundPolicy, dmcaPolicy];
+export const legalDocs = [
+  privacyPolicy,
+  termsAndConditions,
+  refundPolicy,
+  dmcaPolicy,
+];

@@ -997,6 +997,8 @@ function settingsInput(key: SettingsKey, fd: FormData): unknown {
             "dmcaAgentName",
             "dmcaAgentEmail",
             "dmcaAgentAddress",
+            "appDataPractices",
+            "hostingRegion",
           ].map((k) => [k, str(fd, k).trim()]),
         ),
       };

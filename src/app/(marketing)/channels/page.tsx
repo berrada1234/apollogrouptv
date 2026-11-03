@@ -32,7 +32,7 @@ import { cn } from "@/lib/utils";
 
 const title = "Apollo Group TV Channels: Live TV Categories & Lineup Guide";
 const description =
-  "Explore Apollo Group TV channels by category and region — sports, news, movies, series, kids, documentaries, music and international TV, in HD and 4K where available.";
+  "Apollo Group TV channels by category and region: sports, news, movies, series, kids, documentaries, music and international TV, in 4K where available.";
 
 export const metadata: Metadata = {
   title: { absolute: title },

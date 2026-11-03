@@ -4,20 +4,34 @@ import { AlertTriangle, CheckCircle2, Cpu, FileCheck2, Scale, ShieldCheck } from
 import { Container } from "@/components/ui/misc";
 import { PageHero, RelatedLinks } from "@/components/marketing/sections";
 import { FaqAccordion } from "@/components/marketing/faq-list";
+import { siteConfig } from "@/lib/site";
+
+const title = "Is Apollo Group TV Legal? IPTV, Licensing and Your Rights";
+const description =
+  "IPTV is a delivery technology; legality depends on content rights. What that means for Apollo Group TV, and five checks to run on any streaming service.";
 
 export const metadata: Metadata = {
-  title: { absolute: "Is Apollo Group TV Legal? Technology vs. Content Rights" },
-  description:
-    "How IPTV technology differs from the rights needed to distribute content, what to check before subscribing to any streaming service, and where our policies live.",
+  title: { absolute: title },
+  description,
   alternates: { canonical: "/is-apollo-group-tv-legal" },
-  openGraph: { url: "/is-apollo-group-tv-legal" },
+  openGraph: { title, description, url: "/is-apollo-group-tv-legal", type: "article" },
+};
+
+const articleLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "Is Apollo Group TV Legal?",
+  description,
+  url: `${siteConfig.url}/is-apollo-group-tv-legal`,
+  author: { "@type": "Organization", name: siteConfig.name },
+  publisher: { "@type": "Organization", name: siteConfig.name, logo: { "@type": "ImageObject", url: `${siteConfig.url}/brand/apollo-mark.png` } },
 };
 
 const checks = [
   { t: "Who is the provider?", b: "A service should name the business behind it and publish a way to reach it." },
   { t: "Are policies published?", b: "Look for terms, a privacy policy, a refund policy and a copyright complaint process." },
   { t: "Do prices make sense?", b: "Offers that seem implausibly cheap for the content advertised deserve extra scrutiny." },
-  { t: "Where do downloads come from?", b: "Official app stores or the provider's own verified links — not anonymous files or codes." },
+  { t: "Where do downloads come from?", b: "Official app stores, or links and codes the provider gives you inside your account. Files and codes passed around on forums are a warning sign." },
   { t: "How do you pay?", b: "Mainstream, reversible payment methods offer more protection than untraceable ones." },
 ];
 
@@ -42,14 +56,22 @@ const pageFaqs = [
     question: "What do I do if I think something in the catalog shouldn't be there?",
     answer: "Tell us. Rights holders can use the notice process on our Copyright and DMCA page, and anyone can reach us through the contact page.",
   },
+  {
+    id: "l4",
+    category: "Legal",
+    question: "Is it legal to use a VPN with an IPTV service?",
+    answer:
+      "VPNs themselves are legal in most countries. Using one to get around regional licensing is a different matter: it breaks most services' terms, including ours, because channels are licensed for specific regions.",
+  },
 ];
 
 export default function LegalExplainerPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd).replace(/</g, "\\u003c") }} />
       <PageHero
         eyebrow="Explained"
-        title="Is Apollo Group TV legal?"
+        title="Is Apollo Group TV Legal?"
         description="The honest answer starts with a distinction most articles skip: the technology used to deliver TV is one question, and the right to distribute the content is another."
         crumbs={[{ href: "/is-apollo-group-tv-legal", label: "Is Apollo Group TV legal?" }]}
       />

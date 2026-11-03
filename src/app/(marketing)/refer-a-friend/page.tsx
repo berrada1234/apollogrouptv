@@ -11,11 +11,15 @@ import { getSettings } from "@/lib/settings";
 
 export const dynamic = "force-dynamic";
 
+const title = "Apollo Group TV Referral Program: Invite Friends, Track Sign-Ups";
+const description =
+  "How the Apollo Group TV referral program works: your personal link, how friends are recorded, who qualifies, and the program rules.";
+
 export const metadata: Metadata = {
-  title: { absolute: "Apollo Group TV Referral Program" },
-  description: "How the Apollo Group TV referral program works: get a personal link, track sign-ups in your dashboard, and read the program terms.",
+  title: { absolute: title },
+  description,
   alternates: { canonical: "/refer-a-friend" },
-  openGraph: { title: "Apollo Group TV Referral Program", description: "How the Apollo Group TV referral program works: get a personal link, track sign-ups in your dashboard, and read the program terms.", url: "/refer-a-friend" },
+  openGraph: { title, description, url: "/refer-a-friend" },
 };
 
 export default async function ReferPage() {

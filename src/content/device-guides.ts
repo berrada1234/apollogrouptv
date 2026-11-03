@@ -35,9 +35,9 @@ export const deviceProfiles: DeviceProfile[] = [
   {
     key: "firetv",
     match: /fire|android\s*tv|google\s*tv/i,
-    metaTitle: (n) => `Install Apollo Group TV on ${n}: Downloader Setup Guide`,
+    metaTitle: (n) => `Apollo Group TV on ${n}: Install Guide`,
     description: (n) =>
-      `Put the Apollo TV app on ${n} with the free Downloader app in about five minutes — enabling installs, entering the code, fixing common Fire TV errors.`,
+      `Install the Apollo TV app on ${n} with the free Downloader app: allow installs, enter the code and fix common Fire TV errors.`,
     summary:
       "Installs once through the free Downloader app with an official code; later updates arrive inside the app.",
     intro:
@@ -92,7 +92,7 @@ export const deviceProfiles: DeviceProfile[] = [
   {
     key: "android-mobile",
     match: /android/i,
-    metaTitle: (n) => `Install Apollo Group TV on ${n}: APK Setup Guide`,
+    metaTitle: (n) => `Install Apollo Group TV on ${n}: APK Guide`,
     description: (n) =>
       `Download the official Apollo TV APK on your ${n}, allow the one-time install permission, handle Play Protect prompts and sign in.`,
     summary:
@@ -191,8 +191,7 @@ export const deviceProfiles: DeviceProfile[] = [
   {
     key: "windows",
     match: /windows|\bpc\b/i,
-    metaTitle: (n) =>
-      `Install Apollo Group TV on ${n}: Installer & SmartScreen Guide`,
+    metaTitle: (n) => `Install Apollo Group TV on ${n}: Installer Guide`,
     description: (n) =>
       `Run the official Apollo TV installer on ${n} (Windows 10 and 11), get past the SmartScreen prompt and sign in.`,
     summary:

@@ -1,292 +1,277 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
-  Bell,
-  CheckCircle2,
+  CalendarCheck,
   CreditCard,
+  FileText,
   Gift,
-  Home,
-  LayoutDashboard,
+  KeyRound,
   LayoutGrid,
   LifeBuoy,
   Lock,
   MonitorSmartphone,
-  Plane,
-  Search,
+  Receipt,
+  ShieldCheck,
+  Tv,
+  UserCog,
   UserPlus,
 } from "lucide-react";
-import { Container, SectionHeading } from "@/components/ui/misc";
 import { ButtonLink } from "@/components/ui/button";
 import { CtaBand, PageHero, RelatedLinks } from "@/components/marketing/sections";
+import { FaqAccordion } from "@/components/marketing/faq-list";
+import { afterHeader, cardClass, IconBox, leadClass, Section, SectionHeader } from "@/components/section";
+import { channelCategories } from "@/content/channels";
+import { monthlyCents } from "@/lib/pricing";
+import { getActivePlans } from "@/lib/queries";
+import { getSettings } from "@/lib/settings";
+import { cn, formatMoney } from "@/lib/utils";
+
+export const dynamic = "force-dynamic";
+
+const title = "Apollo Group TV Features: App, Account Dashboard & Support";
+const description =
+  "What an Apollo Group TV subscription includes: the Apollo TV app, an account dashboard for packs, payments and setup, and ticket support with a written record.";
 
 export const metadata: Metadata = {
-  title: { absolute: "Apollo Group TV Features — How the Service Works" },
-  description:
-    "See what Apollo Group TV includes: an organized channel catalog, a self-service account dashboard, ticket support and setup help for verified devices.",
+  title: { absolute: title },
+  description,
   alternates: { canonical: "/product" },
-  openGraph: { title: "Apollo Group TV Features — How the Service Works", description: "See what Apollo Group TV includes: an organized channel catalog, a self-service account dashboard, ticket support and setup help for verified devices.", url: "/product" },
+  openGraph: { title, description, url: "/product" },
 };
 
+const dashboard = [
+  { icon: CalendarCheck, t: "Plans & Billing", b: "Your current pack, its start and end dates, and the packs you can add. Request a new pack or extend the one you have." },
+  { icon: Receipt, t: "Transactions", b: "Every payment recorded on your account, with amount, status and reference, so you can match it to your statement." },
+  { icon: MonitorSmartphone, t: "Apps & Guides", b: "Install steps for each device, plus the download links, codes and server details you'll need, ready to copy." },
+  { icon: UserCog, t: "My Accounts", b: "Profile details, your player login for third-party apps, signed-in devices and email preferences." },
+  { icon: Gift, t: "Referrals & Gifts", b: "Your personal referral link, the friends who joined through it, and a way to request a pack as a gift." },
+  { icon: LifeBuoy, t: "Support", b: "Open tickets, follow every reply in one thread and get a notification when we answer." },
+];
+
+const security = [
+  { icon: KeyRound, t: "Hashed passwords", b: "We store a salted hash, never your actual password." },
+  { icon: Lock, t: "Encrypted player logins", b: "Credentials for third-party players are encrypted at rest and shown only to you." },
+  { icon: ShieldCheck, t: "Session control", b: "See every signed-in device and sign out the ones you don't recognise." },
+  { icon: FileText, t: "Logged staff actions", b: "When our team changes something on your account, it's recorded with who did it and when." },
+];
+
 const steps = [
-  { icon: UserPlus, t: "Create your account", b: "Sign up with your email and verify it to secure your account." },
-  { icon: CreditCard, t: "Choose a plan", b: "Compare plans side by side and pick the billing period that suits you." },
-  { icon: MonitorSmartphone, t: "Set up your devices", b: "Follow the step-by-step guide for your verified device." },
+  { icon: UserPlus, t: "Create an account", b: "Sign up with your email. It takes about a minute." },
+  { icon: CreditCard, t: "Choose a pack", b: "Pick one to twelve months. Our team confirms payment with you in a ticket." },
+  { icon: CalendarCheck, t: "Get activated", b: "Your pack goes live and its dates appear in Plans & Billing." },
+  { icon: Tv, t: "Install and watch", b: "Follow the guide for your device in Apps & Guides and sign in." },
 ];
 
-const extras = [
-  { icon: Bell, t: "Account notifications", b: "Updates about replies and account changes, right in your dashboard." },
-  { icon: Lock, t: "Secure by default", b: "Email verification, strong passwords, session control and rate-limited sign-in." },
-  { icon: Gift, t: "Personal referral link", b: "Share your link; sign-ups through it are tracked on your account." },
-  { icon: CreditCard, t: "Billing history", b: "Every recorded payment, with provider references, in one list." },
-];
+export default async function ProductPage() {
+  const [settings, plans] = await Promise.all([getSettings(), getActivePlans()]);
+  const devices = settings.apps.platforms.filter((p) => p.verified).map((p) => p.name);
+  const monthlies = plans.map(monthlyCents).filter((m): m is number => m !== null);
+  const from = monthlies.length ? formatMoney(Math.min(...monthlies), plans[0]?.currency ?? "USD") : null;
 
-const useCases = [
-  { icon: Home, t: "Households", b: "One account holder manages the plan, billing and support for the home." },
-  { icon: Plane, t: "Frequent travellers", b: "Manage everything from the web dashboard wherever you are." },
-  { icon: UserPlus, t: "New customers", b: "Guided onboarding from sign-up to device setup." },
-];
+  const faq = [
+    {
+      q: "Do I need a cable box, satellite dish or antenna?",
+      a: "No. Everything arrives over your internet connection to the app on your device. A stable broadband connection matters more than any extra hardware.",
+    },
+    {
+      q: "Is the channel lineup the same on every pack?",
+      a: "Yes. All packs include the same live channels, on-demand library, device allowance and support. Packs differ only in length and price.",
+    },
+    {
+      q: "Can I manage everything myself?",
+      a: "Almost. You can see your pack, payments, devices and setup details any time in your dashboard. Activating a pack and issuing player logins are done by our team, because they follow a confirmed payment.",
+    },
+    {
+      q: "What if my device isn't supported?",
+      a: "Tell us the make and model in a message before you buy. We'll say honestly whether it works today, so you don't pay for something you can't use.",
+    },
+  ];
 
-function MockCatalog() {
-  return (
-    <div className="rounded-lg border border-border bg-inset p-4 shadow-card" aria-hidden>
-      <div className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-xs text-subtle">
-        <Search className="h-3.5 w-3.5" /> Search channels…
-      </div>
-      <div className="mt-3 flex gap-1.5">
-        {["All", "News", "Sports", "Movies"].map((c, i) => (
-          <span key={c} className={`rounded-full border px-2.5 py-1 text-[11px] ${i === 2 ? "border-primary/50 bg-primary/15 text-light-blue" : "border-border text-muted"}`}>
-            {c}
-          </span>
-        ))}
-      </div>
-      <div className="mt-3 grid grid-cols-2 gap-2">
-        {[0, 1, 2, 3].map((i) => (
-          <div key={i} className="flex items-center gap-2.5 rounded-lg border border-border bg-card p-2.5">
-            <span className="grid h-8 w-8 place-items-center rounded-md bg-gradient-to-br from-[#0891b2] to-[#2fd9f0] text-[10px] font-semibold text-on-primary">
-              S{i + 1}
-            </span>
-            <span className="space-y-1">
-              <span className="block h-1.5 w-14 rounded bg-muted/50" />
-              <span className="block h-1.5 w-8 rounded bg-border-strong" />
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function MockDashboard() {
-  return (
-    <div className="rounded-lg border border-border bg-inset p-4 shadow-card" aria-hidden>
-      <div className="rounded-lg border border-border bg-card p-4">
-        <div className="flex items-center justify-between">
-          <span className="text-xs text-subtle">Current plan</span>
-          <span className="inline-flex items-center gap-1 rounded-full bg-success/15 px-2 py-0.5 text-[10px] text-success">
-            <span className="h-1 w-1 rounded-full bg-success" /> Active
-          </span>
-        </div>
-        <p className="mt-1 font-display text-lg font-semibold text-text">Quarterly</p>
-        <div className="mt-3 h-1.5 rounded-full bg-inset">
-          <div className="h-1.5 w-3/5 rounded-full bg-accent" />
-        </div>
-        <p className="mt-1.5 text-[11px] text-subtle">Renews in 54 days</p>
-      </div>
-      <div className="mt-2 grid grid-cols-3 gap-2">
-        {["Billing", "Referrals", "Support"].map((l) => (
-          <div key={l} className="rounded-lg border border-border bg-card p-2.5 text-center text-[11px] text-muted">
-            {l}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function MockSupport() {
-  return (
-    <div className="space-y-2 rounded-lg border border-border bg-inset p-4 shadow-card" aria-hidden>
-      <div className="max-w-[80%] rounded-xl border border-border bg-card p-3 text-[11px] text-muted">
-        <span className="font-medium text-text">You</span> · The app asks me to sign in again on my TV.
-      </div>
-      <div className="ml-auto max-w-[80%] rounded-xl border border-primary/40 bg-primary/10 p-3 text-[11px] text-muted">
-        <span className="font-medium text-text">Support</span> · Thanks — please update to the latest version from the App page.
-      </div>
-      <div className="flex items-center gap-2 pt-1 text-[11px] text-success">
-        <CheckCircle2 className="h-3.5 w-3.5" /> Marked as resolved
-      </div>
-    </div>
-  );
-}
-
-const deepDives = [
-  {
-    icon: LayoutGrid,
-    eyebrow: "Catalog",
-    t: "Browse by category, or just search",
-    b: "Channels are grouped into clear categories with an instant search, so finding what you want takes seconds — on desktop or phone.",
-    mock: <MockCatalog />,
-  },
-  {
-    icon: LayoutDashboard,
-    eyebrow: "Dashboard",
-    t: "Always know where your account stands",
-    b: "Plan, subscription status, renewal dates, billing history and referrals live in one dashboard — no inbox archaeology.",
-    mock: <MockDashboard />,
-  },
-  {
-    icon: LifeBuoy,
-    eyebrow: "Support",
-    t: "One thread per question, start to finish",
-    b: "Open a ticket from your dashboard, get notified when we reply, and keep the full history of every conversation.",
-    mock: <MockSupport />,
-  },
-];
-
-export default function ProductPage() {
   return (
     <>
       <PageHero
         eyebrow="Features"
-        title="Apollo Group TV features, explained"
-        description="A closer look at what you get with Apollo Group TV (often searched as Apollo TV): how the catalog is organized, what your dashboard shows, and how support works."
-        crumbs={[{ href: "/product", label: "Product" }]}
-        aside={<MockDashboard />}
+        title="Apollo Group TV Features: What You Get and How It Works"
+        description="A subscription covers three things: the Apollo TV app for watching, an account dashboard for managing your pack, and a support team that answers in writing. Here is what each one does."
+        crumbs={[{ href: "/product", label: "Features" }]}
       >
-        <div className="flex flex-col gap-3 sm:flex-row">
-          <ButtonLink href="/plans" size="lg">
-            See plans
-          </ButtonLink>
-          <ButtonLink href="/app" variant="secondary" size="lg">
-            App setup
+        <div className="flex flex-wrap gap-3">
+          <ButtonLink href="/plans">Compare packs{from ? ` — from ${from}/mo` : ""}</ButtonLink>
+          <ButtonLink href="/app" variant="secondary">
+            Supported devices
           </ButtonLink>
         </div>
       </PageHero>
 
-      {/* Timeline */}
-      <section className="py-20 sm:py-24">
-        <Container>
-          <SectionHeading eyebrow="Overview" title="How it works" />
-          <ol className="relative mx-auto mt-14 grid max-w-5xl gap-8 md:grid-cols-3 md:gap-6">
-            <span className="absolute left-[16.6%] right-[16.6%] top-6 hidden h-px bg-gradient-to-r from-primary/10 via-primary/50 to-primary/10 md:block" aria-hidden />
-            {steps.map((s, i) => (
-              <li key={s.t} className="relative flex gap-4 md:flex-col md:items-center md:text-center">
-                <span className="relative grid h-12 w-12 shrink-0 place-items-center rounded-full border border-primary/40 bg-bg text-accent shadow-sm">
-                  <s.icon className="h-5 w-5" aria-hidden />
-                  <span className="absolute -right-1 -top-1 grid h-5 w-5 place-items-center rounded-full bg-primary text-[10px] font-semibold text-on-primary">
-                    {i + 1}
-                  </span>
-                </span>
-                <div>
-                  <h3 className="font-display text-lg font-semibold text-text md:mt-5">{s.t}</h3>
-                  <p className="mt-1.5 text-sm leading-relaxed text-muted">{s.b}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </Container>
-      </section>
-
-      {/* Deep dives */}
-      <section className="border-y border-border bg-bg-secondary/50 py-20 sm:py-28">
-        <Container className="space-y-20 sm:space-y-28">
-          {deepDives.map((d, i) => (
-            <div key={d.t} className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-              <div className={i % 2 === 1 ? "lg:order-2" : undefined}>
-                <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
-                  <d.icon className="h-4 w-4" aria-hidden /> {d.eyebrow}
-                </p>
-                <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight text-text">{d.t}</h2>
-                <p className="mt-4 max-w-lg text-lg leading-relaxed text-muted">{d.b}</p>
-              </div>
-              <div className="mx-auto w-full max-w-md">{d.mock}</div>
+      {/* Watching */}
+      <Section>
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-16 [&>*]:min-w-0">
+          <div className="lg:col-span-5">
+            <SectionHeader
+              eyebrow="Watching"
+              title="The Apollo TV App"
+              description="Live channels and an on-demand library in one app, signed in with the same account you use on this website."
+            />
+            <p className={cn(leadClass, "mt-5")}>
+              Channels are grouped into {channelCategories.length} categories, from sports and news to kids and international TV, and where licensing allows they&apos;re
+              also sorted by region. Each channel shows its picture-quality label, and HD, Full HD or 4K depend on the broadcast, your device and your connection.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3 text-sm">
+              <Link href="/channels" className="font-medium text-accent hover:text-light-blue">
+                Browse the channel categories →
+              </Link>
+              <Link href="/app" className="font-medium text-accent hover:text-light-blue">
+                How the app works →
+              </Link>
             </div>
-          ))}
-        </Container>
-      </section>
-
-      {/* Extras */}
-      <section className="py-20 sm:py-24">
-        <Container>
-          <SectionHeading eyebrow="Also included" title="The details that matter" />
-          <div className="mt-12 grid gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
-            {extras.map((f) => (
-              <article key={f.t} className="bg-card p-6">
-                <f.icon className="h-5 w-5 text-accent" aria-hidden />
-                <h3 className="mt-4 font-semibold text-text">{f.t}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-muted">{f.b}</p>
-              </article>
-            ))}
           </div>
-        </Container>
-      </section>
+          <div className="lg:col-span-7">
+            <div className={cn(cardClass, "p-6")}>
+              <p className="text-sm font-semibold text-text">Works on</p>
+              {devices.length > 0 ? (
+                <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+                  {devices.map((d) => (
+                    <li key={d} className="flex items-center gap-3 rounded-xl border border-border bg-inset px-4 py-3 text-sm text-text">
+                      <MonitorSmartphone className="h-4 w-4 shrink-0 text-accent" aria-hidden /> {d}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="mt-3 text-sm text-muted">Supported devices are listed on the App page once verified.</p>
+              )}
+              <p className="mt-4 text-xs leading-5 text-subtle">
+                On iPhone, iPad and Apple TV you watch through the independent UHF player, signed in with the player login from your dashboard.
+              </p>
+            </div>
+          </div>
+        </div>
+      </Section>
 
-      {/* Use cases */}
-      <section className="pb-20 sm:pb-24">
-        <Container className="grid gap-10 lg:grid-cols-[1fr_1.4fr] lg:items-center">
-          <SectionHeading align="left" eyebrow="Use cases" title="Who it's for" description="Designed for people who want their entertainment set up once and simple to manage after that." />
-          <ul className="divide-y divide-border rounded-lg border border-border bg-card shadow-card">
-            {useCases.map((u) => (
-              <li key={u.t} className="flex gap-4 p-5 sm:p-6">
-                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-primary/20 bg-primary/10 text-accent">
-                  <u.icon className="h-5 w-5" aria-hidden />
-                </span>
-                <div>
-                  <h3 className="font-semibold text-text">{u.t}</h3>
-                  <p className="mt-1 text-sm text-muted">{u.b}</p>
-                </div>
+      {/* Managing */}
+      <section className="section-y border-y border-border bg-bg-secondary" aria-labelledby="dash-heading">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div id="dash-heading">
+            <SectionHeader
+              eyebrow="Managing"
+              title="Your Account Dashboard"
+              description="Six sections cover everything after you sign up. You can check where your account stands without writing to anyone."
+            />
+          </div>
+          <ul className={cn(afterHeader, "grid gap-4 sm:grid-cols-2 lg:grid-cols-3")}>
+            {dashboard.map((d) => (
+              <li key={d.t} className={cn(cardClass, "p-6")}>
+                <IconBox icon={d.icon} />
+                <h3 className="mt-5 font-display text-base font-bold text-text">{d.t}</h3>
+                <p className="mt-2 text-sm leading-6 text-muted">{d.b}</p>
               </li>
             ))}
           </ul>
-        </Container>
+        </div>
       </section>
 
-      <section className="border-t border-border pt-16">
-        <Container>
-          <div className="mb-14 grid gap-6 lg:grid-cols-2">
-            <div className="rounded-lg border border-border bg-card p-6 shadow-card">
-              <h2 className="font-display text-xl font-semibold text-text">How to evaluate the plans</h2>
-              <p className="mt-2 text-sm leading-relaxed text-muted">
-                Every plan includes the same account tools — the dashboard, ticket support and setup guides. Plans differ by billing period and by the
-                features listed on each one. Compare the inclusions you care about, check the monthly equivalent on longer periods, and read the refund
-                policy before you commit.
-              </p>
-              <div className="mt-4 flex flex-wrap gap-3 text-sm">
-                <Link href="/plans" className="font-medium text-accent hover:text-light-blue">Compare plans →</Link>
-                <Link href="/refund-policy" className="font-medium text-accent hover:text-light-blue">Refund policy →</Link>
-              </div>
-            </div>
-            <div className="rounded-lg border border-border bg-card p-6 shadow-card">
-              <h2 className="font-display text-xl font-semibold text-text">Product questions</h2>
-              <dl className="mt-3 space-y-4 text-sm">
-                <div>
-                  <dt className="font-medium text-text">Do I need special equipment?</dt>
-                  <dd className="mt-1 text-muted">A verified device and an internet connection. The App page lists supported devices.</dd>
-                </div>
-                <div>
-                  <dt className="font-medium text-text">Can I manage my plan without contacting anyone?</dt>
-                  <dd className="mt-1 text-muted">You can see your plan, renewal dates and payments yourself. Plan changes are requested through a ticket.</dd>
-                </div>
-                <div>
-                  <dt className="font-medium text-text">Is the catalog the same on every plan?</dt>
-                  <dd className="mt-1 text-muted">Each plan&apos;s inclusions are listed on its card on the Plans page.</dd>
-                </div>
-              </dl>
-            </div>
+      {/* Support + paying */}
+      <Section>
+        <div className="grid gap-6 lg:grid-cols-2">
+          <div className={cn(cardClass, "p-6 sm:p-8")}>
+            <IconBox icon={LifeBuoy} />
+            <h2 className="mt-5 font-display text-xl font-bold text-text">Support That Keeps a Record</h2>
+            <p className="mt-3 text-sm leading-6 text-muted">
+              Each question becomes a ticket with its own thread. You and our team see the whole history, so a setup problem that takes three replies never means
+              explaining it three times. You get a dashboard notification whenever we answer, and the{" "}
+              <Link href="/guides" className="text-accent hover:text-light-blue">
+                setup guides
+              </Link>{" "}
+              and{" "}
+              <Link href="/faq" className="text-accent hover:text-light-blue">
+                FAQ
+              </Link>{" "}
+              cover the questions that come up most.
+            </p>
           </div>
-          <h2 className="mb-6 font-display text-xl font-semibold text-text">Keep exploring</h2>
-          <RelatedLinks
-            links={[
-              { href: "/app", label: "Apps and verified devices", description: "Where the app runs and how to install it." },
-              { href: "/plans", label: "Compare plans", description: "Prices, billing periods and inclusions." },
-              { href: "/channels", label: "Browse the channel guide", description: "Search the catalog by name or category." },
-              { href: "/faq", label: "Read the FAQ", description: "Accounts, billing, devices and privacy." },
-              { href: "/guides", label: "Setup guides", description: "Step-by-step help for getting started." },
-              { href: "/is-apollo-group-tv-legal", label: "Technology and content rights", description: "How IPTV delivery differs from distribution rights." },
-            ]}
-          />
-        </Container>
+          <div className={cn(cardClass, "p-6 sm:p-8")}>
+            <IconBox icon={LayoutGrid} />
+            <h2 className="mt-5 font-display text-xl font-bold text-text">Packs You Pay for Once</h2>
+            <p className="mt-3 text-sm leading-6 text-muted">
+              You choose how long you want access, from one month to a year, and pay a single amount. Nothing renews automatically; when the pack ends, access stops.
+              Longer packs cost less per month, and every pack includes the same service. Compare them on the{" "}
+              <Link href="/plans" className="text-accent hover:text-light-blue">
+                Plans page
+              </Link>{" "}
+              and read the{" "}
+              <Link href="/refund-policy" className="text-accent hover:text-light-blue">
+                Refund Policy
+              </Link>{" "}
+              before you buy.
+            </p>
+          </div>
+        </div>
+      </Section>
+
+      {/* Security */}
+      <section className="section-y border-y border-border bg-bg-secondary" aria-labelledby="security-heading">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div id="security-heading">
+            <SectionHeader eyebrow="Security" title="How Your Account Is Protected" />
+          </div>
+          <ul className={cn(afterHeader, "grid gap-4 sm:grid-cols-2 lg:grid-cols-4")}>
+            {security.map((s) => (
+              <li key={s.t} className={cn(cardClass, "p-6")}>
+                <IconBox icon={s.icon} size="sm" />
+                <h3 className="mt-4 font-semibold text-text">{s.t}</h3>
+                <p className="mt-1.5 text-sm leading-6 text-muted">{s.b}</p>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-5 text-sm text-muted">
+            Details are in our{" "}
+            <Link href="/privacy-policy" className="text-accent hover:text-light-blue">
+              Privacy Policy
+            </Link>
+            .
+          </p>
+        </div>
       </section>
+
+      {/* Steps */}
+      <Section>
+        <SectionHeader align="center" eyebrow="Getting started" title="From Sign-Up to Your First Channel" />
+        <ol className={cn(afterHeader, "grid gap-4 sm:grid-cols-2 lg:grid-cols-4")}>
+          {steps.map((s, i) => (
+            <li key={s.t} className={cn(cardClass, "p-6")}>
+              <div className="flex items-center justify-between">
+                <span className="grid h-10 w-10 place-items-center rounded-full border border-primary/40 font-display text-sm font-bold text-accent">{i + 1}</span>
+                <s.icon className="h-5 w-5 text-subtle" aria-hidden />
+              </div>
+              <h3 className="mt-5 font-display text-base font-bold text-text">{s.t}</h3>
+              <p className="mt-2 text-sm leading-6 text-muted">{s.b}</p>
+            </li>
+          ))}
+        </ol>
+      </Section>
+
+      {/* FAQ */}
+      <section className="section-y border-t border-border bg-bg-secondary">
+        <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-12 lg:gap-16 lg:px-8 [&>*]:min-w-0">
+          <div className="lg:col-span-5">
+            <SectionHeader eyebrow="Questions" title="Questions About the Service" />
+          </div>
+          <div className="lg:col-span-7">
+            <FaqAccordion items={faq.map((f, i) => ({ id: `product-${i}`, category: "Product", question: f.q, answer: f.a }))} />
+          </div>
+        </div>
+      </section>
+
+      <Section>
+        <h2 className="mb-6 font-display text-xl font-bold text-text">Keep exploring</h2>
+        <RelatedLinks
+          links={[
+            { href: "/app", label: "The Apollo TV app", description: "Supported devices, install methods and requirements." },
+            { href: "/plans", label: "Plans and pricing", description: "Every pack compared by total and monthly cost." },
+            { href: "/channels", label: "Channel categories", description: "What each category covers, by genre and region." },
+            { href: "/is-apollo-group-tv-legal", label: "Is it legal?", description: "How IPTV technology and content rights relate." },
+          ]}
+        />
+      </Section>
 
       <CtaBand title="See it for yourself" description="Compare the packs, then create an account — the dashboard, guides and support are ready from day one." />
     </>

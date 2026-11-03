@@ -31,13 +31,14 @@ import { profileFor } from "@/content/device-guides";
 import { monthlyCents } from "@/lib/pricing";
 import { getActivePlans } from "@/lib/queries";
 import { getSettings } from "@/lib/settings";
+import { siteConfig } from "@/lib/site";
 import { cn, formatMoney, slugify } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
 const title = "Apollo Group TV App: Devices, Install Guide & Features";
 const description =
-  "Get the Apollo Group TV app on Fire TV Stick, Fire TV, Android, iPhone, iPad and Windows. One account on every screen, official downloads and step-by-step setup.";
+  "The Apollo TV app on Fire TV, Android, Windows and Mac, plus UHF on iPhone, iPad and Apple TV. One account, official downloads and a guide per device.";
 
 export const metadata: Metadata = {
   title: { absolute: title },
@@ -134,8 +135,21 @@ export default async function AppPage() {
 
   const faqItems = appFaq.map((f, i) => ({ id: `app-${i}`, category: "App", question: f.q, answer: f.a }));
 
+  const appLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "Apollo TV",
+    alternateName: "Apollo Group TV app",
+    applicationCategory: "EntertainmentApplication",
+    operatingSystem: platforms.map((p) => p.name).join(", ") || undefined,
+    ...(settings.apps.appVersion ? { softwareVersion: settings.apps.appVersion } : {}),
+    publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
+    url: `${siteConfig.url}/app`,
+  };
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(appLd).replace(/</g, "\\u003c") }} />
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-border">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_70%_at_80%_25%,rgb(34_211_238/0.12),transparent_70%)]" aria-hidden />

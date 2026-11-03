@@ -133,6 +133,14 @@ export default async function SettingsPage() {
             <Field label="Refund terms (shown on the Refund Policy page)" htmlFor="refundTerms" hint="State your approved refund window, eligibility and process. One paragraph per line.">
               <Textarea id="refundTerms" name="refundTerms" rows={5} defaultValue={s.legal.refundTerms} maxLength={4000} />
             </Field>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Field label="Where your servers are located" htmlFor="hostingRegion" hint="e.g. the European Union (Lithuania). Used in the Privacy Policy.">
+                <Input id="hostingRegion" name="hostingRegion" defaultValue={s.legal.hostingRegion} maxLength={160} />
+              </Field>
+            </div>
+            <Field label="What the Apollo TV app collects (Privacy Policy)" htmlFor="appDataPractices" hint="Describe any device, playback or crash data the app sends, and to whom. Leave blank until confirmed.">
+              <Textarea id="appDataPractices" name="appDataPractices" rows={3} defaultValue={s.legal.appDataPractices} maxLength={1500} />
+            </Field>
             <Checkbox name="approved" label="These policies have been reviewed and approved for publication" defaultChecked={s.legal.approved} />
           </ActionForm>
         </Section>

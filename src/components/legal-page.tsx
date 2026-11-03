@@ -18,8 +18,19 @@ export function legalTokens(s: Settings): Tokens {
     dmcaAgentName: s.legal.dmcaAgentName,
     dmcaAgentEmail: s.legal.dmcaAgentEmail,
     dmcaAgentAddress: s.legal.dmcaAgentAddress,
+    // Same setting as the homepage "money-back" badge, so the policy and the claim can't drift apart.
+    refundWindow: s.highlights.moneyBackDays
+      ? `${s.highlights.moneyBackDays} days`
+      : "",
+    appDataPractices: s.legal.appDataPractices,
+    hostingRegion: s.legal.hostingRegion,
   };
-  return Object.fromEntries(Object.entries(TOKEN_LABELS).map(([k, label]) => [k, { value: v[k] ?? "", placeholder: label }]));
+  return Object.fromEntries(
+    Object.entries(TOKEN_LABELS).map(([k, label]) => [
+      k,
+      { value: v[k] ?? "", placeholder: label },
+    ]),
+  );
 }
 
 const related = [
@@ -30,24 +41,47 @@ const related = [
   { href: "/is-apollo-group-tv-legal", label: "Is Apollo Group TV legal?" },
 ];
 
-export function LegalPage({ doc, settings, children }: { doc: LegalDoc; settings: Settings; children?: React.ReactNode }) {
+export function LegalPage({
+  doc,
+  settings,
+  children,
+}: {
+  doc: LegalDoc;
+  settings: Settings;
+  children?: React.ReactNode;
+}) {
   const tokens = legalTokens(settings);
   const approved = settings.legal.approved;
   return (
     <>
-      <PageHero title={doc.title} crumbs={[{ href: `/${doc.slug}`, label: doc.title }]}>
+      <PageHero
+        title={doc.title}
+        crumbs={[{ href: `/${doc.slug}`, label: doc.title }]}
+      >
         <p className="text-sm text-subtle">
-          {settings.legal.lastUpdated ? `Last updated ${formatDate(settings.legal.lastUpdated)}` : "Last updated: not yet published"}
+          {settings.legal.lastUpdated
+            ? `Last updated ${formatDate(settings.legal.lastUpdated)}`
+            : "Last updated: not yet published"}
         </p>
       </PageHero>
       <Container className="grid gap-12 py-14 lg:grid-cols-[1fr_240px]">
         <article className="max-w-3xl">
           {!approved && (
-            <div role="note" className="mb-10 flex gap-3 rounded-lg border border-warning/40 bg-warning/10 p-4 text-sm">
-              <FileWarning className="mt-0.5 h-5 w-5 shrink-0 text-warning" aria-hidden />
+            <div
+              role="note"
+              className="mb-10 flex gap-3 rounded-lg border border-warning/40 bg-warning/10 p-4 text-sm"
+            >
+              <FileWarning
+                className="mt-0.5 h-5 w-5 shrink-0 text-warning"
+                aria-hidden
+              />
               <p className="text-text/90">
-                <strong className="text-warning">Draft — pending owner review.</strong> This policy has not yet been approved for publication.
-                Highlighted items are details the site owner still needs to provide.
+                <strong className="text-warning">
+                  Draft — pending owner review.
+                </strong>{" "}
+                This policy has not yet been approved for publication.
+                Highlighted items are details the site owner still needs to
+                provide.
               </p>
             </div>
           )}
@@ -58,7 +92,10 @@ export function LegalPage({ doc, settings, children }: { doc: LegalDoc; settings
           <div className="mt-10 space-y-10">
             {doc.sections.map((s, i) => (
               <section key={s.heading} aria-labelledby={`sec-${i}`}>
-                <h2 id={`sec-${i}`} className="font-display text-xl font-semibold text-text">
+                <h2
+                  id={`sec-${i}`}
+                  className="font-display text-xl font-semibold text-text"
+                >
                   {s.heading}
                 </h2>
                 {s.paragraphs?.map((p, j) => (
@@ -79,18 +116,26 @@ export function LegalPage({ doc, settings, children }: { doc: LegalDoc; settings
             ))}
           </div>
           <p className="mt-12 border-t border-border pt-6 text-sm text-subtle">
-            This page is general information about how our service works and is not legal advice.
+            This page is general information about how our service works and is
+            not legal advice.
           </p>
         </article>
         <aside className="lg:sticky lg:top-24 lg:self-start">
-          <nav aria-label="Policies" className="rounded-lg border border-border bg-card p-5 shadow-card">
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-subtle">Policies</p>
+          <nav
+            aria-label="Policies"
+            className="rounded-lg border border-border bg-card p-5 shadow-card"
+          >
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-subtle">
+              Policies
+            </p>
             <ul className="mt-3 space-y-1">
               {related.map((r) => (
                 <li key={r.href}>
                   <Link
                     href={r.href}
-                    aria-current={r.href === `/${doc.slug}` ? "page" : undefined}
+                    aria-current={
+                      r.href === `/${doc.slug}` ? "page" : undefined
+                    }
                     className="block rounded-lg px-2 py-1.5 text-sm text-muted hover:bg-card-hover hover:text-text aria-[current=page]:text-light-blue"
                   >
                     {r.label}
@@ -99,7 +144,10 @@ export function LegalPage({ doc, settings, children }: { doc: LegalDoc; settings
               ))}
             </ul>
             <div className="mt-4 border-t border-border pt-4 text-sm">
-              <Link href="/contact" className="text-accent hover:text-light-blue">
+              <Link
+                href="/contact"
+                className="text-accent hover:text-light-blue"
+              >
                 Questions? Contact us →
               </Link>
             </div>
