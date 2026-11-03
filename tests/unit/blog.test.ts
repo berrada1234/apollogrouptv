@@ -29,6 +29,9 @@ const reservedKeywords = [
   "how to install apollo group tv on apple tv",
   "how to install apollo group tv on android phone",
   "does apollo group tv have a free trial",
+  "apollo group tv renewal",
+  "apollo group tv renew",
+  "apollo group tv subscription renewal",
 ];
 
 describe("blog", () => {

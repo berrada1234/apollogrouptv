@@ -84,6 +84,7 @@ export const publicRoutes = [
   "/product",
   "/app",
   "/plans",
+  "/apollo-group-tv-renewal",
   "/payment-methods",
   "/payment-guides",
   "/blog",
