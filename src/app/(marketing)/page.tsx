@@ -29,17 +29,19 @@ import { formatDate, formatMoney } from "@/lib/utils";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: { absolute: "Apollo Group TV (Apollo TV): Live TV & On-Demand Streaming" },
+  title: {
+    absolute: "Apollo Group TV (Apollo TV): Live TV & On-Demand Streaming",
+  },
   description:
     "Apollo Group TV (Apollo TV) streams live channels and on-demand shows to Fire TV, Android, iPhone, Windows and Mac. One-time packs, no auto-renewal.",
   alternates: { canonical: "/" },
   openGraph: {
     title: "Apollo Group TV (Apollo TV): Live TV and On-Demand Streaming",
-    description: "Live channels and an on-demand library on the screens you already own. Pay once for one to twelve months, with a setup guide for every device.",
+    description:
+      "Live channels and an on-demand library on the screens you already own. Pay once for one to twelve months, with a setup guide for every device.",
     url: "/",
   },
 };
-
 
 const quickNav = [
   { id: "overview", label: "Overview" },
@@ -62,7 +64,14 @@ function Band({ id, children }: { id: string; children: React.ReactNode }) {
 }
 
 export default async function HomePage() {
-  const [plans, { reviews, total: reviewTotal, average }, settings, members, deviceGuides, faqCount] = await Promise.all([
+  const [
+    plans,
+    { reviews, total: reviewTotal, average },
+    settings,
+    members,
+    deviceGuides,
+    faqCount,
+  ] = await Promise.all([
     getActivePlans(),
     getApprovedReviews({ take: 8 }),
     getSettings(),
@@ -73,21 +82,39 @@ export default async function HomePage() {
 
   // Price hooks computed from the real price list.
   const pricing = pricingContext(plans);
-  const monthlies = plans.map(monthlyCents).filter((m): m is number => m !== null);
-  const fromMonthly = monthlies.length ? formatMoney(Math.min(...monthlies), plans[0]?.currency ?? "USD") : null;
-  const maxSave = Math.max(0, ...plans.map((p) => savingsPct(p, pricing.baseMonthly)));
-
+  const monthlies = plans
+    .map(monthlyCents)
+    .filter((m): m is number => m !== null);
+  const fromMonthly = monthlies.length
+    ? formatMoney(Math.min(...monthlies), plans[0]?.currency ?? "USD")
+    : null;
+  const maxSave = Math.max(
+    0,
+    ...plans.map((p) => savingsPct(p, pricing.baseMonthly)),
+  );
 
   // Hero stats: catalog sizes are set in Admin → Settings → Homepage highlights; the rating is the real review average.
   const { highlights } = settings;
   const stats = [
-    highlights.liveChannels && { label: "Live Channels", value: highlights.liveChannels },
-    highlights.moviesShows && { label: "Movies & Shows", value: highlights.moviesShows },
-    reviewTotal > 0 && average !== null && { label: `Rating · ${reviewTotal} review${reviewTotal === 1 ? "" : "s"}`, value: `${average.toFixed(1)}/5` },
+    highlights.liveChannels && {
+      label: "Live Channels",
+      value: highlights.liveChannels,
+    },
+    highlights.moviesShows && {
+      label: "Movies & Shows",
+      value: highlights.moviesShows,
+    },
+    reviewTotal > 0 &&
+      average !== null && {
+        label: `Rating · ${reviewTotal} review${reviewTotal === 1 ? "" : "s"}`,
+        value: `${average.toFixed(1)}/5`,
+      },
   ].filter((s): s is { label: string; value: string } => Boolean(s));
-  const badges = [highlights.moneyBackDays && `${highlights.moneyBackDays}-day money-back`, "No contracts", "Cancel anytime"].filter(
-    (b): b is string => Boolean(b),
-  );
+  const badges = [
+    highlights.moneyBackDays && `${highlights.moneyBackDays}-day money-back`,
+    "No contracts",
+    "Cancel anytime",
+  ].filter((b): b is string => Boolean(b));
 
   const orgJsonLd = {
     "@context": "https://schema.org",
@@ -95,18 +122,48 @@ export default async function HomePage() {
     name: siteConfig.name,
     url: siteConfig.url,
     logo: `${siteConfig.url}/brand/apollo-mark.png`,
+    ...(settings.legal.entityAddress
+      ? { address: settings.legal.entityAddress }
+      : {}),
     ...(settings.general.supportEmail
-      ? { contactPoint: { "@type": "ContactPoint", contactType: "customer support", email: settings.general.supportEmail } }
+      ? {
+          contactPoint: {
+            "@type": "ContactPoint",
+            contactType: "customer support",
+            email: settings.general.supportEmail,
+          },
+        }
       : {}),
   };
 
-  const siteJsonLd = { "@context": "https://schema.org", "@type": "WebSite", name: siteConfig.name, alternateName: "Apollo TV", url: siteConfig.url };
+  const siteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: siteConfig.name,
+    alternateName: "Apollo TV",
+    url: siteConfig.url,
+  };
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([orgJsonLd, siteJsonLd]).replace(/</g, "\\u003c") }} />
-      <HomeHero tagline={settings.general.tagline} stats={stats} badges={badges} />
-      <SocialProofBar members={members} rating={{ average, total: reviewTotal }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([orgJsonLd, siteJsonLd]).replace(
+            /</g,
+            "\\u003c",
+          ),
+        }}
+      />
+      <HomeHero
+        tagline={settings.general.tagline}
+        stats={stats}
+        badges={badges}
+      />
+      <SocialProofBar
+        members={members}
+        rating={{ average, total: reviewTotal }}
+      />
       <HomeQuickNav items={quickNav} />
       {/* Buyer journey: what it is → what you get → why switch → price → how to start → trust → answers → help. */}
       <Band id="overview">
@@ -119,10 +176,17 @@ export default async function HomePage() {
         <DevicesSection />
       </Band>
       <Band id="compare">
-        <CompareSection fromMonthly={fromMonthly} liveChannels={highlights.liveChannels} moviesShows={highlights.moviesShows} />
+        <CompareSection
+          fromMonthly={fromMonthly}
+          liveChannels={highlights.liveChannels}
+          moviesShows={highlights.moviesShows}
+        />
       </Band>
       <Band id="plans">
-        <PlansSection plans={plans.slice(0, 4)} checkout={isCheckoutEnabled()} />
+        <PlansSection
+          plans={plans.slice(0, 4)}
+          checkout={isCheckoutEnabled()}
+        />
       </Band>
       <Band id="how-it-works">
         <StepsSection />
@@ -147,7 +211,10 @@ export default async function HomePage() {
         <FaqSection />
       </Band>
       <Band id="support">
-        <SupportSection guideCount={generalGuides.length + deviceGuides.length} faqCount={faqCount} />
+        <SupportSection
+          guideCount={generalGuides.length + deviceGuides.length}
+          faqCount={faqCount}
+        />
       </Band>
       <FinalCta fromMonthly={fromMonthly} maxSave={maxSave} />
       <FloatingHelp whatsapp={settings.general.whatsapp} />
