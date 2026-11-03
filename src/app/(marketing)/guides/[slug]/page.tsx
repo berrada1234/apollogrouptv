@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import { GuideLayout } from "@/components/guide-layout";
 import { generalGuides } from "@/content/guides";
 import { getDeviceGuides } from "@/lib/guides";
-import { getPublishedFaqs } from "@/lib/queries";
 
 export const dynamic = "force-dynamic";
 
@@ -32,12 +31,12 @@ export default async function GuidePage({ params }: PageProps<"/guides/[slug]">)
   const g = await resolve(slug);
   if (!g) notFound();
 
-  const [faqs, devices] = await Promise.all([getPublishedFaqs(), getDeviceGuides()]);
+  const devices = await getDeviceGuides();
   const related = [
     ...generalGuides.filter((x) => x.slug !== slug).map((x) => ({ href: `/guides/${x.slug}`, title: x.title })),
     ...devices.filter((d) => d.slug !== slug).map((d) => ({ href: `/guides/${d.slug}`, title: d.title })),
   ];
-  const pick = (cats: string[]) => faqs.filter((f) => cats.includes(f.category)).slice(0, 4);
+  const asFaq = (items: { q: string; a: string }[]) => items.map((f, i) => ({ id: `${slug}-${i}`, category: "Guide", question: f.q, answer: f.a }));
 
   if (g.kind === "general") {
     const x = g.general;
@@ -50,37 +49,32 @@ export default async function GuidePage({ params }: PageProps<"/guides/[slug]">)
         steps={x.steps}
         troubleshooting={x.troubleshooting}
         security={x.security}
-        faqs={pick(x.faqCategories)}
+        faqs={asFaq(x.faqs)}
         related={related}
       />
     );
   }
 
   const d = g.device;
+  const p = d.profile;
   const adminSteps = d.instructions
     .split("\n")
     .map((s) => s.trim())
     .filter(Boolean)
     .map((line) => ({ title: line, body: "" }));
-  const steps = [
-    ...(d.downloadUrl ? [{ title: "Download the official app", body: `Use the official download link at the top of this guide on your ${d.name}.` }] : []),
-    ...adminSteps,
-    { title: "Sign in", body: "Open the app and sign in with the email and password of your Apollo Group TV account. Your plan must be active." },
-  ];
+  // The admin's numbered steps already start with the download; the profile adds the right sign-in step for this device.
+  const steps = [...adminSteps, p.finish];
 
   return (
     <GuideLayout
       slug={slug}
       title={d.title}
       intro={d.intro}
-      requirements={[`A ${d.name} connected to the internet`, "An active Apollo Group TV plan — check [My Plan](/dashboard/plan)", "Your account email and password"]}
+      requirements={p.requirements}
       steps={steps}
-      troubleshooting={[
-        { q: "The app won't install", a: "Make sure you're using the official link above and that the device has enough free storage, then restart and try again." },
-        { q: "Sign-in fails", a: "Reset your password on the [Sign in](/sign-in) page and try again. See the [troubleshooting guide](/guides/troubleshooting) for more." },
-      ]}
-      security={["Install only from the official link on this page.", "Don't share your account password with anyone.", "Remove the app from devices you no longer use and sign them out under Dashboard → Security."]}
-      faqs={pick(["Installation & Setup", "App & Playback"])}
+      troubleshooting={p.troubleshooting}
+      security={p.security}
+      faqs={asFaq(p.faqs)}
       related={related}
       download={d.downloadUrl ? { url: d.downloadUrl, label: `Official download for ${d.name}` } : undefined}
     />

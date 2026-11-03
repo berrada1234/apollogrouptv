@@ -288,7 +288,7 @@ export default function ProductPage() {
         </Container>
       </section>
 
-      <CtaBand />
+      <CtaBand title="See it for yourself" description="Compare the packs, then create an account — the dashboard, guides and support are ready from day one." />
     </>
   );
 }

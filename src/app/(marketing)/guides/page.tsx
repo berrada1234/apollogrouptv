@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cardClass, Section, SectionHeader } from "@/components/section";
 import Link from "next/link";
 import { ArrowRight, MonitorSmartphone, UserPlus, Wrench } from "lucide-react";
 import { Container, EmptyState, SectionHeading } from "@/components/ui/misc";
@@ -31,7 +32,7 @@ export default async function GuidesPage() {
         crumbs={[{ href: "/guides", label: "Guides" }]}
       />
 
-      <section className="py-16">
+      <section id="device-guides" className="scroll-mt-24 py-16">
         <Container>
           <SectionHeading align="left" eyebrow="Devices" title="Device guides" description="A device gets a guide only after we've verified it and have an official download source." />
           {devices.length > 0 ? (
@@ -91,6 +92,33 @@ export default async function GuidesPage() {
           </p>
         </Container>
       </section>
+
+      <Section>
+        <SectionHeader eyebrow="Start here" title="Not Sure Which Guide You Need?" />
+        <div className="mt-8 grid gap-4 md:grid-cols-3">
+          {[
+            { t: "You haven't signed up yet", b: "Start with account setup: create and verify your account, then choose a pack.", href: "/guides/account-setup", cta: "Account setup guide" },
+            { t: "Your pack is active", b: "Pick the guide for the device you'll watch on most. You can add other devices later with the same account.", href: "#device-guides", cta: "Device guides" },
+            { t: "Something stopped working", b: "Work through the troubleshooting checklist in order — most problems are solved by step three.", href: "/guides/troubleshooting", cta: "Troubleshooting guide" },
+          ].map((x) => (
+            <a key={x.t} href={x.href} className={`${cardClass} group flex flex-col p-6 hover:border-primary/30`}>
+              <span className="font-semibold text-text">{x.t}</span>
+              <span className="mt-2 flex-1 text-sm leading-6 text-muted">{x.b}</span>
+              <span className="mt-4 text-sm font-semibold text-accent group-hover:text-light-blue">{x.cta} →</span>
+            </a>
+          ))}
+        </div>
+        <div className={`${cardClass} mt-6 p-6`}>
+          <h2 className="font-display text-lg font-bold text-text">Five fixes worth trying before anything else</h2>
+          <ol className="mt-4 grid gap-3 text-sm leading-6 text-muted sm:grid-cols-2">
+            <li><span className="font-semibold text-text">1. Check your pack is active</span> under Plans &amp; Billing in your dashboard.</li>
+            <li><span className="font-semibold text-text">2. Restart the router and the device</span> — router first, then the device once the connection is back.</li>
+            <li><span className="font-semibold text-text">3. Update the app</span> from its official source; old versions can fail to sign in.</li>
+            <li><span className="font-semibold text-text">4. Use the right login:</span> the Apollo TV app takes your website email and password, third-party players take your player login.</li>
+            <li><span className="font-semibold text-text">5. Try a wired connection</span> or move closer to the router if video keeps pausing.</li>
+          </ol>
+        </div>
+      </Section>
     </>
   );
 }

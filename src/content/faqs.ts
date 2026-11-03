@@ -65,13 +65,13 @@ export const faqSeed: FaqSeed[] = [
   },
   {
     category: "Plans & Billing",
-    question: "Does my Apollo Group TV pack renew automatically?",
+    question: "Does my pack renew automatically?",
     answer:
       "No. Each pack is a one-time payment for a fixed period and nothing renews behind your back. When the period ends, access stops until you choose a new pack — you'll see the days remaining in your [dashboard](/dashboard/plan).",
   },
   {
     category: "Plans & Billing",
-    question: "How do I pay for Apollo Group TV?",
+    question: "How do I pay for a pack?",
     answer:
       "Choose your pack from the dashboard and our team confirms the available payment options with you through a support ticket while online checkout is being set up. Every confirmed payment then appears in your billing history with its amount, status and reference.",
   },
@@ -127,13 +127,13 @@ export const faqSeed: FaqSeed[] = [
   },
   {
     category: "Installation & Setup",
-    question: "Can I use Apollo Group TV on a Roku or Smart TV?",
+    question: "Does it work on Roku or a smart TV?",
     answer:
       "We list a device only after verifying it. Check the [App page](/app) for the current list — if your Roku, Samsung, LG or other smart TV isn't shown, [ask us before subscribing](/contact) and we'll tell you honestly what works today.",
   },
   {
     category: "Installation & Setup",
-    question: "Which devices can run the Apollo TV app?",
+    question: "Which devices can run the app?",
     answer:
       "The [App page](/app) lists every verified device type — currently streaming sticks and TV boxes, Android devices, iPhone and iPad, and Windows computers — each with its own setup guide. New devices are added once they've been tested.",
   },
@@ -153,13 +153,13 @@ export const faqSeed: FaqSeed[] = [
   // ── Channels & Content ───────────────────────────────────────────────────
   {
     category: "Channels & Content",
-    question: "How many channels are included with Apollo Group TV?",
+    question: "How many channels are included?",
     answer:
       "The size of the live lineup and on-demand library is shown on our [homepage](/) and reflects the current catalog, which changes as licensing changes. Every pack includes the full lineup. The [channel guide](/channels) explains how channels are organized.",
   },
   {
     category: "Channels & Content",
-    question: "Does Apollo Group TV include major sports leagues and premium movie channels?",
+    question: "Are major sports leagues and premium movie channels included?",
     answer:
       "Sports and movie channels are among the categories in the lineup, but we don't publish channel, league or network names — they're trademarks of their owners and availability depends on licensing in your region. If one specific channel or league matters to you, [ask us first](/contact) and we'll confirm.",
   },
@@ -203,13 +203,13 @@ export const faqSeed: FaqSeed[] = [
   },
   {
     category: "App & Playback",
-    question: "Will Apollo Group TV work when I travel abroad?",
+    question: "Will it work when I travel abroad?",
     answer:
       "The app works wherever you have a good internet connection, but some channels are licensed for specific regions and may not be available in every country. If you're planning a trip, [ask us](/contact) what to expect.",
   },
   {
     category: "App & Playback",
-    question: "Do I need a VPN to use Apollo Group TV?",
+    question: "Do I need a VPN?",
     answer:
       "No, a VPN isn't required. Channel availability follows licensing for the region you're in, and routing through another country can hide channels or slow playback. Using a VPN to get around regional licensing isn't permitted under our [terms](/terms-and-conditions).",
   },
@@ -241,13 +241,13 @@ export const faqSeed: FaqSeed[] = [
   },
   {
     category: "Account & Security",
-    question: "How is my Apollo Group TV account protected?",
+    question: "How is my account protected?",
     answer:
       "Passwords are stored as one-way hashes, accounts are email-verified, sign-in attempts are rate-limited, and you can review and sign out of your active sessions from [Security](/dashboard/security). We never ask for your password by email, chat or ticket.",
   },
   {
     category: "Account & Security",
-    question: "What personal information does Apollo Group TV collect?",
+    question: "What personal information do you collect?",
     answer:
       "Only what's needed to run your account: your name and email, your pack and payment records, your support messages, and basic technical data used for security. The [Privacy Policy](/privacy-policy) explains each type, why we keep it and the choices you have.",
   },
@@ -299,7 +299,7 @@ export const faqSeed: FaqSeed[] = [
   },
   {
     category: "Troubleshooting",
-    question: "Is the Apollo Group TV service down?",
+    question: "Is the service down right now?",
     answer:
       "Check your own connection first by opening another streaming app or website. If everything else works, [open a ticket](/dashboard/support/new) or [message us](/contact) — we'll confirm whether there's an issue on our side and keep you updated in the same thread.",
   },
@@ -311,11 +311,27 @@ export const faqSeed: FaqSeed[] = [
   },
   {
     category: "Troubleshooting",
-    question: "How do I reach Apollo Group TV support?",
+    question: "How do I reach support?",
     answer:
       "Customers can [open a ticket](/dashboard/support/new) from the dashboard — every reply stays in one thread and you're notified when we answer. Not a customer yet? Use the [contact form](/contact) and we'll reply by email.",
   },
 ];
+
+/** Questions reworded without the brand name (it was repeated in almost every question). The seed renames existing rows. */
+export const faqRenames: Record<string, string> = {
+  "Does my Apollo Group TV pack renew automatically?": "Does my pack renew automatically?",
+  "How do I pay for Apollo Group TV?": "How do I pay for a pack?",
+  "Can I use Apollo Group TV on a Roku or Smart TV?": "Does it work on Roku or a smart TV?",
+  "Which devices can run the Apollo TV app?": "Which devices can run the app?",
+  "How many channels are included with Apollo Group TV?": "How many channels are included?",
+  "Does Apollo Group TV include major sports leagues and premium movie channels?": "Are major sports leagues and premium movie channels included?",
+  "Will Apollo Group TV work when I travel abroad?": "Will it work when I travel abroad?",
+  "Do I need a VPN to use Apollo Group TV?": "Do I need a VPN?",
+  "How is my Apollo Group TV account protected?": "How is my account protected?",
+  "What personal information does Apollo Group TV collect?": "What personal information do you collect?",
+  "How do I reach Apollo Group TV support?": "How do I reach support?",
+  "Is the Apollo Group TV service down?": "Is the service down right now?"
+};
 
 /** First-generation questions that later sets replaced; the seed removes them so the FAQ doesn't drift. */
 export const legacyFaqQuestions = [

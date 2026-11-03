@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cardClass, Section, SectionHeader } from "@/components/section";
 import Link from "next/link";
 import { BookOpen, Clock, CreditCard, HelpCircle, LifeBuoy, Mail, MessageCircle, Phone, ShieldAlert } from "lucide-react";
 import { Container } from "@/components/ui/misc";
@@ -116,6 +117,28 @@ export default async function ContactPage() {
           </aside>
         </Container>
       </section>
+
+      <Section>
+        <div className="grid gap-6 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-5">
+            <SectionHeader eyebrow="Get a faster answer" title="What to Include in Your Message" description="The more of this we have in the first message, the fewer back-and-forth replies it takes." />
+          </div>
+          <ul className={`${cardClass} divide-y divide-border lg:col-span-7`}>
+            {[
+              { t: "The email on your account", b: "So we can find it — never include your password." },
+              { t: "Your device and app", b: "For example “Fire TV Stick 4K, Apollo TV app” or “iPhone, UHF player”." },
+              { t: "What you expected and what happened", b: "Plus the exact wording of any error message, or a photo of the screen." },
+              { t: "When it started", b: "And whether it happens all the time, on one channel, or only at certain times." },
+              { t: "For billing questions", b: "The payment reference from Transactions in your dashboard, if you have one." },
+            ].map((x) => (
+              <li key={x.t} className="px-5 py-4 text-sm">
+                <p className="font-semibold text-text">{x.t}</p>
+                <p className="mt-1 leading-6 text-muted">{x.b}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Section>
     </>
   );
 }

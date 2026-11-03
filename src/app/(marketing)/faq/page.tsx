@@ -168,7 +168,7 @@ export default async function FaqPage() {
       </section>
 
       {/* Still stuck */}
-      <section className="section-y-sm border-t border-border">
+      <section className="page-cta section-y-sm border-t border-border">
         <Container>
           <div className="relative overflow-hidden rounded-[20px] border border-primary/25 bg-[#07191d] px-6 py-10 sm:px-10">
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_100%_at_100%_0%,rgb(34_211_238/0.2),transparent_70%)]" aria-hidden />

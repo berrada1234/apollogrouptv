@@ -199,8 +199,8 @@ p {
 .home-band:nth-of-type(even) {
   background-color: var(--bg-secondary);
 }
-/* The homepage ends with its own CTA, so the shared footer CTA would repeat it. */
-body:has(.home-band) .footer-cta {
+/* Pages that end with their own CTA (the homepage and any page using CtaBand) skip the shared footer CTA. */
+body:has(.home-band, .page-cta) .footer-cta {
   display: none;
 }
 .home-band > section {

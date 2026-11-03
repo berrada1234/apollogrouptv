@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cardClass, Section, SectionHeader } from "@/components/section";
 import Link from "next/link";
 import { BadgeCheck, Copy, Gift, Link2, UserPlus } from "lucide-react";
 import { Container, SectionHeading } from "@/components/ui/misc";
@@ -118,7 +119,23 @@ export default async function ReferPage() {
           )}
         </Container>
       </section>
-      {!user && <CtaBand />}
+      <Section>
+        <SectionHeader eyebrow="Program questions" title="Referral Program: Common Questions" />
+        <dl className="mt-8 grid gap-4 md:grid-cols-3">
+          {[
+            { q: "When does a friend count as my referral?", a: "As soon as they create an account through your link, they appear in your dashboard. Whether a referral qualifies for a reward depends on the program rules shown above." },
+            { q: "My friend signed up without my link. Can they still add me?", a: "Yes — before they choose their first pack, they can enter your referral code under Plans & Billing in their dashboard." },
+            { q: "Can I refer myself or create extra accounts?", a: "No. Self-referrals and duplicate accounts are excluded, and accounts created to game the program can lose any rewards." },
+          ].map((f) => (
+            <div key={f.q} className={`${cardClass} p-6`}>
+              <dt className="font-semibold text-text">{f.q}</dt>
+              <dd className="mt-2 text-sm leading-6 text-muted">{f.a}</dd>
+            </div>
+          ))}
+        </dl>
+      </Section>
+
+      {!user && <CtaBand title="Invite friends to Apollo Group TV" description="Create your account to get a personal referral link and track every friend who joins." />}
     </>
   );
 }

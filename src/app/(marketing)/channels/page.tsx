@@ -165,7 +165,14 @@ export default function ChannelsPage() {
         </ol>
       </Section>
 
-      <SportsSection />
+      <SportsSection
+        copy={{
+          title: "Sports Channels on Apollo Group TV, by Sport and Region",
+          tagline: "Every sport and region category in the lineup",
+          intro:
+            "Here is the full list of sports categories. Inside the app, each one opens a filtered list of channels, so you can go straight to football, combat sports or motorsport — or narrow it to one country's coverage. What a category contains depends on the rights available where you live, and individual events move between channels from season to season.",
+        }}
+      />
 
       {/* Why categories, not names */}
       <section className="section-y border-t border-border bg-bg-secondary">
@@ -221,7 +228,7 @@ export default function ChannelsPage() {
       </Section>
 
       {/* CTA */}
-      <section className="section-y-sm border-t border-border">
+      <section className="page-cta section-y-sm border-t border-border">
         <Container>
           <div className="relative overflow-hidden rounded-[20px] border border-primary/25 bg-[#07191d] px-6 py-10 sm:px-10">
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_100%_at_100%_0%,rgb(34_211_238/0.2),transparent_70%)]" aria-hidden />

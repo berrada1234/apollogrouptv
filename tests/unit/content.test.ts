@@ -149,3 +149,27 @@ describe("app page content", () => {
     for (const f of appFaq) expect(stripRich(f.a).length).toBeGreaterThan(60);
   });
 });
+
+describe("device guide profiles", () => {
+  it("maps each device name to its own profile", async () => {
+    const { profileFor } = await import("@/content/device-guides");
+    const cases: Record<string, string> = {
+      "Fire TV & Android TV": "firetv",
+      "Android Phone & Tablet": "android-mobile",
+      macOS: "macos",
+      Windows: "windows",
+      "iPhone & iPad": "ios",
+      "Apple TV": "apple-tv",
+    };
+    for (const [name, key] of Object.entries(cases)) expect(profileFor(name).key).toBe(key);
+  });
+  it("gives every device its own intro, troubleshooting and FAQs", async () => {
+    const { deviceProfiles } = await import("@/content/device-guides");
+    const intros = deviceProfiles.map((p) => p.intro);
+    expect(new Set(intros).size).toBe(intros.length);
+    for (const p of deviceProfiles) {
+      expect(p.troubleshooting.length).toBeGreaterThanOrEqual(3);
+      expect(p.faqs.length).toBeGreaterThanOrEqual(2);
+    }
+  });
+});

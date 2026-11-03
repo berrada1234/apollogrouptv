@@ -434,9 +434,9 @@ export function ReviewsSection({
 
   // No published reviews yet: explain how reviews work instead of showing an empty box.
   const rules = [
-    { icon: User, t: "Registered accounts only", b: "Every review is tied to a real Apollo Group TV account." },
-    { icon: ShieldCheck, t: "Moderated before publishing", b: "We check each review for spam and abuse — never for being positive." },
-    { icon: BadgeCheck, t: "“Verified customer” means it", b: "The badge appears only when the reviewer has a subscription on record." },
+    { icon: User, t: "Written by real customers", b: "Only people with an account can post, so every review comes from someone who has used the service." },
+    { icon: ShieldCheck, t: "Checked, not curated", b: "Critical reviews are published too — we only filter out spam, abuse and personal details." },
+    { icon: BadgeCheck, t: "Labels you can rely on", b: "A review is marked as a customer review only when a paid pack is on record for that account." },
   ];
   return (
     <Section>

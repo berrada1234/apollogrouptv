@@ -175,7 +175,7 @@ export function CtaBand({
   description?: string;
 }) {
   return (
-    <section className="py-20">
+    <section className="page-cta py-20">
       <Container>
         <div className="relative overflow-hidden rounded-[22px] border border-primary/30 bg-gradient-to-br from-[#0b2a30] via-card to-bg-secondary px-6 py-14 text-center sm:px-12">
           <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-primary/25 blur-3xl" aria-hidden />

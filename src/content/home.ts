@@ -88,7 +88,7 @@ export const homeCopy = {
     eyebrow: "Reviews",
     h2: "Apollo Group TV Reviews from Real Customers",
     description:
-      "Every review comes from a registered Apollo Group TV account and is moderated before it appears — no paid testimonials, no invented names. “Verified customer” means the reviewer has a subscription on record.",
+      "What customers say after using Apollo Group TV — no paid testimonials, no invented names, and critical reviews published alongside the positive ones.",
   },
 
   support: {

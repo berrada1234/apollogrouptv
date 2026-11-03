@@ -27,6 +27,7 @@ import { afterHeader, cardClass, cardHover, IconBox, leadClass, Section, Section
 import { appCopy, appFaq } from "@/content/app";
 import { channelCategories } from "@/content/channels";
 import { homeCopy } from "@/content/home";
+import { profileFor } from "@/content/device-guides";
 import { monthlyCents } from "@/lib/pricing";
 import { getActivePlans } from "@/lib/queries";
 import { getSettings } from "@/lib/settings";
@@ -54,14 +55,6 @@ const posterTones = [
   "from-[#155e75] via-[#0f2f3a] to-[#06090c]",
 ];
 
-/** Matches a device logo to a verified platform from Admin → Settings → App platforms. */
-const logoMatchers: Record<string, RegExp> = {
-  "Fire TV Stick": /fire\s*tv\s*stick|firestick/i,
-  "Fire TV": /fire\s*tv/i,
-  Android: /android/i,
-  "iPhone & iPad": /iphone|ipad|ios|apple/i,
-  "Windows PC": /windows|\bpc\b/i,
-};
 
 /** Small decorative screen used in the in-app tour. Illustration only. */
 function ScreenSketch({ variant }: { variant: number }) {
@@ -131,7 +124,7 @@ export default async function AppPage() {
     .map((f) => /up to (\d+) devices/i.exec(f)?.[1])
     .find(Boolean);
   const glance = [
-    { label: "Works on", value: `${logos.length} device types` },
+    { label: "Works on", value: platforms.length ? `${platforms.length} device types` : "Verified devices" },
     { label: "Sign-in", value: "One account" },
     { label: "Picture", value: "HD · FHD · 4K*" },
     deviceLimit ? { label: "Devices per pack", value: `Up to ${deviceLimit}` } : null,
@@ -139,7 +132,6 @@ export default async function AppPage() {
     { label: "Setup", value: "Step-by-step guides" },
   ].filter((g): g is { label: string; value: string } => g !== null);
 
-  const platformFor = (logoName: string) => platforms.find((p) => logoMatchers[logoName]?.test(p.name));
   const faqItems = appFaq.map((f, i) => ({ id: `app-${i}`, category: "App", question: f.q, answer: f.a }));
 
   return (
@@ -326,71 +318,39 @@ export default async function AppPage() {
       <section id="install" className="section-y scroll-mt-20">
         <Container>
           <SectionHeader eyebrow={c.install.eyebrow} title={c.install.h2} description={c.install.description} />
-          <ul className={cn(afterHeader, "grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5")}>
-            {logos.map((d) => {
-              const p = platformFor(d.name);
-              return (
-                <li key={d.name}>
-                  <Link
-                    href={p ? `#${slugify(p.name)}` : "/contact"}
-                    className={cn(cardClass, cardHover, "flex h-full flex-col items-center gap-3 p-5 text-center")}
-                  >
-                    <span className="flex h-12 items-center">
-                      <Image src={d.src} alt={d.alt} width={d.width} height={d.height} className="h-10 w-auto max-w-full object-contain" />
-                    </span>
-                    <span className="text-sm font-semibold text-text">{d.name}</span>
-                    <span className={cn("text-xs", p ? "text-success" : "text-subtle")}>{p ? "Setup guide below" : "Ask about setup"}</span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-          <p className="mt-5 text-sm text-muted">
-            <RichText text={c.install.notListed} />
-          </p>
-
           {platforms.length > 0 ? (
-            <div className="mt-10 space-y-4">
-              {platforms.map((p) => (
-                <article key={p.name} id={slugify(p.name)} className={cn(cardClass, "scroll-mt-28 p-6 sm:p-8")}>
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <h3 className="font-display text-xl font-bold text-text">{p.name}</h3>
-                    <span className="flex items-center gap-3">
-                      <Badge tone="success" dot>
-                        Verified
-                      </Badge>
-                      <Link href={`/guides/${slugify(p.name)}`} className="text-sm font-medium text-accent hover:text-light-blue">
-                        Full guide →
-                      </Link>
-                    </span>
-                  </div>
-                  {p.instructions && (
-                    <ol className="mt-6 space-y-4">
-                      {p.instructions
-                        .split("\n")
-                        .filter(Boolean)
-                        .map((step, i) => (
-                          <li key={i} className="flex gap-4 text-sm leading-relaxed text-muted">
-                            <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-primary/40 bg-primary/10 text-xs font-semibold text-accent">{i + 1}</span>
-                            <span className="pt-1 [&_strong]:text-text">
-                              <RichText text={step} />
-                            </span>
-                          </li>
-                        ))}
-                    </ol>
-                  )}
-                  <div className="mt-8 border-t border-border pt-6">
-                    {p.downloadUrl ? (
-                      <a href={p.downloadUrl} rel="noopener noreferrer" target="_blank" className={buttonClasses({})}>
-                        <Download className="h-4 w-4" aria-hidden /> Download for {p.name}
-                      </a>
-                    ) : (
-                      <p className="text-sm text-subtle">The official download link has not been published yet.</p>
-                    )}
-                  </div>
-                </article>
-              ))}
-            </div>
+            <>
+              <ul className={cn(afterHeader, "grid gap-4 sm:grid-cols-2 lg:grid-cols-3")}>
+                {platforms.map((p) => {
+                  const prof = profileFor(p.name);
+                  return (
+                    <li key={p.name} id={slugify(p.name)} className={cn(cardClass, "flex scroll-mt-28 flex-col p-6")}>
+                      <div className="flex items-start justify-between gap-3">
+                        <h3 className="font-display text-lg font-bold text-text">{p.name}</h3>
+                        <Badge tone="success" dot>
+                          Verified
+                        </Badge>
+                      </div>
+                      {p.method && <p className="mt-1 text-sm font-medium text-accent">{p.method}</p>}
+                      <p className="mt-3 flex-1 text-sm leading-6 text-muted">{prof.summary}</p>
+                      <div className="mt-5 flex flex-wrap gap-2">
+                        <ButtonLink href={`/guides/${slugify(p.name)}`} size="sm">
+                          Read the setup guide
+                        </ButtonLink>
+                        {p.downloadUrl && (
+                          <a href={p.downloadUrl} rel="noopener noreferrer" target="_blank" className={buttonClasses({ variant: "secondary", size: "sm" })}>
+                            <Download className="h-4 w-4" aria-hidden /> {p.downloadLabel || "Download"}
+                          </a>
+                        )}
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+              <p className="mt-5 text-sm text-muted">
+                <RichText text={c.install.notListed} /> Customers also find codes, server details and step-by-step help in their dashboard under Apps &amp; Guides.
+              </p>
+            </>
           ) : (
             <div className={cn(cardClass, "mt-10 flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between")}>
               <div className="flex gap-4">
@@ -474,7 +434,7 @@ export default async function AppPage() {
       </section>
 
       {/* CTA */}
-      <section className="section-y-sm border-t border-border">
+      <section className="page-cta section-y-sm border-t border-border">
         <Container>
           <div className="relative overflow-hidden rounded-[20px] border border-primary/25 bg-[#07191d] px-6 py-10 sm:px-10">
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_100%_at_100%_0%,rgb(34_211_238/0.2),transparent_70%)]" aria-hidden />

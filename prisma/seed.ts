@@ -8,7 +8,7 @@
  *  - No user or administrator is ever created here. See scripts/create-admin.ts.
  */
 import { PrismaClient } from "@prisma/client";
-import { faqSeed, legacyFaqQuestions, previousFaqCategories, previousFaqQuestions } from "../src/content/faqs";
+import { faqRenames, faqSeed, legacyFaqQuestions, previousFaqCategories, previousFaqQuestions } from "../src/content/faqs";
 
 // Load .env locally; on the server variables come from the hosting panel.
 try {
@@ -24,6 +24,10 @@ async function seedFaqs() {
   });
   // Retire the nine-category set that the topic-based FAQ replaces (admin-created entries are kept).
   const retired = await db.faq.deleteMany({ where: { question: { in: previousFaqQuestions }, category: { in: previousFaqCategories } } });
+  // Rename reworded questions in place so admin edits to the answer survive.
+  for (const [from, to] of Object.entries(faqRenames)) {
+    if (!(await db.faq.findFirst({ where: { question: to } }))) await db.faq.updateMany({ where: { question: from }, data: { question: to } });
+  }
   let created = 0;
   for (const [i, f] of faqSeed.entries()) {
     const existing = await db.faq.findFirst({ where: { question: f.question } });
