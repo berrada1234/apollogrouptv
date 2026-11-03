@@ -29,13 +29,13 @@ import { formatDate, formatMoney } from "@/lib/utils";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: { absolute: "Apollo Group TV — Live TV & On-Demand Streaming Plans" },
+  title: { absolute: "Apollo Group TV (Apollo TV): Live TV & On-Demand Streaming" },
   description:
-    "Apollo Group TV (Apollo TV) brings live channels and on-demand viewing together: clear subscription plans and pricing, verified device setup and real support.",
+    "Apollo Group TV (Apollo TV) streams live channels and on-demand shows to Fire TV, Android, iPhone, Windows and Mac. One-time packs, no auto-renewal.",
   alternates: { canonical: "/" },
   openGraph: {
-    title: "Apollo Group TV — Live TV & On-Demand Streaming",
-    description: "Live channels and on-demand viewing with clear plans, verified device guides and trackable support.",
+    title: "Apollo Group TV (Apollo TV): Live TV and On-Demand Streaming",
+    description: "Live channels and an on-demand library on the screens you already own. Pay once for one to twelve months, with a setup guide for every device.",
     url: "/",
   },
 };

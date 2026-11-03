@@ -4,7 +4,7 @@ Canonicals are generated from `NEXT_PUBLIC_SITE_URL` through `metadataBase` in `
 
 | URL | Title tag | Meta description | H1 | Indexing | Structured data |
 |---|---|---|---|---|---|
-| `/` | Apollo Group TV — Live TV & On-Demand Streaming Plans | Apollo Group TV (Apollo TV) brings live channels and on-demand viewing together: clear subscription plans and pricing, verified device setup and real support. | Apollo Group TV: Live TV and On-Demand Streaming, Made Simple | index | Organization, WebSite (`alternateName: Apollo TV`) |
+| `/` | Apollo Group TV (Apollo TV): Live TV & On-Demand Streaming | Apollo Group TV (Apollo TV) streams live channels and on-demand shows to Fire TV, Android, iPhone, Windows and Mac. One-time packs, no auto-renewal. | Apollo Group TV: Live TV and On-Demand Streaming Without a Cable Box | index | Organization, WebSite (`alternateName: Apollo TV`) |
 | `/product` | Apollo Group TV Features — How the Service Works | See what Apollo Group TV includes: an organized channel catalog, a self-service account dashboard, ticket support and setup help for verified devices. | Apollo Group TV features, explained | index | BreadcrumbList |
 | `/app` | Apollo Group TV App — Devices, Setup & Troubleshooting | How to get the Apollo Group TV app: verified devices, official download links, installation steps and fixes for common sign-in and playback problems. | The Apollo Group TV app | index | BreadcrumbList |
 | `/plans` | Apollo Group TV Plans & Pricing | Compare Apollo Group TV plans side by side: price, billing period and what each includes. See how activation and billing work before you sign up. | Apollo Group TV plans and pricing | index | BreadcrumbList |

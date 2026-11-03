@@ -38,8 +38,8 @@ export function HomeHero({
             Apollo Group TV: Live TV and{" "}
             <span className="bg-gradient-to-r from-primary to-light-blue bg-clip-text text-transparent">
               <span className="whitespace-nowrap">On-Demand</span> Streaming
-            </span>
-            , Made Simple
+            </span>{" "}
+            Without a Cable Box
           </h1>
           <p className="mt-5 max-w-xl text-base leading-7 text-muted sm:text-lg sm:leading-8">{homeCopy.hero.lead}</p>
 
