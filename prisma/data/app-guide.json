@@ -2,7 +2,7 @@
   "appVersion": "4.0.5",
   "appTagline": "Apollo TV 4.0 is a ground-up rebuild: a cinematic new interface, voice search, near-instant reopening and steadier playback on every screen you own.",
   "stats": "Subscribers | 14K+\nPlatforms | 6\nUpdates | In-app",
-  "qrUrl": "https://apollogrouptvs.com/downloads/apollo-mobile-universal-latest.apk",
+  "qrUrl": "https://apollogroupr.tv/downloads/apollo-mobile-universal-latest.apk",
   "releaseNotes": "A cinematic new look — A darker, cleaner interface with smoother focus and transitions on every screen.\nVoice search — Press the mic and say what you want to watch. Works on Fire TV, Android TV and phones.\nOpens in a flash — Home loads instantly from your device, then refreshes quietly in the background.\nTougher security — Credentials are stored more safely, usernames are never logged, and builds are signed and minified.",
   "players": "Tivimate | Guide coming soon\nIBO Player | Guide coming soon\nEmby | Guide coming soon\nKodi | Guide coming soon\nFlex IPTV | Guide coming soon\nIPTV Smarters | Guide coming soon",
   "playersNote": "",
@@ -20,7 +20,7 @@
       "name": "Android Phone & Tablet",
       "verified": true,
       "method": "Direct APK for phones and tablets",
-      "downloadUrl": "https://apollogrouptvs.com/downloads/apollo-mobile-universal-latest.apk",
+      "downloadUrl": "https://apollogroupr.tv/downloads/apollo-mobile-universal-latest.apk",
       "downloadLabel": "Download APK",
       "copyItems": "",
       "instructions": "Tap **Download APK** — your browser saves the file to Downloads.\nOpen it from the download notification or your **Downloads** folder.\nIf Android asks, allow **Install unknown apps** for your browser. You only do this once.\nTap **Install**, then open **Apollo Group TV** from your app drawer and sign in."
@@ -29,7 +29,7 @@
       "name": "macOS",
       "verified": true,
       "method": "Universal DMG · macOS 12 or later",
-      "downloadUrl": "https://apollogrouptvs.com/downloads/apollo-mac-latest.dmg",
+      "downloadUrl": "https://apollogroupr.tv/downloads/apollo-mac-latest.dmg",
       "downloadLabel": "Download DMG",
       "copyItems": "Terminal command | xattr -cr \"/Applications/Apollo Group TV.app\"",
       "instructions": "Click **Download DMG** to get the installer.\nOpen the DMG and drag **Apollo Group TV** into your **Applications** folder.\nOpen **Terminal**, paste the command shown here and press Return. This is needed once because the app isn't signed with an Apple Developer ID.\nLaunch Apollo Group TV from Launchpad and sign in. Updates download and install inside the app from then on."
@@ -38,7 +38,7 @@
       "name": "Windows",
       "verified": true,
       "method": "Installer · Windows 10 and 11",
-      "downloadUrl": "https://apollogrouptvs.com/downloads/Apollo-Group-TV-Setup-latest.exe",
+      "downloadUrl": "https://apollogroupr.tv/downloads/Apollo-Group-TV-Setup-latest.exe",
       "downloadLabel": "Download installer",
       "copyItems": "",
       "instructions": "Click **Download installer** to save the .exe setup file.\nOpen the file. Because the installer isn't code-signed, Windows SmartScreen may show a blue warning — choose **More info → Run anyway**.\nFollow the setup wizard. The default install folder is fine for most people.\nOpen **Apollo Group TV** from the Start menu or the desktop shortcut and sign in. Updates install inside the app from then on."
