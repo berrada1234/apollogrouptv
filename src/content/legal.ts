@@ -275,15 +275,15 @@ export const refundPolicy: LegalDoc = {
     {
       heading: "How to request a refund",
       list: [
-        "Open a support ticket from your dashboard with the subject “Refund request”.",
-        "Include the email on your account and the payment reference from Transactions, if you have it.",
+        "Open a support ticket from your dashboard with the subject “Refund request”, within the refund window.",
+        "Include the email on your account, your order number (the payment reference shown in Transactions) and the date your pack was activated.",
         "Tell us briefly why you're asking. If something isn't working, we may first offer to fix it.",
       ],
     },
     {
       heading: "What happens next",
       paragraphs: [
-        "We reply in the same ticket and you're notified when we do. If the refund is approved, the pack it covers is deactivated and the refund is recorded in your Transactions.",
+        "We review each request individually, reply with our decision in the same ticket and notify you when we do. If the refund is approved, the pack it covers is deactivated and the refund is recorded in your Transactions.",
       ],
     },
     {

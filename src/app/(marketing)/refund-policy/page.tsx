@@ -17,6 +17,27 @@ export const metadata: Metadata = {
   },
 };
 
+type RefundBlock =
+  | { kind: "heading" | "paragraph"; text: string }
+  | { kind: "list"; items: string[] };
+
+// Owner refund terms: one block per line; "### " starts a subheading and "- " a bullet.
+function refundBlocks(source: string): RefundBlock[] {
+  const blocks: RefundBlock[] = [];
+  for (const raw of source.split("\n")) {
+    const line = raw.trim();
+    if (!line) continue;
+    if (line.startsWith("### "))
+      blocks.push({ kind: "heading", text: line.slice(4) });
+    else if (line.startsWith("- ")) {
+      const last = blocks.at(-1);
+      if (last?.kind === "list") last.items.push(line.slice(2));
+      else blocks.push({ kind: "list", items: [line.slice(2)] });
+    } else blocks.push({ kind: "paragraph", text: line });
+  }
+  return blocks;
+}
+
 export default async function Page() {
   const settings = await getSettings();
   return (
@@ -33,19 +54,36 @@ export default async function Page() {
         </h2>
         <p className="mt-3 leading-relaxed text-muted">
           <RichText
-            text="You can ask for a refund within {{refundWindow}} of your pack being activated, provided the conditions below are met."
+            text="You can ask for a refund within {{refundWindow}} (calendar days) of the date your pack is first activated, provided the conditions below are met."
             tokens={legalTokens(settings)}
           />
         </p>
         {settings.legal.refundTerms ? (
-          settings.legal.refundTerms
-            .split("\n")
-            .filter(Boolean)
-            .map((p, i) => (
+          refundBlocks(settings.legal.refundTerms).map((b, i) =>
+            b.kind === "heading" ? (
+              <h3
+                key={i}
+                className="mt-6 font-display text-base font-semibold text-text"
+              >
+                {b.text}
+              </h3>
+            ) : b.kind === "list" ? (
+              <ul
+                key={i}
+                className="mt-3 list-disc space-y-2 pl-5 leading-relaxed text-muted marker:text-accent"
+              >
+                {b.items.map((item, j) => (
+                  <li key={j}>
+                    <RichText text={item} />
+                  </li>
+                ))}
+              </ul>
+            ) : (
               <p key={i} className="mt-3 leading-relaxed text-muted">
-                <RichText text={p} />
+                <RichText text={b.text} />
               </p>
-            ))
+            ),
+          )
         ) : (
           <p className="mt-3 leading-relaxed text-muted">
             <mark className="rounded bg-warning/15 px-1 text-warning">
