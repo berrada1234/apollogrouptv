@@ -81,7 +81,11 @@ export default async function PaymentMethodsPage() {
           ))}
         </ol>
         <p className="mt-8 text-sm text-muted">
-          Only pay through your Apollo Group TV account. Refunds follow our{" "}
+          New to any of these? The{" "}
+          <Link href="/payment-guides" className="text-accent hover:text-light-blue">
+            payment guides
+          </Link>{" "}
+          walk you through each method step by step. Only pay through your Apollo Group TV account. Refunds follow our{" "}
           <Link
             href="/refund-policy"
             className="text-accent hover:text-light-blue"
