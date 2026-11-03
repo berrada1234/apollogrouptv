@@ -91,6 +91,17 @@ export const settingsSchemas = {
     // "Label | https://link" per line — guides that help customers pay (e.g. how to buy crypto).
     guides: z.string().trim().max(1200).default(""),
   }),
+  // Bitcoin checkout. The wallet is shown only inside a customer's payment window.
+  crypto: z.object({
+    btcAddress: z.string().trim().max(120).default(""),
+    network: z.enum(["mainnet", "testnet4"]).default("mainnet"),
+    priceProvider: z.enum(["coinbase", "kraken", "coingecko"]).default("coinbase"),
+    quoteMinutes: z.coerce.number().int().min(5).max(120).default(30),
+    reservationMinutes: z.coerce.number().int().min(15).max(1440).default(60),
+    minimumUsd: z.coerce.number().min(0).max(100000).default(0),
+    confirmations: z.coerce.number().int().min(0).max(6).default(1),
+    tolerancePct: z.coerce.number().min(0).max(10).default(1),
+  }),
   notifications: z.object({
     adminEmail: z.union([z.literal(""), z.email()]),
     notifyOnNewTicket: z.boolean(),
@@ -122,6 +133,16 @@ export const defaultSettings: Settings = {
   apps: { appVersion: "", appTagline: "", releaseNotes: "", stats: "", qrUrl: "", players: "", playersNote: "", platforms: [] },
   highlights: { moneyBackDays: "7", liveChannels: "22,000+", moviesShows: "90,000+" },
   payments: { intro: "", methods: "", guides: "" },
+  crypto: {
+    btcAddress: "",
+    network: "mainnet",
+    priceProvider: "coinbase",
+    quoteMinutes: 30,
+    reservationMinutes: 60,
+    minimumUsd: 0,
+    confirmations: 1,
+    tolerancePct: 1,
+  },
   notifications: { adminEmail: "", notifyOnNewTicket: false, notifyOnNewReview: false },
   legal: {
     approved: false,

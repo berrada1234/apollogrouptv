@@ -4,7 +4,8 @@ import { PageHeader } from "@/components/page-header";
 import { Card } from "@/components/ui/card";
 import { StatusBadge } from "@/components/ui/badge";
 import { EmptyState, Notice, Pagination } from "@/components/ui/misc";
-import { getPaymentProvider } from "@/lib/payments";
+import { getCustomerMethods } from "@/lib/checkout/methods";
+import { getSettings } from "@/lib/settings";
 import { db } from "@/lib/db";
 import { requireUser } from "@/lib/session";
 import { formatDate, formatMoney, humanize } from "@/lib/utils";
@@ -27,11 +28,12 @@ export default async function BillingPage({ searchParams }: PageProps<"/dashboar
     }),
     db.payment.count({ where: { userId: user.id } }),
   ]);
+  const checkout = (await getCustomerMethods(await getSettings())).length > 0;
 
   return (
     <>
       <PageHeader title="Transactions" description="Every payment recorded on your account, newest first." />
-      {!getPaymentProvider() && (
+      {!checkout && (
         <div className="mb-6">
           <Notice title="Online checkout isn't connected yet">
             Payments are arranged with our team through a support ticket for now. Every confirmed payment is recorded here with its amount, status and reference —

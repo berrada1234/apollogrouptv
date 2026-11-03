@@ -47,6 +47,8 @@ const statusTones: Record<string, Tone> = {
   IN_PROGRESS: "blue",
   OPEN: "blue",
   PENDING: "warning",
+  PENDING_CONFIRMATION: "blue",
+  UNDERPAID: "warning",
   PAST_DUE: "warning",
   WAITING_ON_CUSTOMER: "warning",
   PARTIALLY_REFUNDED: "warning",

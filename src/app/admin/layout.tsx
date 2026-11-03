@@ -27,6 +27,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           { href: "/admin/plans", label: "Plans", icon: "plan" },
           { href: "/admin/subscriptions", label: "Subscriptions", icon: "subscription" },
           { href: "/admin/payments", label: "Orders & Payments", icon: "payments" },
+          { href: "/admin/payment-methods", label: "Payment Methods", icon: "wallet" },
           { href: "/admin/channels", label: "Channels", icon: "channels" },
         ] satisfies NavItem[])
       : []),

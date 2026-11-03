@@ -27,6 +27,7 @@ import {
   Tv,
   User,
   Users,
+  Wallet,
   X,
 } from "lucide-react";
 import { Logo } from "@/components/logo";
@@ -45,6 +46,7 @@ const icons = {
   security: ShieldCheck,
   users: Users,
   payments: CreditCard,
+  wallet: Wallet,
   channels: Tv,
   reviews: MessageSquareText,
   faq: HelpCircle,

@@ -6,6 +6,15 @@ export const siteConfig = {
     "Apollo Group TV is a digital entertainment platform with flexible plans, an organized channel catalog, multi-device apps and responsive customer support.",
 };
 
+/** True for localhost URLs. Local-only testing switches check this so they can never affect a deployed site. */
+export function isLocalUrl(url: string | undefined) {
+  try {
+    return ["localhost", "127.0.0.1", "[::1]"].includes(new URL(url ?? "").hostname);
+  } catch {
+    return false;
+  }
+}
+
 export const mainNav = [
   { href: "/product", label: "Product" },
   { href: "/app", label: "App" },
@@ -23,6 +32,7 @@ export const footerNav = [
       { href: "/product", label: "Product" },
       { href: "/app", label: "App" },
       { href: "/plans", label: "Plans" },
+      { href: "/payment-methods", label: "Payment Methods" },
       { href: "/channels", label: "Channels" },
     ],
   },
@@ -69,6 +79,7 @@ export const publicRoutes = [
   "/product",
   "/app",
   "/plans",
+  "/payment-methods",
   "/channels",
   "/reviews",
   "/refer-a-friend",

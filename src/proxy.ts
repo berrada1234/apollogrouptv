@@ -17,7 +17,8 @@ export function proxy(request: NextRequest) {
 
   if (matches(pathname, PROTECTED) && !getSessionCookie(request, { cookiePrefix: "agtv" })) {
     const url = new URL("/sign-in", request.url);
-    url.searchParams.set("next", pathname);
+    // Keep the query (e.g. ?plan=elite) so a chosen pack survives the sign-in.
+    url.searchParams.set("next", pathname + request.nextUrl.search);
     return NextResponse.redirect(url);
   }
 

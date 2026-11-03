@@ -29,7 +29,7 @@ export default async function SettingsPage() {
   const integrations = [
     { name: "Database", ok: true, note: "Connected (this page loaded from it)." },
     { name: "Email (SMTP)", ok: isEmailConfigured(), note: isEmailConfigured() ? "SMTP credentials present." : "Not configured — emails are not being delivered." },
-    { name: "Payment provider", ok: getPaymentProvider() !== null, note: getPaymentProvider() ? `PAYMENT_PROVIDER=${getPaymentProvider()} (adapter still required)` : "Not configured — checkout disabled." },
+    { name: "Payment provider", ok: getPaymentProvider() !== null, note: getPaymentProvider() ? `PAYMENT_PROVIDER=${getPaymentProvider()} (adapter still required)` : "No card processor connected (optional). Bitcoin and manual methods are managed under Payment Methods." },
     { name: "Google Search Console", ok: Boolean(process.env.GOOGLE_SITE_VERIFICATION), note: process.env.GOOGLE_SITE_VERIFICATION ? "Verification meta tag is output." : "GOOGLE_SITE_VERIFICATION not set." },
     { name: "Analytics", ok: Boolean(process.env.NEXT_PUBLIC_ANALYTICS_ID), note: process.env.NEXT_PUBLIC_ANALYTICS_ID ? "Analytics ID set." : "Not configured." },
   ];

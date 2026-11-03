@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
-import { Check, CreditCard, ExternalLink, Gift, Lock, Package, Sparkles, Tag, UserPlus, Zap } from "lucide-react";
+import { AlertTriangle, Check, CreditCard, ExternalLink, Gift, Lock, Package, ShieldCheck, Sparkles, Tag, UserPlus, Zap } from "lucide-react";
+import { InvoiceActions, ReservationTimer, SubscribeButton } from "@/components/checkout/checkout-client";
+import { CheckoutSection } from "@/components/checkout/checkout-section";
+import { findSelectedPlan } from "@/components/checkout/selected-plan";
 import { planTabs, SectionTabs } from "@/components/dashboard/section-tabs";
 import { PageHeader } from "@/components/page-header";
 import { StatusBadge } from "@/components/ui/badge";
@@ -8,7 +11,10 @@ import { EmptyState } from "@/components/ui/misc";
 import { getCurrentSubscription } from "@/components/dashboard/overview";
 import { ReferralClaimForm } from "@/components/dashboard/referral-claim";
 import { db } from "@/lib/db";
-import { isCheckoutEnabled } from "@/lib/payments";
+import { paymentsSandbox } from "@/lib/checkout/chain";
+import { invoiceStatusLabels } from "@/lib/checkout/labels";
+import { getCustomerMethods } from "@/lib/checkout/methods";
+import { getOpenInvoice } from "@/lib/checkout/service";
 import { accessLabel, monthlyCents, pricingContext, savingsPct } from "@/lib/pricing";
 import { getActivePlans } from "@/lib/queries";
 import { requireUser } from "@/lib/session";
@@ -25,22 +31,28 @@ function splitPrice(text: string) {
   return m ? [m[1], m[2]] : [text, ""];
 }
 
-export default async function PlansBillingPage() {
+export default async function PlansBillingPage({ searchParams }: PageProps<"/dashboard/plan">) {
   const user = await requireUser("/dashboard/plan");
-  const [subscription, plans, settings, referral, history] = await Promise.all([
+  const sp = await searchParams;
+  const [subscription, plans, settings, referral, history, invoice, selected] = await Promise.all([
     getCurrentSubscription(user.id),
     getActivePlans(),
     getSettings(),
     db.referral.findUnique({ where: { refereeId: user.id }, include: { referrer: { select: { name: true } } } }),
     db.subscription.count({ where: { userId: user.id } }),
+    getOpenInvoice(user.id),
+    findSelectedPlan(sp.plan),
   ]);
-  const checkout = isCheckoutEnabled();
+  const methods = await getCustomerMethods(settings);
+  // Self-serve checkout needs at least one usable payment method; otherwise packs go through an activation ticket.
+  const checkout = methods.length > 0;
+  const payable = invoice?.status === "PENDING" ? invoice : null;
   const live = subscription && (subscription.status === "ACTIVE" || subscription.status === "PAST_DUE");
   const { baseMonthly, bestValueId } = pricingContext(plans);
   const included = plans[0] ? parseFeatures(plans[0].features) : [];
   const { liveChannels, moviesShows } = settings.highlights;
   const catalog = [liveChannels && `${liveChannels} live channels`, moviesShows && `${moviesShows} movies & shows`, "HD, Full HD and 4K where available"].filter(Boolean);
-  const methods = settings.payments.methods.split("\n").map((m) => m.trim()).filter(Boolean);
+  const methodLabels = settings.payments.methods.split("\n").map((m) => m.trim()).filter(Boolean);
   const guides = settings.payments.guides
     .split("\n")
     .map((l) => l.split("|").map((x) => x.trim()))
@@ -71,12 +83,68 @@ export default async function PlansBillingPage() {
         {subscription && <StatusBadge status={subscription.status} />}
       </div>
 
+      {invoice && (
+        <section id="invoice" aria-labelledby="invoice-heading" className={cn(panel, "mb-6 scroll-mt-24 p-5 sm:p-6")}>
+          <div className="flex items-start gap-4">
+            <span
+              className={cn(
+                "grid h-12 w-12 shrink-0 place-items-center rounded-[12px]",
+                invoice.status === "PENDING_CONFIRMATION" ? "bg-primary/15 text-accent" : "bg-warning/15 text-warning",
+              )}
+            >
+              {invoice.status === "PENDING_CONFIRMATION" ? <ShieldCheck className="h-6 w-6" aria-hidden /> : <AlertTriangle className="h-6 w-6" aria-hidden />}
+            </span>
+            <div className="min-w-0 flex-1">
+              <h2 id="invoice-heading" className="font-display text-lg font-bold text-text">
+                {invoice.status === "PENDING"
+                  ? "You have an unpaid invoice"
+                  : invoice.status === "UNDERPAID"
+                    ? "Your payment was short"
+                    : "We're confirming your payment"}
+              </h2>
+              <p className="mt-0.5 text-sm text-muted">
+                {invoice.plan.name} · {accessLabel(invoice.plan.interval)} — <span className="font-semibold text-text">{formatMoney(invoice.amountCents, invoice.currency)}</span>
+                <span className="ml-2 font-mono text-xs text-subtle">{invoice.number}</span>
+              </p>
+              <div className="mt-3 flex flex-wrap items-center gap-2">
+                <StatusBadge status={invoice.status} label={invoiceStatusLabels[invoice.status]} />
+                {invoice.status === "PENDING" && invoice.expiresAt && <ReservationTimer expiresAt={invoice.expiresAt.toISOString()} />}
+              </div>
+              {invoice.status === "PENDING" ? (
+                <InvoiceActions orderId={invoice.id} cancellable />
+              ) : (
+                <p className="mt-3 text-sm leading-6 text-muted">
+                  {invoice.status === "UNDERPAID"
+                    ? "We received less than the invoice amount. Our team has been notified and will contact you to complete or refund it."
+                    : "Your pack activates automatically as soon as the payment is confirmed. You'll get a notification."}
+                </p>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {checkout && selected && !invoice && (
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-4 rounded-[14px] border border-primary/40 bg-gradient-to-r from-[#0b2a30] to-card p-5 shadow-glow">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent">Ready to check out</p>
+            <p className="mt-1 font-display text-lg font-bold text-text">
+              {selected.name} — {formatMoney(selected.priceCents, selected.currency)}
+            </p>
+            <p className="text-sm text-muted">{accessLabel(selected.interval)} · We&apos;ll hold this price for {settings.crypto.reservationMinutes} minutes while you pay.</p>
+          </div>
+          <div className="w-full sm:w-auto">
+            <SubscribeButton plan={selected.slug} label="Continue to payment" primary />
+          </div>
+        </div>
+      )}
+
       {/* Packs */}
       <h2 className="sr-only">Available packs</h2>
       {plans.length === 0 ? (
         <EmptyState icon={Package} title="No packs available right now" description="Please check back soon or contact support." />
       ) : (
-        <ul className="grid gap-4 pt-3 sm:grid-cols-2 xl:grid-cols-4">
+        <ul id="packs" className="grid scroll-mt-24 gap-4 pt-3 sm:grid-cols-2 xl:grid-cols-4">
           {plans.map((plan) => {
             const best = plan.id === bestValueId;
             const save = savingsPct(plan, baseMonthly);
@@ -117,6 +185,14 @@ export default async function PlansBillingPage() {
                   <ButtonLink href="/dashboard/subscription" variant="secondary" className="w-full">
                     Current pack
                   </ButtonLink>
+                ) : checkout ? (
+                  invoice?.planId === plan.id ? (
+                    <ButtonLink href="#checkout" variant="primary" className="w-full">
+                      Pay this invoice
+                    </ButtonLink>
+                  ) : (
+                    <SubscribeButton plan={plan.slug} label={live ? "Add this pack" : "Subscribe"} primary={best} />
+                  )
                 ) : (
                   <ButtonLink href={`/dashboard/support/new?plan=${plan.slug}&mode=${mode}`} variant={best ? "primary" : "secondary"} className="w-full">
                     {live ? "Add this pack" : "Subscribe"}
@@ -180,8 +256,19 @@ export default async function PlansBillingPage() {
         </section>
       )}
 
+      {checkout && (
+        <div className={cn(panel, "mt-6 p-5 sm:p-6")}>
+          <CheckoutSection methods={methods} orderId={payable?.id ?? null} sandbox={paymentsSandbox} supportHours={settings.general.supportHours} />
+          {!payable && (
+            <p className="mt-4 text-sm text-muted">
+              {invoice ? "Your payment is being confirmed." : "Choose a pack above to create your invoice, then pay with any method here."}
+            </p>
+          )}
+        </div>
+      )}
+
       {/* Payment */}
-      <section aria-labelledby="payment-heading" className={cn(panel, "mt-6 p-6")}>
+      <section aria-labelledby="payment-heading" className={cn(panel, "mt-6 p-6", checkout && guides.length === 0 && "hidden")}>
         <div className="flex items-start gap-3">
           <span className="grid h-10 w-10 shrink-0 place-items-center rounded-[10px] bg-primary/10 text-accent">
             <Lock className="h-5 w-5" aria-hidden />
@@ -196,9 +283,9 @@ export default async function PlansBillingPage() {
                   ? "You'll be taken to a secure payment page. Your pack activates once payment is confirmed — no recurring charges."
                   : "Choose a pack and we'll open an activation ticket. Our team confirms the amount and the payment options with you there, then activates your pack as soon as payment is confirmed. Pay once — nothing renews.")}
             </p>
-            {methods.length > 0 && (
+            {methodLabels.length > 0 && (
               <ul className="mt-4 flex flex-wrap gap-2" aria-label="Accepted payment methods">
-                {methods.map((m) => (
+                {methodLabels.map((m) => (
                   <li key={m} className="inline-flex items-center gap-1.5 rounded-full border border-border bg-inset px-3 py-1 text-xs font-medium text-text">
                     <CreditCard className="h-3.5 w-3.5 text-accent" aria-hidden /> {m}
                   </li>

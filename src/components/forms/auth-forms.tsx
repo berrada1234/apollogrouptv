@@ -78,7 +78,17 @@ export function SignInForm({ next }: { next?: string }) {
   );
 }
 
-export function CreateAccountForm({ referralCode, verifyEmail = true }: { referralCode?: string; /** false only in local testing mode */ verifyEmail?: boolean }) {
+export function CreateAccountForm({
+  referralCode,
+  verifyEmail = true,
+  next,
+}: {
+  referralCode?: string;
+  /** false only in local testing mode */
+  verifyEmail?: boolean;
+  /** Where to land after sign-up, e.g. the checkout for a pack chosen on the Plans page. */
+  next?: string;
+}) {
   const router = useRouter();
   const [msg, setMsg] = useState<Msg>(null);
   const [sentTo, setSentTo] = useState<string | null>(null);
@@ -97,12 +107,12 @@ export function CreateAccountForm({ referralCode, verifyEmail = true }: { referr
   const onSubmit = handleSubmit(async (values) => {
     setMsg(null);
     const { error } = await authClient.signUp
-      .email({ name: values.name, email: values.email, password: values.password, callbackURL: "/verify-email?status=done" })
+      .email({ name: values.name, email: values.email, password: values.password, callbackURL: next ? safeRedirect(next) : "/verify-email?status=done" })
       .catch(() => ({ error: { message: NETWORK_ERROR } }));
     if (error) return setMsg({ ok: false, message: authErrorMessage(error) });
-    // Local testing mode signs the new account in immediately — go straight to the dashboard.
+    // Local testing mode signs the new account in immediately — go straight on.
     if (!verifyEmail) {
-      router.replace("/dashboard");
+      router.replace(safeRedirect(next));
       router.refresh();
       return;
     }

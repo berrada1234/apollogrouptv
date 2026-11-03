@@ -6,7 +6,7 @@ import { nextCookies } from "better-auth/next-js";
 import { db } from "@/lib/db";
 import { sendEmail } from "@/lib/email";
 import { generateReferralCode, REFERRAL_COOKIE } from "@/lib/referral";
-import { siteConfig } from "@/lib/site";
+import { isLocalUrl, siteConfig } from "@/lib/site";
 
 function readCookie(header: string | null | undefined, name: string) {
   if (!header) return null;
@@ -29,13 +29,6 @@ async function assignReferralCode(userId: string) {
  * Local testing switch: AUTH_SKIP_EMAIL_VERIFICATION="true" lets new accounts sign in straight away.
  * It only takes effect when the site runs on localhost, so it can never weaken a deployed site.
  */
-function isLocalUrl(url: string | undefined) {
-  try {
-    return ["localhost", "127.0.0.1", "[::1]"].includes(new URL(url ?? "").hostname);
-  } catch {
-    return false;
-  }
-}
 export const skipEmailVerification =
   process.env.AUTH_SKIP_EMAIL_VERIFICATION === "true" && isLocalUrl(process.env.BETTER_AUTH_URL ?? siteConfig.url);
 
