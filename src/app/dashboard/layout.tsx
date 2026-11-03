@@ -48,7 +48,6 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   const nav: NavItem[] = [
     { href: "/dashboard", label: "Dashboard", icon: "overview", short: "Home" },
-    { href: "/dashboard/profile", label: "My Accounts", icon: "profile", short: "Account", badge: unread, match: ["/dashboard/security", "/dashboard/notifications"] },
     { href: "/dashboard/apps", label: "Apps & Guides", icon: "apps", short: "Apps" },
     { href: "/dashboard/subscription", label: "My Account", icon: "subscription", match: ["/dashboard/payment-review"] },
     { href: "/dashboard/plan", label: "Plans & Billing", icon: "plan", short: "Plans" },
