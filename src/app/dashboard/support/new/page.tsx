@@ -10,6 +10,7 @@ export const metadata: Metadata = { title: "New Support Ticket" };
 export default async function NewTicketPage({ searchParams }: PageProps<"/dashboard/support/new">) {
   await requireUser("/dashboard/support/new");
   const sp = await searchParams;
+  const gift = sp.topic === "gift";
   const plan =
     typeof sp.plan === "string" ? await db.plan.findFirst({ where: { slug: sp.plan, isActive: true }, select: { name: true } }) : null;
 
@@ -19,8 +20,14 @@ export default async function NewTicketPage({ searchParams }: PageProps<"/dashbo
       <Card className="max-w-3xl">
         <CardBody>
           <NewTicketForm
-            defaultSubject={plan ? `Plan activation request: ${plan.name}` : ""}
-            defaultMessage={plan ? `Hello, I'd like to activate the ${plan.name} plan on my account.` : ""}
+            defaultSubject={plan ? `Plan activation request: ${plan.name}` : gift ? "Gift pack request" : ""}
+            defaultMessage={
+              plan
+                ? `Hello, I'd like to activate the ${plan.name} plan on my account.`
+                : gift
+                  ? "Hello, I'd like to gift a pack. Recipient's name and email: … Pack I'd like to give: …"
+                  : ""
+            }
           />
         </CardBody>
       </Card>

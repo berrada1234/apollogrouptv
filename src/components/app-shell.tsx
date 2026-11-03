@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
+  MonitorSmartphone,
   Search,
   Bell,
   ChevronDown,
@@ -52,10 +53,20 @@ const icons = {
   home: Home,
   mail: Mail,
   seo: Search,
+  apps: MonitorSmartphone,
 };
 
 export type NavIcon = keyof typeof icons;
-export type NavItem = { href: string; label: string; icon: NavIcon; badge?: number; /** Label for the phone tab bar. */ short?: string };
+export type NavItem = {
+  href: string;
+  label: string;
+  icon: NavIcon;
+  badge?: number;
+  /** Label for the phone tab bar. */
+  short?: string;
+  /** Other paths that belong to this section (keeps the item highlighted on its sub-pages). */
+  match?: string[];
+};
 
 export function AppShell({
   nav,
@@ -93,7 +104,11 @@ export function AppShell({
   }, [open]);
 
   const rootHref = nav[0]?.href;
-  const isActive = (href: string) => (href === rootHref ? pathname === href : pathname === href || pathname.startsWith(`${href}/`));
+  const matches = (href: string) => (href === rootHref ? pathname === href : pathname === href || pathname.startsWith(`${href}/`));
+  const isActive = (href: string) => {
+    const item = nav.find((n) => n.href === href);
+    return matches(href) || Boolean(item?.match?.some(matches));
+  };
   const current = nav.find((n) => isActive(n.href));
   const tabs = (mobileTabs ?? []).map((h) => nav.find((n) => n.href === h)).filter((n): n is NavItem => Boolean(n)).slice(0, 4);
 

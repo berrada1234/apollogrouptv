@@ -10,7 +10,7 @@ import { db } from "@/lib/db";
 import { requireUser } from "@/lib/session";
 import { formatDateTime } from "@/lib/utils";
 
-export const metadata: Metadata = { title: "Support Tickets" };
+export const metadata: Metadata = { title: "Support" };
 
 const PAGE_SIZE = 15;
 
@@ -32,7 +32,7 @@ export default async function SupportPage({ searchParams }: PageProps<"/dashboar
   return (
     <>
       <PageHeader
-        title="Support Tickets"
+        title="Support"
         description="Open a request and follow every reply in one place."
         actions={
           <ButtonLink href="/dashboard/support/new">

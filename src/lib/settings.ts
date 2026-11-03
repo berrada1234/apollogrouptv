@@ -35,6 +35,9 @@ export const settingsSchemas = {
     qualifyingRule: z.string().trim().max(500),
   }),
   apps: z.object({
+    // App-wide details shown on Apps & Guides. Blank values are simply hidden.
+    appVersion: z.string().trim().max(20).default(""),
+    releaseNotes: z.string().trim().max(2000).default(""),
     platforms: z
       .array(
         z.object({
@@ -42,6 +45,10 @@ export const settingsSchemas = {
           verified: z.boolean(),
           downloadUrl: url,
           instructions: z.string().trim().max(2000),
+          method: z.string().trim().max(80).default(""),
+          downloadLabel: z.string().trim().max(40).default(""),
+          copyLabel: z.string().trim().max(40).default(""),
+          copyValue: z.string().trim().max(200).default(""),
         }),
       )
       .max(20),
@@ -93,7 +100,7 @@ export const defaultSettings: Settings = {
     googleSiteVerification: "",
   },
   referral: { enabled: false, rewardDescription: "", qualifyingRule: "" },
-  apps: { platforms: [] },
+  apps: { appVersion: "", releaseNotes: "", platforms: [] },
   highlights: { moneyBackDays: "7", liveChannels: "22,000+", moviesShows: "90,000+" },
   notifications: { adminEmail: "", notifyOnNewTicket: false, notifyOnNewReview: false },
   legal: {

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ClipboardList } from "lucide-react";
+import { planTabs, SectionTabs } from "@/components/dashboard/section-tabs";
 import { PageHeader } from "@/components/page-header";
 import { Card, CardBody, CardHeader } from "@/components/ui/card";
 import { StatusBadge } from "@/components/ui/badge";
@@ -22,7 +23,8 @@ export default async function SubscriptionPage() {
 
   return (
     <>
-      <PageHeader title="Subscription Details" description="Status, billing period and renewal information for your subscriptions." />
+      <PageHeader title="Plans & Billing" description="Your current plan, the packs you can choose and your subscription records." />
+      <SectionTabs tabs={planTabs} current="/dashboard/subscription" />
       {subscriptions.length === 0 ? (
         <EmptyState
           icon={ClipboardList}

@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { KeyRound, ShieldCheck } from "lucide-react";
+import { accountTabs, SectionTabs } from "@/components/dashboard/section-tabs";
 import { PageHeader } from "@/components/page-header";
+import { db } from "@/lib/db";
 import { Card, CardBody, CardHeader } from "@/components/ui/card";
 import {
   ChangePasswordForm,
@@ -15,13 +17,13 @@ export const metadata: Metadata = { title: "Security Settings" };
 
 export default async function SecurityPage() {
   const user = await requireUser("/dashboard/security");
+  const unread = await db.notification.count({ where: { userId: user.id, readAt: null } });
+
   const emailReady = isEmailConfigured();
   return (
     <>
-      <PageHeader
-        title="Security Settings"
-        description="Manage your password and the devices signed in to your account."
-      />
+      <PageHeader title="My Accounts" description="Your profile, sign-in security and notifications in one place." />
+      <SectionTabs tabs={accountTabs(unread)} current="/dashboard/security" />
       <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr] [&>*]:min-w-0">
         <div className="space-y-6">
           <Card>

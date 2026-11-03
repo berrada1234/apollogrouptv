@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { accountTabs, SectionTabs } from "@/components/dashboard/section-tabs";
 import { PageHeader } from "@/components/page-header";
+import { db } from "@/lib/db";
 import { Card, CardBody, CardHeader } from "@/components/ui/card";
 import { StatusBadge } from "@/components/ui/badge";
 import Link from "next/link";
@@ -7,13 +9,16 @@ import { ProfileForm } from "@/components/forms/account-forms";
 import { requireUser } from "@/lib/session";
 import { formatDate } from "@/lib/utils";
 
-export const metadata: Metadata = { title: "My Account" };
+export const metadata: Metadata = { title: "My Accounts" };
 
 export default async function ProfilePage() {
   const user = await requireUser("/dashboard/profile");
+  const unread = await db.notification.count({ where: { userId: user.id, readAt: null } });
+
   return (
     <>
-      <PageHeader title="My Account" description="Your personal details and account status." />
+      <PageHeader title="My Accounts" description="Your profile, sign-in security and notifications in one place." />
+      <SectionTabs tabs={accountTabs(unread)} current="/dashboard/profile" />
       <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr] [&>*]:min-w-0">
         <div className="space-y-6">
           <Card>

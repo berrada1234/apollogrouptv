@@ -9,7 +9,7 @@ import { db } from "@/lib/db";
 import { requireUser } from "@/lib/session";
 import { formatDate, formatMoney, humanize } from "@/lib/utils";
 
-export const metadata: Metadata = { title: "Billing History" };
+export const metadata: Metadata = { title: "Transactions" };
 
 const PAGE_SIZE = 20;
 
@@ -30,7 +30,7 @@ export default async function BillingPage({ searchParams }: PageProps<"/dashboar
 
   return (
     <>
-      <PageHeader title="Billing History" description="All payments recorded on your account." />
+      <PageHeader title="Transactions" description="Every payment recorded on your account, newest first." />
       {!getPaymentProvider() && (
         <div className="mb-6">
           <Notice title="Online checkout isn't connected yet">

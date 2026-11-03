@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Package } from "lucide-react";
+import { planTabs, SectionTabs } from "@/components/dashboard/section-tabs";
 import { PageHeader } from "@/components/page-header";
 import { Card, CardBody, CardHeader } from "@/components/ui/card";
 import { StatusBadge } from "@/components/ui/badge";
@@ -23,7 +24,8 @@ export default async function MyPlanPage({ searchParams }: PageProps<"/dashboard
 
   return (
     <>
-      <PageHeader title="My Plan" description="Your current plan and available options." />
+      <PageHeader title="Plans & Billing" description="Your current plan, the packs you can choose and your subscription records." />
+      <SectionTabs tabs={planTabs} current="/dashboard/plan" />
       {subscription ? (
         <Card className="mb-8">
           <CardHeader title={subscription.plan.name} description={subscription.plan.description} action={<StatusBadge status={subscription.status} />} />

@@ -18,15 +18,13 @@ export default async function DashboardLayout({ children }: { children: React.Re
   ]);
 
   const nav: NavItem[] = [
-    { href: "/dashboard", label: "Overview", icon: "overview", short: "Home" },
-    { href: "/dashboard/profile", label: "My Account", icon: "profile", short: "Account" },
-    { href: "/dashboard/plan", label: "My Plan", icon: "plan", short: "Plan" },
-    { href: "/dashboard/subscription", label: "Subscription Details", icon: "subscription" },
-    { href: "/dashboard/billing", label: "Billing History", icon: "billing" },
-    { href: "/dashboard/referrals", label: "Referral Program", icon: "referrals" },
-    { href: "/dashboard/support", label: "Support Tickets", icon: "support", badge: openTickets, short: "Support" },
-    { href: "/dashboard/notifications", label: "Notifications", icon: "notifications", badge: unread },
-    { href: "/dashboard/security", label: "Security Settings", icon: "security" },
+    { href: "/dashboard", label: "Dashboard", icon: "overview", short: "Home" },
+    { href: "/dashboard/profile", label: "My Accounts", icon: "profile", short: "Account", badge: unread, match: ["/dashboard/security", "/dashboard/notifications"] },
+    { href: "/dashboard/apps", label: "Apps & Guides", icon: "apps", short: "Apps" },
+    { href: "/dashboard/plan", label: "Plans & Billing", icon: "plan", short: "Plans", match: ["/dashboard/subscription"] },
+    { href: "/dashboard/billing", label: "Transactions", icon: "billing" },
+    { href: "/dashboard/referrals", label: "Referrals & Gifts", icon: "referrals" },
+    { href: "/dashboard/support", label: "Support", icon: "support", badge: openTickets, short: "Support" },
   ];
 
   const extra: NavItem[] = [
@@ -41,7 +39,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
       area="My account"
       user={{ name: user.name, email: user.email, role: user.role }}
       bell={{ href: "/dashboard/notifications", count: unread }}
-      mobileTabs={["/dashboard", "/dashboard/plan", "/dashboard/support", "/dashboard/profile"]}
+      mobileTabs={["/dashboard", "/dashboard/apps", "/dashboard/plan", "/dashboard/support"]}
     >
       {children}
     </AppShell>

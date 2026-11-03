@@ -882,13 +882,20 @@ function settingsInput(key: SettingsKey, fd: FormData): unknown {
       };
     case "apps": {
       const names = fd.getAll("name").map(String);
+      const at = (k: string, i: number) => String(fd.getAll(k)[i] ?? "").trim();
       return {
+        appVersion: str(fd, "appVersion").trim(),
+        releaseNotes: str(fd, "releaseNotes").trim(),
         platforms: names
           .map((name, i) => ({
             name: name.trim(),
             verified: fd.getAll("verified").map(String).includes(String(i)),
-            downloadUrl: String(fd.getAll("downloadUrl")[i] ?? "").trim(),
+            downloadUrl: at("downloadUrl", i),
             instructions: String(fd.getAll("instructions")[i] ?? ""),
+            method: at("method", i),
+            downloadLabel: at("downloadLabel", i),
+            copyLabel: at("copyLabel", i),
+            copyValue: at("copyValue", i),
           }))
           .filter((p) => p.name),
       };

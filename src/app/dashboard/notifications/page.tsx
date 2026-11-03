@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Bell } from "lucide-react";
+import { accountTabs, SectionTabs } from "@/components/dashboard/section-tabs";
 import { PageHeader } from "@/components/page-header";
 import { Card, CardBody, CardHeader } from "@/components/ui/card";
 import { EmptyState, Notice, Pagination } from "@/components/ui/misc";
@@ -29,10 +30,11 @@ export default async function NotificationsPage({ searchParams }: PageProps<"/da
   return (
     <>
       <PageHeader
-        title="Notifications"
-        description="Updates about your account and support requests, plus the emails you'd like to receive."
+        title="My Accounts"
+        description="Your profile, sign-in security and notifications in one place."
         actions={unreadCount > 0 ? <MarkAllReadButton /> : undefined}
       />
+      <SectionTabs tabs={accountTabs(unreadCount)} current="/dashboard/notifications" />
       <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr] [&>*]:min-w-0">
         <div>
           {notifications.length === 0 ? (
