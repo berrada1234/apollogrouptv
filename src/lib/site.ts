@@ -23,6 +23,7 @@ export const mainNav = [
   { href: "/reviews", label: "Reviews" },
   { href: "/refer-a-friend", label: "Refer a Friend" },
   { href: "/faq", label: "FAQ" },
+  { href: "/help", label: "Help Center" },
 ];
 
 export const footerNav = [
@@ -59,6 +60,7 @@ export const footerNav = [
     links: [
       { href: "/about-us", label: "About Us" },
       { href: "/contact", label: "Contact & Support" },
+      { href: "/help", label: "Help Center" },
       { href: "/guides", label: "Setup Guides" },
       { href: "/blog", label: "Blog" },
       { href: "/is-apollo-group-tv-legal", label: "Is It Legal?" },
@@ -71,6 +73,7 @@ export const footerNav = [
       { href: "/terms-and-conditions", label: "Terms and Conditions" },
       { href: "/refund-policy", label: "Refund Policy" },
       { href: "/dmca", label: "Copyright and DMCA" },
+      { href: "/site-index", label: "Site Index" },
     ],
   },
 ];
@@ -84,6 +87,8 @@ export const publicRoutes = [
   "/payment-methods",
   "/payment-guides",
   "/blog",
+  "/help",
+  "/site-index",
   "/channels",
   "/reviews",
   "/refer-a-friend",
