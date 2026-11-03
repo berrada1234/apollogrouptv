@@ -593,3 +593,126 @@ dialog::backdrop {
     --split: 1;
   }
 }
+
+/* ─── Pricing ─────────────────────────────────────────────────────────────── */
+
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+/* Glass pack card with pointer tilt (--tilt-x/--tilt-y set by PricingExplorer). */
+.price-card {
+  background: linear-gradient(180deg, rgb(28 36 80 / 0.5), rgb(10 13 32 / 0.75));
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+  transform: perspective(1100px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(0);
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+  will-change: transform;
+}
+.price-card:hover {
+  transform: perspective(1100px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-6px);
+  box-shadow: var(--shadow-lg);
+}
+.price-card-active {
+  border-color: transparent;
+  background: linear-gradient(180deg, rgb(36 34 100 / 0.62), rgb(12 14 40 / 0.85));
+  box-shadow:
+    0 0 0 1px rgb(122 162 255 / 0.25),
+    0 30px 70px -30px rgb(122 162 255 / 0.7),
+    0 0 60px -20px rgb(157 123 255 / 0.45);
+}
+
+/* Neon border: a conic light that travels around the active card (and appears on hover). */
+.glow-border::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: 1;
+  padding: 1.5px;
+  border-radius: inherit;
+  background: conic-gradient(from var(--angle), transparent 0 55%, #46e0ff 70%, #7aa2ff 78%, #9d7bff 86%, transparent 95%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  animation: spin-angle 4.5s linear infinite;
+  pointer-events: none;
+}
+.glow-border:hover::before {
+  opacity: 0.55;
+}
+.glow-border[data-active="true"]::before {
+  opacity: 1;
+}
+@keyframes spin-angle {
+  to {
+    --angle: 360deg;
+  }
+}
+
+/* Check marks draw themselves as they scroll in. */
+@supports (animation-timeline: view()) {
+  .check-draw {
+    stroke-dasharray: 1;
+    animation: check-draw linear both;
+    animation-timeline: view();
+    animation-range: entry 10% entry 70%;
+  }
+}
+@keyframes check-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Drifting gradient orbs behind the pricing headline. */
+.orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(60px);
+  animation: orb-drift 18s ease-in-out infinite alternate;
+}
+@keyframes orb-drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(40px, -30px, 0) scale(1.15);
+  }
+}
+/* A slow light sweep behind the pricing headline. */
+.headline-light {
+  background: radial-gradient(closest-side, rgb(122 162 255 / 0.35), rgb(157 123 255 / 0.12) 60%, transparent);
+  animation: headline-light 6s ease-in-out infinite;
+}
+@keyframes headline-light {
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: translateX(-8%) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(8%) scale(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .price-card,
+  .price-card:hover {
+    transform: none;
+  }
+  .check-draw {
+    animation: none !important;
+    stroke-dasharray: none;
+  }
+}
