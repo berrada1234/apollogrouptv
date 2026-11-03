@@ -187,27 +187,6 @@ p {
   }
 }
 
-/* My Subscription activation celebration. */
-@keyframes confetti-fall {
-  0% {
-    opacity: 1;
-    transform: translateY(-20px) rotate(0deg);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(320px) rotate(540deg);
-  }
-}
-
-@keyframes gift-pop {
-  0%,
-  100% {
-    transform: translateY(0) scale(1);
-  }
-  40% {
-    transform: translateY(-10px) scale(1.08);
-  }
-}
 
 /* Homepage bands: one divider and an alternating tint, whatever order the sections are in.
    Unlayered, so it overrides each section's own border/background utilities. */

@@ -119,62 +119,6 @@ export function IHavePaidButton({ orderId, requestId = null, className, variant 
   );
 }
 
-/** Shown once after a pack is chosen: the order summary with the next steps. */
-export function OrderPopup({ orderId, title, amount, expiresAt }: { orderId: string; title: string; amount: string; expiresAt: string | null }) {
-  const router = useRouter();
-  const ref = useRef<HTMLDialogElement>(null);
-  useEffect(() => {
-    ref.current?.showModal();
-  }, []);
-  const close = (thenScroll = false) => {
-    ref.current?.close();
-    router.replace("/dashboard/plan", { scroll: false });
-    if (thenScroll) setTimeout(() => document.getElementById("checkout")?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
-  };
-  return (
-    <dialog
-      ref={ref}
-      aria-labelledby="order-title"
-      onCancel={(e) => {
-        e.preventDefault();
-        close();
-      }}
-      className="m-auto w-[min(94vw,28rem)] rounded-[18px] border border-border-strong bg-card p-0 text-text shadow-lg backdrop:bg-black/70 backdrop:backdrop-blur-sm"
-    >
-      <div className="p-6">
-        <div className="flex items-start justify-between gap-3">
-          <h2 id="order-title" className="font-display text-xl font-bold">
-            Your Subscription Order
-          </h2>
-          <button type="button" onClick={() => close()} className="grid h-9 w-9 place-items-center rounded-lg text-muted hover:bg-inset hover:text-text" aria-label="Close">
-            <X className="h-5 w-5" aria-hidden />
-          </button>
-        </div>
-        <div className="mt-4 rounded-[14px] border border-primary/30 bg-primary/[0.06] p-4">
-          <p className="font-semibold text-text">
-            {title} — <span className="font-display text-lg font-extrabold">{amount}</span>
-          </p>
-          <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
-            <span className="text-muted">Status:</span>
-            <span className="rounded-full border border-warning/35 bg-warning/10 px-2.5 py-0.5 text-xs font-medium text-warning">Pending Payment</span>
-            {expiresAt && <ReservationTimer expiresAt={expiresAt} />}
-          </div>
-        </div>
-        <p className="mt-4 text-sm leading-6 text-muted">
-          <span className="font-semibold text-text">Payment Instructions:</span> Choose your preferred payment method, send the payment, then press I Have Paid so our team
-          can review it.
-        </p>
-        <div className="mt-5 flex flex-col gap-2.5 sm:flex-row">
-          <Button type="button" className="sm:flex-1" onClick={() => close(true)}>
-            Choose Payment Method <ArrowRight className="h-4 w-4" aria-hidden />
-          </Button>
-          <IHavePaidButton orderId={orderId} className="sm:flex-1 [&>button]:w-full" />
-        </div>
-      </div>
-    </dialog>
-  );
-}
-
 export function InvoiceActions({
   orderId,
   cancellable,
@@ -248,11 +192,9 @@ export function SubscribeButton({
     createInvoiceAction,
     idle,
   );
-  const router = useRouter();
   useEffect(() => {
-    // Opens the order summary popup for the new invoice.
-    if (state.ok) router.replace("/dashboard/plan?order=new", { scroll: false });
-  }, [state, router]);
+    if (state.ok) document.getElementById("invoice")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [state]);
   return (
     <form action={formAction} className="w-full">
       <input type="hidden" name="plan" value={plan} />
@@ -528,14 +470,14 @@ function PaidPanel({ onClose }: { onClose: () => void }) {
         Payment Successful!
       </h3>
       <p className="mt-2 text-sm leading-6 text-muted">
-        Your payment has been confirmed successfully. We&apos;re activating your IPTV account now; your login details will appear in My Subscription as soon as it&apos;s ready.
+        Your payment has been confirmed successfully. We&apos;re activating your IPTV account now; your login details will appear in My Account as soon as it&apos;s ready.
       </p>
       <div className="mt-5 flex flex-wrap justify-center gap-3">
         <Link
           href="/dashboard/subscription"
           className="inline-flex h-11 items-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-on-primary"
         >
-          My Subscription <ArrowRight className="h-4 w-4" aria-hidden />
+          My Account <ArrowRight className="h-4 w-4" aria-hidden />
         </Link>
         <Button type="button" variant="secondary" onClick={onClose}>
           Close

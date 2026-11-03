@@ -141,7 +141,7 @@ export async function saveSubscription(_: ActionState, fd: FormData): Promise<Ac
         subject: "Your Apollo Group TV account is activated",
         heading: "Congratulations! Your account is activated",
         body: "Your subscription has been successfully activated. Sign in to your dashboard to see your account details.",
-        cta: { label: "Open My Subscription", url: absoluteUrl("/dashboard/subscription") },
+        cta: { label: "Open My Account", url: absoluteUrl("/dashboard/subscription") },
       }).catch((e) => console.error("[subscriptions] activation email", e instanceof Error ? e.message : e));
     }
 

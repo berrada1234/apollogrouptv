@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, CheckCircle2, Hourglass } from "lucide-react";
+import { CheckCircle2, Hourglass, KeyRound } from "lucide-react";
 import { AutoRefresh } from "@/components/checkout/auto-refresh";
 import { StatusBadge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
@@ -40,10 +39,6 @@ export default async function PaymentReviewPage({ params }: PageProps<"/dashboar
   return (
     <div className="mx-auto max-w-2xl">
       {(reviewing || (approved && !activated)) && <AutoRefresh seconds={30} />}
-      <Link href="/dashboard" className="mb-5 inline-flex items-center gap-1.5 text-sm text-muted hover:text-text">
-        <ArrowLeft className="h-4 w-4" aria-hidden /> Dashboard
-      </Link>
-
       <section className="overflow-hidden rounded-[20px] border border-border bg-card shadow-card">
         <div className="relative border-b border-border bg-gradient-to-b from-[#0b2a30] to-card px-6 py-10 text-center sm:px-10">
           {activated ? (
@@ -63,10 +58,10 @@ export default async function PaymentReviewPage({ params }: PageProps<"/dashboar
           </h1>
           <p className="mx-auto mt-3 max-w-lg text-sm leading-6 text-muted">
             {activated
-              ? "Your IPTV account details are ready in My Subscription."
+              ? "Your IPTV account details are ready in My Account."
               : approved
-                ? "Your payment has been verified. We're activating your subscription now; your IPTV account details will appear in My Subscription as soon as it's ready."
-                : "Thank you for submitting your payment confirmation. Our team is currently reviewing your payment. Once your payment has been verified and your subscription activated, your IPTV account information will appear automatically in your My Subscription dashboard."}
+                ? "Your payment has been verified. We're activating your subscription now; your IPTV account details will appear in My Account as soon as it's ready."
+                : "Thank you for submitting your payment confirmation. Our team is currently reviewing your payment. Once your payment has been verified and your subscription activated, your IPTV account information will appear automatically in My Account."}
           </p>
         </div>
 
@@ -81,8 +76,8 @@ export default async function PaymentReviewPage({ params }: PageProps<"/dashboar
             ))}
           </dl>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <ButtonLink href={activated ? "/dashboard/subscription" : "/dashboard"} className="flex-1">
-              {activated ? "View My Subscription" : "Back to Dashboard"}
+            <ButtonLink href="/dashboard/subscription" className="flex-1">
+              <KeyRound className="h-4 w-4" aria-hidden /> Get Your Login Info
             </ButtonLink>
             {!activated && (
               <ButtonLink href="/dashboard/support/new" variant="secondary" className="flex-1">

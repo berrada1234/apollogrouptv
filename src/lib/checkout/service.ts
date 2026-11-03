@@ -455,7 +455,7 @@ export async function finalizePaid(
       order.userId,
       {
         title: "Payment Approved",
-        body: `Invoice ${order.number} is paid. We're setting up your ${order.plan.name}; your IPTV login details will appear in My Subscription as soon as it's active.`,
+        body: `Invoice ${order.number} is paid. We're setting up your ${order.plan.name}; your IPTV login details will appear in My Account as soon as it's active.`,
         href: "/dashboard/subscription",
       },
       tx,
@@ -488,7 +488,7 @@ export async function finalizePaid(
       to: result.order.user.email,
       subject: `Payment confirmed: ${result.order.plan.name}`,
       heading: "Payment Successful!",
-      body: `Your payment for invoice ${result.order.number} has been confirmed. We're activating your ${result.order.plan.name} now; your login details will appear in My Subscription on your dashboard.`,
+      body: `Your payment for invoice ${result.order.number} has been confirmed. We're activating your ${result.order.plan.name} now; your login details will appear in My Account on your dashboard.`,
       cta: {
         label: "Open your dashboard",
         url: absoluteUrl("/dashboard/subscription"),

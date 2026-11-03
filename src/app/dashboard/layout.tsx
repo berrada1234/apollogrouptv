@@ -50,7 +50,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
     { href: "/dashboard", label: "Dashboard", icon: "overview", short: "Home" },
     { href: "/dashboard/profile", label: "My Accounts", icon: "profile", short: "Account", badge: unread, match: ["/dashboard/security", "/dashboard/notifications"] },
     { href: "/dashboard/apps", label: "Apps & Guides", icon: "apps", short: "Apps" },
-    { href: "/dashboard/subscription", label: "My Subscription", icon: "subscription", match: ["/dashboard/payment-review"] },
+    { href: "/dashboard/subscription", label: "My Account", icon: "subscription", match: ["/dashboard/payment-review"] },
     { href: "/dashboard/plan", label: "Plans & Billing", icon: "plan", short: "Plans" },
     { href: "/dashboard/billing", label: "Transactions", icon: "billing" },
     { href: "/dashboard/referrals", label: "Referrals & Gifts", icon: "referrals" },
