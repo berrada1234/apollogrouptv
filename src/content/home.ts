@@ -132,7 +132,7 @@ export const homeFaq = [
   },
   {
     q: "Do I need an Apollo Group TV downloader code?",
-    a: "No. We don't distribute the app through downloader codes or shared files. Install it only from the official links in our [setup guides](/guides) or from official app stores — codes found elsewhere aren't from us.",
+    a: "Only on Fire TV and Android TV, where the app installs through the Downloader app. Customers find the official code in their dashboard under Apps & Guides — codes shared elsewhere aren't from us. Other devices use a direct download or an app store, as explained in our [setup guides](/guides).",
   },
   {
     q: "How do I install Apollo Group TV on Fire TV or Firestick?",

@@ -372,7 +372,9 @@ export default async function AppPage() {
                         .map((step, i) => (
                           <li key={i} className="flex gap-4 text-sm leading-relaxed text-muted">
                             <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-primary/40 bg-primary/10 text-xs font-semibold text-accent">{i + 1}</span>
-                            <span className="pt-1">{step}</span>
+                            <span className="pt-1 [&_strong]:text-text">
+                              <RichText text={step} />
+                            </span>
                           </li>
                         ))}
                     </ol>

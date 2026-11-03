@@ -37,7 +37,15 @@ export const settingsSchemas = {
   apps: z.object({
     // App-wide details shown on Apps & Guides. Blank values are simply hidden.
     appVersion: z.string().trim().max(20).default(""),
+    appTagline: z.string().trim().max(400).default(""),
     releaseNotes: z.string().trim().max(2000).default(""),
+    // Three headline figures on Apps & Guides ("Label | Value" per line). The owner is responsible for keeping them true.
+    stats: z.string().trim().max(300).default(""),
+    // Link encoded in the QR code (e.g. a page that redirects to the right download).
+    qrUrl: url.default(""),
+    // Third-party players ("Name | Status" per line) and the note shown above them.
+    players: z.string().trim().max(1000).default(""),
+    playersNote: z.string().trim().max(600).default(""),
     platforms: z
       .array(
         z.object({
@@ -47,8 +55,8 @@ export const settingsSchemas = {
           instructions: z.string().trim().max(2000),
           method: z.string().trim().max(80).default(""),
           downloadLabel: z.string().trim().max(40).default(""),
-          copyLabel: z.string().trim().max(40).default(""),
-          copyValue: z.string().trim().max(200).default(""),
+          // Values the customer types elsewhere ("Label | value" per line), e.g. a Downloader code or server URL.
+          copyItems: z.string().trim().max(600).default(""),
         }),
       )
       .max(20),
@@ -100,7 +108,7 @@ export const defaultSettings: Settings = {
     googleSiteVerification: "",
   },
   referral: { enabled: false, rewardDescription: "", qualifyingRule: "" },
-  apps: { appVersion: "", releaseNotes: "", platforms: [] },
+  apps: { appVersion: "", appTagline: "", releaseNotes: "", stats: "", qrUrl: "", players: "", playersNote: "", platforms: [] },
   highlights: { moneyBackDays: "7", liveChannels: "22,000+", moviesShows: "90,000+" },
   notifications: { adminEmail: "", notifyOnNewTicket: false, notifyOnNewReview: false },
   legal: {

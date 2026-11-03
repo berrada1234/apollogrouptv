@@ -2,7 +2,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
-import { grantSubscription, setSubscriptionStatus, setUserRole, setUserStatus, updateUserName } from "@/actions/admin";
+import {
+  grantSubscription,
+  setSubscriptionStatus,
+  setUserRole,
+  setUserStatus,
+  updateUserName,
+  savePlayerCredentials,
+  clearPlayerCredentials,
+} from "@/actions/admin";
 import { ActionForm } from "@/components/admin/action-form";
 import { DataTable, EmptyRow, Td } from "@/components/admin/table";
 import { PageHeader } from "@/components/page-header";
@@ -11,25 +19,51 @@ import { StatusBadge } from "@/components/ui/badge";
 import { Field, Input, Select } from "@/components/ui/form";
 import { db } from "@/lib/db";
 import { requireRole } from "@/lib/session";
-import { daysFromNow, formatDate, formatDateTime, formatMoney, isoDay } from "@/lib/utils";
+import {
+  daysFromNow,
+  formatDate,
+  formatDateTime,
+  formatMoney,
+  isoDay,
+} from "@/lib/utils";
 
 export const metadata: Metadata = { title: "User details" };
 
-export default async function UserDetailPage({ params }: PageProps<"/admin/users/[id]">) {
+export default async function UserDetailPage({
+  params,
+}: PageProps<"/admin/users/[id]">) {
   const actor = await requireRole("ADMIN");
   const { id } = await params;
   const [user, plans] = await Promise.all([
     db.user.findUnique({
       where: { id },
       include: {
-        subscriptions: { orderBy: { createdAt: "desc" }, include: { plan: { select: { name: true } } } },
+        subscriptions: {
+          orderBy: { createdAt: "desc" },
+          include: { plan: { select: { name: true } } },
+        },
         payments: { orderBy: { createdAt: "desc" }, take: 10 },
         tickets: { orderBy: { updatedAt: "desc" }, take: 10 },
-        referredBy: { include: { referrer: { select: { id: true, name: true } } } },
-        _count: { select: { referralsMade: true, sessions: true, reviews: true } },
+        referredBy: {
+          include: { referrer: { select: { id: true, name: true } } },
+        },
+        playerCredential: {
+          select: {
+            username: true,
+            serverUrl: true,
+            m3uUrlEnc: true,
+            updatedAt: true,
+          },
+        },
+        _count: {
+          select: { referralsMade: true, sessions: true, reviews: true },
+        },
       },
     }),
-    db.plan.findMany({ where: { isActive: true }, orderBy: { sortOrder: "asc" } }),
+    db.plan.findMany({
+      where: { isActive: true },
+      orderBy: { sortOrder: "asc" },
+    }),
   ]);
   if (!user) notFound();
   const self = user.id === actor.id;
@@ -38,7 +72,10 @@ export default async function UserDetailPage({ params }: PageProps<"/admin/users
 
   return (
     <>
-      <Link href="/admin/users" className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted hover:text-text">
+      <Link
+        href="/admin/users"
+        className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted hover:text-text"
+      >
         <ArrowLeft className="h-4 w-4" aria-hidden /> All users
       </Link>
       <PageHeader
@@ -57,33 +94,199 @@ export default async function UserDetailPage({ params }: PageProps<"/admin/users
           <CardHeader title="Profile" />
           <CardBody className="space-y-4">
             <dl className="space-y-2 text-sm">
-              <div className="flex justify-between"><dt className="text-muted">Email verified</dt><dd className="text-text">{user.emailVerified ? "Yes" : "No"}</dd></div>
-              <div className="flex justify-between"><dt className="text-muted">Active sessions</dt><dd className="text-text">{user._count.sessions}</dd></div>
-              <div className="flex justify-between"><dt className="text-muted">Referral code</dt><dd className="font-mono text-light-blue">{user.referralCode ?? "—"}</dd></div>
-              <div className="flex justify-between"><dt className="text-muted">Referrals made</dt><dd className="text-text">{user._count.referralsMade}</dd></div>
+              <div className="flex justify-between">
+                <dt className="text-muted">Email verified</dt>
+                <dd className="text-text">
+                  {user.emailVerified ? "Yes" : "No"}
+                </dd>
+              </div>
+              <div className="flex justify-between">
+                <dt className="text-muted">Active sessions</dt>
+                <dd className="text-text">{user._count.sessions}</dd>
+              </div>
+              <div className="flex justify-between">
+                <dt className="text-muted">Referral code</dt>
+                <dd className="font-mono text-light-blue">
+                  {user.referralCode ?? "—"}
+                </dd>
+              </div>
+              <div className="flex justify-between">
+                <dt className="text-muted">Referrals made</dt>
+                <dd className="text-text">{user._count.referralsMade}</dd>
+              </div>
               <div className="flex justify-between">
                 <dt className="text-muted">Referred by</dt>
                 <dd className="text-text">
-                  {user.referredBy ? <Link href={`/admin/users/${user.referredBy.referrer.id}`} className="hover:text-light-blue">{user.referredBy.referrer.name}</Link> : "—"}
+                  {user.referredBy ? (
+                    <Link
+                      href={`/admin/users/${user.referredBy.referrer.id}`}
+                      className="hover:text-light-blue"
+                    >
+                      {user.referredBy.referrer.name}
+                    </Link>
+                  ) : (
+                    "—"
+                  )}
                 </dd>
               </div>
             </dl>
-            <ActionForm action={updateUserName} submitLabel="Update name" submitVariant="secondary">
+            <ActionForm
+              action={updateUserName}
+              submitLabel="Update name"
+              submitVariant="secondary"
+            >
               <input type="hidden" name="userId" value={user.id} />
               <Field label="Name" htmlFor="name">
-                <Input id="name" name="name" defaultValue={user.name} required />
+                <Input
+                  id="name"
+                  name="name"
+                  defaultValue={user.name}
+                  required
+                />
               </Field>
             </ActionForm>
           </CardBody>
         </Card>
 
         <Card>
-          <CardHeader title="Role" description="Only administrators can change roles. Changes are audit-logged." />
+          <CardHeader
+            title="Player login (Xtream / M3U)"
+            description="Issue the streaming-line details this customer uses in third-party players. Shown only to the customer in My Accounts; secrets are encrypted."
+          />
+          <CardBody className="space-y-5">
+            {user.playerCredential ? (
+              <dl className="space-y-2 rounded-xl border border-border bg-inset p-4 text-sm">
+                <div className="flex justify-between gap-3">
+                  <dt className="text-muted">Username</dt>
+                  <dd className="font-mono text-text">
+                    {user.playerCredential.username}
+                  </dd>
+                </div>
+                <div className="flex justify-between gap-3">
+                  <dt className="text-muted">Password</dt>
+                  <dd className="text-text">Set (hidden)</dd>
+                </div>
+                <div className="flex justify-between gap-3">
+                  <dt className="text-muted">Server URL</dt>
+                  <dd className="truncate text-text">
+                    {user.playerCredential.serverUrl ?? "—"}
+                  </dd>
+                </div>
+                <div className="flex justify-between gap-3">
+                  <dt className="text-muted">M3U link</dt>
+                  <dd className="text-text">
+                    {user.playerCredential.m3uUrlEnc ? "Set (hidden)" : "—"}
+                  </dd>
+                </div>
+                <div className="flex justify-between gap-3">
+                  <dt className="text-muted">Last updated</dt>
+                  <dd className="text-text">
+                    {user.playerCredential.updatedAt.toLocaleString("en-US")}
+                  </dd>
+                </div>
+              </dl>
+            ) : (
+              <p className="text-sm text-muted">No player login issued yet.</p>
+            )}
+            <ActionForm
+              action={savePlayerCredentials}
+              submitLabel={
+                user.playerCredential
+                  ? "Update player login"
+                  : "Issue player login"
+              }
+              confirm={
+                user.playerCredential
+                  ? "Replace this customer's player login details?"
+                  : undefined
+              }
+            >
+              <input type="hidden" name="userId" value={user.id} />
+              <div className="grid gap-4 sm:grid-cols-2">
+                <Field label="Username" htmlFor="pc-username">
+                  <Input
+                    id="pc-username"
+                    name="username"
+                    defaultValue={user.playerCredential?.username ?? ""}
+                    required
+                    maxLength={120}
+                    autoComplete="off"
+                  />
+                </Field>
+                <Field
+                  label="Password"
+                  htmlFor="pc-password"
+                  hint={
+                    user.playerCredential
+                      ? "Leave blank to keep the current password."
+                      : undefined
+                  }
+                >
+                  <Input
+                    id="pc-password"
+                    name="password"
+                    type="password"
+                    maxLength={200}
+                    autoComplete="new-password"
+                  />
+                </Field>
+                <Field label="Server URL" htmlFor="pc-server">
+                  <Input
+                    id="pc-server"
+                    name="serverUrl"
+                    type="url"
+                    defaultValue={user.playerCredential?.serverUrl ?? ""}
+                    placeholder="https://…"
+                  />
+                </Field>
+                <Field
+                  label="M3U link (optional)"
+                  htmlFor="pc-m3u"
+                  hint={
+                    user.playerCredential?.m3uUrlEnc
+                      ? "Re-enter to keep it; blank removes it."
+                      : undefined
+                  }
+                >
+                  <Input
+                    id="pc-m3u"
+                    name="m3uUrl"
+                    type="url"
+                    placeholder="https://…"
+                  />
+                </Field>
+              </div>
+            </ActionForm>
+            {user.playerCredential && (
+              <ActionForm
+                action={clearPlayerCredentials}
+                submitLabel="Remove player login"
+                submitVariant="danger"
+                confirm="Remove this customer's player login? They will no longer see it in My Accounts."
+              >
+                <input type="hidden" name="userId" value={user.id} />
+              </ActionForm>
+            )}
+          </CardBody>
+        </Card>
+
+        <Card>
+          <CardHeader
+            title="Role"
+            description="Only administrators can change roles. Changes are audit-logged."
+          />
           <CardBody>
             {self ? (
-              <p className="text-sm text-muted">You can’t change your own role.</p>
+              <p className="text-sm text-muted">
+                You can’t change your own role.
+              </p>
             ) : (
-              <ActionForm action={setUserRole} submitLabel="Change role" submitVariant="secondary" confirm="Change this user's role?">
+              <ActionForm
+                action={setUserRole}
+                submitLabel="Change role"
+                submitVariant="secondary"
+                confirm="Change this user's role?"
+              >
                 <input type="hidden" name="userId" value={user.id} />
                 <Field label="Role" htmlFor="role">
                   <Select id="role" name="role" defaultValue={user.role}>
@@ -98,12 +301,22 @@ export default async function UserDetailPage({ params }: PageProps<"/admin/users
         </Card>
 
         <Card>
-          <CardHeader title="Account status" description="Suspending signs the user out of every device." />
+          <CardHeader
+            title="Account status"
+            description="Suspending signs the user out of every device."
+          />
           <CardBody>
             {self ? (
-              <p className="text-sm text-muted">You can’t suspend your own account.</p>
+              <p className="text-sm text-muted">
+                You can’t suspend your own account.
+              </p>
             ) : user.status === "ACTIVE" ? (
-              <ActionForm action={setUserStatus} submitLabel="Suspend account" submitVariant="danger" confirm="Suspend this account and sign the user out everywhere?">
+              <ActionForm
+                action={setUserStatus}
+                submitLabel="Suspend account"
+                submitVariant="danger"
+                confirm="Suspend this account and sign the user out everywhere?"
+              >
                 <input type="hidden" name="userId" value={user.id} />
                 <input type="hidden" name="status" value="SUSPENDED" />
                 <Field label="Reason (internal)" htmlFor="reason">
@@ -111,7 +324,10 @@ export default async function UserDetailPage({ params }: PageProps<"/admin/users
                 </Field>
               </ActionForm>
             ) : (
-              <ActionForm action={setUserStatus} submitLabel="Reactivate account">
+              <ActionForm
+                action={setUserStatus}
+                submitLabel="Reactivate account"
+              >
                 <input type="hidden" name="userId" value={user.id} />
                 <input type="hidden" name="status" value="ACTIVE" />
               </ActionForm>
@@ -120,26 +336,58 @@ export default async function UserDetailPage({ params }: PageProps<"/admin/users
         </Card>
       </div>
 
-      <h2 className="mb-3 mt-10 font-display text-lg font-semibold text-text">Subscriptions</h2>
-      <DataTable head={["Plan", "Status", "Period", "Source", "Change status"]} minWidth={760}>
+      <h2 className="mb-3 mt-10 font-display text-lg font-semibold text-text">
+        Subscriptions
+      </h2>
+      <DataTable
+        head={["Plan", "Status", "Period", "Source", "Change status"]}
+        minWidth={760}
+      >
         {user.subscriptions.length === 0 ? (
           <EmptyRow colSpan={5}>No subscriptions.</EmptyRow>
         ) : (
           user.subscriptions.map((s) => (
             <tr key={s.id}>
               <Td className="font-medium text-text">{s.plan.name}</Td>
-              <Td><StatusBadge status={s.status} /></Td>
-              <Td className="text-muted">{formatDate(s.currentPeriodStart)} – {formatDate(s.currentPeriodEnd)}</Td>
-              <Td className="text-muted">{s.providerSubscriptionId ? "Payment provider" : "Manual"}</Td>
+              <Td>
+                <StatusBadge status={s.status} />
+              </Td>
+              <Td className="text-muted">
+                {formatDate(s.currentPeriodStart)} –{" "}
+                {formatDate(s.currentPeriodEnd)}
+              </Td>
+              <Td className="text-muted">
+                {s.providerSubscriptionId ? "Payment provider" : "Manual"}
+              </Td>
               <Td>
                 {s.providerSubscriptionId ? (
-                  <span className="text-xs text-muted">Managed by provider</span>
+                  <span className="text-xs text-muted">
+                    Managed by provider
+                  </span>
                 ) : (
-                  <ActionForm action={setSubscriptionStatus} inline submitLabel="Update" submitVariant="secondary">
+                  <ActionForm
+                    action={setSubscriptionStatus}
+                    inline
+                    submitLabel="Update"
+                    submitVariant="secondary"
+                  >
                     <input type="hidden" name="subscriptionId" value={s.id} />
-                    <Select name="status" defaultValue={s.status} aria-label="Subscription status" className="h-9 w-36">
-                      {["PENDING", "ACTIVE", "PAST_DUE", "CANCELED", "EXPIRED"].map((st) => (
-                        <option key={st} value={st}>{st}</option>
+                    <Select
+                      name="status"
+                      defaultValue={s.status}
+                      aria-label="Subscription status"
+                      className="h-9 w-36"
+                    >
+                      {[
+                        "PENDING",
+                        "ACTIVE",
+                        "PAST_DUE",
+                        "CANCELED",
+                        "EXPIRED",
+                      ].map((st) => (
+                        <option key={st} value={st}>
+                          {st}
+                        </option>
                       ))}
                     </Select>
                   </ActionForm>
@@ -159,21 +407,39 @@ export default async function UserDetailPage({ params }: PageProps<"/admin/users
           {plans.length === 0 ? (
             <p className="text-sm text-muted">Create an active plan first.</p>
           ) : (
-            <ActionForm action={grantSubscription} submitLabel="Activate subscription" confirm="Activate this subscription for the user?">
+            <ActionForm
+              action={grantSubscription}
+              submitLabel="Activate subscription"
+              confirm="Activate this subscription for the user?"
+            >
               <input type="hidden" name="userId" value={user.id} />
               <div className="grid gap-4 sm:grid-cols-3">
                 <Field label="Plan" htmlFor="planId">
                   <Select id="planId" name="planId">
                     {plans.map((p) => (
-                      <option key={p.id} value={p.id}>{p.name} — {formatMoney(p.priceCents, p.currency)}</option>
+                      <option key={p.id} value={p.id}>
+                        {p.name} — {formatMoney(p.priceCents, p.currency)}
+                      </option>
                     ))}
                   </Select>
                 </Field>
                 <Field label="Start date" htmlFor="start">
-                  <Input id="start" name="start" type="date" defaultValue={today} required />
+                  <Input
+                    id="start"
+                    name="start"
+                    type="date"
+                    defaultValue={today}
+                    required
+                  />
                 </Field>
                 <Field label="End date" htmlFor="end">
-                  <Input id="end" name="end" type="date" defaultValue={monthLater} required />
+                  <Input
+                    id="end"
+                    name="end"
+                    type="date"
+                    defaultValue={monthLater}
+                    required
+                  />
                 </Field>
               </div>
             </ActionForm>
@@ -183,7 +449,9 @@ export default async function UserDetailPage({ params }: PageProps<"/admin/users
 
       <div className="mt-10 grid gap-6 lg:grid-cols-2">
         <div>
-          <h2 className="mb-3 font-display text-lg font-semibold text-text">Recent payments</h2>
+          <h2 className="mb-3 font-display text-lg font-semibold text-text">
+            Recent payments
+          </h2>
           <DataTable head={["Date", "Amount", "Status"]} minWidth={360}>
             {user.payments.length === 0 ? (
               <EmptyRow colSpan={3}>No payments recorded.</EmptyRow>
@@ -191,23 +459,38 @@ export default async function UserDetailPage({ params }: PageProps<"/admin/users
               user.payments.map((p) => (
                 <tr key={p.id}>
                   <Td className="text-muted">{formatDate(p.createdAt)}</Td>
-                  <Td className="text-text">{formatMoney(p.amountCents, p.currency)}</Td>
-                  <Td><StatusBadge status={p.status} /></Td>
+                  <Td className="text-text">
+                    {formatMoney(p.amountCents, p.currency)}
+                  </Td>
+                  <Td>
+                    <StatusBadge status={p.status} />
+                  </Td>
                 </tr>
               ))
             )}
           </DataTable>
         </div>
         <div>
-          <h2 className="mb-3 font-display text-lg font-semibold text-text">Support tickets</h2>
+          <h2 className="mb-3 font-display text-lg font-semibold text-text">
+            Support tickets
+          </h2>
           <DataTable head={["Subject", "Status", "Updated"]} minWidth={360}>
             {user.tickets.length === 0 ? (
               <EmptyRow colSpan={3}>No tickets.</EmptyRow>
             ) : (
               user.tickets.map((t) => (
                 <tr key={t.id}>
-                  <Td><Link href={`/admin/support/${t.id}`} className="text-text hover:text-light-blue">{t.subject}</Link></Td>
-                  <Td><StatusBadge status={t.status} /></Td>
+                  <Td>
+                    <Link
+                      href={`/admin/support/${t.id}`}
+                      className="text-text hover:text-light-blue"
+                    >
+                      {t.subject}
+                    </Link>
+                  </Td>
+                  <Td>
+                    <StatusBadge status={t.status} />
+                  </Td>
                   <Td className="text-muted">{formatDateTime(t.updatedAt)}</Td>
                 </tr>
               ))

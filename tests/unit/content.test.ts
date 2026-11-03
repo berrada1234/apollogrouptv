@@ -140,8 +140,8 @@ describe("app page content", () => {
     expect(src).not.toMatch(/\d+\s*(K|M)\+|\d\.\d\s*\/\s*5|\d+\s*(ms|Mbps|seconds?)\b|downloads?\s+\d/i);
     expect(src).not.toMatch(/\b(VPN|sideload|APK|M3U|MAC address|TestFlight|anti-freeze|catch-?up|DVR|PVR|24\/7)\b/i);
     expect(src).not.toMatch(/\b(Dark Knight|Interstellar|Inception|Shawshank|IMDB|TMDB|ESPN|HBO|BBC|Netflix|Disney)\b/i);
-    // Downloader codes may only be mentioned as something to avoid.
-    expect(src).not.toMatch(/(enter|use) (a|the) downloader code/i);
+    // Downloader codes are only ever pointed at the official one in the customer dashboard.
+    expect(src).not.toMatch(/downloader code[^.]*d{5,}/i);
   });
   it("answers every app FAQ with substance", async () => {
     const { appFaq } = await import("@/content/app");

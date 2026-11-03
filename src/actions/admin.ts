@@ -16,6 +16,7 @@ import { assertRole } from "@/lib/session";
 import { sendEmail } from "@/lib/email";
 import { settingsSchemas, type SettingsKey } from "@/lib/settings";
 import { absoluteUrl } from "@/lib/site";
+import { encryptSecret } from "@/lib/crypto";
 import {
   categorySchema,
   channelSchema,
@@ -140,6 +141,125 @@ export async function setUserStatus(
         ? "Account suspended and signed out."
         : "Account reactivated.",
     );
+  } catch (e) {
+    return handleActionError(e);
+  }
+}
+
+// ─── Player credentials ────────────────────────────────────────────────────
+
+const optionalUrl = z.union([
+  z.literal(""),
+  z.url({ protocol: /^https?$/ }).max(255),
+]);
+
+/** Issue or update a customer's third-party player login. A blank password keeps the stored one. */
+export async function savePlayerCredentials(
+  _: ActionState,
+  fd: FormData,
+): Promise<ActionState> {
+  try {
+    const actor = await assertRole("ADMIN");
+    const parsed = z
+      .object({
+        userId: id,
+        username: z.string().trim().min(1, "Enter a username.").max(120),
+        password: z.string().trim().max(200),
+        serverUrl: optionalUrl,
+        // M3U links can be long (query strings), so they get their own length limit.
+        m3uUrl: z.union([
+          z.literal(""),
+          z.url({ protocol: /^https?$/ }).max(1000),
+        ]),
+      })
+      .safeParse({
+        userId: str(fd, "userId"),
+        username: str(fd, "username"),
+        password: str(fd, "password"),
+        serverUrl: str(fd, "serverUrl").trim(),
+        m3uUrl: str(fd, "m3uUrl").trim(),
+      });
+    if (!parsed.success) return fromZod(parsed.error);
+    const { userId, username, password, serverUrl, m3uUrl } = parsed.data;
+    const [target, existing] = await Promise.all([
+      db.user.findUnique({ where: { id: userId }, select: { id: true } }),
+      db.playerCredential.findUnique({ where: { userId } }),
+    ]);
+    if (!target) return fail("User not found.");
+    if (!existing && !password)
+      return fail("Enter a password for the new login.");
+
+    const data = {
+      username,
+      serverUrl: serverUrl || null,
+      m3uUrlEnc: m3uUrl ? encryptSecret(m3uUrl) : null,
+      updatedById: actor.id,
+      ...(password ? { passwordEnc: encryptSecret(password) } : {}),
+    };
+    // Secrets never reach the audit log — only which fields changed.
+    const log = await auditData({
+      actorId: actor.id,
+      action: existing
+        ? "player_credentials.update"
+        : "player_credentials.create",
+      targetType: "User",
+      targetId: userId,
+      metadata: {
+        username,
+        serverUrl: serverUrl || null,
+        m3uLink: Boolean(m3uUrl),
+        passwordChanged: Boolean(password),
+      },
+    });
+    await db.$transaction([
+      db.playerCredential.upsert({
+        where: { userId },
+        create: {
+          userId,
+          ...data,
+          passwordEnc: data.passwordEnc ?? encryptSecret(password),
+        },
+        update: data,
+      }),
+      db.notification.create({
+        data: {
+          userId,
+          title: "Your player login is ready",
+          body: "Your username, password and server details are in My Accounts.",
+          href: "/dashboard/profile",
+        },
+      }),
+      db.auditLog.create({ data: log }),
+    ]);
+    revalidatePath(`/admin/users/${userId}`);
+    return success(existing ? "Player login updated." : "Player login issued.");
+  } catch (e) {
+    return handleActionError(e);
+  }
+}
+
+export async function clearPlayerCredentials(
+  _: ActionState,
+  fd: FormData,
+): Promise<ActionState> {
+  try {
+    const actor = await assertRole("ADMIN");
+    const parsed = z
+      .object({ userId: id })
+      .safeParse({ userId: str(fd, "userId") });
+    if (!parsed.success) return fromZod(parsed.error);
+    const log = await auditData({
+      actorId: actor.id,
+      action: "player_credentials.remove",
+      targetType: "User",
+      targetId: parsed.data.userId,
+    });
+    await db.$transaction([
+      db.playerCredential.deleteMany({ where: { userId: parsed.data.userId } }),
+      db.auditLog.create({ data: log }),
+    ]);
+    revalidatePath(`/admin/users/${parsed.data.userId}`);
+    return success("Player login removed.");
   } catch (e) {
     return handleActionError(e);
   }
@@ -885,7 +1005,12 @@ function settingsInput(key: SettingsKey, fd: FormData): unknown {
       const at = (k: string, i: number) => String(fd.getAll(k)[i] ?? "").trim();
       return {
         appVersion: str(fd, "appVersion").trim(),
+        appTagline: str(fd, "appTagline").trim(),
         releaseNotes: str(fd, "releaseNotes").trim(),
+        stats: str(fd, "stats").trim(),
+        qrUrl: str(fd, "qrUrl").trim(),
+        players: str(fd, "players").trim(),
+        playersNote: str(fd, "playersNote").trim(),
         platforms: names
           .map((name, i) => ({
             name: name.trim(),
@@ -894,8 +1019,7 @@ function settingsInput(key: SettingsKey, fd: FormData): unknown {
             instructions: String(fd.getAll("instructions")[i] ?? ""),
             method: at("method", i),
             downloadLabel: at("downloadLabel", i),
-            copyLabel: at("copyLabel", i),
-            copyValue: at("copyValue", i),
+            copyItems: String(fd.getAll("copyItems")[i] ?? "").trim(),
           }))
           .filter((p) => p.name),
       };

@@ -75,6 +75,7 @@ export function AppShell({
   extraLinks,
   bell,
   mobileTabs,
+  sidebarFooter,
   children,
 }: {
   nav: NavItem[];
@@ -85,6 +86,8 @@ export function AppShell({
   bell?: { href: string; count: number };
   /** Up to four hrefs from `nav` shown in the phone bottom bar (plus “More”). */
   mobileTabs?: string[];
+  /** Extra panel at the bottom of the sidebar (e.g. referral and gift shortcuts). */
+  sidebarFooter?: React.ReactNode;
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
@@ -159,6 +162,7 @@ export function AppShell({
             })}
           </ul>
         )}
+        {sidebarFooter && <div className="mt-6">{sidebarFooter}</div>}
       </nav>
       <div className="border-t border-border p-3">
         <SignOutButton className="w-full" />

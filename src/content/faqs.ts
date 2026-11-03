@@ -117,7 +117,7 @@ export const faqSeed: FaqSeed[] = [
     category: "Installation & Setup",
     question: "Is there an Apollo Group TV downloader code?",
     answer:
-      "No — we don't distribute the app through downloader codes or shared files. Codes posted on forums, videos or social media aren't from us and can install modified apps that put your device and account at risk. Use the official links in our [setup guides](/guides).",
+      "Only for Fire TV and Android TV, where the Apollo TV app installs through the free Downloader app. Use the official code shown in your dashboard under [Apps & Guides](/dashboard/apps) — codes posted on forums, videos or social media aren't from us and can install modified apps that put your device and account at risk.",
   },
   {
     category: "Installation & Setup",
@@ -231,7 +231,7 @@ export const faqSeed: FaqSeed[] = [
     category: "Account & Security",
     question: "I forgot my password or lost my login details. How do I get back in?",
     answer:
-      "Request a reset link from the [Sign in](/sign-in) page; it's valid for 30 minutes. We don't issue downloader codes or separate app credentials — your website email and password are all you need. If you no longer have access to your email, [contact support](/contact).",
+      "Request a reset link from the [Sign in](/sign-in) page; it's valid for 30 minutes. Your website email and password also sign you in to the Apollo TV app. Third-party players use the separate player login shown in [My Accounts](/dashboard/profile). If you no longer have access to your email, [contact support](/contact).",
   },
   {
     category: "Account & Security",

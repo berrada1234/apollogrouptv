@@ -141,7 +141,7 @@ export const appFaq = [
   },
   {
     q: "Where should I download the Apollo Group TV app?",
-    a: "Only from the official links on this page, in our [setup guides](/guides) or from an official app store. Downloader codes and files shared on forums or social media aren't from us and can put your device at risk.",
+    a: "Only from the official links in your dashboard under Apps & Guides, in our [setup guides](/guides) or from an official app store. On Fire TV and Android TV, use the official Downloader code shown in your dashboard — codes and files shared on forums or social media aren't from us and can put your device at risk.",
   },
   {
     q: "Can I use the app on more than one device?",

@@ -120,6 +120,7 @@ model User {
   assignedTickets  SupportTicket[]  @relation("TicketAssignee")
   supportMessages  SupportMessage[]
   notifications    Notification[]
+  playerCredential PlayerCredential?
   auditLogs        AuditLog[]
 
   @@index([role])
@@ -473,4 +474,22 @@ model SiteSetting {
   updatedAt DateTime @updatedAt
 
   @@map("site_settings")
+}
+
+// ─── Player credentials ─────────────────────────────────────────────────────
+// Streaming-line details staff issue to a customer for third-party players (Xtream login / M3U).
+// Secrets are encrypted at rest (src/lib/crypto.ts); only the owner and admins can read them.
+model PlayerCredential {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  username    String   @db.VarChar(120)
+  passwordEnc String   @db.Text
+  serverUrl   String?  @db.VarChar(255)
+  m3uUrlEnc   String?  @db.Text
+  updatedById String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("player_credentials")
 }

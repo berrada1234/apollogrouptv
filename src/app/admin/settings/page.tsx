@@ -102,7 +102,7 @@ export default async function SettingsPage() {
         <Section id="apps" title="App platforms" description="Shown on the App page. Only verified platforms are visible publicly.">
           <ActionForm action={saveSettings} submitLabel="Save platforms">
             <input type="hidden" name="settingsKey" value="apps" />
-            <AppsEditor initial={s.apps.platforms} appVersion={s.apps.appVersion} releaseNotes={s.apps.releaseNotes} />
+            <AppsEditor initial={s.apps.platforms} details={s.apps} />
           </ActionForm>
         </Section>
 

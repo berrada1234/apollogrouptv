@@ -12,29 +12,55 @@ type Platform = {
   instructions: string;
   method: string;
   downloadLabel: string;
-  copyLabel: string;
-  copyValue: string;
+  copyItems: string;
 };
 
-const blank: Platform = { name: "", verified: false, downloadUrl: "", instructions: "", method: "", downloadLabel: "", copyLabel: "", copyValue: "" };
+export type AppDetails = { appVersion: string; appTagline: string; releaseNotes: string; stats: string; qrUrl: string; players: string; playersNote: string };
+
+const blank: Platform = { name: "", verified: false, downloadUrl: "", instructions: "", method: "", downloadLabel: "", copyItems: "" };
 
 /** App details plus repeatable platform rows; submitted as parallel form fields. */
-export function AppsEditor({ initial, appVersion, releaseNotes }: { initial: Platform[]; appVersion: string; releaseNotes: string }) {
+export function AppsEditor({ initial, details }: { initial: Platform[]; details: AppDetails }) {
   const [rows, setRows] = useState<(Platform & { key: number })[]>(initial.map((p, i) => ({ ...blank, ...p, key: i })));
   const [nextKey, setNextKey] = useState(initial.length);
 
   return (
     <div className="space-y-5">
-      <div className="grid gap-3 sm:grid-cols-[180px_1fr]">
-        <div>
-          <Label htmlFor="appVersion">Current app version</Label>
-          <Input id="appVersion" name="appVersion" defaultValue={appVersion} placeholder="e.g. 4.1.0" maxLength={20} />
+      <fieldset className="space-y-3 rounded-xl border border-border p-4">
+        <legend className="px-1 text-xs text-muted">App details (Apps &amp; Guides)</legend>
+        <div className="grid gap-3 sm:grid-cols-[180px_1fr]">
+          <div>
+            <Label htmlFor="appVersion">Current version</Label>
+            <Input id="appVersion" name="appVersion" defaultValue={details.appVersion} placeholder="e.g. 4.0.5" maxLength={20} />
+          </div>
+          <div>
+            <Label htmlFor="appTagline">Tagline</Label>
+            <Input id="appTagline" name="appTagline" defaultValue={details.appTagline} maxLength={400} />
+          </div>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <div>
+            <Label htmlFor="stats">Headline figures (“Label | Value” per line, up to 3)</Label>
+            <Textarea id="stats" name="stats" rows={3} defaultValue={details.stats} maxLength={300} />
+          </div>
+          <div>
+            <Label htmlFor="releaseNotes">What&apos;s new (“Title — description” per line)</Label>
+            <Textarea id="releaseNotes" name="releaseNotes" rows={3} defaultValue={details.releaseNotes} maxLength={2000} />
+          </div>
+          <div>
+            <Label htmlFor="qrUrl">QR code link (optional)</Label>
+            <Input id="qrUrl" name="qrUrl" type="url" defaultValue={details.qrUrl} placeholder="https://…" />
+          </div>
+          <div>
+            <Label htmlFor="players">Third-party players (“Name | Status” per line)</Label>
+            <Textarea id="players" name="players" rows={3} defaultValue={details.players} maxLength={1000} />
+          </div>
         </div>
         <div>
-          <Label htmlFor="releaseNotes">What&apos;s new (one item per line, “Title — description”)</Label>
-          <Textarea id="releaseNotes" name="releaseNotes" rows={3} defaultValue={releaseNotes} maxLength={2000} />
+          <Label htmlFor="playersNote">Note above third-party players</Label>
+          <Textarea id="playersNote" name="playersNote" rows={2} defaultValue={details.playersNote} maxLength={600} />
         </div>
-      </div>
+      </fieldset>
 
       {rows.length === 0 && <p className="text-sm text-muted">No platforms configured. Apps &amp; Guides shows a “coming soon” state.</p>}
       {rows.map((row, i) => (
@@ -57,14 +83,10 @@ export function AppsEditor({ initial, appVersion, releaseNotes }: { initial: Pla
               <Label htmlFor={`pd-${row.key}`}>Download button label</Label>
               <Input id={`pd-${row.key}`} name="downloadLabel" defaultValue={row.downloadLabel} placeholder="e.g. Download installer" maxLength={40} />
             </div>
-            <div>
-              <Label htmlFor={`pcl-${row.key}`}>Copyable value label (optional)</Label>
-              <Input id={`pcl-${row.key}`} name="copyLabel" defaultValue={row.copyLabel} placeholder="e.g. Downloader code or Server URL" maxLength={40} />
-            </div>
-            <div>
-              <Label htmlFor={`pcv-${row.key}`}>Copyable value</Label>
-              <Input id={`pcv-${row.key}`} name="copyValue" defaultValue={row.copyValue} maxLength={200} />
-            </div>
+          </div>
+          <div>
+            <Label htmlFor={`pc-${row.key}`}>Copyable values (“Label | value” per line, e.g. “Downloader code | 123456”)</Label>
+            <Textarea id={`pc-${row.key}`} name="copyItems" rows={2} defaultValue={row.copyItems} maxLength={600} />
           </div>
           <div>
             <Label htmlFor={`pi-${row.key}`}>Installation steps (one per line)</Label>
