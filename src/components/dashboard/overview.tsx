@@ -76,7 +76,7 @@ export async function OverviewContent({ user }: { user: CurrentUser }) {
       <div className="flex gap-3 rounded-[14px] border border-primary/25 bg-primary/[0.06] px-5 py-4 text-sm">
         <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-accent" aria-hidden />
         <p className="text-muted">
-          <span className="font-semibold text-text">Pay safely.</span> Only arrange payment through your Apollo Group TV account or a support ticket from our team — never to
+          <span className="font-semibold text-text">Pay safely.</span> Only arrange payment through your Apollo Group TV account or a support ticket from our team, never to
           an address, link or wallet someone sends you by email or message. We will never ask for your password.
         </p>
       </div>

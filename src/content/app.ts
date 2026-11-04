@@ -18,11 +18,11 @@ export const appCopy = {
     eyebrow: "Why the app",
     h2: "What the Apollo TV App Is Built to Do",
     description:
-      "A streaming app should get out of the way. These are the jobs the Apollo TV app is designed around — the everyday things that decide whether watching feels easy or frustrating.",
+      "These are the everyday jobs the Apollo TV app is built around: finding a channel, picking up a series and getting back to watching after an update.",
     items: [
       {
         title: "A guide you can actually navigate",
-        body: "Live channels are sorted by category and, where licensing allows, by region — so you scroll to Sports or News instead of through one endless list.",
+        body: "Live channels are sorted by category and, where licensing allows, by region, so you scroll to Sports or News instead of through one endless list.",
       },
       {
         title: "Picture quality that's labeled",
@@ -52,7 +52,7 @@ export const appCopy = {
     eyebrow: "On your phone",
     h2: "Apollo TV on iPhone, iPad and Android",
     description:
-      "On a phone or tablet the app uses a layout made for touch — the same account, the same lineup and the same on-demand library, sized for the screen in your hand.",
+      "On a phone or tablet the app uses a layout made for touch. You keep the same account, lineup and on-demand library.",
     points: ["Same sign-in as your TV", "Touch-friendly browsing", "Portrait and landscape viewing", "Your plan status in the dashboard"],
   },
 
@@ -72,15 +72,15 @@ export const appCopy = {
     eyebrow: "Install",
     h2: "Install the Apollo TV App on Your Device",
     description:
-      "Each verified device gets an official download link and numbered setup steps. Install only from those links or an official app store — never from shared codes or files found elsewhere.",
-    notListed: "Don't see your device? [Ask our team](/contact) before subscribing and we'll tell you honestly whether it works.",
+      "Each verified device gets an official download link and numbered setup steps. Install only from those links or an official app store. Codes and files shared elsewhere aren't ours.",
+    notListed: "Don't see your device? [Ask our team](/contact) before subscribing and we'll tell you whether it works.",
   },
 
   requirements: {
     eyebrow: "Requirements",
     h2: "What You Need to Run the Apollo TV App",
     description:
-      "Smooth streaming depends as much on your setup as on ours. Use these as general rules of thumb — real-world needs vary with your network, device and how many screens are in use.",
+      "Smooth streaming depends as much on your setup as on ours. Treat these as rules of thumb. Real needs vary with your network, device and how many screens are in use.",
     groups: [
       {
         title: "Internet connection",
@@ -141,7 +141,7 @@ export const appFaq = [
   },
   {
     q: "Where should I download the Apollo Group TV app?",
-    a: "Only from the official links in your dashboard under Apps & Guides, in our [setup guides](/guides) or from an official app store. On Fire TV and Android TV, use the official Downloader code shown in your dashboard — codes and files shared on forums or social media aren't from us and can put your device at risk.",
+    a: "Only from the official links in your dashboard under Apps & Guides, in our [setup guides](/guides) or from an official app store. On Fire TV and Android TV, use the official Downloader code shown in your dashboard. Codes and files shared on forums or social media aren't from us and can put your device at risk.",
   },
   {
     q: "Can I use the app on more than one device?",
@@ -149,7 +149,7 @@ export const appFaq = [
   },
   {
     q: "Do I need a separate account for each device?",
-    a: "No. One Apollo Group TV account works on all your supported devices — use the same email and password everywhere.",
+    a: "No. One Apollo Group TV account works on all your supported devices. Use the same email and password on each one.",
   },
   {
     q: "Why does the app buffer or freeze?",

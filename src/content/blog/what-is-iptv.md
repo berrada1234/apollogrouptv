@@ -13,7 +13,7 @@ answer: IPTV stands for Internet Protocol Television: TV channels and video deli
 
 IPTV is one of those terms everyone in streaming uses and few people explain. It sounds technical, but the idea is simple: television delivered over an internet connection instead of a cable, satellite dish or aerial. If you've watched live TV in an app on your phone or a streaming stick, you've already used something very close to it.
 
-This guide explains IPTV in plain English: what the letters mean, how a live channel actually reaches your screen, what you need at home, how the different login types work, how IPTV compares with cable and streaming apps, and how to judge whether a provider is trustworthy. We use Apollo Group TV as the worked example throughout, but the principles apply to any IPTV service.
+Here it is in plain English: what the letters mean, how a live channel reaches your screen, what you need at home, and how to judge a provider. Apollo Group TV is the worked example, but the principles apply to any IPTV service.
 
 ## IPTV in one paragraph
 

@@ -295,7 +295,7 @@ export const refundPolicy: LegalDoc = {
     {
       heading: "Cancelling a pack",
       paragraphs: [
-        "Packs are one-time payments and never renew, so there is nothing to cancel to avoid future charges. Your access simply ends on the date shown in Plans & Billing.",
+        "Packs are one-time payments and never renew, so there is nothing to cancel to avoid future charges. Your access ends on the date shown in Plans & Billing.",
       ],
     },
     {

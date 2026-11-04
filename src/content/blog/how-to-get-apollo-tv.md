@@ -13,7 +13,7 @@ answer: To get Apollo TV, check that your device is supported and your internet 
 
 Getting Apollo TV isn't complicated, but it does involve a few separate pieces: a device that can run the app, an internet connection that can carry live TV, an account, a pack, a payment and an installation. Done in the right order, it takes well under an hour. Done in the wrong order, you can end up paying before discovering your TV stick can't install the app.
 
-This guide is the map. It walks through the whole journey in the order that avoids surprises, explains what each step involves, and points you to the detailed guide for each one. If you just want to start, the five steps are summarized right below.
+The steps below follow the order that avoids that kind of surprise, and each one links to its detailed guide. If you just want to start, the five-step summary comes first.
 
 ## The five steps at a glance
 

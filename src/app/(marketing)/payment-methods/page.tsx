@@ -100,7 +100,7 @@ export default async function PaymentMethodsPage() {
         </p>
       </Section>
       <CtaBand
-        title="Ready to choose a pack?"
+        title="Compare the packs"
         description="Compare the packs, create your account and pay with the method that suits you."
       />
     </>

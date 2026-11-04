@@ -111,7 +111,7 @@ export default function RenewalPage() {
           <div className="sticky top-24 space-y-6">
             <TableOfContents blocks={blocks} />
             <div className="glass rounded-[16px] p-5">
-              <p className="font-semibold text-text">Ready to renew?</p>
+              <p className="font-semibold text-text">Renew from your dashboard</p>
               <p className="mt-1 text-sm leading-6 text-muted">Sign in and open Plans &amp; Billing.</p>
               <Link href={signInToRenew} className={buttonClasses({ size: "sm", className: "mt-4 w-full" })}>
                 Sign in to renew

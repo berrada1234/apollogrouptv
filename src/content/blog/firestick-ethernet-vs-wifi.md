@@ -13,7 +13,7 @@ answer: For live TV, Ethernet is usually more reliable than Wi-Fi on a Firestick
 
 Fire TV Sticks are designed around Wi-Fi. There's no network socket on the stick, the setup screens assume wireless, and for most people Wi-Fi works fine. But live TV puts more pressure on a connection than on-demand video does, and the moment your Wi-Fi wobbles, a live channel is the first thing to stutter.
 
-This guide compares Ethernet and Wi-Fi on a Firestick in practical terms: what actually causes buffering, when a wired connection is worth the effort, how to add an Ethernet adapter, and how to get the most from Wi-Fi if a cable isn't practical. By the end you'll be able to test both on your own TV and decide with evidence rather than guesswork.
+Whether a cable helps depends on your home, so the useful thing is to test both on your own TV. The sections below explain what causes buffering, how to add an Ethernet adapter, how to get more from Wi-Fi, and a simple side-by-side test.
 
 ## Why live TV is harder on your connection
 

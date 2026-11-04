@@ -13,7 +13,7 @@ answer: The official Apollo Group TV website is {{officialDomain}}. Packs, invoi
 
 Search for any popular streaming name and you'll find more than one website using it. Some are resellers, some are unrelated services borrowing a familiar name, and some are outright scams built to take a payment and disappear. Apollo Group TV is no exception: several sites use names similar to ours.
 
-This guide shows you how to recognize the official Apollo Group TV website, the warning signs that a site isn't who it claims to be, practical checks you can run on any site before paying, and what to do if something has already gone wrong. Most of the advice applies to any online subscription, not just ours.
+Below are the checks that tell the official Apollo Group TV website apart from copies, the warning signs of a fake, and what to do if you've already paid the wrong site. Most of the advice works for any online subscription.
 
 ## The official Apollo Group TV website
 

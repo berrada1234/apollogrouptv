@@ -13,7 +13,7 @@ answer: Yes. Apollo Group TV works on Google TV devices such as the Chromecast w
 
 Google TV is the interface Google puts on many streaming devices and smart TVs: the Chromecast with Google TV, the Google TV Streamer, and TVs from brands that ship with Google TV built in. If you own one, you're closer to watching Apollo Group TV than you might think.
 
-Underneath its interface, Google TV runs Android TV OS. That means the Android TV installation method, which our [Fire TV and Android TV guide](/guides/fire-tv-android-tv) covers, applies here too. What's different is where the menus are. This guide walks through the Google TV version of each step, then covers storage, performance and the problems people run into most.
+Underneath its interface, Google TV runs Android TV OS. That means the Android TV installation method, which our [Fire TV and Android TV guide](/guides/fire-tv-android-tv) covers, applies here too. Only the menus are in different places, so each step below uses the Google TV menu names. Storage, performance and common problems come after.
 
 ## Which Google TV devices work
 

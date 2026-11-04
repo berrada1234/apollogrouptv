@@ -50,7 +50,7 @@ export function CompareView({ rival, apollo }: { rival: Rival; apollo: ApolloCom
       <section className="section-y">
         <Container className="grid items-start gap-10 lg:grid-cols-12 lg:gap-16 [&>*]:min-w-0">
           <div className="lg:col-span-7">
-            <h2 className="font-hero text-2xl font-medium tracking-[-0.035em] text-text sm:text-3xl">The honest short version</h2>
+            <h2 className="font-hero text-2xl font-medium tracking-[-0.035em] text-text sm:text-3xl">The short version</h2>
             <div className="mt-5 space-y-4 text-base leading-7 text-muted sm:text-[17px] sm:leading-8">
               {rival.story.map((p) => (
                 <p key={p}>{p}</p>
@@ -231,7 +231,7 @@ export function CompareView({ rival, apollo }: { rival: Rival; apollo: ApolloCom
         </Container>
       </section>
 
-      <CtaBand title="Ready to cut the bill?" description="Choose a pack, pay once and watch on the screens you already own. Nothing renews by itself." />
+      <CtaBand title="Keep the difference" description="Choose a pack, pay once and watch on the screens you already own. Nothing renews by itself." />
     </>
   );
 }

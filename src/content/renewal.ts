@@ -24,7 +24,7 @@ export const renewal = {
   body: `
 Renewing Apollo Group TV is a little different from renewing a streaming app that bills you every month. Every pack is a one-time payment for a fixed number of days, and nothing renews on its own. That means you're always in control of when you pay, but it also means you need to renew yourself before your pack runs out if you want to keep watching without a break.
 
-This page walks through the whole Apollo Group TV renewal process: how renewal works, how to log in, the exact steps in your dashboard, what you need to have ready, and what to do if something gets in the way.
+The exact dashboard steps are right below. After them you'll find how to log in, what to have ready, and what to do if a renewal gets stuck.
 
 ## Apollo Group TV renewal at a glance
 
@@ -214,8 +214,8 @@ The methods currently accepted are listed on our Payment Methods page and in the
 
 ## Conclusion
 
-Apollo Group TV renewal comes down to adding a new pack from your account. Sign in with your website account, open Plans & Billing, press Add this pack, pay your invoice and press I Have Paid. Renewing before your end date means the new pack simply continues where the old one stops, and you'll get a reminder three days ahead so you don't miss it.
+Apollo Group TV renewal comes down to adding a new pack from your account. Sign in with your website account, open Plans & Billing, press Add this pack, pay your invoice and press I Have Paid. Renewing before your end date means the new pack continues where the old one stops, and you'll get a reminder three days ahead so you don't miss it.
 
-Ready to renew? [Sign in to your account](/sign-in?next=/dashboard/plan), or [compare the packs](/plans) first.
+To renew now, [sign in to your account](/sign-in?next=/dashboard/plan), or [compare the packs](/plans) first.
 `,
 };

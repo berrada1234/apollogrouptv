@@ -46,7 +46,7 @@ export default async function ReviewsPage({ searchParams }: PageProps<"/reviews"
           <ul className="mt-5 grid gap-4 md:grid-cols-3">
             {[
               { t: "Registered accounts only", b: "You need a signed-in account to submit a review, and each account can have one review awaiting moderation at a time." },
-              { t: "Moderated before publishing", b: "We publish genuine experiences, positive or negative. We remove spam, abuse, personal data and off-topic posts — not criticism." },
+              { t: "Moderated before publishing", b: "We publish genuine experiences, positive or negative. We remove spam, abuse, personal data and off-topic posts. Criticism stays." },
               { t: "“Verified” means a subscription", b: "The verified label appears only when the reviewer has a subscription on record. Ratings and averages come from published reviews only." },
             ].map((x) => (
               <li key={x.t} className="rounded-lg border border-border bg-card p-5 shadow-card">
@@ -143,13 +143,13 @@ export default async function ReviewsPage({ searchParams }: PageProps<"/reviews"
             <h2 className="font-display text-lg font-bold text-text">Writing a review that helps other people</h2>
             <ul className="mt-4 space-y-3 text-sm leading-6 text-muted">
               <li><span className="font-semibold text-text">Say which device you watch on.</span> Setup and picture quality differ between a TV stick, a phone and a computer.</li>
-              <li><span className="font-semibold text-text">Mention how long you&apos;ve used the service.</span> First-week impressions and six-month experience are both useful — just say which it is.</li>
+              <li><span className="font-semibold text-text">Mention how long you&apos;ve used the service.</span> First-week impressions and six-month experience are both useful. Say which one yours is.</li>
               <li><span className="font-semibold text-text">Describe what happened with support,</span> if you contacted us: how long the reply took and whether it solved the problem.</li>
               <li><span className="font-semibold text-text">Be specific about problems.</span> “Buffering on one channel in the evening” helps readers more than “sometimes slow”.</li>
             </ul>
           </div>
           <div className={`${cardClass} p-6`}>
-            <h2 className="font-display text-lg font-bold text-text">What moderation removes — and what it doesn&apos;t</h2>
+            <h2 className="font-display text-lg font-bold text-text">What moderation removes, and what it doesn&apos;t</h2>
             <p className="mt-4 text-sm leading-6 text-muted">
               We remove reviews that contain personal data, abuse, spam, links, or details that would let someone misuse an account. We don&apos;t remove or edit a review
               because it&apos;s critical, and we don&apos;t pay for or write reviews ourselves. If a review breaks the rules, we reject it as a whole rather than changing

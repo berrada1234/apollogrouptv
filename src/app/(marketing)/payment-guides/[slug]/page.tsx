@@ -213,7 +213,7 @@ export default async function PaymentGuidePage({ params }: PageProps<"/payment-g
         </aside>
       </Container>
 
-      <CtaBand title="Ready to subscribe?" description="Choose your pack, open your invoice and pay with the method from this guide." />
+      <CtaBand title="Pay for your pack with this guide open" description="Choose your pack, open your invoice and pay with the method from this guide." />
     </>
   );
 }

@@ -83,7 +83,7 @@ export default async function ProductPage() {
     },
     {
       q: "What if my device isn't supported?",
-      a: "Tell us the make and model in a message before you buy. We'll say honestly whether it works today, so you don't pay for something you can't use.",
+      a: "Tell us the make and model in a message before you buy. We'll tell you whether it works today, so you don't pay for something you can't use.",
     },
   ];
 
@@ -96,7 +96,7 @@ export default async function ProductPage() {
         crumbs={[{ href: "/product", label: "Features" }]}
       >
         <div className="flex flex-wrap gap-3">
-          <ButtonLink href="/plans">Compare packs{from ? ` — from ${from}/mo` : ""}</ButtonLink>
+          <ButtonLink href="/plans">Compare packs{from ? ` from ${from}/mo` : ""}</ButtonLink>
           <ButtonLink href="/app" variant="secondary">
             Supported devices
           </ButtonLink>
@@ -273,7 +273,7 @@ export default async function ProductPage() {
         />
       </Section>
 
-      <CtaBand title="See it for yourself" description="Compare the packs, then create an account — the dashboard, guides and support are ready from day one." />
+      <CtaBand title="See it for yourself" description="Compare the packs, then create an account. The dashboard, guides and support are ready from day one." />
     </>
   );
 }

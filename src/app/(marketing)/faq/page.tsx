@@ -66,7 +66,7 @@ export default async function FaqPage() {
               Apollo Group TV FAQ: Every Common Question, Answered by Topic
             </h1>
             <p className={cn(leadClass, "mt-5")}>
-              The questions people actually ask before and after signing up — what it costs, how to install the app, what you can watch and what to do when
+              The questions people actually ask before and after signing up: what it costs, how to install the app, what you can watch and what to do when
               something isn&apos;t working. Search below, or jump to a topic. Can&apos;t find your answer?{" "}
               <Link href="/contact" className="font-medium text-accent hover:text-light-blue">
                 Ask our team

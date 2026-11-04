@@ -13,7 +13,7 @@ answer: An IPTV connection limit is the number of streams your login can play at
 
 Every IPTV subscription comes with a connection limit, and it causes more confusion than almost anything else. People install the app on four devices, see an error on the third, and assume something is broken. Others share a login with family and wonder why streams keep stopping in the evening.
 
-Most of the confusion comes from one misunderstanding: a connection limit usually counts **streams playing at the same time**, not the number of devices you've installed the app on. This guide explains what's actually counted, why limits exist, what happens when you exceed yours, and how to plan for a household with several TVs.
+Most of the confusion comes from one misunderstanding: a connection limit usually counts **streams playing at the same time**, not the number of devices you've installed the app on. Below: what's counted, why limits exist, what happens when you go over, and how to plan for a home with several TVs.
 
 ## What a connection limit counts
 

@@ -69,7 +69,7 @@ export default function PaymentGuidesPage() {
           .
         </p>
       </Section>
-      <CtaBand title="Ready to subscribe?" description="Choose a pack, then follow the guide for your payment method." />
+      <CtaBand title="Choose a pack, then pay your way" description="Choose a pack, then follow the guide for your payment method." />
     </>
   );
 }

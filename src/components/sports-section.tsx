@@ -135,7 +135,7 @@ const defaultCopy = {
   title: "Watch Live Sports on Apollo Group TV",
   tagline: "Follow every match in HD, Full HD and 4K where available",
   intro:
-    "Catch the big game on the screens you already own. Apollo TV organizes sports channels by sport and by region, so finding the match takes seconds — from football and basketball to fight night and race day. Picture quality depends on each channel's broadcast and your connection. Which sports channels and events you can watch depends on licensing in your region, and the channel guide always shows current listings.",
+    "Catch the big game on the screens you already own. Apollo TV organizes sports channels by sport and by region, so you can go from football and basketball to fight night and race day in a few clicks. Picture quality depends on each channel's broadcast and your connection. Which sports channels and events you can watch depends on licensing in your region, and the channel guide always shows current listings.",
 };
 
 export function SportsSection({

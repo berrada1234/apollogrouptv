@@ -30,7 +30,7 @@ export default async function ComparePage() {
       <PageHero
         eyebrow="Compare"
         title="Compare Apollo Group TV with Other Live TV Services"
-        description="Honest, sourced comparisons with the best-known live TV services: what a year costs, how billing works, how many screens you get, and when another service may suit you better."
+        description="Sourced comparisons with the best-known live TV services: what a year costs, how billing works, how many screens you get, and when another service may suit you better."
         crumbs={[{ href: "/compare", label: "Compare" }]}
       />
 
@@ -82,7 +82,7 @@ export default async function ComparePage() {
         <div className="grid gap-4 md:grid-cols-2">
           <Link href="/why-apollo-group-tv" className={cn(cardClass, cardHover, "edge-spectrum group p-7")}>
             <h2 className="font-hero text-xl font-medium tracking-[-0.03em] text-text">Why Apollo Group TV</h2>
-            <p className="mt-2 text-sm leading-6 text-muted">One-time packs, no auto-renewal, a guide for every device, and an honest look at when another service is a better fit.</p>
+            <p className="mt-2 text-sm leading-6 text-muted">One-time packs, no auto-renewal, a guide for every device, and a plain note on when another service is a better fit.</p>
             <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-accent">
               Read why <ArrowRight className="h-3.5 w-3.5" aria-hidden />
             </span>
@@ -106,7 +106,7 @@ export default async function ComparePage() {
         </Container>
       </Section>
 
-      <CtaBand title="Ready to cut the bill?" description="Choose a pack, pay once and watch on the screens you already own." />
+      <CtaBand title="Pay once for live TV" description="Choose a pack, pay once and watch on the screens you already own." />
     </>
   );
 }

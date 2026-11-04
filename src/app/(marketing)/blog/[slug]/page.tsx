@@ -149,7 +149,7 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
           </Container>
         </section>
       )}
-      <CtaBand title="Ready to watch?" description="Compare the packs, create your account and follow the setup guide for your device." />
+      <CtaBand title="Watch Apollo Group TV on your own screens" description="Compare the packs, create your account and follow the setup guide for your device." />
     </>
   );
 }

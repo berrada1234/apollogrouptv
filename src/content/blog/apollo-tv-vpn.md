@@ -13,7 +13,7 @@ answer: You don't need a VPN for Apollo Group TV. The app, the website and your 
 
 Search for almost anything about IPTV and you'll find someone telling you to use a VPN. Some articles make it sound mandatory. For Apollo Group TV, it isn't: you don't need a VPN to sign up, install the app or watch. But VPNs are useful tools in the right situations, and it's worth understanding what they do, what they cost you in streaming performance, and where the line is under our terms.
 
-This guide gives you the short answer first, then explains what a VPN actually does, how it affects live TV, how regional licensing fits in, and when a VPN genuinely helps.
+The short answer comes first. After it: what a VPN does to your traffic, what that means for live TV, how regional licensing fits in, and the cases where a VPN helps.
 
 ## The short answer
 

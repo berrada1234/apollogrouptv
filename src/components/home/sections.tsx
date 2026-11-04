@@ -308,7 +308,7 @@ export function DevicesSection() {
             <MessageSquareText className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden />
             <span>
               Device not listed? <Link href="/contact" className="font-medium text-text underline-offset-4 hover:text-light-blue hover:underline">Ask us before subscribing</Link> —
-              we&apos;ll tell you honestly whether it works.
+              we&apos;ll tell you whether it works.
             </span>
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
@@ -385,7 +385,7 @@ export function CompareSection({
     { k: "TV guide (EPG)", apollo: "Searchable channel guide", cable: ["same", "On-screen guide"], other: ["same", "Varies by service"] },
     { k: "Equipment", apollo: "The app on your own device", cable: ["short", "Set-top box, often rented"], other: ["same", "The app on your own device"] },
     { k: "Support", apollo: "Tickets with full reply history", cable: ["same", "Phone queues"], other: ["same", "Email or help center"] },
-    { k: "Contract", apollo: "None — pay once per pack", cable: ["short", "Long-term contracts are common"], other: ["same", "Monthly, renews automatically"] },
+    { k: "Contract", apollo: "None. You pay once per pack", cable: ["short", "Long-term contracts are common"], other: ["same", "Monthly, renews automatically"] },
   ];
   return (
     <Section>
@@ -508,7 +508,7 @@ export function PlansSection({ plans, checkout, methods = [] }: { plans: Plan[];
       <div className={cn(cardClass, "mt-8 flex flex-col items-center justify-between gap-4 px-6 py-5 md:flex-row")}>
         <p className="text-center text-sm leading-6 text-muted md:text-left">
           <span className="font-semibold text-text">Not sure which pack fits?</span>{" "}
-          {checkout ? "Our team is happy to help you choose." : "No card needed to start — our team confirms activation and payment options with you."}
+          {checkout ? "Our team is happy to help you choose." : "You don't need a card to start. Our team confirms activation and payment options with you."}
         </p>
         <div className="flex shrink-0 flex-wrap justify-center gap-2">
           <ButtonLink href="/plans" variant="secondary" size="sm">
@@ -597,7 +597,7 @@ export function ReviewsSection({
   // No published reviews yet: explain how reviews work instead of showing an empty box.
   const rules = [
     { icon: User, t: "Written by real customers", b: "Only people with an account can post, so every review comes from someone who has used the service." },
-    { icon: ShieldCheck, t: "Checked, not curated", b: "Critical reviews are published too — we only filter out spam, abuse and personal details." },
+    { icon: ShieldCheck, t: "Checked, not curated", b: "We publish critical reviews too. Only spam, abuse and personal details are removed." },
     { icon: BadgeCheck, t: "Labels you can rely on", b: "A review is marked as a customer review only when a paid pack is on record for that account." },
   ];
   return (
@@ -676,7 +676,7 @@ export function FaqSection() {
           <SectionHeader eyebrow={c.eyebrow} title={c.h2} description={<RichText text={c.description} />} />
           <div className={cn(cardClass, "mt-8 p-5")}>
             <p className="font-semibold text-text">Still have a question?</p>
-            <p className="mt-1 text-sm leading-6 text-muted">Our team answers every message — usually with a written reply you can come back to.</p>
+            <p className="mt-1 text-sm leading-6 text-muted">Our team answers every message, usually with a written reply you can come back to.</p>
             <div className="mt-4 flex flex-wrap gap-2">
               <ButtonLink href="/contact" size="sm">
                 Contact support
@@ -730,7 +730,7 @@ export function SupportSection({ guideCount, faqCount }: { guideCount: number; f
         <Link href="/sign-in" className="font-medium text-accent hover:text-light-blue">
           Sign in
         </Link>{" "}
-        page — the link is valid for 30 minutes.
+        page. The link is valid for 30 minutes.
       </p>
     </Section>
   );
@@ -759,7 +759,7 @@ export function FinalCta({ fromMonthly, maxSave }: { fromMonthly: string | null;
                 <>
                   {" "}
                   Packs start from <span className="font-semibold text-text">{fromMonthly}/mo</span>
-                  {maxSave > 0 && <> — save up to {maxSave}% on longer packs</>}.
+                  {maxSave > 0 && <>, and longer packs save up to {maxSave}%</>}.
                 </>
               )}
             </p>

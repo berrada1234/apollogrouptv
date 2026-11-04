@@ -81,7 +81,7 @@ export const generalGuides: Guide[] = [
       },
       {
         q: "Can I change the email on my account later?",
-        a: "Yes — open a support ticket from your dashboard. We confirm the change with both addresses to keep your account safe.",
+        a: "Yes. Open a support ticket from your dashboard. We confirm the change with both addresses to keep your account safe.",
       },
       {
         q: "Why do I have to verify my email?",
@@ -96,7 +96,7 @@ export const generalGuides: Guide[] = [
     description:
       "Fix common Apollo Group TV problems: sign-in errors, buffering, outdated apps and device issues, with a checklist to try before contacting support.",
     intro:
-      "Most problems have a quick fix. Work through these checks in order — each one rules out a common cause before you need to contact us.",
+      "Most problems have a quick fix. Work through these checks in order. Each one rules out a common cause before you need to contact us.",
     requirements: [
       "Your account email",
       "Access to your device and your internet router",
@@ -152,7 +152,7 @@ export const generalGuides: Guide[] = [
       },
       {
         q: "Does restarting really make a difference?",
-        a: "Often, yes. Restarting the router and device clears stuck connections and memory — it fixes a large share of playback problems on its own.",
+        a: "Often, yes. Restarting the router and device clears stuck connections and memory, which fixes a large share of playback problems on its own.",
       },
     ],
   },

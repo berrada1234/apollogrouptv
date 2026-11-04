@@ -14,7 +14,7 @@ answer: Xtream Codes login details are the three things an IPTV player needs to 
 
 Open almost any IPTV player and you'll be asked how you want to log in. One of the options is usually labelled "Xtream Codes", "Xtream Codes API" or simply "Xtream login", and it asks for three things: a server URL, a username and a password. Get any one of them slightly wrong and the player refuses to connect, often with an unhelpful error.
 
-This guide explains what an Xtream login is, what each of the three details means, how to enter them so they work first time, how Xtream login compares with an M3U playlist, and how to fix the login errors people run into most.
+Below, each of the three details is explained, with how to enter them so they work first time, how Xtream compares with an M3U playlist, and fixes for the common login errors.
 
 ## What "Xtream Codes" means today
 

@@ -72,7 +72,7 @@ export default function LegalExplainerPage() {
       <PageHero
         eyebrow="Explained"
         title="Is Apollo Group TV Legal?"
-        description="The honest answer starts with a distinction most articles skip: the technology used to deliver TV is one question, and the right to distribute the content is another."
+        description="The answer starts with a distinction most articles skip: the technology used to deliver TV is one question, and the right to distribute the content is another."
         crumbs={[{ href: "/is-apollo-group-tv-legal", label: "Is Apollo Group TV legal?" }]}
       />
 
@@ -82,7 +82,7 @@ export default function LegalExplainerPage() {
             <section aria-labelledby="short">
               <h2 id="short" className="font-display text-2xl font-semibold text-text">The short answer</h2>
               <p className="mt-4 leading-relaxed text-muted">
-                Streaming television over the internet — often called IPTV — is a mainstream, lawful technology used by many large broadcasters.
+                Streaming television over the internet, often called IPTV, is a mainstream, lawful technology used by many large broadcasters.
                 Whether a particular service is lawful depends on whether it has permission to distribute the channels and programs it offers.
                 Apollo Group TV&apos;s policy is to list only authorized, properly licensed content, to remove material when a valid copyright
                 notice shows it shouldn&apos;t be there, and to publish the policies that govern the service.
@@ -112,7 +112,7 @@ export default function LegalExplainerPage() {
             <section aria-labelledby="evaluate">
               <h2 id="evaluate" className="font-display text-2xl font-semibold text-text">How to evaluate any streaming service</h2>
               <p className="mt-4 leading-relaxed text-muted">
-                Before you subscribe to any service — ours included — these five questions say a lot about how it operates.
+                Before you subscribe to any service, ours included, these five questions say a lot about how it operates.
               </p>
               <ol className="mt-6 space-y-3">
                 {checks.map((c, i) => (

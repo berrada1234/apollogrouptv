@@ -13,7 +13,7 @@ answer: Subtitles on Apollo Group TV depend on the title or channel: many on-dem
 
 Subtitles make a big difference, whether you're watching in a noisy room, keeping the volume down while others sleep, following a film in another language or relying on captions because of hearing loss. If you're wondering how to get subtitles on Apollo Group TV, the answer depends on two things: whether the title or channel you're watching includes subtitles, and where the subtitle switch lives on your device and player.
 
-This guide explains both. It starts with how subtitles reach your screen, because that explains why some titles have them and others don't, then walks through where to turn them on for each device, how to make them easier to read, and what to try when they don't appear.
+How subtitles reach your screen explains why some titles have them and others don't, so that comes first. Then you'll find the switch for each device, settings that make subtitles easier to read, and fixes for when they don't appear.
 
 ## How subtitles reach your screen
 

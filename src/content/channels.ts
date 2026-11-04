@@ -9,7 +9,7 @@ export const channelsCopy = {
     eyebrow: "Channel guide",
     h1: "Apollo Group TV Channels: Live TV by Category and Region",
     lead:
-      "Apollo Group TV organizes live channels by what you like to watch and where it comes from — sports, news, movies, series, kids, documentaries and more. Here's how the lineup is structured and what each category typically covers.",
+      "Apollo Group TV organizes live channels by what you like to watch and where it comes from: sports, news, movies, series, kids, documentaries and more. Here's how the lineup is structured and what each category typically covers.",
   },
 
   categories: {
@@ -36,8 +36,8 @@ export const channelsCopy = {
     eyebrow: "About channel listings",
     h2: "Why This Page Describes Categories Instead of Channel Names",
     paragraphs: [
-      "Channel names and logos are trademarks of their respective owners, and the channels available in any lineup change as rights agreements change. Publishing a fixed list of names would quickly go out of date — and could suggest an affiliation that doesn't exist.",
-      "So this page describes what each category covers. Customers see the current lineup in the Apollo TV app. If one specific channel is the reason you're signing up, [ask us first](/contact) and we'll tell you honestly whether it's available in your region.",
+      "Channel names and logos are trademarks of their respective owners, and the channels available in any lineup change as rights agreements change. Publishing a fixed list of names would quickly go out of date and could suggest an affiliation that doesn't exist.",
+      "So this page describes what each category covers. Customers see the current lineup in the Apollo TV app. If one specific channel is the reason you're signing up, [ask us first](/contact) and we'll tell you whether it's available in your region.",
     ],
     more: "Rights holders can reach us through our [copyright process](/dmca). We act on valid notices.",
   },
@@ -48,7 +48,7 @@ export const channelsCopy = {
   },
 
   cta: {
-    h2: "Ready to Explore the Apollo Group TV Lineup?",
+    h2: "Watch the Apollo Group TV Lineup on Your Own Screens",
     body: "Pick a pack, install the app on a verified device, and browse every category from one place.",
   },
 };
@@ -78,7 +78,7 @@ export const channelCategories: ChannelCategory[] = [
   {
     key: "series",
     title: "Entertainment & Series",
-    summary: "The shows people talk about — scripted series, reality formats, talk shows and game shows.",
+    summary: "Scripted series, reality formats, talk shows and game shows.",
     covers: ["Drama series", "Sitcoms", "Reality TV", "Talk shows", "Game shows"],
   },
   {
@@ -90,7 +90,7 @@ export const channelCategories: ChannelCategory[] = [
   {
     key: "documentary",
     title: "Documentary & Factual",
-    summary: "Real stories and big ideas — the natural world, history, science and investigative journalism.",
+    summary: "The natural world, history, science and investigative journalism.",
     covers: ["Nature & wildlife", "History", "Science & technology", "True crime", "Travel & exploration"],
   },
   {
@@ -102,7 +102,7 @@ export const channelCategories: ChannelCategory[] = [
   {
     key: "lifestyle",
     title: "Lifestyle",
-    summary: "Inspiration for everyday life — cooking, home and garden, health, fashion and travel.",
+    summary: "Cooking, home and garden, health, fashion and travel.",
     covers: ["Food & cooking", "Home & garden", "Health & fitness", "Fashion & beauty", "Travel"],
   },
   {
@@ -152,7 +152,7 @@ export const channelFaq = [
   },
   {
     q: "Do all Apollo Group TV packs include the same channels?",
-    a: "Yes. Every pack includes the same live channel lineup and on-demand library — packs differ only by access period. Compare them on the [Plans page](/plans).",
+    a: "Yes. Every pack includes the same live channel lineup and on-demand library. Packs differ only by access period. Compare them on the [Plans page](/plans).",
   },
   {
     q: "Why doesn't this page list channel names?",

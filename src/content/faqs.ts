@@ -15,7 +15,7 @@ export const FAQ_TOPICS = [
   { name: "App & Playback", slug: "app-playback", blurb: "How the app behaves once it's installed" },
   { name: "Account & Security", slug: "account-security", blurb: "Signing in, passwords, privacy and keeping your account safe" },
   { name: "Refunds & Cancellation", slug: "refunds-cancellation", blurb: "Refund requests and what happens when a pack ends" },
-  { name: "Troubleshooting", slug: "troubleshooting", blurb: "When something stops working — quick checks that fix most issues" },
+  { name: "Troubleshooting", slug: "troubleshooting", blurb: "Quick checks that fix most problems when something stops working" },
 ] as const;
 
 export const FAQ_CATEGORIES = FAQ_TOPICS.map((t) => t.name) as [(typeof FAQ_TOPICS)[number]["name"], ...(typeof FAQ_TOPICS)[number]["name"][]];
@@ -61,13 +61,13 @@ export const faqSeed: FaqSeed[] = [
     category: "Plans & Billing",
     question: "What does an Apollo Group TV subscription cost?",
     answer:
-      "It depends on how long you want access for. There are four packs — 1, 3, 6 and 12 months — and the longer the pack, the lower the cost per month. Every pack includes the same lineup; there's no cheaper tier with fewer channels. Current prices are shown at the top of this page and on the [Plans page](/plans).",
+      "It depends on how long you want access for. There are four packs (1, 3, 6 and 12 months), and the longer the pack, the lower the cost per month. Every pack includes the same lineup; there's no cheaper tier with fewer channels. Current prices are shown at the top of this page and on the [Plans page](/plans).",
   },
   {
     category: "Plans & Billing",
     question: "Does my pack renew automatically?",
     answer:
-      "No. Each pack is a one-time payment for a fixed period and nothing renews behind your back. When the period ends, access stops until you choose a new pack — you'll see the days remaining in your [dashboard](/dashboard/plan). The [renewal guide](/apollo-group-tv-renewal) walks through adding your next pack.",
+      "No. Each pack is a one-time payment for a fixed period and nothing renews behind your back. When the period ends, access stops until you choose a new pack. You'll see the days remaining in your [dashboard](/dashboard/plan). The [renewal guide](/apollo-group-tv-renewal) walks through adding your next pack.",
   },
   {
     category: "Plans & Billing",
@@ -79,7 +79,7 @@ export const faqSeed: FaqSeed[] = [
     category: "Plans & Billing",
     question: "Can I use a debit or credit card?",
     answer:
-      "Our team will tell you which payment methods are available when you request a pack. Please never send card numbers, CVV codes or bank details by email, chat or a support ticket — we will never ask for them that way.",
+      "Our team will tell you which payment methods are available when you request a pack. Please never send card numbers, CVV codes or bank details by email, chat or a support ticket. We will never ask for them that way.",
   },
   {
     category: "Plans & Billing",
@@ -97,13 +97,13 @@ export const faqSeed: FaqSeed[] = [
     category: "Plans & Billing",
     question: "What's the difference between the four packs?",
     answer:
-      "Only the access period and the price. Every pack includes the same live channels, on-demand library, device allowance, setup guides and support. Longer packs simply cost less per month — the [Plans page](/plans) shows the monthly equivalent and the saving for each.",
+      "Only the access period and the price. Every pack includes the same live channels, on-demand library, device allowance, setup guides and support. Longer packs cost less per month, and the [Plans page](/plans) shows the monthly equivalent and the saving for each.",
   },
   {
     category: "Plans & Billing",
     question: "Can I switch to a longer pack later?",
     answer:
-      "Yes. Request the pack you want from [My Plan](/dashboard/plan) and our team will confirm how the change is applied — for example, whether the new period starts now or when your current pack ends — before anything is charged.",
+      "Yes. Request the pack you want from [My Plan](/dashboard/plan) and our team will confirm how the change is applied before anything is charged, for example whether the new period starts now or when your current pack ends.",
   },
 
   // ── Installation & Setup ─────────────────────────────────────────────────
@@ -117,7 +117,7 @@ export const faqSeed: FaqSeed[] = [
     category: "Installation & Setup",
     question: "Is there an Apollo Group TV downloader code?",
     answer:
-      "Only for Fire TV and Android TV, where the Apollo TV app installs through the free Downloader app. Use the official code shown in your dashboard under [Apps & Guides](/dashboard/apps) — codes posted on forums, videos or social media aren't from us and can install modified apps that put your device and account at risk.",
+      "Only for Fire TV and Android TV, where the Apollo TV app installs through the free Downloader app. Use the official code shown in your dashboard under [Apps & Guides](/dashboard/apps). Codes posted on forums, videos or social media aren't from us and can install modified apps that put your device and account at risk.",
   },
   {
     category: "Installation & Setup",
@@ -129,25 +129,25 @@ export const faqSeed: FaqSeed[] = [
     category: "Installation & Setup",
     question: "Does it work on Roku or a smart TV?",
     answer:
-      "We list a device only after verifying it. Check the [App page](/app) for the current list — if your Roku, Samsung, LG or other smart TV isn't shown, [ask us before subscribing](/contact) and we'll tell you honestly what works today.",
+      "We list a device only after verifying it. Check the [App page](/app) for the current list. If your Roku, Samsung, LG or other smart TV isn't shown, [ask us before subscribing](/contact) and we'll tell you what works today.",
   },
   {
     category: "Installation & Setup",
     question: "Which devices can run the app?",
     answer:
-      "The [App page](/app) lists every verified device type — currently streaming sticks and TV boxes, Android devices, iPhone and iPad, and Windows computers — each with its own setup guide. New devices are added once they've been tested.",
+      "The [App page](/app) lists every verified device type, each with its own setup guide. Today that means streaming sticks and TV boxes, Android devices, iPhone and iPad, and Windows computers. New devices are added once they've been tested.",
   },
   {
     category: "Installation & Setup",
     question: "How do I sign in on the app after installing it?",
     answer:
-      "Open the app and sign in with the same email and password you use on this website. Your email must be verified and a pack must be active — both are shown in your [dashboard](/dashboard). One account works on all your devices.",
+      "Open the app and sign in with the same email and password you use on this website. Your email must be verified and a pack must be active. Both are shown in your [dashboard](/dashboard). One account works on all your devices.",
   },
   {
     category: "Installation & Setup",
     question: "How long does setup take?",
     answer:
-      "Creating an account takes about a minute. Installing the app usually takes a few minutes per device once your pack is active — each [device guide](/guides) lists the steps in order so you can follow along on screen.",
+      "Creating an account takes about a minute. Installing the app usually takes a few minutes per device once your pack is active. Each [device guide](/guides) lists the steps in order so you can follow along on screen.",
   },
 
   // ── Channels & Content ───────────────────────────────────────────────────
@@ -161,7 +161,7 @@ export const faqSeed: FaqSeed[] = [
     category: "Channels & Content",
     question: "Are major sports leagues and premium movie channels included?",
     answer:
-      "Sports and movie channels are among the categories in the lineup, but we don't publish channel, league or network names — they're trademarks of their owners and availability depends on licensing in your region. If one specific channel or league matters to you, [ask us first](/contact) and we'll confirm.",
+      "Sports and movie channels are among the categories in the lineup, but we don't publish channel, league or network names, because they're trademarks of their owners and availability depends on licensing in your region. If one specific channel or league matters to you, [ask us first](/contact) and we'll confirm.",
   },
   {
     category: "Channels & Content",
@@ -173,7 +173,7 @@ export const faqSeed: FaqSeed[] = [
     category: "Channels & Content",
     question: "Can I watch in 4K?",
     answer:
-      "Yes, where available. Channels show HD, Full HD or 4K labels when the broadcast supports it. You'll also need a 4K-capable TV and device and a fast, stable connection — see the requirements on the [App page](/app).",
+      "Yes, where available. Channels show HD, Full HD or 4K labels when the broadcast supports it. You'll also need a 4K-capable TV and device and a fast, stable connection. See the requirements on the [App page](/app).",
   },
   {
     category: "Channels & Content",
@@ -225,7 +225,7 @@ export const faqSeed: FaqSeed[] = [
     category: "Account & Security",
     question: "How do I sign in to my Apollo Group TV account?",
     answer:
-      "Use your email and password on the [Sign in](/sign-in) page. If you haven't verified your email yet, use the link we sent you — or request a new one on the [Verify email](/verify-email) page.",
+      "Use your email and password on the [Sign in](/sign-in) page. If you haven't verified your email yet, use the link we sent you or request a new one on the [Verify email](/verify-email) page.",
   },
   {
     category: "Account & Security",
@@ -263,19 +263,19 @@ export const faqSeed: FaqSeed[] = [
     category: "Refunds & Cancellation",
     question: "How do I ask for a refund?",
     answer:
-      "Open a support ticket from your [dashboard](/dashboard/support/new) and include your payment reference. Our [Refund Policy](/refund-policy) sets out the eligibility window, what's covered and how long processing takes — please read it before you buy.",
+      "Open a support ticket from your [dashboard](/dashboard/support/new) and include your payment reference. Our [Refund Policy](/refund-policy) sets out the eligibility window, what's covered and how long processing takes. Please read it before you buy.",
   },
   {
     category: "Refunds & Cancellation",
     question: "If I stop using a 12-month pack halfway through, do I get money back?",
     answer:
-      "Refunds follow the [Refund Policy](/refund-policy), which doesn't promise a pro-rated refund for unused time. If you're not sure a long pack is right for you, start with a shorter one — you can move to a longer pack later.",
+      "Refunds follow the [Refund Policy](/refund-policy), which doesn't promise a pro-rated refund for unused time. If you're not sure a long pack is right for you, start with a shorter one. You can move to a longer pack later.",
   },
   {
     category: "Refunds & Cancellation",
     question: "How do I cancel Apollo Group TV?",
     answer:
-      "There's nothing to cancel: packs don't renew automatically, so access simply ends when your period runs out. If you also want your account removed, [open a ticket](/dashboard/support/new) and ask for deletion.",
+      "There's nothing to cancel: packs don't renew automatically, so access ends when your period runs out. If you also want your account removed, [open a ticket](/dashboard/support/new) and ask for deletion.",
   },
 
   // ── Troubleshooting ──────────────────────────────────────────────────────
@@ -289,19 +289,19 @@ export const faqSeed: FaqSeed[] = [
     category: "Troubleshooting",
     question: "What does a 403 or “access denied” error mean?",
     answer:
-      "It means the service refused the request — most often because your pack has expired, too many devices are signed in, or the app is out of date. Check your pack status, sign out on devices you don't use from [Security](/dashboard/security), and update the app. If the error continues, [open a ticket](/dashboard/support/new) with a photo of the message.",
+      "It means the service refused the request, most often because your pack has expired, too many devices are signed in, or the app is out of date. Check your pack status, sign out on devices you don't use from [Security](/dashboard/security), and update the app. If the error continues, [open a ticket](/dashboard/support/new) with a photo of the message.",
   },
   {
     category: "Troubleshooting",
     question: "The sound is out of sync with the picture. How do I fix it?",
     answer:
-      "Try another channel first — if only one is affected, it's usually that broadcast. Otherwise, restart the app, turn off any audio processing or surround modes on your TV or soundbar, and check the audio-delay setting on your TV. If it continues across channels, let us know your device model.",
+      "Try another channel first. If only one is affected, it's usually that broadcast. Otherwise, restart the app, turn off any audio processing or surround modes on your TV or soundbar, and check the audio-delay setting on your TV. If it continues across channels, let us know your device model.",
   },
   {
     category: "Troubleshooting",
     question: "Is the service down right now?",
     answer:
-      "Check your own connection first by opening another streaming app or website. If everything else works, [open a ticket](/dashboard/support/new) or [message us](/contact) — we'll confirm whether there's an issue on our side and keep you updated in the same thread.",
+      "Check your own connection first by opening another streaming app or website. If everything else works, [open a ticket](/dashboard/support/new) or [message us](/contact) and we'll confirm whether there's an issue on our side and keep you updated in the same thread.",
   },
   {
     category: "Troubleshooting",
@@ -313,7 +313,7 @@ export const faqSeed: FaqSeed[] = [
     category: "Troubleshooting",
     question: "How do I reach support?",
     answer:
-      "Customers can [open a ticket](/dashboard/support/new) from the dashboard — every reply stays in one thread and you're notified when we answer. Not a customer yet? Use the [contact form](/contact) and we'll reply by email.",
+      "Customers can [open a ticket](/dashboard/support/new) from the dashboard. Every reply stays in one thread and you're notified when we answer. Not a customer yet? Use the [contact form](/contact) and we'll reply by email.",
   },
 ];
 

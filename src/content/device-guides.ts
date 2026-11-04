@@ -22,12 +22,12 @@ export type DeviceProfile = {
 /** Account sign-in step with a practical tip for the device. */
 const accountSignIn = (tip: string) => ({
   title: "Sign in with your account",
-  body: `Open the app and sign in with the same email and password you use on this website — ${tip} Watching needs an active pack ([Plans & Billing](/dashboard/plan)).`,
+  body: `Open the app and sign in with the same email and password you use on this website. ${tip} Watching needs an active pack ([Plans & Billing](/dashboard/plan)).`,
 });
 
 const playerSignIn = {
   title: "Sign in with your player login",
-  body: "Use the server URL, username and password shown under [My Accounts → Player login](/dashboard/profile#player-login) — not your website email and password.",
+  body: "Use the server URL, username and password shown under [My Accounts → Player login](/dashboard/profile#player-login), not your website email and password.",
 };
 
 // Order matters: the first matching profile wins.
@@ -41,7 +41,7 @@ export const deviceProfiles: DeviceProfile[] = [
     summary:
       "Installs once through the free Downloader app with an official code; later updates arrive inside the app.",
     intro:
-      "Fire TV sticks, Fire TV Cubes and Android TV boxes don't list the Apollo TV app in their own stores, so it installs through Downloader — a free, widely used installer app. You only do this once: after that, updates arrive inside the Apollo TV app.",
+      "Fire TV sticks, Fire TV Cubes and Android TV boxes don't list the Apollo TV app in their own stores, so it installs through Downloader, a free and widely used installer app. You only do this once: after that, updates arrive inside the Apollo TV app.",
     requirements: [
       "A Fire TV device, or an Android TV / Google TV box, connected to the internet",
       "Your remote (or the Fire TV mobile app as a remote)",
@@ -49,16 +49,16 @@ export const deviceProfiles: DeviceProfile[] = [
       "Your account email and password (an active pack is needed to watch)",
     ],
     finish: accountSignIn(
-      "the Fire TV mobile app's keyboard is quicker than typing with the remote.",
+      "Tip: the Fire TV mobile app's keyboard is quicker than typing with the remote.",
     ),
     troubleshooting: [
       {
         q: "I can't find “Developer options” on my Fire TV",
-        a: "On newer Fire TV software it's hidden. Go to Settings → My Fire TV → About, highlight your device name and press Select seven times — Developer options then appears in the My Fire TV menu.",
+        a: "On newer Fire TV software it's hidden. Go to Settings → My Fire TV → About, highlight your device name and press Select seven times. Developer options then appears in the My Fire TV menu.",
       },
       {
         q: "Downloader says the code doesn't exist",
-        a: "Check each digit against the code in your dashboard, then try the full web address shown under it instead. If both fail, open a ticket — the code may have been replaced.",
+        a: "Check each digit against the code in your dashboard, then try the full web address shown under it instead. If both fail, open a ticket, because the code may have been replaced.",
       },
       {
         q: "Installation fails or the TV runs out of space",
@@ -72,12 +72,12 @@ export const deviceProfiles: DeviceProfile[] = [
     security: [
       "Enter only the official code from your dashboard. Codes from videos, forums or social media can install modified apps.",
       "Once the app is installed you can switch “Install unknown apps” back off for Downloader.",
-      "Never install builds labelled “mod”, “premium unlocked” or similar — they aren't ours.",
+      "Never install builds labelled “mod”, “premium unlocked” or similar. They aren't ours.",
     ],
     faqs: [
       {
         q: "Do I repeat these steps for every update?",
-        a: "No. The Downloader step is a one-off — new versions are offered and installed from inside the Apollo TV app.",
+        a: "No. The Downloader step is a one-off. New versions are offered and installed from inside the Apollo TV app.",
       },
       {
         q: "Can I delete Downloader afterwards?",
@@ -96,17 +96,17 @@ export const deviceProfiles: DeviceProfile[] = [
     description: (n) =>
       `Download the official Apollo TV APK on your ${n}, allow the one-time install permission, handle Play Protect prompts and sign in.`,
     summary:
-      "A direct APK download — allow your browser to install it once, and the app keeps itself up to date.",
+      "A direct APK download. Allow your browser to install it once, and the app keeps itself up to date.",
     intro:
-      "On Android phones and tablets the Apollo TV app installs from an APK file you download directly — no store account needed. Android asks once for permission to install apps from your browser; after that, the app updates itself.",
+      "On Android phones and tablets the Apollo TV app installs from an APK file you download directly, without a store account. Android asks once for permission to install apps from your browser; after that, the app updates itself.",
     requirements: [
       "An Android phone or tablet with a recent Android version",
       "Enough free storage for the app and its updates",
-      "Wi-Fi recommended — streaming uses a lot of mobile data",
-      "Your account login — you'll only need to type it once",
+      "Wi-Fi recommended, since streaming uses a lot of mobile data",
+      "Your account login (you type it only once)",
     ],
     finish: accountSignIn(
-      "your login stays saved, so you won't be asked again.",
+      "Your login stays saved, so you won't be asked again.",
     ),
     troubleshooting: [
       {
@@ -124,13 +124,13 @@ export const deviceProfiles: DeviceProfile[] = [
     ],
     security: [
       "Download the APK only from the official link in your dashboard.",
-      "Delete the APK file from Downloads after installing — you don't need it any more.",
+      "Delete the APK file from Downloads after installing. You don't need it any more.",
       "Lock your phone if other people use it: the app stays signed in to your account.",
     ],
     faqs: [
       {
         q: "Does the same file work on tablets?",
-        a: "Yes. The phone APK adapts to tablet screens — install it the same way.",
+        a: "Yes. The phone APK adapts to tablet screens. Install it the same way.",
       },
       {
         q: "How much data does streaming use?",
@@ -148,7 +148,7 @@ export const deviceProfiles: DeviceProfile[] = [
     summary:
       "A universal DMG for macOS 12 or later. One Terminal command lets the unsigned app open the first time.",
     intro:
-      "On a Mac the Apollo TV app comes as a DMG disk image. Because the app isn't signed with an Apple Developer ID, macOS blocks the first launch — a single Terminal command (or a click in System Settings) tells your Mac you trust it.",
+      "On a Mac the Apollo TV app comes as a DMG disk image. Because the app isn't signed with an Apple Developer ID, macOS blocks the first launch. A single Terminal command (or a click in System Settings) tells your Mac you trust it.",
     requirements: [
       "A Mac running macOS 12 or later",
       "Permission to install apps (an administrator account)",
@@ -156,7 +156,7 @@ export const deviceProfiles: DeviceProfile[] = [
       "Your account login and an active pack",
     ],
     finish: accountSignIn(
-      "keep the app in your Dock for one-click access next time.",
+      "Keep the app in your Dock for one-click access next time.",
     ),
     troubleshooting: [
       {
@@ -173,7 +173,7 @@ export const deviceProfiles: DeviceProfile[] = [
       },
     ],
     security: [
-      "Run only the exact command shown in your dashboard — never Terminal commands sent to you by anyone else.",
+      "Run only the exact command shown in your dashboard. Never run Terminal commands someone else sends you.",
       "The command applies to the Apollo Group TV app only; it doesn't change your Mac's security settings.",
       "Eject and delete the DMG after installing.",
     ],
@@ -197,14 +197,14 @@ export const deviceProfiles: DeviceProfile[] = [
     summary:
       "A standard installer for Windows 10 and 11. Choose “Run anyway” on the SmartScreen prompt the first time.",
     intro:
-      "On Windows 10 and 11 the Apollo TV app installs with a standard setup wizard. The installer isn't code-signed, so Windows SmartScreen shows a warning the first time — the steps below show how to continue safely.",
+      "On Windows 10 and 11 the Apollo TV app installs with a standard setup wizard. The installer isn't code-signed, so Windows SmartScreen shows a warning the first time. The steps below show how to continue safely.",
     requirements: [
       "A PC running Windows 10 or Windows 11",
       "Permission to install programs on the PC",
       "Your account login and an active pack to watch",
     ],
     finish: accountSignIn(
-      "pin the app to the taskbar or Start menu so it's one click away.",
+      "Pin the app to the taskbar or Start menu so it's one click away.",
     ),
     troubleshooting: [
       {
@@ -223,7 +223,7 @@ export const deviceProfiles: DeviceProfile[] = [
     security: [
       "Run only the installer you downloaded from your dashboard.",
       "If SmartScreen shows a different app name or publisher than you expect, stop and contact us.",
-      "Keep Windows updated — it protects the PC you watch on.",
+      "Keep Windows updated to protect the PC you watch on.",
     ],
     faqs: [
       {
@@ -260,7 +260,7 @@ export const deviceProfiles: DeviceProfile[] = [
       },
       {
         q: "Typing with the remote takes forever",
-        a: "When a text field is open on Apple TV, a keyboard prompt appears on nearby iPhones signed in to the same Apple ID — type there instead.",
+        a: "When a text field is open on Apple TV, a keyboard prompt appears on nearby iPhones signed in to the same Apple ID. Type there instead.",
       },
       {
         q: "There's no player login in My Accounts",
@@ -268,7 +268,7 @@ export const deviceProfiles: DeviceProfile[] = [
       },
     ],
     security: [
-      "Keep your player login private — anyone with it can use your subscription.",
+      "Keep your player login private. Anyone who has it can use your subscription.",
       "UHF is made by a separate developer. Any purchases inside UHF are sold by them, not by us; check the App Store listing first.",
     ],
     faqs: [
@@ -291,7 +291,7 @@ export const deviceProfiles: DeviceProfile[] = [
     summary:
       "Watch through the UHF player from the App Store, signed in with your player login.",
     intro:
-      "On iPhone and iPad you watch through UHF, a third-party player from the App Store. It connects to your subscription with your player login — a separate username and password our team issues — rather than your website account.",
+      "On iPhone and iPad you watch through UHF, a third-party player from the App Store. It connects to your subscription with your player login, a separate username and password our team issues, rather than your website account.",
     requirements: [
       "An iPhone or iPad with access to the App Store",
       "Your player login under [My Accounts → Player login](/dashboard/profile#player-login)",
@@ -302,7 +302,7 @@ export const deviceProfiles: DeviceProfile[] = [
     troubleshooting: [
       {
         q: "UHF says the login failed",
-        a: "Choose Xtream Login (Xtream Codes API), not M3U. Copy the username, password and server URL from your dashboard to avoid typos — they're case-sensitive.",
+        a: "Choose Xtream Login (Xtream Codes API), not M3U. Copy the username, password and server URL from your dashboard to avoid typos. They're case-sensitive.",
       },
       {
         q: "Channels load but the guide is empty",
@@ -342,7 +342,7 @@ export const genericProfile: Omit<DeviceProfile, "key" | "match"> = {
     "A supported device connected to the internet",
     "Your account email and password, and an active pack",
   ],
-  finish: accountSignIn("then follow any on-screen prompts."),
+  finish: accountSignIn("Then follow any on-screen prompts."),
   troubleshooting: [
     {
       q: "Something isn't working",

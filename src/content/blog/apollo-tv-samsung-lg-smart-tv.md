@@ -7,13 +7,13 @@ secondary: apollo tv lg tv, iptv on samsung smart tv, iptv on lg webos, tizen ip
 intent: Device compatibility question
 category: Devices
 date: 2026-11-04
-excerpt: An honest answer about Samsung and LG TVs, and four practical ways to get Apollo Group TV on the big screen anyway.
+excerpt: Why the Apollo TV app isn't on Samsung and LG TVs, and four practical ways to get Apollo Group TV on the big screen anyway.
 answer: The Apollo TV app isn't available for Samsung (Tizen) or LG (webOS) smart TVs. You can still watch on those TVs by plugging a supported streaming stick, such as a Fire OS Fire TV Stick or a Google TV device, into an HDMI port. A laptop with an HDMI cable, casting or a MAG box are other options.
 ---
 
-Samsung and LG make a huge share of the smart TVs in people's homes, so it's no surprise that "Can I watch Apollo TV on my Samsung?" and "Is there an Apollo TV app for LG?" are common questions. The honest answer is that the Apollo TV app isn't currently available for these TVs' own systems. The good news is that there are simple, inexpensive ways to watch on them anyway.
+Samsung and LG make a huge share of the smart TVs in people's homes, so it's no surprise that "Can I watch Apollo TV on my Samsung?" and "Is there an Apollo TV app for LG?" are common questions. The Apollo TV app isn't available for these TVs' own systems right now. You can still watch on them with a streaming stick or one of a few other inexpensive options.
 
-This guide explains why smart TVs are different, then walks through four practical options, from the most reliable to the quickest to try, so you can pick what suits your home and budget.
+Samsung's Tizen and LG's webOS only run apps from their own stores, which is why the usual install methods don't work. The four options below are listed from most reliable to quickest to try.
 
 ## The short answer
 

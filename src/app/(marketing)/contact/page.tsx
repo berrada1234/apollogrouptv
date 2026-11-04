@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 };
 
 const routes = [
-  { icon: LifeBuoy, t: "Already a customer?", b: "Open a ticket from your dashboard — replies stay in one thread and you're notified when we answer.", href: "/dashboard/support/new", cta: "Open a ticket" },
+  { icon: LifeBuoy, t: "Already a customer?", b: "Open a ticket from your dashboard. Replies stay in one thread and you're notified when we answer.", href: "/dashboard/support/new", cta: "Open a ticket" },
   { icon: BookOpen, t: "Setting up a device?", b: "Most installation questions are answered step by step in the setup guides.", href: "/guides", cta: "Setup guides" },
   { icon: CreditCard, t: "Billing or refunds?", b: "Check your payments in Billing History and read how refund requests work.", href: "/refund-policy", cta: "Refund policy" },
   { icon: HelpCircle, t: "Quick question?", b: "The FAQ covers plans, sign-in, devices, privacy and copyright.", href: "/faq", cta: "Browse the FAQ" },
@@ -58,7 +58,7 @@ export default async function ContactPage() {
       <PageHero
         eyebrow="Support"
         title="Contact Apollo Group TV"
-        description="Tell us what you need and we'll point you to the fastest route — a reply by email, a ticket in your dashboard, or the right guide."
+        description="Tell us what you need and we'll point you to the fastest route: a reply by email, a ticket in your dashboard, or the right guide."
         crumbs={[{ href: "/contact", label: "Contact" }]}
       />
 
@@ -142,7 +142,7 @@ export default async function ContactPage() {
           </div>
           <ul className={`${cardClass} divide-y divide-border lg:col-span-7`}>
             {[
-              { t: "The email on your account", b: "So we can find it — never include your password." },
+              { t: "The email on your account", b: "So we can find your account. Never include your password." },
               { t: "Your device and app", b: "For example “Fire TV Stick 4K, Apollo TV app” or “iPhone, UHF player”." },
               { t: "What you expected and what happened", b: "Plus the exact wording of any error message, or a photo of the screen." },
               { t: "When it started", b: "And whether it happens all the time, on one channel, or only at certain times." },

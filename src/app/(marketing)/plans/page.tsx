@@ -157,7 +157,7 @@ export default async function PlansPage() {
 
   const planFaq = [
     { q: "Is the price for one month or for the whole period?", a: "For the whole period. Each pack is a single payment that covers its full access time. The monthly figure is there to make packs easy to compare." },
-    { q: "Does my pack renew automatically?", a: "No. Access simply stops when the pack ends, and nothing is charged. When you're ready, choose a new pack from your dashboard; our [renewal guide](/apollo-group-tv-renewal) shows each step." },
+    { q: "Does my pack renew automatically?", a: "No. Access stops when the pack ends, and nothing is charged. When you're ready, choose a new pack from your dashboard; our [renewal guide](/apollo-group-tv-renewal) shows each step." },
     { q: "Can I add a pack before my current one ends?", a: "Yes. Buy a new pack while yours is active and the new period normally starts when the current one ends, so you don't lose any days." },
     { q: "Do longer packs get more channels or better quality?", a: "No. Every pack includes the same live lineup, on-demand library, device allowance and support. Only the length and the price change." },
     { q: "Are there setup fees or extras?", a: "There are no setup or activation fees. The amount on your invoice is the amount you pay." },
@@ -210,7 +210,7 @@ export default async function PlansPage() {
               </span>
             </h1>
             <p className="rise mx-auto mt-6 max-w-2xl text-base leading-7 text-muted sm:text-lg sm:leading-8" style={{ "--d": 2 } as React.CSSProperties}>
-              Flexible plans. Premium entertainment. An experience designed around you.
+              Every pack has the same channels, library and support. Pick how many months you want, pay once, and nothing renews by itself.
             </p>
             <ul className="rise mt-7 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-muted" style={{ "--d": 3 } as React.CSSProperties}>
               {allOneTime && (
@@ -399,7 +399,7 @@ export default async function PlansPage() {
         </div>
       </Section>
 
-      <CtaBand title="Ready to pick your pack?" description="Create a free account, choose a pack and our team gets you watching." />
+      <CtaBand title="Pick your pack and start watching" description="Create a free account, choose a pack and our team gets you watching." />
     </>
   );
 }

@@ -11,9 +11,9 @@ excerpt: Real-world speed guidance for live TV streaming, a simple way to budget
 answer: Published guidelines suggest about 5 Mbps for one Full HD stream and 15 to 25 Mbps for one 4K stream. Live TV can't buffer far ahead, so for IPTV aim for roughly double that per stream, add up every stream your household watches at once, and test your speed on the TV device in the evening.
 ---
 
-"How fast does my internet need to be?" is one of the first questions people ask before trying IPTV, and the honest answer has two parts. The first is a number: how many megabits per second a stream uses. The second matters just as much: how steady your connection is while the whole household is online.
+"How fast does my internet need to be?" is one of the first questions people ask before trying IPTV, and the answer has two parts. The first is a number: how many megabits per second a stream uses. The second matters just as much: how steady your connection is while the whole household is online.
 
-This guide gives you both. You'll find published speed recommendations for HD and 4K, a simple way to work out what your home needs when several people stream at once, what ping and jitter mean in practice, and a testing method that tells you more than a single speed test ever will.
+Both are covered here: published speed recommendations for HD and 4K, a way to add up what your household needs, what ping and jitter mean, and a test that tells you more than one speed test can.
 
 ## The short answer
 
@@ -114,7 +114,7 @@ Run three tests a few minutes apart and look at how much they vary. Big swings a
 
 ### Watch a live channel as a real-world test
 
-Ultimately, the best test is the one you care about. Watch a busy live channel, such as sport, for 30 minutes at peak time and note any interruptions. Do the same on a different connection (wired vs Wi-Fi, for example) to compare.
+The test that counts is the one you care about. Watch a busy live channel, such as sport, for 30 minutes at peak time and note any interruptions. Do the same on a different connection (wired vs Wi-Fi, for example) to compare.
 
 ## How to improve your results
 

@@ -13,7 +13,7 @@ answer: On Fire TV and Android TV, the Apollo TV app is installed with the free 
 
 On Fire TV and Android TV devices, the Apollo TV app is installed with a free app called Downloader. Downloader is a simple tool: you type a short code or a web address, it fetches the file, and it hands the file to your device to install. It's widely used and well established, but because it sits between you and the app you're installing, it's also where most installation problems show up.
 
-This guide focuses on Downloader itself: how to get it, how to give it the permission it needs, how to enter the official Apollo TV code, and what each error message means. For the complete device setup from start to finish, including signing in, see our [Fire TV and Android TV setup guide](/guides/fire-tv-android-tv).
+This article is about Downloader itself: installing it, giving it permission, entering the official Apollo TV code and reading its error messages. For the complete device setup from start to finish, including signing in, see our [Fire TV and Android TV setup guide](/guides/fire-tv-android-tv).
 
 ## The official Apollo TV Downloader code
 

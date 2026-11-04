@@ -14,7 +14,7 @@ answer: To use an M3U URL in VLC, copy your playlist link from My Account, open 
 
 VLC is the Swiss Army knife of media players. It's free, it runs on almost everything, and it can open an IPTV playlist from a web address in a few clicks. If you want to watch on a laptop, check that your playlist works, or use a device where your usual app isn't available, VLC is often the quickest route.
 
-This guide shows you how to open an M3U URL in VLC on Windows, Mac, Android and iPhone or iPad. It also explains what an M3U playlist actually is, the difference between M3U and M3U8, and how to fix the problems people most often run into.
+The steps below cover VLC on Windows, Mac, Android and iPhone or iPad, followed by what an M3U playlist is, how M3U differs from M3U8, and fixes for the usual problems.
 
 ## What is an M3U playlist?
 

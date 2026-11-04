@@ -591,7 +591,7 @@ export const paymentGuides: PaymentGuide[] = [
     region: "Worldwide",
     updated: UPDATED,
     intro: [
-      "Every Bitcoin transaction pays a small fee to the miners who add it to the blockchain. That fee isn't charged by Apollo Group TV, and it doesn't go to us. It's simply the cost of moving Bitcoin, and it's paid by whoever sends.",
+      "Every Bitcoin transaction pays a small fee to the miners who add it to the blockchain. That fee isn't charged by Apollo Group TV, and it doesn't go to us. It's the cost of moving Bitcoin, and it's paid by whoever sends.",
       "Understanding one rule saves most payment problems: **the address has to receive the full BTC amount on your invoice**. How you make sure of that depends on whether your app adds the fee on top or takes it out of what you send.",
     ],
     needs: ["Your Apollo Group TV payment window open", "The app or wallet you'll send from"],
@@ -679,7 +679,7 @@ export const paymentGuides: PaymentGuide[] = [
         steps: [
           { title: "Choose a pack", body: "Pick a pack on the [Plans page](/plans) or in [Plans & Billing](/dashboard/plan). If you choose before signing up, the pack is kept while you create your account." },
           { title: "Your invoice is created", body: "An invoice with its own number (starting AGT-) appears at the top of Plans & Billing, showing the pack, price and status **Pending Payment**." },
-          { title: "The reservation timer", body: "The invoice holds your price for a limited time, shown on the timer. If it runs out, the invoice expires and you simply choose the pack again." },
+          { title: "The reservation timer", body: "The invoice holds your price for a limited time, shown on the timer. If it runs out, the invoice expires and you choose the pack again." },
           { title: "Continue Payment or Cancel Invoice", body: "**Continue Payment** takes you to the payment methods. **Cancel Invoice** releases the reservation if you change your mind." },
         ],
       },

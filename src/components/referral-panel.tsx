@@ -27,7 +27,7 @@ export async function ReferralPanel({ userId, referralCode }: { userId: string; 
     <div className="space-y-6">
       {!settings.referral.enabled && (
         <Notice title="Referral rewards are not active yet">
-          You can already share your link — sign-ups are tracked. Rewards will be applied once the program rules are published.
+          You can already share your link, and sign-ups are tracked. Rewards will be applied once the program rules are published.
         </Notice>
       )}
       <div className="grid gap-4 sm:grid-cols-3">

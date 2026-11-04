@@ -11,7 +11,7 @@ excerpt: A plain explanation of the 404 error and its cousins, why they appear o
 answer: Status code 404 means the server couldn't find the channel or file your device asked for. On Apollo Group TV it usually comes from an old playlist link or login saved in a player, an out-of-date channel list or an outdated app. Check your subscription in My Account, copy your login details again, refresh the channel list and update the app.
 ---
 
-You press play and instead of a picture you get a message like "Status code 404", "HTTP 404" or "Stream not found". It looks technical, but the meaning is simple, and in most cases you can fix it yourself in a few minutes. This guide explains what the code means, the usual reasons it appears when you watch Apollo Group TV, and the steps to clear it, in the order most likely to work.
+You press play and instead of a picture you get a message like "Status code 404", "HTTP 404" or "Stream not found". It looks technical, but it means one thing: the player asked for a stream address that wasn't there. In most cases you can fix it yourself in a few minutes, and the steps below are in the order most likely to work.
 
 Because other numbered errors often show up in the same situations, there's also a section on what 401, 403, 429 and 5xx codes mean, so you can tell at a glance whether the problem is your login, your connection or something on the server side.
 

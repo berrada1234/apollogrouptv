@@ -176,7 +176,7 @@ export function ReviewCard({
 }
 
 export function CtaBand({
-  title = "Ready to get started?",
+  title = "Start watching Apollo Group TV",
   description = "Create your account in minutes and manage everything from one dashboard.",
 }: {
   title?: string;

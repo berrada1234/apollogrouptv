@@ -13,7 +13,7 @@ answer: To clear cache on a Firestick, go to Settings > Applications > Manage In
 
 A Fire TV Stick that was quick out of the box can feel sluggish a year later. Menus lag, apps take longer to open, and streams that used to start instantly now sit on a spinning wheel. Before you blame your internet or your streaming service, look at the device itself. Fire TV Sticks have limited storage and memory, and both fill up quietly over time.
 
-Clearing cache is the quickest maintenance task you can do, and it's safe: you won't lose your accounts or settings. This guide explains what cache actually is, how to clear it on Fire TV, when clearing data is the better choice, and how to free up storage so the problem doesn't come straight back.
+Clearing cache is the quickest maintenance task you can do, and it's safe: you won't lose your accounts or settings. Here's what cache is, how to clear it on Fire TV, when clearing data works better, and how to free up storage so the slowdown doesn't come straight back.
 
 ## What is cache, and why does it build up?
 

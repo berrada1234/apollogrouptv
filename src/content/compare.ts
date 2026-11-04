@@ -72,7 +72,7 @@ export const rivals: Rival[] = [
     faqs: [
       { q: "Is Apollo Group TV cheaper than YouTube TV?", a: "Yes, over a year by a wide margin. YouTube TV's Base Plan is $82.99 a month, $995.88 for twelve months. Apollo Group TV's twelve-month pack price is shown in the table above, straight from our current prices." },
       { q: "Does Apollo Group TV have a DVR like YouTube TV?", a: "No. Apollo Group TV doesn't advertise a recording feature for live TV. The on-demand library lets you watch films and series whenever you like while your pack is active." },
-      { q: "Do I need a contract for either service?", a: "Neither has a contract. YouTube TV bills you monthly until you cancel; an Apollo Group TV pack is paid once and simply ends when its period is over." },
+      { q: "Do I need a contract for either service?", a: "Neither has a contract. YouTube TV bills you monthly until you cancel; an Apollo Group TV pack is paid once and ends when its period is over." },
       { q: "Can I use Apollo Group TV on the same devices as YouTube TV?", a: "On many of them. Apollo Group TV runs on Fire TV and Android TV, Android phones and tablets, Windows and Mac, and on iPhone, iPad and Apple TV through a player app. It isn't available on Roku or directly on Samsung and LG TVs." },
     ],
   },
@@ -177,7 +177,7 @@ export const rivals: Rival[] = [
       title: "Apollo Group TV vs DIRECTV STREAM: Price and Billing",
       description: "DIRECTV's Entertainment streaming package is $89.99 a month at the regular price. See how Apollo Group TV compares on yearly cost, fees and billing.",
     },
-    intro: "DIRECTV STREAM, now sold simply as streaming live TV from DIRECTV, brings a satellite-style lineup to the internet, and satellite-style prices with it. Here's the full-year picture next to Apollo Group TV.",
+    intro: "DIRECTV STREAM, now sold as streaming live TV from DIRECTV, brings a satellite-style lineup to the internet, and satellite-style prices with it. Here's the full-year picture next to Apollo Group TV.",
     story: [
       "DIRECTV's streaming service is where many people land when they give up the satellite dish: familiar channels, a familiar brand, nothing on the roof.",
       "The price is familiar too. The Entertainment package is $89.99 a month at the regular price, and the first number you see is usually a one-month offer. Required fees come on top, and regional sports networks need a higher package. Twelve months of Entertainment is $1,079.88 before taxes and fees.",
@@ -223,7 +223,7 @@ export const rivals: Rival[] = [
     story: [
       "Philo's appeal is simple: a low monthly price for an entertainment-focused lineup, with a free trial and generous DVR.",
       "Philo Essential is $25 a month, about the same as Apollo Group TV's one-month pack. The difference shows over time: twelve months of Philo Essential is $300, while Apollo Group TV's twelve-month pack is about half that.",
-      "So the honest answer depends on how long you'll watch. For a month or two, the two cost about the same. For a year, Apollo Group TV costs less, and the pack doesn't renew on its own.",
+      "So the answer depends on how long you'll watch. For a month or two, the two cost about the same. For a year, Apollo Group TV costs less, and the pack doesn't renew on its own.",
     ],
     theyWin: [
       "Unlimited DVR, with recordings kept for up to a year.",

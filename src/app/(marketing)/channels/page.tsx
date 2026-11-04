@@ -170,7 +170,7 @@ export default function ChannelsPage() {
           title: "Sports Channels on Apollo Group TV, by Sport and Region",
           tagline: "Every sport and region category in the lineup",
           intro:
-            "Here is the full list of sports categories. Inside the app, each one opens a filtered list of channels, so you can go straight to football, combat sports or motorsport — or narrow it to one country's coverage. What a category contains depends on the rights available where you live, and individual events move between channels from season to season.",
+            "Here is the full list of sports categories. Inside the app, each one opens a filtered list of channels, so you can go straight to football, combat sports or motorsport, or narrow it to one country's coverage. What a category contains depends on the rights available where you live, and individual events move between channels from season to season.",
         }}
       />
 

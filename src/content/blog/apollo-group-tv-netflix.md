@@ -13,7 +13,7 @@ answer: No. Apollo Group TV doesn't include Netflix. Netflix is a separate servi
 
 People switching from cable often build their new setup from a few pieces: something for live channels, something for films and series, maybe a sports app. So a common question before signing up is whether Apollo Group TV includes Netflix, or whether you still need a separate Netflix subscription.
 
-The short answer is that Netflix isn't part of Apollo Group TV. Netflix is its own service, with its own app and its own account. That's true of almost every major streaming brand, and understanding why makes it much easier to plan a setup that gives you everything you want to watch without paying twice for the same thing.
+The short answer is that Netflix isn't part of Apollo Group TV. Netflix is its own service, with its own app and its own account. The same goes for almost every major streaming brand. Once you know why, it's easy to plan a setup that covers what you watch without paying twice for the same thing.
 
 This guide explains what Apollo Group TV includes, how it differs from Netflix, and how to run both comfortably on the same TV.
 

@@ -13,7 +13,7 @@ answer: When the Apollo TV app won't install on Android, it's usually one of a f
 
 Installing the Apollo TV app on an Android phone or tablet usually takes a minute: download the file, tap it, tap Install. But Android is cautious about apps that don't come from Google Play, and depending on your phone's brand and Android version, it can stop you at several points along the way with messages that aren't always clear.
 
-This guide goes through each of those messages in the order you're likely to meet them, explains what each one means, and shows how to get past it safely. If you haven't started yet, the step-by-step installation is in our [Android phone and tablet guide](/guides/android-phone-tablet); come back here if something goes wrong.
+Each of those messages is covered below, in the order you'll probably meet them, with what it means and how to get past it safely. If you haven't started yet, the step-by-step installation is in our [Android phone and tablet guide](/guides/android-phone-tablet); come back here if something goes wrong.
 
 ## Before you start: get the official file
 
