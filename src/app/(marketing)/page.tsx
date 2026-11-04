@@ -5,6 +5,7 @@ import { HomeHero } from "@/components/home/hero";
 import { SportsSection } from "@/components/sports-section";
 import {
   CompareSection,
+  DeviceCheckSection,
   DevicesSection,
   FaqSection,
   FinalCta,
@@ -13,6 +14,7 @@ import {
   LegalSection,
   OfficialSiteSection,
   PlansSection,
+  QuickFactsSection,
   ReviewsSection,
   ServicesSection,
   SocialProofBar,
@@ -21,12 +23,14 @@ import {
 } from "@/components/home/sections";
 import { generalGuides } from "@/content/guides";
 import { getDeviceGuides } from "@/lib/guides";
-import { monthlyCents, pricingContext, savingsPct } from "@/lib/pricing";
+import { monthlyCents, monthsFor, pricingContext, savingsPct } from "@/lib/pricing";
+import Link from "next/link";
 import { db } from "@/lib/db";
 import { isCheckoutEnabled } from "@/lib/payments";
 import { displayName, getActivePlans, getApprovedReviews } from "@/lib/queries";
 import { getSettings } from "@/lib/settings";
 import { getPosts } from "@/lib/blog";
+import { getCustomerMethods } from "@/lib/checkout/methods";
 import { siteConfig } from "@/lib/site";
 import { formatDate, formatMoney } from "@/lib/utils";
 
@@ -90,6 +94,8 @@ export default async function HomePage() {
     db.faq.count({ where: { isPublished: true } }),
   ]);
 
+  const methods = (await getCustomerMethods(settings)).map((m) => ({ id: m.id, name: m.name, logoUrl: m.logoUrl, glyph: m.glyph, accent: m.accent }));
+
   // Price hooks computed from the real price list.
   const pricing = pricingContext(plans);
   const monthlies = plans
@@ -125,6 +131,54 @@ export default async function HomePage() {
     "No contracts",
     "Cancel anytime",
   ].filter((b): b is string => Boolean(b));
+
+  // Key facts: every value comes from settings, the price list or verified site behaviour.
+  const sortedPlans = [...plans].sort((a, b) => (monthlyCents(a) ?? Infinity) - (monthlyCents(b) ?? Infinity));
+  const lowest = sortedPlans[0];
+  const allOneTime = plans.length > 0 && plans.every((p) => p.oneTime);
+  const officialDomain = settings.legal.officialDomain || new URL(siteConfig.url).host;
+  const facts = [
+    { k: "Official website", v: officialDomain },
+    { k: "Also known as", v: "Apollo TV" },
+    { k: "What it is", v: "An internet TV (IPTV) service: live channels sorted by category and region, plus an on-demand library, watched in an app on your own device." },
+    ...(plans.length
+      ? [
+          {
+            k: "Price",
+            v: (
+              <>
+                {plans.length} packs lasting {Math.min(...plans.map((p) => monthsFor(p.interval)))} to {Math.max(...plans.map((p) => monthsFor(p.interval)))} months
+                {fromMonthly && lowest ? `, from ${fromMonthly} a month on the ${lowest.name}` : ""}.{" "}
+                <Link href="/plans" className="font-semibold text-accent hover:text-light-blue">
+                  Compare packs
+                </Link>
+              </>
+            ),
+          },
+        ]
+      : []),
+    ...(allOneTime ? [{ k: "Billing", v: "One payment per pack. Nothing renews automatically." }] : []),
+    { k: "Devices", v: deviceGuides.length ? deviceGuides.map((d) => d.name).join(", ") : "See the app page" },
+    { k: "Activation", v: "Our team activates your pack once payment is confirmed. Your login details then appear in My Account." },
+    ...(highlights.moneyBackDays
+      ? [
+          {
+            k: "Refunds",
+            v: (
+              <>
+                Requests within {highlights.moneyBackDays} days, under the{" "}
+                <Link href="/refund-policy" className="font-semibold text-accent hover:text-light-blue">
+                  Refund Policy
+                </Link>
+                .
+              </>
+            ),
+          },
+        ]
+      : []),
+    { k: "Support", v: "Written replies in a support ticket from your dashboard, or through the contact page." },
+    { k: "Not included", v: "Netflix and other streaming services. Their accounts and apps are separate." },
+  ];
 
   const orgJsonLd = {
     "@context": "https://schema.org",
@@ -185,10 +239,14 @@ export default async function HomePage() {
       <Band id="overview">
         <IntroSection />
       </Band>
+      <Band id="facts">
+        <QuickFactsSection facts={facts} />
+      </Band>
       <Band id="plans">
         <PlansSection
           plans={plans.slice(0, 4)}
           checkout={isCheckoutEnabled()}
+          methods={methods}
         />
       </Band>
       <Band id="services">
@@ -199,6 +257,9 @@ export default async function HomePage() {
       </Band>
       <Band id="devices">
         <DevicesSection />
+      </Band>
+      <Band id="your-device">
+        <DeviceCheckSection devices={deviceGuides.map((d) => ({ name: d.name, slug: d.slug }))} />
       </Band>
       <Band id="compare">
         <CompareSection

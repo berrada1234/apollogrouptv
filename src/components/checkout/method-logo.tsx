@@ -5,7 +5,7 @@ export type MethodLogoProps = {
   logoUrl?: string | null;
   glyph?: string | null;
   accent?: string | null;
-  size?: "md" | "lg";
+  size?: "sm" | "md" | "lg";
 };
 
 /** The method's uploaded logo, or a brand-coloured tile with its glyph. */
@@ -19,7 +19,9 @@ export function MethodLogo({
   const box =
     size === "lg"
       ? "h-14 w-14 rounded-[14px] text-2xl"
-      : "h-12 w-12 rounded-[12px] text-xl";
+      : size === "sm"
+        ? "h-7 w-7 rounded-[8px] text-xs"
+        : "h-12 w-12 rounded-[12px] text-xl";
   if (logoUrl) {
     return (
       // eslint-disable-next-line @next/next/no-img-element -- admin-provided logos can live on any host

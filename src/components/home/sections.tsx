@@ -18,6 +18,8 @@ import {
   Receipt,
   ShieldCheck,
   Sparkles,
+  Smartphone,
+  Laptop,
   Globe,
   Star,
   Tv,
@@ -36,6 +38,8 @@ import { Eyebrow } from "@/components/home/hero";
 import { ReviewCarousel } from "@/components/home/review-carousel";
 import { RichText } from "@/components/rich-text";
 import { PostCard } from "@/components/blog";
+import { MethodLogo } from "@/components/checkout/method-logo";
+import { FireTvCheck } from "@/components/home/fire-tv-check";
 import type { BlogPost } from "@/lib/blog";
 import { homeCopy, homeFaq } from "@/content/home";
 import { pricingContext, savingsPct } from "@/lib/pricing";
@@ -441,7 +445,9 @@ export function CompareSection({
 
 // ─── Plans & pricing ────────────────────────────────────────────────────────
 
-export function PlansSection({ plans, checkout }: { plans: Plan[]; checkout: boolean }) {
+type HomeMethod = { id: string; name: string; logoUrl: string | null; glyph: string | null; accent: string | null };
+
+export function PlansSection({ plans, checkout, methods = [] }: { plans: Plan[]; checkout: boolean; /** Methods customers can actually use right now. */ methods?: HomeMethod[] }) {
   const c = homeCopy.plans;
   const { baseMonthly, bestValueId } = pricingContext(plans);
   const maxSave = Math.max(0, ...plans.map((p) => savingsPct(p, baseMonthly)));
@@ -468,6 +474,25 @@ export function PlansSection({ plans, checkout }: { plans: Plan[]; checkout: boo
           </li>
         ))}
       </ul>
+
+      {methods.length > 0 && (
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
+          <span className="text-sm text-subtle">Pay with</span>
+          <ul className="flex flex-wrap justify-center gap-2" aria-label="Accepted payment methods">
+            {methods.map((m) => (
+              <li key={m.id}>
+                <Link href="/payment-methods" className="inline-flex items-center gap-2 rounded-full border border-border bg-white/[0.03] py-1 pl-1 pr-3 text-sm text-text transition-colors hover:border-accent/40">
+                  <MethodLogo name={m.name} logoUrl={m.logoUrl} glyph={m.glyph} accent={m.accent} size="sm" />
+                  {m.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <Link href="/payment-guides" className="text-sm font-semibold text-accent hover:text-light-blue">
+            Payment guides
+          </Link>
+        </div>
+      )}
 
       <h3 className="sr-only">Available Apollo Group TV packs</h3>
       {plans.length > 0 ? (
@@ -820,6 +845,84 @@ export function GuidesSection({ posts }: { posts: BlogPost[] }) {
           </li>
         ))}
       </ul>
+    </Section>
+  );
+}
+
+// ─── Your device ────────────────────────────────────────────────────────────
+
+const deviceIcon = (name: string) => (/fire|android tv/i.test(name) ? Tv : /phone|android/i.test(name) ? Smartphone : /apple tv/i.test(name) ? Tv : /mac|windows/i.test(name) ? Laptop : MonitorSmartphone);
+
+/** Every supported device links to its guide; popular unsupported TVs link to the honest workaround. */
+export function DeviceCheckSection({ devices }: { devices: { name: string; slug: string }[] }) {
+  const choices = [
+    ...devices.map((d) => ({ name: d.name, href: `/guides/${d.slug}`, note: "Setup guide", supported: true })),
+    { name: "Google TV", href: "/blog/apollo-tv-google-tv", note: "Setup guide", supported: true },
+    { name: "Samsung or LG TV", href: "/blog/apollo-tv-samsung-lg-smart-tv", note: "Use a streaming stick", supported: false },
+    { name: "Roku", href: "/blog/apollo-group-tv-roku", note: "Use a streaming stick", supported: false },
+  ];
+  return (
+    <Section>
+      <SectionHeader
+        eyebrow="Your device"
+        title="Choose Your Device to Set Up Apollo TV"
+        description="Pick the screen you'll watch on to get its step-by-step guide. If your TV can't run the app directly, we'll show you what works instead."
+      />
+      <div className={cn(afterHeader, "grid gap-8 lg:grid-cols-12 lg:gap-10 [&>*]:min-w-0")}>
+        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:col-span-7">
+          {choices.map((c) => {
+            const Icon = deviceIcon(c.name);
+            return (
+              <li key={c.href + c.name}>
+                <Link href={c.href} className={cn(cardClass, cardHover, "group flex h-full flex-col gap-3 p-4 sm:p-5")}>
+                  <IconBox icon={Icon} size="sm" />
+                  <span className="font-semibold leading-snug text-text">{c.name}</span>
+                  <span className={cn("mt-auto inline-flex items-center gap-1 text-xs font-semibold", c.supported ? "text-accent" : "text-warning")}>
+                    {c.note} <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" aria-hidden />
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+        <div className="lg:col-span-5">
+          <FireTvCheck />
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+// ─── Key facts ──────────────────────────────────────────────────────────────
+
+/** One consistent set of facts, rendered from settings and the price list, for readers and answer engines alike. */
+export function QuickFactsSection({ facts }: { facts: { k: string; v: React.ReactNode }[] }) {
+  return (
+    <Section>
+      <div className="grid gap-10 lg:grid-cols-12 lg:gap-16 [&>*]:min-w-0">
+        <div className="lg:col-span-4">
+          <SectionHeader
+            eyebrow="Key facts"
+            title="Apollo Group TV at a Glance"
+            description="The essentials in one place: what the service is, how you pay, where it works and what isn't included."
+          />
+        </div>
+        <div className={cn(cardClass, "overflow-hidden lg:col-span-8")}>
+          <table className="w-full text-sm">
+            <caption className="sr-only">Apollo Group TV key facts</caption>
+            <tbody>
+              {facts.map((f) => (
+                <tr key={f.k} className="border-b border-border last:border-0">
+                  <th scope="row" className="w-[34%] px-5 py-4 text-left align-top font-medium text-muted sm:px-6">
+                    {f.k}
+                  </th>
+                  <td className="px-5 py-4 leading-6 text-text sm:px-6">{f.v}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </Section>
   );
 }
