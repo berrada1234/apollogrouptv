@@ -241,7 +241,7 @@ export default async function HomePage() {
         <IntroSection />
       </Band>
       <Band id="facts">
-        <QuickFactsSection facts={facts} />
+        <QuickFactsSection facts={facts} domain={settings.legal.officialDomain || new URL(siteConfig.url).host} />
       </Band>
       <Band id="plans">
         <PlansSection

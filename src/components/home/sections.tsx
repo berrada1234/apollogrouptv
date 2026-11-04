@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Plan } from "@prisma/client";
 import {
+  ArrowDown,
   ArrowRight,
   BookOpen,
   Check,
@@ -896,18 +897,73 @@ export function DeviceCheckSection({ devices }: { devices: { name: string; slug:
 // ─── Key facts ──────────────────────────────────────────────────────────────
 
 /** One consistent set of facts, rendered from settings and the price list, for readers and answer engines alike. */
-export function QuickFactsSection({ facts }: { facts: { k: string; v: React.ReactNode }[] }) {
+/**
+ * The official address spelled out tile by tile. Lookalike sites differ by a single letter, so the design
+ * asks visitors to compare the spelling, not just glance at a logo.
+ */
+function OfficialAddressPlate({ domain }: { domain: string }) {
+  return (
+    <div className="mt-10 overflow-hidden rounded-[20px] border border-primary/25 bg-[linear-gradient(160deg,rgb(70_224_255/0.08),rgb(11_18_51/0.6)_45%,rgb(5_6_15/0.9))] shadow-[0_24px_60px_-30px_rgb(70_224_255/0.55)]">
+      <div className="flex items-center gap-3 border-b border-white/[0.07] px-5 py-4">
+        <LogoMark size={36} className="drop-shadow-[0_0_10px_rgb(70_224_255/0.55)]" />
+        <div className="min-w-0">
+          <p className="flex items-center gap-1.5 text-sm font-semibold text-text">
+            <BadgeCheck className="h-4 w-4 text-emerald-400" aria-hidden /> Official website
+          </p>
+          <p className="text-xs text-muted">This is the only address we use</p>
+        </div>
+      </div>
+
+      <div className="px-5 py-5">
+        <p className="sr-only">The official address is {domain}</p>
+        <div className="flex items-center gap-2" aria-hidden>
+          <Lock className="h-4 w-4 shrink-0 text-emerald-400" />
+          <span className="text-xs text-subtle">https://</span>
+        </div>
+        {/* One tile per character, so a changed or added letter stands out. */}
+        <div
+          className="mt-3 grid gap-1"
+          style={{ gridTemplateColumns: [...domain].map((ch) => (ch === "." ? "0.5fr" : "1fr")).join(" ") }}
+          aria-hidden
+        >
+          {[...domain].map((ch, i) => (
+            <span
+              key={i}
+              className={cn(
+                "grid aspect-[3/4] min-w-0 place-items-center rounded-[6px] font-hero text-[clamp(0.75rem,3.2vw,1.15rem)] font-medium leading-none lg:text-[clamp(0.8rem,1.2vw,1.1rem)]",
+                // The dot sits on the baseline like a real full stop, in the accent colour.
+                ch === "." ? "place-items-end justify-center pb-[18%] text-primary" : "border border-white/[0.08] bg-[#070b1f] text-text shadow-[inset_0_1px_0_rgb(255_255_255/0.04)]",
+              )}
+            >
+              {ch}
+            </span>
+          ))}
+        </div>
+        <p className="mt-4 text-sm leading-6 text-muted">
+          Check the spelling before you sign in or pay. An extra letter, a hyphen or a different ending means it isn&apos;t us.
+        </p>
+        <Link href="#official-site" className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-accent hover:text-light-blue">
+          Four ways to check <ArrowDown className="h-3.5 w-3.5" aria-hidden />
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+export function QuickFactsSection({ facts, domain }: { facts: { k: string; v: React.ReactNode }[]; domain: string }) {
   return (
     <Section>
       <div className="grid gap-10 lg:grid-cols-12 lg:gap-16 [&>*]:min-w-0">
-        <div className="lg:col-span-4">
+        {/* Sticky on desktop, so the address stays beside the long facts table as it scrolls. */}
+        <div className="lg:col-span-5 lg:sticky lg:top-28 lg:self-start">
           <SectionHeader
             eyebrow="Key facts"
             title="Apollo Group TV at a Glance"
             description="The essentials in one place: what the service is, how you pay, where it works and what isn't included."
           />
+          <OfficialAddressPlate domain={domain} />
         </div>
-        <div className={cn(cardClass, "overflow-hidden lg:col-span-8")}>
+        <div className={cn(cardClass, "overflow-hidden lg:col-span-7")}>
           <table className="w-full text-sm">
             <caption className="sr-only">Apollo Group TV key facts</caption>
             <tbody>
