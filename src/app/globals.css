@@ -716,3 +716,62 @@ dialog::backdrop {
     stroke-dasharray: none;
   }
 }
+
+/* ── Chat assistant ───────────────────────────────────────────── */
+/* The launcher's one moving element: a slow spectrum ring around the prism. */
+@property --assistant-turn {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+.assistant-ring {
+  background: conic-gradient(from var(--assistant-turn), #46e0ff, #9d7bff, #ff6ad5, #46e0ff);
+  animation: assistant-turn 6s linear infinite;
+}
+@keyframes assistant-turn {
+  to {
+    --assistant-turn: 360deg;
+  }
+}
+/* The panel grows out of the launcher it was opened from. */
+.assistant-panel {
+  transform-origin: bottom right;
+  animation: assistant-open 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+@keyframes assistant-open {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.97);
+  }
+}
+/* Typing indicator: three signal bars. */
+.assistant-signal span {
+  display: block;
+  width: 3px;
+  border-radius: 2px;
+  background: #46e0ff;
+  animation: assistant-signal 900ms ease-in-out infinite;
+}
+.assistant-signal span:nth-child(1) {
+  height: 6px;
+}
+.assistant-signal span:nth-child(2) {
+  height: 10px;
+  animation-delay: 150ms;
+}
+.assistant-signal span:nth-child(3) {
+  height: 14px;
+  animation-delay: 300ms;
+}
+@keyframes assistant-signal {
+  50% {
+    opacity: 0.25;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .assistant-ring,
+  .assistant-panel,
+  .assistant-signal span {
+    animation: none !important;
+  }
+}
