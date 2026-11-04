@@ -374,9 +374,88 @@ export const dmcaPolicy: LegalDoc = {
   ],
 };
 
+export const disclaimer: LegalDoc = {
+  slug: "disclaimer",
+  title: "Disclaimer",
+  metaTitle: "Disclaimer — Apollo Group TV",
+  description:
+    "The limits of the information on the Apollo Group TV website: general guidance, sourced comparisons, trademarks, external links and service availability.",
+  intro:
+    "This disclaimer explains how to read the information published on {{officialDomain}}, operated by {{entityName}}. It applies to every page, guide, article and comparison on the site, alongside our [Terms and Conditions](/terms-and-conditions), which govern your use of the service itself.",
+  sections: [
+    {
+      heading: "General information only",
+      paragraphs: [
+        "Our guides, articles, comparisons and help pages are written to help you understand and use the service. We check them carefully and update them when things change, but they're general information. Devices, apps, prices and third-party services change without notice, so some details may be out of date by the time you read them.",
+      ],
+    },
+    {
+      heading: "Not legal, financial or professional advice",
+      paragraphs: [
+        "Nothing on this website is legal, financial, tax or other professional advice. Pages that discuss topics such as IPTV and content licensing, VPNs or payment methods explain them in general terms. If you need advice about your own situation, consult a qualified professional where you live.",
+      ],
+    },
+    {
+      heading: "Content and licensing",
+      paragraphs: [
+        "Our policy is to list only authorized, properly licensed content. Channel availability depends on rights, which vary by region and change over time, and individual programmes and events can move between channels. If you're a rights holder and believe material is available without permission, please use our [copyright and DMCA process](/dmca).",
+      ],
+    },
+    {
+      heading: "Comparisons and third-party prices",
+      paragraphs: [
+        "Our comparison pages describe other services using information those services publish, such as their official pricing pages, with the source and the date we checked it shown on each page. We compare regular prices before taxes, fees and promotions unless a page says otherwise. Other companies can change their prices, plans and features at any time, so check their websites for current details before deciding. Comparisons reflect our own assessment and are not statements by the companies compared.",
+      ],
+    },
+    {
+      heading: "Trademarks and no affiliation",
+      paragraphs: [
+        "Names and logos of other companies and products that appear on this site, including streaming services, device makers and app stores, are trademarks of their respective owners. We use them only to identify those products, for example to describe compatibility or to make a comparison. Their use doesn't mean those companies endorse, sponsor or are affiliated with Apollo Group TV.",
+      ],
+    },
+    {
+      heading: "Links to other websites",
+      paragraphs: [
+        "We link to other websites, such as device makers' support pages and official documentation, because they help explain a topic. We don't control those sites and aren't responsible for their content, availability or privacy practices. A link isn't an endorsement.",
+      ],
+    },
+    {
+      heading: "Devices, apps and compatibility",
+      paragraphs: [
+        "The devices listed on our [app page](/app) are the ones we've verified. Manufacturers update their systems and stores, and those updates can affect whether or how an app installs, as with Fire TV models that run Vega OS. Settings menus differ between brands and versions, so the steps in our guides may look slightly different on your device.",
+      ],
+    },
+    {
+      heading: "Service availability",
+      paragraphs: [
+        "Streaming depends on many things outside our control, including your internet connection, home network, device and the networks between us and you. We work to keep the service running smoothly but can't promise that it will be uninterrupted or error-free at all times. The [Terms and Conditions](/terms-and-conditions) set out what applies to your subscription, and the [Refund Policy](/refund-policy) explains how refund requests are handled.",
+      ],
+    },
+    {
+      heading: "Our official website",
+      paragraphs: [
+        "Our only official website is {{officialDomain}}. Other sites that use the Apollo name, copy our content or ask you to pay outside the invoice in your own account aren't operated by us, and we can't be responsible for them. Our guide to the [official Apollo Group TV website](/blog/apollo-group-tv-official-website) explains how to tell the difference.",
+      ],
+    },
+    {
+      heading: "Changes to this disclaimer",
+      paragraphs: [
+        "We may update this disclaimer as the website and service change. The date at the top of this page shows when it was last updated.",
+      ],
+    },
+    {
+      heading: "Contact",
+      paragraphs: [
+        "If you spot something on the site that's out of date or incorrect, please tell us at {{supportEmail}} or through our [contact page](/contact).",
+      ],
+    },
+  ],
+};
+
 export const legalDocs = [
   privacyPolicy,
   termsAndConditions,
   refundPolicy,
   dmcaPolicy,
+  disclaimer,
 ];

@@ -32,6 +32,13 @@ const reservedKeywords = [
   "apollo group tv renewal",
   "apollo group tv renew",
   "apollo group tv subscription renewal",
+  "why apollo group tv",
+  "choosing an iptv service",
+  "apollo group tv vs youtube tv",
+  "apollo group tv vs sling tv",
+  "apollo group tv vs hulu live tv",
+  "apollo group tv vs directv stream",
+  "apollo group tv vs philo",
 ];
 
 describe("blog", () => {

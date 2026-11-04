@@ -39,6 +39,18 @@ export const footerNav = [
     ],
   },
   {
+    title: "Compare",
+    links: [
+      { href: "/why-apollo-group-tv", label: "Why Apollo Group TV" },
+      { href: "/choosing-an-iptv-service", label: "Choosing an IPTV service" },
+      { href: "/apollo-group-tv-vs-youtube-tv", label: "vs YouTube TV" },
+      { href: "/apollo-group-tv-vs-sling-tv", label: "vs Sling TV" },
+      { href: "/apollo-group-tv-vs-hulu-live-tv", label: "vs Hulu + Live TV" },
+      { href: "/apollo-group-tv-vs-directv-stream", label: "vs DIRECTV STREAM" },
+      { href: "/apollo-group-tv-vs-philo", label: "vs Philo" },
+    ],
+  },
+  {
     title: "Community",
     links: [
       { href: "/reviews", label: "Reviews" },
@@ -74,6 +86,7 @@ export const footerNav = [
       { href: "/terms-and-conditions", label: "Terms and Conditions" },
       { href: "/refund-policy", label: "Refund Policy" },
       { href: "/dmca", label: "Copyright and DMCA" },
+      { href: "/disclaimer", label: "Disclaimer" },
       { href: "/site-index", label: "Site Index" },
     ],
   },
@@ -86,6 +99,14 @@ export const publicRoutes = [
   "/app",
   "/plans",
   "/apollo-group-tv-renewal",
+  "/compare",
+  "/why-apollo-group-tv",
+  "/choosing-an-iptv-service",
+  "/apollo-group-tv-vs-youtube-tv",
+  "/apollo-group-tv-vs-sling-tv",
+  "/apollo-group-tv-vs-hulu-live-tv",
+  "/apollo-group-tv-vs-directv-stream",
+  "/apollo-group-tv-vs-philo",
   "/payment-methods",
   "/payment-guides",
   "/blog",
@@ -104,7 +125,7 @@ export const publicRoutes = [
 ];
 
 /** Policy pages — listed in the sitemap only after the owner approves them. */
-export const policyRoutes = ["/privacy-policy", "/terms-and-conditions", "/refund-policy", "/dmca"];
+export const policyRoutes = ["/privacy-policy", "/terms-and-conditions", "/refund-policy", "/dmca", "/disclaimer"];
 
 /** Route prefixes that are private and must never be indexed. */
 export const privatePrefixes = [

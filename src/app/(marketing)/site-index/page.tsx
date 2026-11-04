@@ -50,6 +50,14 @@ export default async function SiteIndexPage() {
         { href: "/plans", label: "Plans & pricing" },
         ...plans.map((p) => ({ href: "/plans", label: p.name, note: `${formatMoney(p.priceCents, p.currency)} · ${accessLabel(p.interval)}` })),
         { href: "/apollo-group-tv-renewal", label: "Renew your subscription" },
+        { href: "/compare", label: "Compare Apollo Group TV" },
+        { href: "/why-apollo-group-tv", label: "Why Apollo Group TV" },
+        { href: "/choosing-an-iptv-service", label: "Choosing an IPTV service" },
+        { href: "/apollo-group-tv-vs-youtube-tv", label: "Apollo Group TV vs YouTube TV" },
+        { href: "/apollo-group-tv-vs-sling-tv", label: "Apollo Group TV vs Sling TV" },
+        { href: "/apollo-group-tv-vs-hulu-live-tv", label: "Apollo Group TV vs Hulu + Live TV" },
+        { href: "/apollo-group-tv-vs-directv-stream", label: "Apollo Group TV vs DIRECTV STREAM" },
+        { href: "/apollo-group-tv-vs-philo", label: "Apollo Group TV vs Philo" },
       ],
     },
     {
@@ -98,6 +106,7 @@ export default async function SiteIndexPage() {
         { href: "/privacy-policy", label: "Privacy Policy" },
         { href: "/refund-policy", label: "Refund Policy" },
         { href: "/dmca", label: "Copyright and DMCA Policy" },
+        { href: "/disclaimer", label: "Disclaimer" },
       ],
     },
     {
