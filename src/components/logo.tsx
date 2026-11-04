@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 
 /** Square triangle mark, cropped from the brand logo. */
 export function LogoMark({ className, size = 36 }: { className?: string; size?: number }) {
-  return <Image src="/brand/apollo-mark.png" alt="" width={size} height={size} className={cn("shrink-0", className)} aria-hidden />;
+  return <Image src="/brand/apollo-mark.png" alt="Apollo Group TV logo" width={size} height={size} className={cn("shrink-0", className)} />;
 }
 
 /** Full brand logo (mark + "Apollo Group TV" wordmark). Source image is 1500×310. */

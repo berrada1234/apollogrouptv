@@ -45,7 +45,7 @@ export function AssistantWidget({ whatsapp }: { whatsapp: string }) {
           {open ? (
             <X className="h-6 w-6 text-text" aria-hidden />
           ) : (
-            <Image src="/brand/apollo-mark.png" alt="" width={30} height={30} aria-hidden className="transition-transform duration-300 group-hover:scale-110" />
+            <Image src="/brand/apollo-mark.png" alt="Apollo Group TV logo" width={30} height={30} className="transition-transform duration-300 group-hover:scale-110" />
           )}
         </span>
         {!open && (

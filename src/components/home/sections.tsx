@@ -56,13 +56,19 @@ function formatMembers(n: number) {
 }
 
 /* Member avatars: AI-generated portraits of people who don't exist, so no real person's face is used. */
-const memberPhotos = [1, 2, 3, 4, 5].map((n) => `/images/avatars/member-${n}.webp`);
+const memberPhotos = [
+  { src: "/images/avatars/member-1.webp", alt: "Illustrative portrait of a smiling woman with short curly hair" },
+  { src: "/images/avatars/member-2.webp", alt: "Illustrative portrait of a smiling man with short dark hair and stubble" },
+  { src: "/images/avatars/member-3.webp", alt: "Illustrative portrait of a smiling woman with long straight black hair" },
+  { src: "/images/avatars/member-4.webp", alt: "Illustrative portrait of a smiling man with a short beard" },
+  { src: "/images/avatars/member-5.webp", alt: "Illustrative portrait of a smiling woman with dark hair tied back" },
+];
 
 /** A portrait in a pink-to-violet ring, with a dark edge so overlapping circles stay separate. */
-function MemberAvatar({ src }: { src: string }) {
+function MemberAvatar({ src, alt }: { src: string; alt: string }) {
   return (
-    <span className="relative grid h-9 w-9 place-items-center rounded-full bg-[linear-gradient(135deg,#ff3d9a,#9d7bff)] sm:h-11 sm:w-11 p-[2px] shadow-[0_6px_16px_-6px_rgb(255_61_154/0.6)]" aria-hidden>
-      <Image src={src} alt="" width={64} height={64} loading="eager" className="h-full w-full rounded-full border-2 border-[#0c1024] object-cover" />
+    <span className="relative grid h-9 w-9 place-items-center rounded-full bg-[linear-gradient(135deg,#ff3d9a,#9d7bff)] sm:h-11 sm:w-11 p-[2px] shadow-[0_6px_16px_-6px_rgb(255_61_154/0.6)]">
+      <Image src={src} alt={alt} width={64} height={64} loading="eager" className="h-full w-full rounded-full border-2 border-[#0c1024] object-cover" />
     </span>
   );
 }
@@ -107,8 +113,8 @@ export function SocialProofBar({
         <div className="glass edge-spectrum grid divide-y divide-border rounded-[28px] px-6 sm:px-8 lg:grid-cols-[1.25fr_1.2fr_1fr] lg:divide-x lg:divide-y-0">
           <div className="flex items-center justify-center gap-4 py-6 lg:justify-start lg:pr-8">
             <div className="flex shrink-0 -space-x-3">
-              {memberPhotos.map((src) => (
-                <MemberAvatar key={src} src={src} />
+              {memberPhotos.map((m) => (
+                <MemberAvatar key={m.src} src={m.src} alt={m.alt} />
               ))}
             </div>
             <div>

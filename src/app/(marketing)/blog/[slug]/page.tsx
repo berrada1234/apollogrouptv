@@ -110,7 +110,7 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
           {/* eslint-disable-next-line @next/next/no-img-element -- generated cover image */}
           <img
             src={`/blog/${post.slug}/cover`}
-            alt={`Featured image for “${post.title}”: the article title on the Apollo Group TV background`}
+            alt={`${post.title}, a ${post.category} guide from the Apollo Group TV blog`}
             width={1200}
             height={630}
             className="mb-8 aspect-[1200/630] w-full rounded-[18px] border border-border object-cover"

@@ -21,7 +21,7 @@ const STARTERS = [
 function Avatar({ size = 32, live = false }: { size?: number; live?: boolean }) {
   return (
     <span className="relative inline-grid shrink-0 place-items-center rounded-full border border-primary/30 bg-[#070b1f]" style={{ width: size, height: size }}>
-      <Image src="/brand/apollo-mark.png" alt="" width={Math.round(size * 0.62)} height={Math.round(size * 0.62)} loading="eager" aria-hidden />
+      <Image src="/brand/apollo-mark.png" alt="Apollo Group TV assistant" width={Math.round(size * 0.62)} height={Math.round(size * 0.62)} loading="eager" />
       {live && (
         <span className="absolute -bottom-0.5 -right-0.5 grid h-3 w-3 place-items-center rounded-full bg-[#070b1f]" aria-hidden>
           <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_6px_rgb(52_211_153/0.9)]" />

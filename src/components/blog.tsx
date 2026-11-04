@@ -158,7 +158,7 @@ export function PostCard({ post }: { post: BlogPost }) {
       {/* eslint-disable-next-line @next/next/no-img-element -- generated cover image */}
       <img
         src={`/blog/${post.slug}/cover`}
-        alt={`Cover image for the article: ${post.title}`}
+        alt={`${post.title}: ${post.category} article on the Apollo Group TV blog`}
         width={1200}
         height={630}
         loading="lazy"
