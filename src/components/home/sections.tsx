@@ -55,37 +55,15 @@ function formatMembers(n: number) {
   return `${Math.floor(n / 10) * 10}+`;
 }
 
-/* Illustrated member avatars: drawn, not photos, so no real person is implied. */
-const avatarArt = [
-  { bg: ["#46e0ff", "#2b5cff"], skin: "#f1c7a3", hair: "#2a1a12", hairPath: "M14 19c0-6 4-10 10-10s10 4 10 10c-2-3-6-5-10-5s-8 2-10 5Z" },
-  { bg: ["#9d7bff", "#5b3fd1"], skin: "#c98d6b", hair: "#120c0a", hairPath: "M13 21c0-7 5-12 11-12s11 5 11 12c0 3-1 6-2 7 0-6-4-11-9-11s-9 5-9 11c-1-1-2-4-2-7Z" },
-  { bg: ["#7aa2ff", "#3346c8"], skin: "#8d5a3b", hair: "#0d0907", hairPath: "M15 17c1-5 5-8 9-8s8 3 9 8c-3-2-6-2-9-2s-6 0-9 2Z" },
-  { bg: ["#b9f3ff", "#46a8ff"], skin: "#f5d6bd", hair: "#b8742f", hairPath: "M13 22c0-8 5-13 11-13s11 5 11 13c-1-4-3-6-5-7-2 2-6 3-12 3-2 1-4 2-5 4Z" },
-  { bg: ["#c4a8ff", "#7a4fe0"], skin: "#e0a988", hair: "#3b2416", hairPath: "M14 18c1-6 5-9 10-9 6 0 10 4 10 9-4-1-6-3-7-5-2 3-7 5-13 5Z" },
-];
+/* Member avatars: AI-generated portraits of people who don't exist, so no real person's face is used. */
+const memberPhotos = [1, 2, 3, 4, 5].map((n) => `/images/avatars/member-${n}.webp`);
 
-function MemberAvatar({ i }: { i: number }) {
-  const a = avatarArt[i % avatarArt.length];
-  const id = `av-${i}`;
+/** A portrait in a pink-to-violet ring, with a dark edge so overlapping circles stay separate. */
+function MemberAvatar({ src }: { src: string }) {
   return (
-    <svg viewBox="0 0 48 48" className="h-10 w-10 rounded-full ring-[3px] ring-[#0c1024]" aria-hidden>
-      <defs>
-        <linearGradient id={id} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor={a.bg[0]} />
-          <stop offset="1" stopColor={a.bg[1]} />
-        </linearGradient>
-        <clipPath id={`${id}c`}>
-          <circle cx="24" cy="24" r="24" />
-        </clipPath>
-      </defs>
-      <g clipPath={`url(#${id}c)`}>
-        <rect width="48" height="48" fill={`url(#${id})`} />
-        <path d="M8 48c1-9 8-14 16-14s15 5 16 14Z" fill="#0c1024" opacity="0.85" />
-        <rect x="20" y="27" width="8" height="8" rx="3" fill={a.skin} />
-        <circle cx="24" cy="21" r="9" fill={a.skin} />
-        <path d={a.hairPath} fill={a.hair} />
-      </g>
-    </svg>
+    <span className="relative grid h-9 w-9 place-items-center rounded-full bg-[linear-gradient(135deg,#ff3d9a,#9d7bff)] sm:h-11 sm:w-11 p-[2px] shadow-[0_6px_16px_-6px_rgb(255_61_154/0.6)]" aria-hidden>
+      <Image src={src} alt="" width={64} height={64} loading="eager" className="h-full w-full rounded-full border-2 border-[#0c1024] object-cover" />
+    </span>
   );
 }
 
@@ -129,8 +107,8 @@ export function SocialProofBar({
         <div className="glass edge-spectrum grid divide-y divide-border rounded-[28px] px-6 sm:px-8 lg:grid-cols-[1.25fr_1.2fr_1fr] lg:divide-x lg:divide-y-0">
           <div className="flex items-center justify-center gap-4 py-6 lg:justify-start lg:pr-8">
             <div className="flex shrink-0 -space-x-3">
-              {avatarArt.map((_, i) => (
-                <MemberAvatar key={i} i={i} />
+              {memberPhotos.map((src) => (
+                <MemberAvatar key={src} src={src} />
               ))}
             </div>
             <div>
