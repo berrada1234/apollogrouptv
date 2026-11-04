@@ -9,6 +9,13 @@ import type { GuideStep } from "@/content/guides";
 
 type Related = { href: string; title: string };
 
+/** Each guide links to the blog category that goes deeper on its topic (the articles link back here). */
+const guideArticles: Record<string, { href: string; label: string }> = {
+  "fire-tv-android-tv": { href: "/blog/category/fire-tv", label: "Fire TV articles" },
+  "account-setup": { href: "/blog/category/getting-started", label: "Articles for new customers" },
+  troubleshooting: { href: "/blog/category/troubleshooting", label: "Troubleshooting articles" },
+};
+
 export function GuideLayout({
   slug,
   title,
@@ -32,6 +39,8 @@ export function GuideLayout({
   related: Related[];
   download?: { url: string; label: string };
 }) {
+  // Other device guides fall back to the Devices category.
+  const articles = guideArticles[slug] ?? (["windows", "macos", "iphone-ipad", "android-phone-tablet", "apple-tv"].includes(slug) ? { href: "/blog/category/devices", label: "Device articles" } : undefined);
   return (
     <>
       <PageHero
@@ -134,6 +143,9 @@ export function GuideLayout({
               ))}
             </ul>
             <div className="mt-4 space-y-2 border-t border-border pt-4 text-sm">
+{articles && (
+                <Link href={articles.href} className="block text-accent hover:text-light-blue">{articles.label} →</Link>
+              )}
               <Link href="/app" className="block text-accent hover:text-light-blue">App &amp; devices →</Link>
               <Link href="/contact" className="block text-accent hover:text-light-blue">Need help? Contact us →</Link>
             </div>

@@ -9,6 +9,7 @@ import { Container } from "@/components/ui/misc";
 import { BLOG_AUTHOR, getPost, getPosts, relatedPosts } from "@/lib/blog";
 import { getSettings } from "@/lib/settings";
 import { siteConfig } from "@/lib/site";
+import { categoryPath } from "@/content/blog-categories";
 import { formatDate } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -74,6 +75,7 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
         title={post.title}
         crumbs={[
           { href: "/blog", label: "Blog" },
+          { href: categoryPath(post.category), label: post.category },
           { href: `/blog/${post.slug}`, label: post.title },
         ]}
       >

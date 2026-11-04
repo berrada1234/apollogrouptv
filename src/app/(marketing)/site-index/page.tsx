@@ -4,6 +4,7 @@ import { CtaBand, PageHero } from "@/components/marketing/sections";
 import { cardClass, Section } from "@/components/section";
 import { generalGuides } from "@/content/guides";
 import { paymentGuides } from "@/content/payment-guides";
+import { blogCategories } from "@/content/blog-categories";
 import { getPosts } from "@/lib/blog";
 import { getDeviceGuides } from "@/lib/guides";
 import { getHelpIndex } from "@/lib/help-index";
@@ -86,7 +87,11 @@ export default async function SiteIndexPage() {
     {
       title: "Blog",
       blurb: "Guides and explainers about streaming.",
-      links: [{ href: "/blog", label: "All articles" }, ...posts.map((p) => ({ href: `/blog/${p.slug}`, label: p.title }))],
+      links: [
+        { href: "/blog", label: "All articles" },
+        ...blogCategories.map((c) => ({ href: `/blog/category/${c.slug}`, label: `${c.name} articles` })),
+        ...posts.map((p) => ({ href: `/blog/${p.slug}`, label: p.title })),
+      ],
     },
     {
       title: "Company",

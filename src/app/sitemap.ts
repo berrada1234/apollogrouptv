@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { blogCategories } from "@/content/blog-categories";
 import { paymentGuides } from "@/content/payment-guides";
 import { getPosts } from "@/lib/blog";
 import { getDeviceGuides } from "@/lib/guides";
@@ -25,6 +26,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...publicRoutes,
     ...devices.map((d) => `/guides/${d.slug}`),
     ...paymentGuides.map((g) => `/payment-guides/${g.slug}`),
+    ...blogCategories.map((c) => `/blog/category/${c.slug}`),
     ...getPosts().map((p) => `/blog/${p.slug}`),
     ...policyRoutes,
   ];

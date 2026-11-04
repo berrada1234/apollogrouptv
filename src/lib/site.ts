@@ -15,16 +15,34 @@ export function isLocalUrl(url: string | undefined) {
   }
 }
 
-export const mainNav = [
+/**
+ * Header: the seven sections people come for, in buying order. Reviews, FAQ and Refer a Friend live in the
+ * footer and inside the Help Center. `match` keeps a section highlighted on the pages that belong to it.
+ */
+export const mainNav: { href: string; label: string; match?: string[] }[] = [
   { href: "/product", label: "Product" },
   { href: "/app", label: "App" },
-  { href: "/plans", label: "Plans" },
+  { href: "/plans", label: "Plans", match: ["/apollo-group-tv-renewal", "/payment-methods", "/payment-guides"] },
   { href: "/channels", label: "Channels" },
-  { href: "/reviews", label: "Reviews" },
-  { href: "/refer-a-friend", label: "Refer a Friend" },
-  { href: "/faq", label: "FAQ" },
-  { href: "/help", label: "Help Center" },
+  { href: "/guides", label: "Setup Guides" },
+  { href: "/compare", label: "Compare", match: ["/apollo-group-tv-vs-", "/why-apollo-group-tv", "/choosing-an-iptv-service"] },
+  { href: "/help", label: "Help Center", match: ["/faq", "/blog", "/contact", "/reviews"] },
 ];
+
+/** Shown under the main links in the phone menu, so pages that left the header stay one tap away. */
+export const secondaryNav = [
+  { href: "/reviews", label: "Reviews" },
+  { href: "/faq", label: "FAQ" },
+  { href: "/blog", label: "Blog" },
+  { href: "/refer-a-friend", label: "Refer a Friend" },
+  { href: "/contact", label: "Contact" },
+];
+
+/** Whether a header item should show as the current section for this path. */
+export function isNavActive(item: (typeof mainNav)[number], pathname: string) {
+  const within = (prefix: string) => pathname === prefix || pathname.startsWith(prefix.endsWith("-") ? prefix : `${prefix}/`);
+  return within(item.href) || Boolean(item.match?.some(within));
+}
 
 export const footerNav = [
   {
@@ -41,6 +59,7 @@ export const footerNav = [
   {
     title: "Compare",
     links: [
+      { href: "/compare", label: "All comparisons" },
       { href: "/why-apollo-group-tv", label: "Why Apollo Group TV" },
       { href: "/choosing-an-iptv-service", label: "Choosing an IPTV service" },
       { href: "/apollo-group-tv-vs-youtube-tv", label: "vs YouTube TV" },

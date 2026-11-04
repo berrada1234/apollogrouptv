@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { permanentRedirect } from "next/navigation";
+import { BlogCategoryNav } from "@/components/blog-category-nav";
+import { categoryPath } from "@/content/blog-categories";
 import { PostCard } from "@/components/blog";
 import { CtaBand, PageHero } from "@/components/marketing/sections";
 import { Section } from "@/components/section";
 import { getPosts } from "@/lib/blog";
 import { siteConfig } from "@/lib/site";
-import { cn } from "@/lib/utils";
 
 const title = "Apollo Group TV Blog: Streaming Guides, Devices and IPTV Tips";
 const description =
@@ -20,10 +21,9 @@ export const metadata: Metadata = {
 
 export default async function BlogIndex({ searchParams }: PageProps<"/blog">) {
   const posts = getPosts();
-  const categories = [...new Set(posts.map((p) => p.category))];
   const sp = await searchParams;
-  const active = typeof sp.category === "string" && categories.includes(sp.category) ? sp.category : null;
-  const shown = active ? posts.filter((p) => p.category === active) : posts;
+  // Old filter links (/blog?category=Fire%20TV) move to the category pages.
+  if (typeof sp.category === "string") permanentRedirect(categoryPath(sp.category));
   const itemList = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -41,23 +41,9 @@ export default async function BlogIndex({ searchParams }: PageProps<"/blog">) {
         crumbs={[{ href: "/blog", label: "Blog" }]}
       />
       <Section>
-        <ul className="mb-8 flex flex-wrap gap-2" aria-label="Filter articles by category">
-          {[null, ...categories].map((c) => (
-            <li key={c ?? "all"}>
-              <Link
-                href={c ? `/blog?category=${encodeURIComponent(c)}` : "/blog"}
-                className={cn(
-                  "inline-flex rounded-full border px-3.5 py-1.5 text-sm font-medium",
-                  active === c ? "border-primary/60 bg-primary/10 text-light-blue" : "border-border text-muted hover:text-text",
-                )}
-              >
-                {c ?? "All articles"}
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <BlogCategoryNav />
         <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {shown.map((p) => (
+          {posts.map((p) => (
             <li key={p.slug}>
               <PostCard post={p} />
             </li>

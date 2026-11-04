@@ -7,7 +7,7 @@ import { Menu, X } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { ButtonLink } from "@/components/ui/button";
 import { useSession } from "@/lib/auth-client";
-import { mainNav } from "@/lib/site";
+import { isNavActive, mainNav, secondaryNav } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 export function SiteHeader() {
@@ -75,12 +75,12 @@ export function SiteHeader() {
         <nav aria-label="Main" className="hidden lg:block">
           <ul className="flex items-center gap-0.5">
             {mainNav.map((item) => {
-              const active = pathname === item.href;
+              const active = isNavActive(item, pathname);
               return (
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    aria-current={active ? "page" : undefined}
+                    aria-current={pathname === item.href ? "page" : active ? "true" : undefined}
                     className={cn(
                       "relative whitespace-nowrap rounded-full px-2.5 py-2 text-[13px] font-medium transition-colors xl:px-3.5 xl:text-sm",
                       active ? "bg-white/[0.07] text-text" : "text-muted hover:text-text",
@@ -118,6 +118,15 @@ export function SiteHeader() {
                     aria-current={pathname === item.href ? "page" : undefined}
                     className="block py-4 font-hero text-xl font-medium tracking-[-0.03em] text-muted transition-colors hover:text-text aria-[current=page]:text-text"
                   >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <ul className="rise mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm" style={{ "--d": 4 } as React.CSSProperties} aria-label="More">
+              {secondaryNav.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className="text-muted hover:text-text">
                     {item.label}
                   </Link>
                 </li>
