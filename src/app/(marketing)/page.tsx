@@ -8,8 +8,10 @@ import {
   DevicesSection,
   FaqSection,
   FinalCta,
+  GuidesSection,
   IntroSection,
   LegalSection,
+  OfficialSiteSection,
   PlansSection,
   ReviewsSection,
   ServicesSection,
@@ -24,10 +26,15 @@ import { db } from "@/lib/db";
 import { isCheckoutEnabled } from "@/lib/payments";
 import { displayName, getActivePlans, getApprovedReviews } from "@/lib/queries";
 import { getSettings } from "@/lib/settings";
+import { getPosts } from "@/lib/blog";
 import { siteConfig } from "@/lib/site";
 import { formatDate, formatMoney } from "@/lib/utils";
 
-export const dynamic = "force-dynamic";
+// Rebuilt at most every 5 minutes (and immediately when an admin saves settings), so visitors get a cached page.
+export const revalidate = 300;
+
+// Guides shown on the homepage, in the order a new customer needs them.
+const homeGuides = ["how-to-get-apollo-tv", "apollo-tv-downloader-code", "xtream-codes-login", "is-apollo-tv-down", "apollo-group-tv-netflix", "apollo-group-tv-roku"];
 
 export const metadata: Metadata = {
   title: {
@@ -52,6 +59,7 @@ const quickNav = [
   { id: "devices", label: "Devices" },
   { id: "how-it-works", label: "How it works" },
   { id: "reviews", label: "Reviews" },
+  { id: "guides", label: "Guides" },
   { id: "faq", label: "FAQ" },
   { id: "support", label: "Support" },
 ];
@@ -217,6 +225,12 @@ export default async function HomePage() {
       </Band>
       <Band id="safety">
         <LegalSection />
+      </Band>
+      <Band id="official-site">
+        <OfficialSiteSection domain={settings.legal.officialDomain || new URL(siteConfig.url).host} />
+      </Band>
+      <Band id="guides">
+        <GuidesSection posts={homeGuides.map((slug) => getPosts().find((p) => p.slug === slug)).filter((p) => p !== undefined)} />
       </Band>
       <Band id="faq">
         <FaqSection />

@@ -18,6 +18,7 @@ import {
   Receipt,
   ShieldCheck,
   Sparkles,
+  Globe,
   Star,
   Tv,
   User,
@@ -28,13 +29,14 @@ import {
 } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
 import { LogoMark } from "@/components/logo";
-import { ProductVisual } from "@/components/home/product-visual";
 import { Container, EmptyState } from "@/components/ui/misc";
 import { PlanCard } from "@/components/marketing/sections";
 import { FaqAccordion } from "@/components/marketing/faq-list";
 import { Eyebrow } from "@/components/home/hero";
 import { ReviewCarousel } from "@/components/home/review-carousel";
 import { RichText } from "@/components/rich-text";
+import { PostCard } from "@/components/blog";
+import type { BlogPost } from "@/lib/blog";
 import { homeCopy, homeFaq } from "@/content/home";
 import { pricingContext, savingsPct } from "@/lib/pricing";
 import { afterHeader, cardClass, cardHover, h2Class, IconBox, leadClass, Section, SectionHeader } from "@/components/section";
@@ -221,9 +223,19 @@ export function IntroSection() {
             <span className="absolute left-1/2 top-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent shadow-[0_0_12px_rgb(70_224_255/0.9)]" />
           </div>
           <div className="pointer-events-none absolute left-1/2 top-1/2 aspect-square w-[85%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-white/[0.06]" aria-hidden />
-          <div className="parallax relative">
-            <ProductVisual />
-          </div>
+          <figure className="parallax relative">
+            <div className="glass edge-spectrum overflow-hidden rounded-[18px] p-1.5 shadow-[0_40px_80px_-30px_rgb(0_0_0/0.9)] sm:p-2">
+              <Image
+                src="/images/app/apollo-group-tv-app-home-screen.webp"
+                alt="Apollo Group TV app home screen: a featured title, trending and popular movie rows, and a menu for Search, Movies, TV Shows, Live TV, Sports VOD and the TV Guide"
+                width={1672}
+                height={941}
+                sizes="(min-width: 1024px) 560px, 100vw"
+                className="h-auto w-full rounded-[12px]"
+              />
+            </div>
+            <figcaption className="mt-3 text-center text-xs text-subtle">The Apollo TV app home screen on a TV</figcaption>
+          </figure>
         </div>
       </div>
     </Section>
@@ -745,5 +757,69 @@ export function FinalCta({ fromMonthly, maxSave }: { fromMonthly: string | null;
         </div>
       </Container>
     </section>
+  );
+}
+
+// ─── Official site check ────────────────────────────────────────────────────
+
+/** How to tell the official site from lookalikes. Every point matches how the site actually works. */
+export function OfficialSiteSection({ domain }: { domain: string }) {
+  const checks = [
+    { icon: Globe, t: `The address is ${domain}`, b: "Type it yourself or use a bookmark. Sites with extra letters, hyphens or other endings aren't us." },
+    { icon: Receipt, t: "You only pay through your own invoice", b: "Every invoice is created in your account and has a number starting with AGT-. Nobody from Apollo will ask you to pay by message or email." },
+    { icon: KeyRound, t: "Login details stay in My Account", b: "Your app login appears in My Account once your pack is active. We never send it by email or chat." },
+    { icon: LifeBuoy, t: "Support answers in your ticket", b: "Help comes through tickets in your dashboard or our contact page, so every reply is on record." },
+  ];
+  return (
+    <Section>
+      <div className="grid gap-10 lg:grid-cols-12 lg:gap-16 [&>*]:min-w-0">
+        <div className="lg:col-span-5">
+          <SectionHeader
+            eyebrow="Official website"
+            title="How to Know You're on the Official Apollo Group TV Site"
+            description="Lookalike sites copy the Apollo name to take payments. Four checks tell you you're in the right place before you pay."
+          />
+          <Link href="/blog/apollo-group-tv-official-website" className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-accent hover:text-light-blue">
+            How to spot a fake Apollo site <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+          </Link>
+        </div>
+        <ul className="grid gap-4 sm:grid-cols-2 lg:col-span-7">
+          {checks.map((c) => (
+            <li key={c.t} className={cn(cardClass, "group flex flex-col p-6")}>
+              <IconBox icon={c.icon} />
+              <h3 className="mt-5 font-semibold text-text">{c.t}</h3>
+              <p className="mt-2 text-sm leading-6 text-muted">{c.b}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </Section>
+  );
+}
+
+// ─── Latest guides ──────────────────────────────────────────────────────────
+
+export function GuidesSection({ posts }: { posts: BlogPost[] }) {
+  if (posts.length === 0) return null;
+  return (
+    <Section>
+      <SectionHeader
+        eyebrow="Guides"
+        title="Apollo TV Setup and Help Guides"
+        description="Step-by-step answers to the questions customers ask most, from installing the app to renewing your pack."
+        action={
+          <ButtonLink href="/blog" variant="secondary">
+            All articles
+          </ButtonLink>
+        }
+      />
+      <ul className={cn(afterHeader, "grid gap-5 sm:grid-cols-2 lg:grid-cols-3")}>
+        {posts.map((p) => (
+          <li key={p.slug}>
+            <PostCard post={p} />
+          </li>
+        ))}
+      </ul>
+    </Section>
   );
 }
