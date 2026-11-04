@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { AlertTriangle, Check, CreditCard, ExternalLink, Gift, Lock, Package, ShieldCheck, Sparkles, Tag, UserPlus, Zap } from "lucide-react";
+import { AlertTriangle, Check, ChevronDown, CreditCard, ExternalLink, Gift, Lock, Package, ShieldCheck, Sparkles, Tag, UserPlus, Zap } from "lucide-react";
 import { InvoiceActions, ReservationTimer, SubscribeButton } from "@/components/checkout/checkout-client";
 import { CheckoutSection } from "@/components/checkout/checkout-section";
 import { findSelectedPlan } from "@/components/checkout/selected-plan";
@@ -31,6 +31,23 @@ const panel = "rounded-[14px] border border-border bg-card shadow-card";
 function splitPrice(text: string) {
   const m = /^(.*?)([.,]\d{2})$/.exec(text);
   return m ? [m[1], m[2]] : [text, ""];
+}
+
+/** Shows the packs grid as is, or folded behind "Change pack" while an invoice is waiting for payment. */
+function PacksWrapper({ collapsed, current, children }: { collapsed: boolean; current?: string; children: React.ReactNode }) {
+  if (!collapsed) return <>{children}</>;
+  return (
+    <details className={cn(panel, "group p-5")}>
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
+        <span>
+          <span className="block font-semibold text-text">Change pack</span>
+          <span className="block text-sm text-muted">Your invoice is for the {current}. Pick another pack here to replace it.</span>
+        </span>
+        <ChevronDown className="h-5 w-5 shrink-0 text-muted transition-transform group-open:rotate-180" aria-hidden />
+      </summary>
+      <div className="mt-4">{children}</div>
+    </details>
+  );
 }
 
 export default async function PlansBillingPage({ searchParams }: PageProps<"/dashboard/plan">) {
@@ -141,11 +158,19 @@ export default async function PlansBillingPage({ searchParams }: PageProps<"/das
         </section>
       )}
 
+      {/* With an unpaid invoice, payment comes straight after it and the other packs fold away. */}
+      {checkout && payable && (
+        <div className={cn(panel, "mb-6 p-5 sm:p-6")}>
+          <CheckoutSection methods={methods} orderId={payable.id} supportHours={settings.general.supportHours} />
+        </div>
+      )}
+
       {/* Packs */}
-      <h2 className="sr-only">Available packs</h2>
       {plans.length === 0 ? (
         <EmptyState icon={Package} title="No packs available right now" description="Please check back soon or contact support." />
       ) : (
+        <PacksWrapper collapsed={Boolean(payable)} current={payable?.plan.name}>
+        <h2 className="sr-only">Available packs</h2>
         <ul id="packs" className="grid scroll-mt-24 gap-4 pt-3 sm:grid-cols-2 xl:grid-cols-4">
           {plans.map((plan) => {
             const best = plan.id === bestValueId;
@@ -205,6 +230,7 @@ export default async function PlansBillingPage({ searchParams }: PageProps<"/das
             );
           })}
         </ul>
+        </PacksWrapper>
       )}
 
       {/* Promo + referral */}
@@ -258,14 +284,12 @@ export default async function PlansBillingPage({ searchParams }: PageProps<"/das
         </section>
       )}
 
-      {checkout && (
+      {checkout && !payable && (
         <div className={cn(panel, "mt-6 p-5 sm:p-6")}>
-          <CheckoutSection methods={methods} orderId={payable?.id ?? null} supportHours={settings.general.supportHours} />
-          {!payable && (
-            <p className="mt-4 text-sm text-muted">
-              {invoice ? "Your payment is being confirmed." : "Choose a pack above to create your invoice, then pay with any method here."}
-            </p>
-          )}
+          <CheckoutSection methods={methods} orderId={null} supportHours={settings.general.supportHours} />
+          <p className="mt-4 text-sm text-muted">
+            {invoice ? "Your payment is being confirmed." : "Choose a pack above to create your invoice, then pay with any method here."}
+          </p>
         </div>
       )}
 

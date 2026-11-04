@@ -18,15 +18,13 @@ export const signInSchema = z.object({
   rememberMe: z.boolean(),
 });
 
-export const createAccountSchema = z
-  .object({
-    name: nameSchema,
-    email: emailSchema,
-    password: passwordSchema,
-    confirmPassword: z.string(),
-    acceptTerms: z.boolean().refine((v) => v, "You must accept the Terms and Privacy Policy."),
-  })
-  .refine((d) => d.password === d.confirmPassword, { path: ["confirmPassword"], message: "Passwords do not match." });
+// One password field: the show-password toggle, strength meter and email code catch typos without a confirm box.
+export const createAccountSchema = z.object({
+  name: nameSchema,
+  email: emailSchema,
+  password: passwordSchema,
+  acceptTerms: z.boolean().refine((v) => v, "Please accept the Terms and Privacy Policy to continue."),
+});
 
 export const forgotPasswordSchema = z.object({ email: emailSchema });
 

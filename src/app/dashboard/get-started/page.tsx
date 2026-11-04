@@ -111,10 +111,19 @@ export default async function GetStartedPage() {
         </section>
       ) : null}
 
-      {/* All packs */}
+      {/* All packs: hidden while an invoice is waiting, so the pack they chose stays the focus. */}
+      {payable || reported ? (
+        <p className="text-sm text-muted">
+          Want a different pack?{" "}
+          <Link href="/dashboard/plan#packs" className="text-accent hover:text-light-blue">
+            Change it on the invoice page
+          </Link>
+          .
+        </p>
+      ) : (
       <section aria-labelledby="packs-title">
         <h2 id="packs-title" className="font-display text-lg font-semibold text-text">
-          {payable || remembered ? "Or pick another pack" : "Choose your pack"}
+          {remembered ? "Or pick another pack" : "Choose your pack"}
         </h2>
         <p className="mt-1 text-sm text-muted">Every pack has the same channels, library, devices and support. Only the length changes.</p>
         <ul className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -142,6 +151,7 @@ export default async function GetStartedPage() {
           })}
         </ul>
       </section>
+      )}
 
       {/* What happens next */}
       <section className="mt-10" aria-labelledby="next-title">

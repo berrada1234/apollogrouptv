@@ -140,10 +140,11 @@ export function InvoiceActions({
         type="button"
         onClick={() => {
           const el = document.getElementById("checkout");
-          el?.scrollIntoView({ behavior: "smooth", block: "start" });
-          el?.querySelector<HTMLButtonElement>("[data-pay]")?.focus({
-            preventScroll: true,
-          });
+          if (!el) return;
+          // Focus first (without scrolling), then scroll the window to the payment methods, clear of the sticky header.
+          el.querySelector<HTMLButtonElement>("[data-pay]")?.focus({ preventScroll: true });
+          const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 88, behavior: reduce ? "auto" : "smooth" });
         }}
       >
         Continue Payment <ArrowRight className="h-4 w-4" aria-hidden />

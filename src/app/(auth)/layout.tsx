@@ -1,55 +1,72 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, CheckCircle2, LifeBuoy, ShieldCheck } from "lucide-react";
+import { ArrowLeft, Check, LifeBuoy, ShieldCheck } from "lucide-react";
 import { Logo } from "@/components/logo";
 
 export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
+/** What really happens after sign-up, in order. Kept free of database reads: some auth pages are built statically. */
+const journey = [
+  { t: "Create your account", b: "Name, email and a password. It takes about a minute." },
+  { t: "Confirm your email", b: "Enter the 6-digit code we email you." },
+  { t: "Choose a pack and pay", b: "One to twelve months, paid once. Nothing renews by itself." },
+  { t: "Start watching", b: "Our team activates your pack and you install the app on your device." },
+];
+
+const devices = "Fire TV, Android, Windows, Mac, iPhone, iPad and Apple TV";
+
 function BrandPanel() {
   return (
-    <aside className="relative hidden overflow-hidden border-r border-border bg-bg-secondary lg:flex lg:flex-col lg:justify-between lg:p-12 xl:p-16">
+    <aside className="relative hidden overflow-hidden border-r border-border bg-bg-secondary lg:flex lg:flex-col lg:justify-between lg:gap-10 lg:p-12 xl:p-16">
       <div className="bg-spotlight pointer-events-none absolute inset-0" aria-hidden />
       <div className="bg-grid pointer-events-none absolute inset-0" aria-hidden />
       <Logo className="relative" height={52} />
 
       <div className="relative">
-        <h2 className="max-w-md font-display text-3xl font-semibold leading-tight tracking-tight text-text xl:text-4xl">
-          One account for your plan, billing and support.
+        <h2 className="max-w-md font-hero text-3xl font-medium leading-tight tracking-[-0.035em] text-text xl:text-4xl">
+          Live TV and on-demand on the screens you already own.
         </h2>
-        <p className="mt-4 max-w-md text-muted">Sign in to see where everything stands — no emails to dig through.</p>
+        <p className="mt-4 max-w-md text-muted">One account holds your pack, invoices and support tickets.</p>
 
-        {/* Illustrative account preview */}
-        <div className="mt-10 max-w-sm space-y-3" aria-hidden>
-          <div className="rounded-lg border border-border-strong bg-card p-4 shadow-lg">
-            <div className="flex items-center justify-between">
-              <span className="text-xs text-subtle">Subscription</span>
-              <span className="inline-flex items-center gap-1 rounded-full bg-success/15 px-2 py-0.5 text-[11px] text-success">
-                <span className="h-1.5 w-1.5 rounded-full bg-success" /> Active
+        <figure className="mt-8 max-w-md overflow-hidden rounded-[14px] border border-border-strong bg-card shadow-lg">
+          <Image
+            src="/images/app/apollo-group-tv-app-home-screen.webp"
+            alt="The Apollo Group TV app home screen"
+            width={1672}
+            height={941}
+            sizes="(min-width: 1024px) 28rem, 0px"
+            className="h-auto w-full"
+          />
+          <figcaption className="border-t border-border px-4 py-2.5 text-xs text-subtle">The Apollo TV app on a TV screen</figcaption>
+        </figure>
+
+        <ol className="mt-8 max-w-md space-y-4">
+          {journey.map(({ t, b }, i) => (
+            <li key={t} className="flex gap-3.5">
+              <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-primary/40 bg-primary/10 text-xs font-semibold text-accent">
+                {i + 1}
               </span>
-            </div>
-            <p className="mt-1 font-display text-lg font-semibold text-text">Quarterly plan</p>
-            <div className="mt-3 h-1.5 rounded-full bg-inset">
-              <div className="h-1.5 w-3/5 rounded-full bg-accent" />
-            </div>
-          </div>
-          <div className="ml-8 flex items-center gap-3 rounded-lg border border-border bg-card/90 p-4 shadow-card">
-            <CheckCircle2 className="h-5 w-5 shrink-0 text-success" />
-            <div>
-              <p className="text-sm font-medium text-text">Ticket resolved</p>
-              <p className="text-xs text-subtle">Support replied to your request</p>
-            </div>
-          </div>
-        </div>
+              <span>
+                <span className="block text-sm font-semibold text-text">{t}</span>
+                <span className="block text-sm text-muted">{b}</span>
+              </span>
+            </li>
+          ))}
+        </ol>
       </div>
 
-      <ul className="relative flex gap-6 text-xs text-subtle">
+      <ul className="relative flex flex-wrap gap-x-6 gap-y-2 text-xs text-subtle">
         <li className="inline-flex items-center gap-1.5">
-          <ShieldCheck className="h-4 w-4 text-accent" aria-hidden /> Verified sign-in
+          <ShieldCheck className="h-4 w-4 text-accent" aria-hidden /> Email-verified accounts
         </li>
         <li className="inline-flex items-center gap-1.5">
-          <LifeBuoy className="h-4 w-4 text-accent" aria-hidden /> Ticket support
+          <Check className="h-4 w-4 text-accent" aria-hidden /> {devices}
+        </li>
+        <li className="inline-flex items-center gap-1.5">
+          <LifeBuoy className="h-4 w-4 text-accent" aria-hidden /> Written replies by ticket
         </li>
       </ul>
     </aside>

@@ -35,7 +35,7 @@ function layout(heading: string, body: string, cta?: { label: string; url: strin
     : "";
   return `<div style="background:#050607;padding:32px;font-family:Arial,sans-serif;color:#F4F6F8">
     <div style="max-width:520px;margin:auto;background:#0F1216;border:1px solid #1C2026;border-radius:14px;padding:32px">
-      <p style="color:#22D3EE;font-weight:700;margin:0 0 16px">${escapeHtml(siteConfig.name)}</p>
+      <p style="margin:0 0 24px"><img src="${escapeHtml(`${siteConfig.url}/brand/apollo-logo-email.png`)}" width="220" height="46" alt="${escapeHtml(siteConfig.name)}" style="display:block;border:0;height:auto;max-width:220px"></p>
       <h1 style="font-size:20px;margin:0 0 12px">${escapeHtml(heading)}</h1>
       <p style="color:#CBD5E1;line-height:1.6">${escapeHtml(body)}</p>${codeBlock}${button}
     </div></div>`;

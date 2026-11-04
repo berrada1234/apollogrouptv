@@ -7,6 +7,7 @@ import {
   SelectedPlanCard,
 } from "@/components/checkout/selected-plan";
 import { RememberPlan } from "@/components/checkout/remember-plan";
+import { AuthSteps } from "@/components/auth-steps";
 import { CreateAccountForm } from "@/components/forms/auth-forms";
 import { skipEmailVerification } from "@/lib/auth";
 import { isValidReferralCode } from "@/lib/referral";
@@ -29,7 +30,8 @@ export default async function CreateAccountPage({
 
   return (
     <>
-      <h1 className="font-display text-3xl font-semibold tracking-tight text-text">
+      <AuthSteps current={1} last={plan ? "Pay for pack" : undefined} />
+      <h1 className="font-hero text-3xl font-medium tracking-[-0.035em] text-text">
         Create your account
       </h1>
       <p className="mt-2 text-muted">

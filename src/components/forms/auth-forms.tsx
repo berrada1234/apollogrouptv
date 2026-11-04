@@ -12,6 +12,7 @@ import { Checkbox, Field, FieldError, FormMessage, Input } from "@/components/ui
 import { PasswordInput } from "@/components/forms/password-input";
 import { PasswordStrength } from "@/components/forms/password-strength";
 import { createAccountSchema, forgotPasswordSchema, resetPasswordSchema, signInSchema } from "@/lib/validators";
+import { suggestEmail } from "@/lib/email-typos";
 import { OTP_LENGTH, OTP_MINUTES, OTP_RESEND_SECONDS } from "@/lib/otp";
 import { safeRedirect } from "@/lib/utils";
 
@@ -24,6 +25,9 @@ function authErrorMessage(error: { status?: number; message?: string; code?: str
     return "Please verify your email first. We've sent you a new code.";
   }
   if (error.code === "INVALID_EMAIL_OR_PASSWORD") return "Incorrect email or password.";
+  if (error.code === "USER_ALREADY_EXISTS" || error.code === "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL") {
+    return "An account with this email already exists. Sign in instead, or reset your password if you’ve forgotten it.";
+  }
   if (error.code === "INVALID_OTP") return "That code isn't right. Check the latest email and try again.";
   if (error.code === "OTP_EXPIRED") return "That code has expired. Send a new one below.";
   if (error.code === "TOO_MANY_ATTEMPTS") return "Too many wrong codes. Send a new one below.";
@@ -109,13 +113,19 @@ export function CreateAccountForm({
     register,
     handleSubmit,
     control,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<z.input<typeof createAccountSchema>>({
     mode: "onTouched",
     resolver: zodResolver(createAccountSchema),
-    defaultValues: { name: "", email: "", password: "", confirmPassword: "", acceptTerms: false },
+    defaultValues: { name: "", email: "", password: "", acceptTerms: false },
   });
   const password = useWatch({ control, name: "password" }) ?? "";
+  const email = useWatch({ control, name: "email" }) ?? "";
+  // Offered once the field is left, so it doesn't flash while someone is still typing.
+  const [emailDone, setEmailDone] = useState(false);
+  const suggestion = emailDone ? suggestEmail(email) : null;
+  const emailField = register("email");
 
   const onSubmit = handleSubmit(async (values) => {
     setMsg(null);
@@ -140,17 +150,44 @@ export function CreateAccountForm({
         </p>
       )}
       <Field label="Full name" htmlFor="name" error={errors.name?.message}>
-        <Input id="name" autoComplete="name" aria-invalid={!!errors.name} aria-describedby="name-error" {...register("name")} />
+        <Input id="name" autoComplete="name" placeholder="e.g. Jordan Smith" aria-invalid={!!errors.name} aria-describedby="name-error" {...register("name")} />
       </Field>
       <Field label="Email" htmlFor="email" error={errors.email?.message}>
-        <Input id="email" type="email" autoComplete="email" aria-invalid={!!errors.email} aria-describedby="email-error" {...register("email")} />
+        <Input
+          id="email"
+          type="email"
+          inputMode="email"
+          autoComplete="email"
+          placeholder="you@example.com"
+          aria-invalid={!!errors.email}
+          aria-describedby="email-error email-hint"
+          {...emailField}
+          onBlur={(e) => {
+            setEmailDone(true);
+            return emailField.onBlur(e);
+          }}
+        />
+        {suggestion ? (
+          <p id="email-hint" className="mt-1.5 text-sm text-warning" role="status">
+            Did you mean{" "}
+            <button
+              type="button"
+              className="font-semibold underline underline-offset-2 hover:text-text"
+              onClick={() => setValue("email", suggestion, { shouldValidate: true })}
+            >
+              {suggestion}
+            </button>
+            ?
+          </p>
+        ) : (
+          <p id="email-hint" className="mt-1.5 text-xs text-muted">
+            We’ll send your verification code here.
+          </p>
+        )}
       </Field>
       <Field label="Password" htmlFor="password" error={errors.password?.message}>
         <PasswordInput id="password" autoComplete="new-password" aria-invalid={!!errors.password} aria-describedby="password-error password-rules" {...register("password")} />
         <PasswordStrength value={password} id="password-rules" />
-      </Field>
-      <Field label="Confirm password" htmlFor="confirmPassword" error={errors.confirmPassword?.message}>
-        <PasswordInput id="confirmPassword" autoComplete="new-password" aria-invalid={!!errors.confirmPassword} aria-describedby="confirmPassword-error" {...register("confirmPassword")} />
       </Field>
       <div>
         <Checkbox
@@ -174,8 +211,9 @@ export function CreateAccountForm({
       </div>
       <FormMessage ok={msg?.ok} message={msg?.message} />
       <Button type="submit" size="lg" className="w-full" loading={isSubmitting}>
-        Create account
+        {verifyEmail ? "Create account and get my code" : "Create account"}
       </Button>
+      <p className="text-center text-xs text-muted">No payment is taken now. You choose and pay for a pack after confirming your email.</p>
     </form>
   );
 }

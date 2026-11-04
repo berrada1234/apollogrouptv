@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { CheckCircle2 } from "lucide-react";
+import { AuthSteps } from "@/components/auth-steps";
 import { VerifyCodeForm } from "@/components/forms/auth-forms";
 import { ButtonLink } from "@/components/ui/button";
 import { FormMessage } from "@/components/ui/form";
@@ -31,7 +32,8 @@ export default async function VerifyEmailPage({ searchParams }: PageProps<"/veri
 
   return (
     <>
-      <h1 className="font-display text-3xl font-semibold tracking-tight text-text">Check your email</h1>
+      <AuthSteps current={2} last={next?.includes("plan=") ? "Pay for pack" : undefined} />
+      <h1 className="font-hero text-3xl font-medium tracking-[-0.035em] text-text">Check your email</h1>
       <p className="mt-2 text-muted">
         {email
           ? `We sent a ${OTP_LENGTH}-digit code to confirm your email. Enter it below to activate your account.`

@@ -28,16 +28,16 @@ describe("passwordSchema", () => {
 });
 
 describe("createAccountSchema", () => {
-  const valid = { name: "Jane Doe", email: "Jane@Example.com ", password: "Str0ngPassword", confirmPassword: "Str0ngPassword", acceptTerms: true };
+  const valid = { name: "Jane Doe", email: "Jane@Example.com ", password: "Str0ngPassword", acceptTerms: true };
 
   it("normalizes email to lowercase and trims it", () => {
     const r = createAccountSchema.parse(valid);
     expect(r.email).toBe("jane@example.com");
   });
-  it("requires matching passwords", () => {
-    const r = createAccountSchema.safeParse({ ...valid, confirmPassword: "Different1A" });
+  it("rejects a weak password", () => {
+    const r = createAccountSchema.safeParse({ ...valid, password: "short" });
     expect(r.success).toBe(false);
-    expect(r.error?.issues[0].path).toEqual(["confirmPassword"]);
+    expect(r.error?.issues[0].path).toEqual(["password"]);
   });
   it("requires accepting the terms", () => {
     expect(createAccountSchema.safeParse({ ...valid, acceptTerms: false }).success).toBe(false);
