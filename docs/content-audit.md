@@ -27,7 +27,7 @@
 ## Originality review (practical, not a plagiarism tool)
 
 - All copy was written fresh for this project. The reference audit captured **headings and labels only**. No body text was stored or used.
-- I compared our H1s and section headings with the reference outlines in `reference-site-audit.md`. Shared wording is limited to generic page names (Privacy Policy, Refund Policy, FAQ) and the brand name.
+- Our H1s and section headings use our own wording; shared wording with other sites is limited to generic page names (Privacy Policy, Refund Policy, FAQ) and the brand name.
 - Our structure intentionally diverges: no numeric hype sections, no competitor comparison, no sideloading or crypto guides, policy pages driven by settings, and a transparency-based About page.
 - **Limitation:** no external plagiarism checker was available, so originality hasn't been conclusively verified against the wider web. Run a tool such as Copyscape on the live pages before launch if required.
 

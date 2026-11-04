@@ -52,7 +52,7 @@ No two pages target the same primary keyword or the same search intent. Pairs ch
 
 ## Needs owner action
 
-1. **Installer downloads return 404:** `/downloads/apollo-mobile-universal-latest.apk`, `apollo-mac-latest.dmg` and `Apollo-Group-TV-Setup-latest.exe` are linked from `/app`, `/guides/android-phone-tablet`, `/guides/macos` and `/guides/windows`. The files still exist on `apollogrouptvs.com/downloads/`. Upload them to `apollogroupr.tv/downloads/`, or approve a redirect to the old location.
+1. **Installer downloads return 404:** `/downloads/apollo-mobile-universal-latest.apk`, `apollo-mac-latest.dmg` and `Apollo-Group-TV-Setup-latest.exe` are linked from `/app`, `/guides/android-phone-tablet`, `/guides/macos` and `/guides/windows`. Upload the installer files to `apollogroupr.tv/downloads/`.
 2. **Google Search Console:** verify the domain (set `GOOGLE_SITE_VERIFICATION`) and submit `https://apollogroupr.tv/sitemap.xml`.
 3. **Analytics:** set `NEXT_PUBLIC_ANALYTICS_ID` to measure traffic and conversions.
 4. **Business address in structured data and policies** must be the real business address.
