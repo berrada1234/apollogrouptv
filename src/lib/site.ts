@@ -51,6 +51,7 @@ export const footerNav = [
     links: [
       { href: "/sign-in", label: "Sign In" },
       { href: "/create-account", label: "Create Account" },
+      { href: "/apollo-group-tv-renewal", label: "Renew Subscription" },
       { href: "/client-portal", label: "Client Portal" },
       { href: "/account", label: "Account" },
     ],

@@ -5,6 +5,7 @@ import { BlogBody, TableOfContents } from "@/components/blog";
 import { CtaBand, PageHero } from "@/components/marketing/sections";
 import { buttonClasses } from "@/components/ui/button";
 import { Container } from "@/components/ui/misc";
+import { ReadingPath } from "@/components/reading-path";
 import { renewal } from "@/content/renewal";
 import { parseBlocks, plainText, type Block } from "@/lib/blog";
 import { siteConfig } from "@/lib/site";
@@ -104,6 +105,7 @@ export default function RenewalPage() {
             <TableOfContents blocks={blocks} />
           </div>
           <BlogBody blocks={blocks} tokens={{}} />
+          <ReadingPath current={path} />
         </article>
         <aside className="hidden lg:block">
           <div className="sticky top-24 space-y-6">

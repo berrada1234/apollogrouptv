@@ -140,7 +140,7 @@ These are the slip-ups that most often slow new customers down:
 
 ## What happens when your pack ends
 
-Your expiry date is shown in My Account. A few days before it, you'll get a reminder notification in your dashboard. When the pack ends, channels stop loading until you choose another pack. If you buy a new pack while your current one is still running, the new period is normally set to begin when the current one ends, so you don't lose any days.
+Your expiry date is shown in My Account. A few days before it, you'll get a reminder notification in your dashboard. When the pack ends, channels stop loading until you choose another pack. If you buy a new pack while your current one is still running, the new period is normally set to begin when the current one ends, so you don't lose any days. Our [Apollo Group TV renewal guide](/apollo-group-tv-renewal) walks through renewing step by step.
 
 ## After you're set up
 
@@ -148,6 +148,7 @@ A few things worth knowing in your first week:
 
 - **Keep the app updated.** On Fire TV, see [how to update Apollo TV on a Firestick](/blog/update-apollo-tv-firestick); for other devices, [how to update Apollo Group TV](/blog/how-to-update-apollo-group-tv).
 - **Bookmark My Account.** It's always where your current login details and expiry date live.
+- **Turn on subtitles if you want them.** Our guide to [getting subtitles on Apollo Group TV](/blog/apollo-group-tv-subtitles) shows where the setting is on each device.
 - **Know where to get help.** The [Help Center](/help) brings together every guide and answer, and you can open a support ticket from your dashboard any time.
 
 ## Example: a first-time setup, start to finish

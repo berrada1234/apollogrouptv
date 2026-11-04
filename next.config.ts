@@ -38,6 +38,8 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // One canonical host: www serves a duplicate copy of the site otherwise.
+      { source: "/:path*", has: [{ type: "host", value: "www.apollogroupr.tv" }], destination: "https://apollogroupr.tv/:path*", permanent: true },
       { source: "/login", destination: "/sign-in", permanent: true },
       { source: "/signin", destination: "/sign-in", permanent: true },
       { source: "/register", destination: "/create-account", permanent: true },

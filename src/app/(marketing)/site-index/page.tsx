@@ -49,6 +49,7 @@ export default async function SiteIndexPage() {
       links: [
         { href: "/plans", label: "Plans & pricing" },
         ...plans.map((p) => ({ href: "/plans", label: p.name, note: `${formatMoney(p.priceCents, p.currency)} · ${accessLabel(p.interval)}` })),
+        { href: "/apollo-group-tv-renewal", label: "Renew your subscription" },
       ],
     },
     {

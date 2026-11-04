@@ -57,7 +57,7 @@ export function HomeHero({
           <h1 className="mt-6 font-hero font-medium tracking-[-0.045em] text-text">
             <span className="rise block text-[2.6rem] font-semibold leading-[1.02] sm:text-[3.6rem] xl:text-[4.2rem]" style={delay(1)}>
               {brand}
-              <span className="sr-only">:</span>
+              <span className="sr-only">: </span>
             </span>
             <span className="rise mt-3 block text-[1.5rem] leading-[1.15] text-light-blue sm:text-[2rem] xl:text-[2.35rem]" style={delay(2)}>
               {statement}

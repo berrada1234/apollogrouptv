@@ -147,6 +147,7 @@ If no channel plays on any device, your subscription is active and your internet
 | "Invalid username or password" | Wrong or outdated login details | Copy the details again from My Account |
 | "Maximum connections reached" | Too many devices playing at once | Close the app on other devices |
 | One channel won't play | A problem with that channel | Try again later, then report it |
+| "Status code 404" or another numbered error | An old link, login or channel list saved on the device | See our guide to [fixing status code 404](/blog/apollo-group-tv-status-code-404) |
 | Picture freezes every few minutes | Wi-Fi instability | Move closer to the router or use a cable |
 
 The "maximum connections" message deserves a special mention. It doesn't mean the service is down. It means your login is already playing on as many devices as your subscription allows. Our article on [IPTV connection limits](/blog/iptv-connection-limit) explains how streams are counted and how to free one up.
@@ -181,7 +182,7 @@ A few habits prevent most of the problems that look like outages:
 - **Restart your streaming device once a week** to clear its memory.
 - **Clear the app's cache monthly**, or whenever it feels sluggish.
 - **Keep the app and the device's system software up to date.**
-- **Note your expiry date** in My Account so a renewal doesn't catch you out.
+- **Note your expiry date** in My Account so a renewal doesn't catch you out. When it's close, follow our guide on [how to renew your subscription](/apollo-group-tv-renewal).
 - **Keep TVs close to the router or wired** if live channels buffer in the evening.
 
 The [troubleshooting guide](/guides/troubleshooting) in our Help Center covers sign-in and playback problems in more depth.

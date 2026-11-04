@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { CalendarDays, Clock, PenLine } from "lucide-react";
 import { BlogBody, PostCard, TableOfContents } from "@/components/blog";
 import { CtaBand, PageHero } from "@/components/marketing/sections";
+import { ReadingPath } from "@/components/reading-path";
 import { Container } from "@/components/ui/misc";
 import { BLOG_AUTHOR, getPost, getPosts, relatedPosts } from "@/lib/blog";
 import { getSettings } from "@/lib/settings";
@@ -103,6 +104,7 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
             <TableOfContents blocks={post.blocks} />
           </div>
           <BlogBody blocks={post.blocks} tokens={tokens} />
+          <ReadingPath current={`/blog/${post.slug}`} />
           <footer className="mt-12 rounded-[16px] border border-border bg-card p-5 text-sm text-muted">
             Written by the <span className="font-semibold text-text">{BLOG_AUTHOR}</span>. Found something out of date?{" "}
             <Link href="/contact" className="text-accent hover:text-light-blue">

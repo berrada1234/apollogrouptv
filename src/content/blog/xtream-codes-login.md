@@ -110,6 +110,7 @@ Your login is already playing on as many devices as your subscription allows. Cl
 - Check your subscription's expiry date in My Account.
 - If you recently renewed or asked for a login reset, your details may have changed. Copy them again.
 - Update the player app; outdated versions sometimes stop working with servers.
+- If the player shows a numbered error such as 404, our guide to [Apollo Group TV status code 404](/blog/apollo-group-tv-status-code-404) explains what each code means.
 
 If none of these help, [contact our support team](/contact) with the player name, the device and the exact error message.
 

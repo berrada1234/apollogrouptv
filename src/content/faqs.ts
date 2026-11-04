@@ -67,7 +67,7 @@ export const faqSeed: FaqSeed[] = [
     category: "Plans & Billing",
     question: "Does my pack renew automatically?",
     answer:
-      "No. Each pack is a one-time payment for a fixed period and nothing renews behind your back. When the period ends, access stops until you choose a new pack — you'll see the days remaining in your [dashboard](/dashboard/plan).",
+      "No. Each pack is a one-time payment for a fixed period and nothing renews behind your back. When the period ends, access stops until you choose a new pack — you'll see the days remaining in your [dashboard](/dashboard/plan). The [renewal guide](/apollo-group-tv-renewal) walks through adding your next pack.",
   },
   {
     category: "Plans & Billing",

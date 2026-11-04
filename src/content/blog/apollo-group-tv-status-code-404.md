@@ -44,7 +44,7 @@ App updates sometimes change how the app talks to the service. A copy that's sev
 
 ### 5. An expired subscription
 
-Depending on the player, an expired subscription can show up as 404, 401 or 403. If everything stopped at once around your expiry date, check My Account first.
+Depending on the player, an expired subscription can show up as 404, 401 or 403. If everything stopped at once around your expiry date, check My Account first, and renew if it has passed; our [renewal guide](/apollo-group-tv-renewal) explains how.
 
 ### 6. A problem with one specific channel
 

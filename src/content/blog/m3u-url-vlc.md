@@ -119,6 +119,8 @@ VLC couldn't fetch the playlist. Check:
 
 Very large playlists take time. Wait a minute, then open the playlist view. If it's still empty, close VLC, open it again and reload the URL.
 
+If VLC or another player reports a numbered error, such as "404 Not Found", our guide to [fixing Apollo Group TV status code 404](/blog/apollo-group-tv-status-code-404) explains what it means and what to try.
+
 ### You pasted a web page instead of a playlist
 
 If you copied a link to a web page rather than the playlist address, VLC will fail or show something odd. Use the M3U URL exactly as it appears in My Account.
@@ -168,6 +170,8 @@ VLC on a laptop is fine at a desk, but sometimes you want the picture on the big
 ## VLC's limits as an IPTV player
 
 VLC is excellent for testing and occasional viewing, but it isn't designed around live TV:
+
+VLC does handle subtitles well: during playback, the Subtitle menu lists any tracks a title carries. Our guide to [subtitles on Apollo Group TV](/blog/apollo-group-tv-subtitles) covers VLC alongside every other device.
 
 - There's no built-in grid TV guide for live channels.
 - Very large playlists can be slow to load and browse.
