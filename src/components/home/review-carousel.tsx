@@ -1,19 +1,19 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Stars } from "@/components/ui/misc";
-import { initials } from "@/lib/utils";
+import { usePrefersReducedMotion } from "@/lib/use-reduced-motion";
+import { cn, initials } from "@/lib/utils";
 
 type Review = { id: string; rating: number; title: string; body: string; isVerified: boolean; author: string; date: string };
 
-/** One review at a time, sliding in the direction of travel; all reviews are real, moderated records. Auto-advances until the visitor interacts. */
+/** One review at a time, sliding in (CSS transform + opacity only) from the direction of travel; all reviews are real, moderated records. Auto-advances until the visitor interacts. */
 export function ReviewCarousel({ reviews }: { reviews: Review[] }) {
   const [[i, dir], setState] = useState<[number, number]>([0, 1]);
   const [paused, setPaused] = useState(false);
-  const reduce = useReducedMotion();
+  const reduce = usePrefersReducedMotion();
   const r = reviews[i];
 
   const go = useCallback((d: number) => setState(([v]) => [(v + d + reviews.length) % reviews.length, d]), [reviews.length]);
@@ -35,45 +35,34 @@ export function ReviewCarousel({ reviews }: { reviews: Review[] }) {
     >
       <div className="glass edge-spectrum relative overflow-hidden rounded-[24px]">
         <Quote className="pointer-events-none absolute -right-4 -top-4 h-40 w-40 rotate-180 text-white/[0.03]" aria-hidden />
-        <AnimatePresence mode="popLayout" initial={false} custom={dir}>
-          <motion.figure
-            key={r.id}
-            custom={dir}
-            variants={{
-              enter: (d: number) => ({ opacity: 0, x: reduce ? 0 : d * 60, filter: "blur(6px)" }),
-              center: { opacity: 1, x: 0, filter: "blur(0px)" },
-              exit: (d: number) => ({ opacity: 0, x: reduce ? 0 : d * -60, filter: "blur(6px)" }),
-            }}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-            className="p-7 sm:p-10"
-            aria-live={paused ? "polite" : "off"}
-          >
-            <div className="flex items-center justify-between gap-3">
-              <Stars rating={r.rating} />
-              {r.isVerified && (
-                <Badge tone="success" dot>
-                  Verified customer
-                </Badge>
-              )}
-            </div>
-            <blockquote className="mt-6">
-              <p className="font-hero text-xl font-medium leading-snug tracking-[-0.03em] text-text sm:text-2xl">{r.title}</p>
-              <p className="mt-4 text-base leading-7 text-muted">“{r.body}”</p>
-            </blockquote>
-            <figcaption className="mt-8 flex items-center gap-3 border-t border-border pt-6">
-              <span className="grid h-11 w-11 place-items-center rounded-full bg-[image:var(--spectrum)] text-sm font-semibold text-on-primary" aria-hidden>
-                {initials(r.author)}
-              </span>
-              <span>
-                <span className="block text-sm font-medium text-text">{r.author}</span>
-                <span className="text-xs text-subtle">{r.date}</span>
-              </span>
-            </figcaption>
-          </motion.figure>
-        </AnimatePresence>
+        {/* The key remounts the figure, so each review plays the slide-in once. */}
+        <figure
+          key={r.id}
+          className={cn("p-7 sm:p-10", dir > 0 ? "review-in-next" : "review-in-prev")}
+          aria-live={paused ? "polite" : "off"}
+        >
+          <div className="flex items-center justify-between gap-3">
+            <Stars rating={r.rating} />
+            {r.isVerified && (
+              <Badge tone="success" dot>
+                Verified customer
+              </Badge>
+            )}
+          </div>
+          <blockquote className="mt-6">
+            <p className="font-hero text-xl font-medium leading-snug tracking-[-0.03em] text-text sm:text-2xl">{r.title}</p>
+            <p className="mt-4 text-base leading-7 text-muted">“{r.body}”</p>
+          </blockquote>
+          <figcaption className="mt-8 flex items-center gap-3 border-t border-border pt-6">
+            <span className="grid h-11 w-11 place-items-center rounded-full bg-[image:var(--spectrum)] text-sm font-semibold text-on-primary" aria-hidden>
+              {initials(r.author)}
+            </span>
+            <span>
+              <span className="block text-sm font-medium text-text">{r.author}</span>
+              <span className="text-xs text-subtle">{r.date}</span>
+            </span>
+          </figcaption>
+        </figure>
       </div>
 
       {reviews.length > 1 && (

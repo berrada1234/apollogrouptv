@@ -344,22 +344,21 @@ p {
   }
 }
 
-/* Hero load sequence: the one orchestrated entrance on the site. */
+/* Hero load sequence: the one orchestrated entrance on the site.
+   Transform and opacity only (GPU-composited), with short delays so the headline paints early. */
 @keyframes rise-in {
   from {
     opacity: 0;
-    transform: translateY(18px);
-    filter: blur(6px);
+    transform: translateY(14px);
   }
   to {
     opacity: 1;
     transform: none;
-    filter: none;
   }
 }
 .rise {
-  animation: rise-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
-  animation-delay: calc(var(--d, 0) * 110ms + 80ms);
+  animation: rise-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--d, 0) * 60ms);
 }
 /* Headline reveal: each line slides up from behind a mask. */
 .line-mask {
@@ -641,14 +640,15 @@ dialog::backdrop {
   mask-composite: exclude;
   opacity: 0;
   transition: opacity 0.4s ease;
-  animation: spin-angle 4.5s linear infinite;
   pointer-events: none;
 }
 .glow-border:hover::before {
   opacity: 0.55;
+  animation: spin-angle 4.5s linear infinite;
 }
 .glow-border[data-active="true"]::before {
   opacity: 1;
+  animation: spin-angle 4.5s linear infinite;
 }
 @keyframes spin-angle {
   to {
@@ -659,7 +659,8 @@ dialog::backdrop {
 /* Check marks draw themselves as they scroll in. */
 @supports (animation-timeline: view()) {
   .check-draw {
-    stroke-dasharray: 1;
+    transform-box: fill-box;
+    transform-origin: center;
     animation: check-draw linear both;
     animation-timeline: view();
     animation-range: entry 10% entry 70%;
@@ -667,10 +668,12 @@ dialog::backdrop {
 }
 @keyframes check-draw {
   from {
-    stroke-dashoffset: 1;
+    opacity: 0;
+    transform: scale(0.4);
   }
   to {
-    stroke-dashoffset: 0;
+    opacity: 1;
+    transform: none;
   }
 }
 
@@ -713,24 +716,19 @@ dialog::backdrop {
   }
   .check-draw {
     animation: none !important;
-    stroke-dasharray: none;
   }
 }
 
 /* ── Chat assistant ───────────────────────────────────────────── */
-/* The launcher's one moving element: a slow spectrum ring around the prism. */
-@property --assistant-turn {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: 0deg;
-}
+/* The launcher's one moving element: a slow spectrum ring around the prism.
+   The ring is a circle, so rotating it (a composited transform) looks like the light travelling. */
 .assistant-ring {
-  background: conic-gradient(from var(--assistant-turn), #46e0ff, #9d7bff, #ff6ad5, #46e0ff);
+  background: conic-gradient(#46e0ff, #9d7bff, #ff6ad5, #46e0ff);
   animation: assistant-turn 6s linear infinite;
 }
 @keyframes assistant-turn {
   to {
-    --assistant-turn: 360deg;
+    transform: rotate(360deg);
   }
 }
 /* The panel grows out of the launcher it was opened from. */
@@ -773,5 +771,31 @@ dialog::backdrop {
   .assistant-panel,
   .assistant-signal span {
     animation: none !important;
+  }
+}
+
+/* Review carousel: the incoming review slides from the direction of travel (transform + opacity only). */
+.review-in-next {
+  animation: review-in-next 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.review-in-prev {
+  animation: review-in-prev 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes review-in-next {
+  from {
+    opacity: 0;
+    transform: translateX(48px);
+  }
+}
+@keyframes review-in-prev {
+  from {
+    opacity: 0;
+    transform: translateX(-48px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .review-in-next,
+  .review-in-prev {
+    animation: none;
   }
 }

@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, Sparkles, Star } from "lucide-react";
 import { buttonClasses } from "@/components/ui/button";
+import { usePrefersReducedMotion } from "@/lib/use-reduced-motion";
 import { cn, formatMoney } from "@/lib/utils";
 
 export type PricingPlan = {
@@ -33,7 +33,7 @@ const badgeLabel = { popular: "Most popular", best: "Best value", recommended: "
 function AnimatedPrice({ cents, currency, className }: { cents: number; currency: string; className?: string }) {
   const [shown, setShown] = useState(cents);
   const from = useRef(cents);
-  const reduce = useReducedMotion();
+  const reduce = usePrefersReducedMotion();
 
   useEffect(() => {
     if (reduce || from.current === cents) {
@@ -198,6 +198,18 @@ function PlanCard({ plan, selected, onSelect }: { plan: PricingPlan; selected: b
 export function PricingExplorer({ plans, defaultId }: { plans: PricingPlan[]; defaultId: string }) {
   const [selectedId, setSelectedId] = useState(defaultId);
   const selected = plans.find((p) => p.id === selectedId) ?? plans[0];
+  // One highlight pill that slides (via transform) to the active period, measured from the buttons.
+  const groupRef = useRef<HTMLDivElement>(null);
+  const [pill, setPill] = useState<{ x: number; y: number; w: number; h: number } | null>(null);
+  useLayoutEffect(() => {
+    const measure = () => {
+      const el = groupRef.current?.querySelector<HTMLElement>(`#period-${selected.slug}`);
+      if (el) setPill({ x: el.offsetLeft, y: el.offsetTop, w: el.offsetWidth, h: el.offsetHeight });
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [selected.slug]);
 
   const onKey = (e: React.KeyboardEvent, i: number) => {
     const next = e.key === "ArrowRight" || e.key === "ArrowDown" ? i + 1 : e.key === "ArrowLeft" || e.key === "ArrowUp" ? i - 1 : null;
@@ -212,7 +224,14 @@ export function PricingExplorer({ plans, defaultId }: { plans: PricingPlan[]; de
     <div>
       {/* Billing period switch */}
       <div className="flex justify-center">
-        <div role="radiogroup" aria-label="Billing period" className="glass-blur grid w-full max-w-md grid-cols-2 gap-1 rounded-[22px] p-1.5 sm:flex sm:w-auto sm:max-w-none sm:rounded-full">
+        <div ref={groupRef} role="radiogroup" aria-label="Billing period" className="glass-blur relative grid w-full max-w-md grid-cols-2 gap-1 rounded-[22px] p-1.5 sm:flex sm:w-auto sm:max-w-none sm:rounded-full">
+          {pill && (
+            <span
+              aria-hidden
+              className="absolute left-0 top-0 rounded-full bg-[image:var(--spectrum)] shadow-[0_8px_24px_-8px_rgb(122_162_255/0.9)] transition-[transform,width,height] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
+              style={{ width: pill.w, height: pill.h, transform: `translate(${pill.x}px, ${pill.y}px)` }}
+            />
+          )}
           {plans.map((p, i) => {
             const active = p.id === selected.id;
             return (
@@ -228,15 +247,10 @@ export function PricingExplorer({ plans, defaultId }: { plans: PricingPlan[]; de
                 className={cn(
                   "relative shrink-0 rounded-full px-3 py-2.5 text-sm font-semibold transition-colors duration-300 sm:px-5",
                   active ? "text-on-primary" : "text-muted hover:text-text",
+                  // Until the sliding pill has measured itself (first paint, before hydration), the active button paints its own.
+                  active && !pill && "bg-[image:var(--spectrum)]",
                 )}
               >
-                {active && (
-                  <motion.span
-                    layoutId="period-pill"
-                    className="absolute inset-0 rounded-full bg-[image:var(--spectrum)] shadow-[0_8px_24px_-8px_rgb(122_162_255/0.9)]"
-                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
-                  />
-                )}
                 <span className="relative inline-flex items-center gap-2">
                   {p.periodLabel}
                   {p.savingsPct > 0 && (

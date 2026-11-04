@@ -21,8 +21,13 @@ const nextConfig: NextConfig = {
   // Pages that read the database render per request (`dynamic = "force-dynamic"`),
   // so the classic caching model is used instead of Cache Components.
   cacheComponents: false,
-  // Hostinger shared hosting caps threads per account; the default (one worker per host CPU) aborts the build.
-  experimental: { cpus: 2 },
+  experimental: {
+    // Hostinger shared hosting caps threads per account; the default (one worker per host CPU) aborts the build.
+    cpus: 2,
+    // Ship CSS inside the HTML <head> instead of separate render-blocking stylesheet requests
+    // (Tailwind keeps it compact), so the first paint doesn't wait on a second round trip.
+    inlineCss: true,
+  },
   poweredByHeader: false,
   images: {
     formats: ["image/avif", "image/webp"],
