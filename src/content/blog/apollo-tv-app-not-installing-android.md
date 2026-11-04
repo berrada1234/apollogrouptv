@@ -8,6 +8,7 @@ intent: Troubleshooting
 category: Troubleshooting
 date: 2026-11-04
 excerpt: A fix for each message Android shows when an app won't install, from blocked downloads to "App not installed", in the order they usually appear.
+answer: When the Apollo TV app won't install on Android, it's usually one of a few blocks: a browser warning on the download, the missing permission to install unknown apps, Google Play Protect, low storage, or an older copy from another source. Each has a quick fix. Only install the official file from our Android phone and tablet guide.
 ---
 
 Installing the Apollo TV app on an Android phone or tablet usually takes a minute: download the file, tap it, tap Install. But Android is cautious about apps that don't come from Google Play, and depending on your phone's brand and Android version, it can stop you at several points along the way with messages that aren't always clear.

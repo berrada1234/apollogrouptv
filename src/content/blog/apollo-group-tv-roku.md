@@ -6,8 +6,9 @@ keyword: apollo group tv on roku
 secondary: download apollo group tv on roku, install apollo group tv on roku, roku iptv app, roku screen mirroring, airplay on roku, roku tv hdmi input
 intent: Device compatibility question
 category: Devices
-date: 2026-11-05
+date: 2026-11-04
 excerpt: A straight answer for Roku owners, why Roku works differently from Fire TV, and the setups that let you watch Apollo Group TV on the same screen.
+answer: No, the Apollo TV app can't be installed on Roku. Roku devices run Roku OS and only install channels from the Roku Channel Store, so Android app files don't work on them. Roku owners can still watch on the same TV by plugging a supported streaming stick into a spare HDMI port, or by using screen mirroring or AirPlay.
 ---
 
 Roku is one of the most popular ways to stream in North America. Many households have a Roku stick or box, or a TV with Roku built in, so it's natural to search for how to download Apollo Group TV on a Roku. The honest answer is that the Apollo TV app can't be installed on Roku devices today. That's not the end of the story, though. Most Roku owners can still watch Apollo Group TV on the same television, often with a setup that costs little or nothing.

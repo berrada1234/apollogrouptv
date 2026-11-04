@@ -8,6 +8,7 @@ intent: Commercial investigation
 category: Devices
 date: 2026-11-03
 excerpt: The Fire TV lineup has split in two. Here's which sticks still run IPTV apps installed with Downloader, which don't, and how to tell them apart.
+answer: The best Fire TV Stick for IPTV is one that runs Fire OS, because Vega OS models only install apps from the Amazon Appstore. The Fire TV Stick 4K Max (2nd generation) is the most capable Fire OS stick, with 16 GB of storage and Wi-Fi 6E, and the Fire TV Cube adds a built-in Ethernet port. Always check the OS before you buy.
 ---
 
 For years, choosing a Fire TV Stick for IPTV was simple: pick a budget, buy a stick, install your app with Downloader. That changed in late 2025. Amazon began moving new Fire TV models from its Android-based Fire OS to a new operating system called Vega OS, and Vega OS devices only run apps from the Amazon Appstore. IPTV apps installed with Downloader, including the Apollo TV app, don't work on them.

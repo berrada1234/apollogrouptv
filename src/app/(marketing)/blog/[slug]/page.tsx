@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CalendarDays, Clock, PenLine } from "lucide-react";
-import { BlogBody, PostCard, TableOfContents } from "@/components/blog";
+import { BlogBody, Inline, PostCard, TableOfContents } from "@/components/blog";
 import { CtaBand, PageHero } from "@/components/marketing/sections";
 import { ReadingPath } from "@/components/reading-path";
 import { Container } from "@/components/ui/misc";
@@ -57,12 +57,12 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
     mainEntityOfPage: url,
     image: cover,
     datePublished: post.date,
-    dateModified: post.date,
+    dateModified: post.updated,
     articleSection: post.category,
     keywords: [post.keyword, ...post.secondary].join(", "),
     wordCount: post.words,
     author: { "@type": "Organization", name: BLOG_AUTHOR, url: siteConfig.url },
-    publisher: { "@type": "Organization", name: siteConfig.name, logo: { "@type": "ImageObject", url: `${siteConfig.url}/brand/apollo-mark.png` } },
+    publisher: { "@type": "Organization", "@id": `${siteConfig.url}/#organization`, name: siteConfig.name, logo: { "@type": "ImageObject", url: `${siteConfig.url}/brand/apollo-mark.png` } },
   };
   const related = relatedPosts(post);
 
@@ -84,6 +84,11 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
           <span className="inline-flex items-center gap-1.5">
             <CalendarDays className="h-4 w-4" aria-hidden /> <time dateTime={post.date}>{formatDate(new Date(post.date))}</time>
           </span>
+          {post.updated !== post.date && (
+            <span>
+              Updated <time dateTime={post.updated}>{formatDate(new Date(post.updated))}</time>
+            </span>
+          )}
           <span className="inline-flex items-center gap-1.5">
             <Clock className="h-4 w-4" aria-hidden /> {post.minutes} min read
           </span>
@@ -92,6 +97,14 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
 
       <Container className="grid gap-10 py-10 lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-14 lg:py-14">
         <article className="min-w-0 max-w-3xl">
+          {post.answer && (
+            <section aria-label="Quick answer" className="glass edge-spectrum mb-8 rounded-[18px] p-5 sm:p-6">
+              <p className="text-sm font-semibold text-light-blue">Quick answer</p>
+              <p className="mt-2 text-base leading-7 text-text">
+                <Inline text={post.answer} tokens={tokens} />
+              </p>
+            </section>
+          )}
           {/* eslint-disable-next-line @next/next/no-img-element -- generated cover image */}
           <img
             src={`/blog/${post.slug}/cover`}

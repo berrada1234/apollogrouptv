@@ -8,6 +8,7 @@ intent: Trust / navigational
 category: Trust & Safety
 date: 2026-11-03
 excerpt: Lookalike sites copy popular names. Here's how to confirm you're on the real Apollo Group TV, and the checks that protect you on any site.
+answer: The official Apollo Group TV website is {{officialDomain}}. Packs, invoices, payments, your IPTV login details and support tickets are all handled inside your account on that site. A site that uses the Apollo name but asks you to pay outside your own invoice, or sends login details by email, isn't us.
 ---
 
 Search for any popular streaming name and you'll find more than one website using it. Some are resellers, some are unrelated services borrowing a familiar name, and some are outright scams built to take a payment and disappear. Apollo Group TV is no exception: several sites use names similar to ours.

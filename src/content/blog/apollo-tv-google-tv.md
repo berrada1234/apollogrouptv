@@ -8,6 +8,7 @@ intent: Device setup
 category: Devices
 date: 2026-11-04
 excerpt: Google TV runs on Android TV, so the Android TV method applies. Here's the Google TV version of every menu, plus storage and remote tips.
+answer: Yes. Apollo Group TV works on Google TV devices such as the Chromecast with Google TV, the Google TV Streamer and TVs with Google TV built in. Google TV runs Android TV OS, so the Apollo TV app installs with the Downloader app once you turn on developer options and allow Downloader to install unknown apps.
 ---
 
 Google TV is the interface Google puts on many streaming devices and smart TVs: the Chromecast with Google TV, the Google TV Streamer, and TVs from brands that ship with Google TV built in. If you own one, you're closer to watching Apollo Group TV than you might think.

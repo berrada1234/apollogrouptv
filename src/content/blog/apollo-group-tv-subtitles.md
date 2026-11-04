@@ -6,8 +6,9 @@ keyword: how to get subtitles on apollo group tv
 secondary: apollo tv subtitles, closed captions iptv, turn on subtitles fire tv, subtitles in vlc, subtitles not showing iptv, subtitle size and style
 intent: How-to (accessibility and settings)
 category: Players & Logins
-date: 2026-11-05
+date: 2026-11-04
 excerpt: Why some titles have subtitles and others don't, how to switch them on for each device, and how to make them easier to read.
+answer: Subtitles on Apollo Group TV depend on the title or channel: many on-demand titles carry subtitle tracks and many live channels carry broadcaster captions, but not all of them do. During playback, open the player controls and choose the subtitles or CC option. Your device's accessibility settings control whether captions appear by default and how they look.
 ---
 
 Subtitles make a big difference, whether you're watching in a noisy room, keeping the volume down while others sleep, following a film in another language or relying on captions because of hearing loss. If you're wondering how to get subtitles on Apollo Group TV, the answer depends on two things: whether the title or channel you're watching includes subtitles, and where the subtitle switch lives on your device and player.

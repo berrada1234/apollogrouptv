@@ -8,6 +8,7 @@ intent: Informational
 category: Devices
 date: 2026-11-03
 excerpt: Fire TV Sticks are built for Wi-Fi, but a cable can make live TV steadier. Here's when it's worth it and how to set it up.
+answer: For live TV, Ethernet is usually more reliable than Wi-Fi on a Firestick, because consistency matters more than top speed and a cable avoids drops and interference. Fire TV Sticks have no network port, so a wired connection needs an Ethernet adapter. If a cable isn't practical, a strong 5 GHz Wi-Fi signal close to the router often works well.
 ---
 
 Fire TV Sticks are designed around Wi-Fi. There's no network socket on the stick, the setup screens assume wireless, and for most people Wi-Fi works fine. But live TV puts more pressure on a connection than on-demand video does, and the moment your Wi-Fi wobbles, a live channel is the first thing to stutter.

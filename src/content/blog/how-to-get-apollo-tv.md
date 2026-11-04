@@ -8,6 +8,7 @@ intent: New-customer roadmap
 category: Getting Started
 date: 2026-11-04
 excerpt: A beginner's map of the whole journey, with the checks to do first so nothing holds you up halfway through.
+answer: To get Apollo TV, check that your device is supported and your internet can handle live TV, create an account and choose a pack, pay your invoice and wait for activation, then install the app and sign in with the details from My Account. Every pack is a one-time payment with no automatic renewal.
 ---
 
 Getting Apollo TV isn't complicated, but it does involve a few separate pieces: a device that can run the app, an internet connection that can carry live TV, an account, a pack, a payment and an installation. Done in the right order, it takes well under an hour. Done in the wrong order, you can end up paying before discovering your TV stick can't install the app.

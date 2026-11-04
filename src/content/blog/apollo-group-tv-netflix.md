@@ -6,8 +6,9 @@ keyword: does apollo group tv have netflix
 secondary: apollo tv and netflix, iptv vs netflix, netflix on fire tv with iptv, live tv and netflix together, streaming services comparison, cord cutting app setup
 intent: Pre-purchase question
 category: Getting Started
-date: 2026-11-05
+date: 2026-11-04
 excerpt: A clear answer about Netflix, what Apollo Group TV does include, and how households combine live TV with their on-demand apps without paying twice for the same thing.
+answer: No. Apollo Group TV doesn't include Netflix. Netflix is a separate service with its own app, account and billing, and Netflix original series and films are distributed through Netflix itself. You can run Netflix and Apollo Group TV side by side on the same Fire TV, Android TV, Google TV, iPhone, iPad or Apple TV.
 ---
 
 People switching from cable often build their new setup from a few pieces: something for live channels, something for films and series, maybe a sports app. So a common question before signing up is whether Apollo Group TV includes Netflix, or whether you still need a separate Netflix subscription.

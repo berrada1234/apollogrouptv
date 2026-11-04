@@ -20,6 +20,10 @@ export type BlogMeta = {
   intent: string;
   category: string;
   date: string;
+  /** Last substantive edit (YYYY-MM-DD); feeds dateModified and the visible "Updated" date. */
+  updated: string;
+  /** Self-contained answer to the primary question, shown first so readers and answer engines get it immediately. */
+  answer: string;
   excerpt: string;
 };
 
@@ -144,6 +148,8 @@ function load(file: string): BlogPost {
     intent: data.intent,
     category: data.category,
     date: data.date,
+    updated: data.updated || data.date,
+    answer: data.answer ?? "",
     excerpt: data.excerpt || data.description,
     blocks,
     words,

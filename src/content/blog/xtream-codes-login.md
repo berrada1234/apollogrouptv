@@ -7,7 +7,9 @@ secondary: iptv server url, xtream username and password, xtream vs m3u, iptv pl
 intent: Informational
 category: Players & Logins
 date: 2026-11-03
+updated: 2026-11-04
 excerpt: The three pieces of an Xtream login, how players use them, the formatting mistakes that cause most login errors, and when to use M3U instead.
+answer: Xtream Codes login details are the three things an IPTV player needs to sign in: a server URL, a username and a password. On Apollo Group TV, all three are in My Account once your subscription is active. Copy and paste them exactly, because most login errors come from a single wrong character.
 ---
 
 Open almost any IPTV player and you'll be asked how you want to log in. One of the options is usually labelled "Xtream Codes", "Xtream Codes API" or simply "Xtream login", and it asks for three things: a server URL, a username and a password. Get any one of them slightly wrong and the player refuses to connect, often with an unhelpful error.

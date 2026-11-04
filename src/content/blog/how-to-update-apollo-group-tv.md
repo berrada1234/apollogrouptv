@@ -8,6 +8,7 @@ intent: How-to (every device except Fire TV)
 category: Getting Started
 date: 2026-11-04
 excerpt: How updates reach Apollo Group TV on each device, how to check your version, and what to do when an update won't install.
+answer: On Android, Android TV, Windows and Mac, the Apollo TV app offers updates inside the app when you open it, so accept and install them. On iPhone, iPad and Apple TV, update your player in the App Store. If an update won't install, free up storage or reinstall the latest version from our setup guides. Fire TV has its own update guide.
 ---
 
 Keeping Apollo Group TV up to date matters more than it might seem. New versions fix bugs, improve playback and keep the app working smoothly with the service. An app that's several versions behind is one of the most common causes of problems that look like something bigger.

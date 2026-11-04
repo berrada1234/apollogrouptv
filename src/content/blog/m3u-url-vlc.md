@@ -7,7 +7,9 @@ secondary: what is an m3u playlist, m3u vs m3u8, vlc open network stream, iptv p
 intent: How-to
 category: Players & Logins
 date: 2026-11-03
+updated: 2026-11-04
 excerpt: A practical walkthrough for opening your playlist URL in VLC on every platform, plus what's inside an M3U file and how to fix common errors.
+answer: To use an M3U URL in VLC, copy your playlist link from My Account, open VLC, choose Media > Open Network Stream (File > Open Network on a Mac), paste the link and press Play. Your channels appear in VLC's playlist. VLC is great for testing and occasional viewing, but it has no built-in TV guide for live channels.
 ---
 
 VLC is the Swiss Army knife of media players. It's free, it runs on almost everything, and it can open an IPTV playlist from a web address in a few clicks. If you want to watch on a laptop, check that your playlist works, or use a device where your usual app isn't available, VLC is often the quickest route.
@@ -171,11 +173,11 @@ VLC on a laptop is fine at a desk, but sometimes you want the picture on the big
 
 VLC is excellent for testing and occasional viewing, but it isn't designed around live TV:
 
-VLC does handle subtitles well: during playback, the Subtitle menu lists any tracks a title carries. Our guide to [subtitles on Apollo Group TV](/blog/apollo-group-tv-subtitles) covers VLC alongside every other device.
-
 - There's no built-in grid TV guide for live channels.
 - Very large playlists can be slow to load and browse.
 - Switching channels means going back to the playlist each time.
+
+VLC does handle subtitles well: during playback, the Subtitle menu lists any tracks a title carries. Our guide to [subtitles on Apollo Group TV](/blog/apollo-group-tv-subtitles) covers VLC alongside every other device.
 
 For daily viewing, a dedicated player gives you categories, favourites and an easier remote-friendly layout. On Fire TV and Android devices, that's the Apollo TV app; see the [Apollo TV app page](/app) for every supported device. If your player asks for a server, username and password instead of a playlist, use your Xtream details instead; our guide to [Xtream codes login details](/blog/xtream-codes-login) explains the difference.
 

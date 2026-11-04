@@ -8,6 +8,7 @@ intent: How-to
 category: Players & Logins
 date: 2026-11-03
 excerpt: How MAG boxes log in differently from apps, where to enter the portal URL, why your MAC address matters, and how to fix the errors people hit most.
+answer: A MAG box signs in with a portal URL instead of a username and password. The provider first links your box's MAC address to your subscription, then you enter the portal URL in the box's settings and restart it. On Apollo Group TV, your MAG URL appears in My Account when MAG access is set up; if it shows a dash, ask support.
 ---
 
 MAG boxes are dedicated IPTV set-top boxes made by Infomir. Instead of installing apps and typing a username and password, you give the box a single portal address, and the service recognizes the box itself. Once set up, a MAG box boots straight into live TV with a simple remote, which is why many people prefer one for a living room TV.

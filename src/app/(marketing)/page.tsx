@@ -121,8 +121,13 @@ export default async function HomePage() {
   const orgJsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": `${siteConfig.url}/#organization`,
     name: siteConfig.name,
+    alternateName: "Apollo TV",
     url: siteConfig.url,
+    description: siteConfig.description,
+    // Only profiles the owner has entered in Admin → Settings → Social; never invented.
+    ...(Object.values(settings.social).some(Boolean) ? { sameAs: Object.values(settings.social).filter(Boolean) } : {}),
     logo: `${siteConfig.url}/brand/apollo-mark.png`,
     ...(settings.legal.entityAddress
       ? { address: settings.legal.entityAddress }
@@ -144,6 +149,7 @@ export default async function HomePage() {
     name: siteConfig.name,
     alternateName: "Apollo TV",
     url: siteConfig.url,
+    publisher: { "@id": `${siteConfig.url}/#organization` },
   };
 
   return (

@@ -8,6 +8,7 @@ intent: How-to
 category: Fire TV
 date: 2026-11-03
 excerpt: Why the Apollo TV app doesn't update through the Amazon Appstore, how its own updates work, and what to do when an update won't install.
+answer: The Apollo TV app on a Firestick never appears in the Amazon Appstore's update list, because it's installed outside the Appstore. Updates arrive inside the app, so accept the prompt when you open it. If no prompt appears or an update fails, reinstall the latest version with Downloader and the official code; it installs over the old one without losing your sign-in.
 ---
 
 If you installed the Apollo TV app on a Fire TV Stick, you may have noticed it never shows up in the Amazon Appstore's update list. That's expected. Apps installed from outside the Appstore, a process usually called sideloading, are invisible to Amazon's updater. Keeping them current works differently, and once you know how, it takes a couple of minutes.

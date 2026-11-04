@@ -8,6 +8,7 @@ intent: Urgent troubleshooting
 category: Troubleshooting
 date: 2026-11-04
 excerpt: A quick decision path to tell a service problem from a device, connection or account problem, plus how to report an issue so it's fixed faster.
+answer: To tell whether Apollo TV is down, check whether other apps work on the same device, whether channels fail on every device, and whether your subscription is active in My Account. Most problems are at home: Wi-Fi, an expired pack, an outdated app or a full device. If nothing plays anywhere and everything else checks out, contact support.
 ---
 
 The channel won't load, the app spins forever, or you get a "connection failed" message just as the match starts. The first question everyone asks is whether the service is down or whether something at home is wrong. Usually it's the second, and the good news is that home problems are the ones you can fix yourself in a few minutes.

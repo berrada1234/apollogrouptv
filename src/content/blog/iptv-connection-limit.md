@@ -8,6 +8,7 @@ intent: Customer question
 category: Streaming Tech
 date: 2026-11-03
 excerpt: The difference between devices you install on and streams you watch at once, what triggers a "max connections" message, and how to plan for a busy home.
+answer: An IPTV connection limit is the number of streams your login can play at the same time, not the number of devices with the app installed. With a limit of 2, you can install the app on several devices and watch on any two at once. Your Apollo Group TV connection limit is shown in My Account.
 ---
 
 Every IPTV subscription comes with a connection limit, and it causes more confusion than almost anything else. People install the app on four devices, see an error on the third, and assume something is broken. Others share a login with family and wonder why streams keep stopping in the evening.
