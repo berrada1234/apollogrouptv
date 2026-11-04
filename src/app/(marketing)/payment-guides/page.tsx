@@ -33,6 +33,7 @@ export default function PaymentGuidesPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList).replace(/</g, "\\u003c") }} />
       <PageHero
+        pageType="CollectionPage"
         eyebrow="Payment guides"
         title="How to Pay for Apollo Group TV"
         description="Pick the app or card you already have and follow its guide from start to finish. Each one ends with your login details in My Account."

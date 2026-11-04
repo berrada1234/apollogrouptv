@@ -35,6 +35,7 @@ export default async function BlogIndex({ searchParams }: PageProps<"/blog">) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList).replace(/</g, "\\u003c") }} />
       <PageHero
+        pageType="CollectionPage"
         eyebrow="Blog"
         title="Streaming Guides and IPTV Tips"
         description="In-depth articles from the Apollo Group TV editorial team on devices, connections, player logins and getting the most from your subscription."

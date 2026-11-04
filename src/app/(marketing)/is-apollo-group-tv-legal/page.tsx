@@ -4,7 +4,7 @@ import { AlertTriangle, CheckCircle2, Cpu, FileCheck2, Scale, ShieldCheck } from
 import { Container } from "@/components/ui/misc";
 import { PageHero, RelatedLinks } from "@/components/marketing/sections";
 import { FaqAccordion } from "@/components/marketing/faq-list";
-import { siteConfig } from "@/lib/site";
+import { articleNode } from "@/lib/schema";
 
 const title = "Is Apollo Group TV Legal? IPTV, Licensing and Your Rights";
 const description =
@@ -17,15 +17,7 @@ export const metadata: Metadata = {
   openGraph: { title, description, url: "/is-apollo-group-tv-legal", type: "article" },
 };
 
-const articleLd = {
-  "@context": "https://schema.org",
-  "@type": "Article",
-  headline: "Is Apollo Group TV Legal?",
-  description,
-  url: `${siteConfig.url}/is-apollo-group-tv-legal`,
-  author: { "@type": "Organization", name: siteConfig.name },
-  publisher: { "@type": "Organization", name: siteConfig.name, logo: { "@type": "ImageObject", url: `${siteConfig.url}/brand/apollo-mark.png` } },
-};
+const articleLd = articleNode({ path: "/is-apollo-group-tv-legal", headline: "Is Apollo Group TV Legal?", description });
 
 const checks = [
   { t: "Who is the provider?", b: "A service should name the business behind it and publish a way to reach it." },

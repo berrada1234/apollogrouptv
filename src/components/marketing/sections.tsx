@@ -4,6 +4,7 @@ import type { Plan } from "@prisma/client";
 import { ButtonLink } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Breadcrumbs, Container, Stars } from "@/components/ui/misc";
+import { ldJson, webPageNode, type WebPageType } from "@/lib/schema";
 import { accessLabel, monthlyCents, monthsFor, perDayCents, savingsPct } from "@/lib/pricing";
 import { cn, formatDate, formatMoney, intervalLabels, intervalShort, parseFeatures } from "@/lib/utils";
 
@@ -15,6 +16,8 @@ export function PageHero({
   children,
   aside,
   align = "left",
+  pageType = "WebPage",
+  pageSchema = true,
 }: {
   eyebrow?: string;
   title: string;
@@ -24,10 +27,18 @@ export function PageHero({
   /** Optional visual shown beside the text on large screens. */
   aside?: React.ReactNode;
   align?: "left" | "center";
+  /** schema.org type for this page's WebPage node (the last crumb is the page URL). */
+  pageType?: WebPageType;
+  /** false when the page already describes itself with its own WebPage-type markup. */
+  pageSchema?: boolean;
 }) {
   const centered = align === "center" && !aside;
+  const path = crumbs[crumbs.length - 1]?.href;
   return (
     <section className="relative overflow-hidden">
+      {pageSchema && path && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: ldJson(webPageNode({ path, name: title, description, type: pageType })) }} />
+      )}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_80%_at_70%_0%,var(--midnight),transparent_70%)]" aria-hidden />
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
         <div className="starfield" />

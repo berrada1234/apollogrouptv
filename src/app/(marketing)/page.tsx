@@ -34,6 +34,7 @@ import { getPosts } from "@/lib/blog";
 import { getCustomerMethods } from "@/lib/checkout/methods";
 import { siteConfig } from "@/lib/site";
 import { formatDate, formatMoney } from "@/lib/utils";
+import { LOGO_URL, ORG_ID, SITE_ID, webPageNode } from "@/lib/schema";
 
 // Rendered per request: the database isn't reachable during the Hostinger build, so the page can't be prerendered.
 export const dynamic = "force-dynamic";
@@ -191,7 +192,8 @@ export default async function HomePage() {
     description: siteConfig.description,
     // Only profiles the owner has entered in Admin → Settings → Social; never invented.
     ...(Object.values(settings.social).some(Boolean) ? { sameAs: Object.values(settings.social).filter(Boolean) } : {}),
-    logo: `${siteConfig.url}/brand/apollo-mark.png`,
+    logo: { "@type": "ImageObject", url: LOGO_URL, width: 512, height: 512 },
+    image: LOGO_URL,
     ...(settings.legal.entityAddress
       ? { address: settings.legal.entityAddress }
       : {}),
@@ -201,6 +203,8 @@ export default async function HomePage() {
             "@type": "ContactPoint",
             contactType: "customer support",
             email: settings.general.supportEmail,
+            url: `${siteConfig.url}/contact`,
+            availableLanguage: "English",
           },
         }
       : {}),
@@ -209,7 +213,9 @@ export default async function HomePage() {
   const siteJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": SITE_ID,
     name: siteConfig.name,
+    inLanguage: "en",
     alternateName: "Apollo TV",
     url: siteConfig.url,
     publisher: { "@id": `${siteConfig.url}/#organization` },
@@ -220,7 +226,7 @@ export default async function HomePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify([orgJsonLd, siteJsonLd]).replace(
+          __html: JSON.stringify([orgJsonLd, siteJsonLd, webPageNode({ path: "/", name: siteConfig.name, description: siteConfig.description, extra: { about: { "@id": ORG_ID } } })]).replace(
             /</g,
             "\\u003c",
           ),

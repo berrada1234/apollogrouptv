@@ -129,6 +129,7 @@ export default async function SiteIndexPage() {
   return (
     <>
       <PageHero
+        pageType="CollectionPage"
         eyebrow="Site index"
         title="Site Index"
         description="Every page on Apollo Group TV, grouped by topic: plans, setup guides, payment guides, help topics, articles and our policies. Can't find something? Try the Help Center search or contact us."

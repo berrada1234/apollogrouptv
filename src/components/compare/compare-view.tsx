@@ -9,6 +9,7 @@ import { CHECKED, comparePages, type Rival } from "@/content/compare";
 import type { ApolloCompare } from "@/lib/compare-data";
 import { siteConfig } from "@/lib/site";
 import { cn } from "@/lib/utils";
+import { articleNode, ldJson } from "@/lib/schema";
 
 /** One comparison page: honest summary, yearly cost, side-by-side table, verdict, FAQ and sources. */
 export function CompareView({ rival, apollo }: { rival: Rival; apollo: ApolloCompare }) {
@@ -42,8 +43,17 @@ export function CompareView({ rival, apollo }: { rival: Rival; apollo: ApolloCom
 
   const others = comparePages.filter((p) => p.href !== rival.path);
 
+  const articleLd = articleNode({
+    path: rival.path,
+    headline: `Apollo Group TV vs ${rival.name}`,
+    description: rival.intro,
+    dateModified: new Date(`${CHECKED} 12:00 UTC`).toISOString().slice(0, 10),
+    section: "Comparisons",
+  });
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: ldJson(articleLd) }} />
       <PageHero eyebrow="Compare" title={`Apollo Group TV vs ${rival.name}`} description={rival.intro} crumbs={[{ href: "/compare", label: "Compare" }, { href: rival.path, label: `vs ${rival.name}` }]} />
 
       {/* Honest short version + yearly cost */}

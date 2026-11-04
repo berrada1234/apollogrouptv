@@ -13,6 +13,7 @@ import { getActivePlans, getPublishedFaqs } from "@/lib/queries";
 import { getSettings } from "@/lib/settings";
 import { siteConfig } from "@/lib/site";
 import { cn, formatMoney } from "@/lib/utils";
+import { breadcrumbId, pageId, websiteRef } from "@/lib/schema";
 
 export const dynamic = "force-dynamic";
 
@@ -42,7 +43,11 @@ export default async function FaqPage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    "@id": pageId("/faq"),
     url: `${siteConfig.url}/faq`,
+    name: "Apollo Group TV FAQ",
+    isPartOf: websiteRef,
+    breadcrumb: { "@id": breadcrumbId("/faq") },
     mainEntity: items.map((f) => ({
       "@type": "Question",
       name: f.question,

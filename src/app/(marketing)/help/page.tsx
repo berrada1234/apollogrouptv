@@ -27,6 +27,7 @@ export default async function HelpCenterPage() {
   return (
     <>
       <PageHero
+        pageType="CollectionPage"
         eyebrow="Help Center"
         title="How Can We Help?"
         description="Search our guides, articles and answers, or browse by topic. Still stuck? Our support team answers every ticket."

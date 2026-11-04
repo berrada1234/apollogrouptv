@@ -8,7 +8,7 @@ import { Container } from "@/components/ui/misc";
 import { ReadingPath } from "@/components/reading-path";
 import { renewal } from "@/content/renewal";
 import { parseBlocks, plainText, type Block } from "@/lib/blog";
-import { siteConfig } from "@/lib/site";
+import { faqNode } from "@/lib/schema";
 
 const path = `/${renewal.slug}`;
 const signInToRenew = "/sign-in?next=/dashboard/plan";
@@ -38,19 +38,7 @@ export default function RenewalPage() {
   const faq = faqFrom(blocks);
 
   const jsonLd = [
-    {
-      "@context": "https://schema.org",
-      "@type": "HowTo",
-      name: "How to renew your Apollo Group TV subscription",
-      description: renewal.description,
-      url: `${siteConfig.url}${path}`,
-      step: renewal.steps.map((s, i) => ({ "@type": "HowToStep", position: i + 1, name: s.t, text: s.b })),
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
-    },
+    faqNode(path, faq),
   ];
 
   return (

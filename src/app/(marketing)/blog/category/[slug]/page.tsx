@@ -9,6 +9,7 @@ import { Section } from "@/components/section";
 import { blogCategories, categoryBySlug } from "@/content/blog-categories";
 import { getPosts } from "@/lib/blog";
 import { siteConfig } from "@/lib/site";
+import { webPageNode } from "@/lib/schema";
 
 export function generateStaticParams() {
   return blogCategories.map((c) => ({ slug: c.slug }));
@@ -31,21 +32,22 @@ export default async function BlogCategoryPage({ params }: PageProps<"/blog/cate
   if (!category) notFound();
   const path = `/blog/category/${category.slug}`;
   const posts = getPosts().filter((p) => p.category === category.name);
-  const itemList = {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
+  const itemList = webPageNode({
+    path,
     name: category.title,
-    url: `${siteConfig.url}${path}`,
-    mainEntity: {
+    description: category.description,
+    type: "CollectionPage",
+    extra: { mainEntity: {
       "@type": "ItemList",
       itemListElement: posts.map((p, i) => ({ "@type": "ListItem", position: i + 1, url: `${siteConfig.url}/blog/${p.slug}`, name: p.title })),
-    },
-  };
+    } },
+  });
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList).replace(/</g, "\u003c") }} />
       <PageHero
+        pageSchema={false}
         eyebrow={`${posts.length} ${posts.length === 1 ? "article" : "articles"}`}
         title={category.name}
         description={category.intro}

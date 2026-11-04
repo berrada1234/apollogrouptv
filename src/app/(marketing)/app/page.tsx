@@ -33,6 +33,7 @@ import { getActivePlans } from "@/lib/queries";
 import { getSettings } from "@/lib/settings";
 import { siteConfig } from "@/lib/site";
 import { cn, formatMoney, slugify } from "@/lib/utils";
+import { ldJson, organizationRef, pageId, webPageNode } from "@/lib/schema";
 
 export const dynamic = "force-dynamic";
 
@@ -138,13 +139,16 @@ export default async function AppPage() {
   const appLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
+    "@id": `${siteConfig.url}/app#software`,
+    mainEntityOfPage: { "@id": pageId("/app") },
     name: "Apollo TV",
     alternateName: "Apollo Group TV app",
     applicationCategory: "EntertainmentApplication",
     operatingSystem: platforms.map((p) => p.name).join(", ") || undefined,
     ...(settings.apps.appVersion ? { softwareVersion: settings.apps.appVersion } : {}),
-    publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
+    publisher: organizationRef,
     url: `${siteConfig.url}/app`,
+    image: `${siteConfig.url}/images/app/apollo-group-tv-app-home-screen.webp`,
   };
 
   return (
@@ -156,6 +160,7 @@ export default async function AppPage() {
         <div className="bg-grid pointer-events-none absolute inset-0 opacity-60" aria-hidden />
         <Container className="relative pb-12 pt-8 sm:pb-16 sm:pt-12">
           <Breadcrumbs items={[{ href: "/app", label: "App" }]} />
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: ldJson(webPageNode({ path: "/app", name: title, description, type: "WebPage" })) }} />
           <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-16">
             <div className="lg:col-span-7">
               <Eyebrow>{c.hero.eyebrow}</Eyebrow>

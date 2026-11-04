@@ -15,6 +15,7 @@ import { accessLabel, monthlyCents, monthsFor, perDayCents, pricingContext, savi
 import { getSettings } from "@/lib/settings";
 import { siteConfig } from "@/lib/site";
 import { cn, formatMoney, parseFeatures } from "@/lib/utils";
+import { ldJson, organizationRef, pageId, webPageNode } from "@/lib/schema";
 
 export const dynamic = "force-dynamic";
 
@@ -167,9 +168,12 @@ export default async function PlansPage() {
   const serviceLd = {
     "@context": "https://schema.org",
     "@type": "Service",
+    "@id": `${siteConfig.url}/plans#service`,
+    mainEntityOfPage: { "@id": pageId("/plans") },
     name: "Apollo Group TV subscription",
     serviceType: "Internet TV streaming",
-    provider: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
+    provider: organizationRef,
+    brand: { "@type": "Brand", name: siteConfig.name },
     url: `${siteConfig.url}/plans`,
     offers: plans.map((p) => ({
       "@type": "Offer",
@@ -178,6 +182,8 @@ export default async function PlansPage() {
       priceCurrency: p.currency,
       description: `${accessLabel(p.interval)}, one-time payment`,
       url: `${siteConfig.url}/plans`,
+      availability: "https://schema.org/InStock",
+      seller: { "@id": organizationRef["@id"] },
     })),
   };
 
@@ -198,6 +204,7 @@ export default async function PlansPage() {
         <Container className="relative pb-10 pt-12 text-center sm:pb-14 sm:pt-16 lg:pt-20">
           <div className="flex justify-center [&_nav_ol]:justify-center">
             <Breadcrumbs items={[{ href: "/plans", label: "Plans" }]} />
+            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: ldJson(webPageNode({ path: "/plans", name: title, description, type: "WebPage" })) }} />
           </div>
           <div className="relative mx-auto max-w-4xl">
             <div className="headline-light pointer-events-none absolute inset-x-[10%] -inset-y-10 -z-10 rounded-full blur-2xl" aria-hidden />

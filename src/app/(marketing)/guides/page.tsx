@@ -26,6 +26,7 @@ export default async function GuidesPage() {
   return (
     <>
       <PageHero
+        pageType="CollectionPage"
         eyebrow="Guides"
         title="Setup guides"
         description="Clear, numbered instructions for getting started, from creating your account to installing the app on a verified device and fixing common problems."

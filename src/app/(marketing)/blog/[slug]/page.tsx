@@ -11,6 +11,7 @@ import { getSettings } from "@/lib/settings";
 import { siteConfig } from "@/lib/site";
 import { categoryPath } from "@/content/blog-categories";
 import { formatDate } from "@/lib/utils";
+import { organizationRef, pageId } from "@/lib/schema";
 
 export const dynamic = "force-dynamic";
 
@@ -28,7 +29,7 @@ export async function generateMetadata({ params }: PageProps<"/blog/[slug]">): P
       url: `/blog/${post.slug}`,
       type: "article",
       publishedTime: post.date,
-      modifiedTime: post.date,
+      modifiedTime: post.updated,
       authors: [BLOG_AUTHOR],
       section: post.category,
       images: [{ url: `/blog/${post.slug}/cover`, width: 1200, height: 630, alt: post.title }],
@@ -55,15 +56,17 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
     headline: post.title,
     description: post.description,
     url,
-    mainEntityOfPage: url,
+    "@id": `${url}#article`,
+    mainEntityOfPage: { "@id": pageId(`/blog/${post.slug}`) },
+    inLanguage: "en",
     image: cover,
     datePublished: post.date,
     dateModified: post.updated,
     articleSection: post.category,
     keywords: [post.keyword, ...post.secondary].join(", "),
     wordCount: post.words,
-    author: { "@type": "Organization", name: BLOG_AUTHOR, url: siteConfig.url },
-    publisher: { "@type": "Organization", "@id": `${siteConfig.url}/#organization`, name: siteConfig.name, logo: { "@type": "ImageObject", url: `${siteConfig.url}/brand/apollo-mark.png` } },
+    author: { "@type": "Organization", name: BLOG_AUTHOR, url: `${siteConfig.url}/about-us` },
+    publisher: organizationRef,
   };
   const related = relatedPosts(post);
 

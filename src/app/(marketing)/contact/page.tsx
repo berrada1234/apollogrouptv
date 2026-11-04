@@ -9,6 +9,7 @@ import { ContactForm } from "@/components/forms/contact-form";
 import { getCurrentUser } from "@/lib/session";
 import { getSettings } from "@/lib/settings";
 import { siteConfig } from "@/lib/site";
+import { organizationRef, webPageNode } from "@/lib/schema";
 
 export const dynamic = "force-dynamic";
 
@@ -32,18 +33,19 @@ const routes = [
 
 export default async function ContactPage() {
   const [settings, user] = await Promise.all([getSettings(), getCurrentUser()]);
-  const contactLd = {
-    "@context": "https://schema.org",
-    "@type": "ContactPage",
+  const contactLd = webPageNode({
+    path: "/contact",
     name: title,
-    url: `${siteConfig.url}/contact`,
-    about: {
-      "@type": "Organization",
-      name: siteConfig.name,
-      url: siteConfig.url,
-      ...(settings.general.supportEmail ? { contactPoint: { "@type": "ContactPoint", contactType: "customer support", email: settings.general.supportEmail } } : {}),
+    type: "ContactPage",
+    extra: {
+      about: {
+        ...organizationRef,
+        ...(settings.general.supportEmail
+          ? { contactPoint: { "@type": "ContactPoint", contactType: "customer support", email: settings.general.supportEmail, url: `${siteConfig.url}/contact`, availableLanguage: "English" } }
+          : {}),
+      },
     },
-  };
+  });
   const g = settings.general;
   const methods = [
     g.supportEmail && { icon: Mail, label: "Email", value: g.supportEmail, href: `mailto:${g.supportEmail}` },
@@ -56,6 +58,7 @@ export default async function ContactPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(contactLd).replace(/</g, "\\u003c") }} />
       <PageHero
+        pageSchema={false}
         eyebrow="Support"
         title="Contact Apollo Group TV"
         description="Tell us what you need and we'll point you to the fastest route: a reply by email, a ticket in your dashboard, or the right guide."

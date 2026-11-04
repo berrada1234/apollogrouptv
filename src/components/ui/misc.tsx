@@ -98,6 +98,7 @@ export function Breadcrumbs({ items }: { items: { href: string; label: string }[
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
+    "@id": `${absoluteUrl(all[all.length - 1].href)}#breadcrumb`,
     itemListElement: all.map((item, i) => ({
       "@type": "ListItem",
       position: i + 1,

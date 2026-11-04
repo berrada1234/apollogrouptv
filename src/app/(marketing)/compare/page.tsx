@@ -28,6 +28,7 @@ export default async function ComparePage() {
   return (
     <>
       <PageHero
+        pageType="CollectionPage"
         eyebrow="Compare"
         title="Compare Apollo Group TV with Other Live TV Services"
         description="Sourced comparisons with the best-known live TV services: what a year costs, how billing works, how many screens you get, and when another service may suit you better."

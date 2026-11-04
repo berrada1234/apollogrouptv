@@ -7,8 +7,8 @@ import { GuideCard, GuideGlyph, GuideMeta, PaymentFlow } from "@/components/paym
 import { RichText, stripRich } from "@/components/rich-text";
 import { Container } from "@/components/ui/misc";
 import { getPaymentGuide, paymentGuides } from "@/content/payment-guides";
-import { siteConfig } from "@/lib/site";
 import { formatDate } from "@/lib/utils";
+import { articleNode, faqNode } from "@/lib/schema";
 
 export function generateStaticParams() {
   return paymentGuides.map((g) => ({ slug: g.slug }));
@@ -29,31 +29,9 @@ export default async function PaymentGuidePage({ params }: PageProps<"/payment-g
   const g = getPaymentGuide((await params).slug);
   if (!g) notFound();
 
-  const url = `${siteConfig.url}/payment-guides/${g.slug}`;
-  const allSteps = g.sections.flatMap((s) => s.steps);
   const jsonLd = [
-    {
-      "@context": "https://schema.org",
-      "@type": "Article",
-      headline: g.title,
-      description: g.description,
-      url,
-      dateModified: g.updated,
-      author: { "@type": "Organization", name: siteConfig.name },
-      publisher: { "@type": "Organization", name: siteConfig.name, logo: { "@type": "ImageObject", url: `${siteConfig.url}/brand/apollo-mark.png` } },
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "HowTo",
-      name: g.title,
-      totalTime: `PT${g.minutes}M`,
-      step: allSteps.map((s, i) => ({ "@type": "HowToStep", position: i + 1, name: s.title, text: stripRich(s.body) })),
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      mainEntity: g.faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: stripRich(f.a) } })),
-    },
+    articleNode({ path: `/payment-guides/${g.slug}`, headline: g.title, description: g.description, type: "TechArticle", dateModified: g.updated, section: "Payment guides" }),
+    faqNode(`/payment-guides/${g.slug}`, g.faqs.map((f) => ({ q: f.q, a: stripRich(f.a) }))),
   ];
   const related = g.related.map(getPaymentGuide).filter((x) => x !== undefined);
   // Steps are numbered continuously across sections.

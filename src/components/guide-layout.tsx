@@ -6,6 +6,7 @@ import { PageHero } from "@/components/marketing/sections";
 import { FaqAccordion } from "@/components/marketing/faq-list";
 import { RichText } from "@/components/rich-text";
 import type { GuideStep } from "@/content/guides";
+import { articleNode, ldJson } from "@/lib/schema";
 
 type Related = { href: string; title: string };
 
@@ -41,8 +42,10 @@ export function GuideLayout({
 }) {
   // Other device guides fall back to the Devices category.
   const articles = guideArticles[slug] ?? (["windows", "macos", "iphone-ipad", "android-phone-tablet", "apple-tv"].includes(slug) ? { href: "/blog/category/devices", label: "Device articles" } : undefined);
+  const articleLd = articleNode({ path: `/guides/${slug}`, headline: title, description: intro, type: "TechArticle", section: "Setup guides" });
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: ldJson(articleLd) }} />
       <PageHero
         eyebrow="Setup guide"
         title={title}

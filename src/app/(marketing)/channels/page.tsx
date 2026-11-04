@@ -29,6 +29,7 @@ import { afterHeader, cardClass, cardHover, h2Class, IconBox, leadClass, Section
 import { SportsSection } from "@/components/sports-section";
 import { channelCategories, channelFaq, channelGuideSteps, channelRegions, channelsCopy } from "@/content/channels";
 import { cn } from "@/lib/utils";
+import { ldJson, webPageNode } from "@/lib/schema";
 
 const title = "Apollo Group TV Channels: Live TV Categories & Lineup Guide";
 const description =
@@ -66,6 +67,7 @@ export default function ChannelsPage() {
         <div className="bg-grid pointer-events-none absolute inset-0 opacity-60" aria-hidden />
         <Container className="relative pb-12 pt-8 sm:pb-16 sm:pt-12">
           <Breadcrumbs items={[{ href: "/channels", label: "Channels" }]} />
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: ldJson(webPageNode({ path: "/channels", name: title, description, type: "CollectionPage" })) }} />
           <div className="grid items-end gap-10 lg:grid-cols-12 lg:gap-16">
             <div className="lg:col-span-7">
               <Eyebrow>{c.hero.eyebrow}</Eyebrow>

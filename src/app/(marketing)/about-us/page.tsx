@@ -28,6 +28,7 @@ import {
 import { getSettings } from "@/lib/settings";
 import { siteConfig } from "@/lib/site";
 import { cn } from "@/lib/utils";
+import { organizationRef, webPageNode } from "@/lib/schema";
 
 export const dynamic = "force-dynamic";
 
@@ -70,20 +71,19 @@ export default async function AboutPage() {
   const { entityName, entityAddress, officialDomain } = settings.legal;
   const { supportEmail } = settings.general;
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "AboutPage",
+  const jsonLd = webPageNode({
+    path: "/about-us",
     name: title,
-    url: `${siteConfig.url}/about-us`,
-    about: {
-      "@type": "Organization",
-      name: siteConfig.name,
-      alternateName: "Apollo TV",
-      url: siteConfig.url,
-      ...(entityName ? { legalName: entityName } : {}),
-      ...(entityAddress ? { address: entityAddress } : {}),
+    type: "AboutPage",
+    extra: {
+      about: {
+        ...organizationRef,
+        alternateName: "Apollo TV",
+        ...(entityName ? { legalName: entityName } : {}),
+        ...(entityAddress ? { address: entityAddress } : {}),
+      },
     },
-  };
+  });
 
   return (
     <>
@@ -94,6 +94,7 @@ export default async function AboutPage() {
         }}
       />
       <PageHero
+        pageSchema={false}
         eyebrow="About us"
         title="About Apollo Group TV"
         description="Apollo Group TV (often called Apollo TV) is an internet TV service run on a simple rule: tell people exactly what they are buying, then make it easy to set up and easy to get help."
