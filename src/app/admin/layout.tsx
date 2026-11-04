@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import { AppShell, type NavItem } from "@/components/app-shell";
+import Link from "next/link";
+import { ShieldAlert } from "lucide-react";
+import { AttentionWatcher } from "@/components/admin/attention-watcher";
+import { adminAttention } from "@/lib/admin-attention";
 import { db } from "@/lib/db";
 import { hasRole, requireRole } from "@/lib/session";
 
@@ -13,12 +17,13 @@ export const metadata: Metadata = {
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const user = await requireRole("SUPPORT");
   const isAdmin = hasRole(user, "ADMIN");
-  const [openTickets, pendingReviews, newMessages] = await Promise.all([
-    db.supportTicket.count({ where: { status: { in: ["OPEN", "IN_PROGRESS"] } } }),
-    db.review.count({ where: { status: "PENDING" } }),
-    db.contactMessage.count({ where: { status: "NEW" } }),
+  const [counts, adminUnread, account] = await Promise.all([
+    adminAttention(isAdmin),
+    isAdmin ? db.notification.count({ where: { userId: user.id, audience: "ADMIN", readAt: null } }) : 0,
+    db.user.findUnique({ where: { id: user.id }, select: { twoFactorEnabled: true } }),
   ]);
-  const adminUnread = isAdmin ? await db.notification.count({ where: { userId: user.id, audience: "ADMIN", readAt: null } }) : 0;
+  const { openTickets, pendingReviews, newMessages, paymentsToReview, toActivate } = counts;
+  const attentionKey = [paymentsToReview, toActivate, openTickets, newMessages, pendingReviews].join(",");
 
   const nav: NavItem[] = [
     { href: "/admin", label: "Overview", icon: "overview", short: "Home" },
@@ -27,8 +32,8 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           { href: "/admin/funnel", label: "Conversion funnel", icon: "funnel" },
           { href: "/admin/users", label: "Users", icon: "users" },
           { href: "/admin/plans", label: "Plans", icon: "plan" },
-          { href: "/admin/subscriptions", label: "Subscriptions", icon: "subscription" },
-          { href: "/admin/payments", label: "Orders & Payments", icon: "payments" },
+          { href: "/admin/subscriptions", label: "Subscriptions", icon: "subscription", badge: toActivate, badgeTone: "alert" },
+          { href: "/admin/payments", label: "Orders & Payments", icon: "payments", short: "Orders", badge: paymentsToReview, badgeTone: "alert" },
           { href: "/admin/payment-methods", label: "Payment Methods", icon: "wallet" },
           { href: "/admin/channels", label: "Channels", icon: "channels" },
         ] satisfies NavItem[])
@@ -45,6 +50,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     ...(isAdmin
       ? ([
           { href: "/admin/settings", label: "Settings", icon: "settings" },
+          { href: "/admin/settings#social", label: "Social media", icon: "social" },
           { href: "/admin/seo", label: "SEO", icon: "seo" },
           { href: "/admin/audit-logs", label: "Audit Logs", icon: "audit" },
         ] satisfies NavItem[])
@@ -61,8 +67,21 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       ]}
       user={{ name: user.name, email: user.email, role: user.role }}
       bell={isAdmin ? { href: "/admin/notifications", count: adminUnread } : undefined}
-      mobileTabs={isAdmin ? ["/admin", "/admin/users", "/admin/support", "/admin/reviews"] : ["/admin", "/admin/support", "/admin/reviews"]}
+      mobileTabs={isAdmin ? ["/admin", "/admin/payments", "/admin/subscriptions", "/admin/support"] : ["/admin", "/admin/support", "/admin/reviews"]}
     >
+      <AttentionWatcher initial={attentionKey} />
+      {!account?.twoFactorEnabled && (
+        <Link
+          href="/dashboard/security#two-step"
+          className="mb-6 flex items-center gap-3 rounded-2xl border border-warning/40 bg-warning/10 px-4 py-3 text-sm text-text hover:border-warning/70"
+        >
+          <ShieldAlert className="h-5 w-5 shrink-0 text-warning" aria-hidden />
+          <span>
+            <span className="font-medium">Protect this staff account.</span>{" "}
+            <span className="text-muted">Turn on two-step sign-in so a stolen password alone can’t open the admin area.</span>
+          </span>
+        </Link>
+      )}
       {children}
     </AppShell>
   );

@@ -11,8 +11,28 @@ const securityHeaders = [
   { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
   {
     key: "Content-Security-Policy",
-    value: ["frame-ancestors 'none'", "base-uri 'self'", "form-action 'self'", "object-src 'none'"].join("; "),
+    // Scripts, styles, fonts and API calls only from this site, so injected markup can't load or send to
+    // another server. 'unsafe-inline' stays for scripts because Next.js inlines its startup data;
+    // dev mode also needs 'unsafe-eval' for hot reloading. Images may be https (admin-set logos, QR codes use data:).
+    value: [
+      "default-src 'self'",
+      `script-src 'self' 'unsafe-inline'${isProd ? "" : " 'unsafe-eval'"}`,
+      "style-src 'self' 'unsafe-inline'",
+      "img-src 'self' data: blob: https:",
+      "font-src 'self' data:",
+      `connect-src 'self'${isProd ? "" : " ws: wss:"}`,
+      "media-src 'self'",
+      "worker-src 'self' blob:",
+      "manifest-src 'self'",
+      "frame-src 'none'",
+      "frame-ancestors 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+      "object-src 'none'",
+      ...(isProd ? ["upgrade-insecure-requests"] : []),
+    ].join("; "),
   },
+  { key: "X-DNS-Prefetch-Control", value: "on" },
   ...(isProd
     ? [{ key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains" }]
     : []),

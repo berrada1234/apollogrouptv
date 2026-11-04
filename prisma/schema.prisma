@@ -126,6 +126,8 @@ model User {
   productUpdatesOptIn Boolean    @default(true)
   // Set by the unsubscribe link in reminder emails; stops the "finish your purchase" sequence.
   remindersOptOut     Boolean    @default(false)
+  // Two-step sign-in with an authenticator app (Better Auth two-factor plugin).
+  twoFactorEnabled    Boolean    @default(false)
   createdAt           DateTime   @default(now())
   updatedAt           DateTime   @updatedAt
 
@@ -145,6 +147,7 @@ model User {
   playerCredential PlayerCredential?
   auditLogs        AuditLog[]
   emailReminders   EmailReminder[]
+  twoFactors       TwoFactor[]
 
   @@index([role])
   @@index([status])
@@ -165,6 +168,21 @@ model Session {
 
   @@index([userId])
   @@map("sessions")
+}
+
+// Authenticator-app secret and recovery codes, both encrypted with BETTER_AUTH_SECRET.
+model TwoFactor {
+  id                      String    @id
+  secret                  String    @db.Text
+  backupCodes             String    @db.Text
+  userId                  String
+  user                    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  verified                Boolean   @default(true)
+  failedVerificationCount Int       @default(0)
+  lockedUntil             DateTime?
+
+  @@index([userId])
+  @@map("two_factors")
 }
 
 model Account {

@@ -799,3 +799,16 @@ dialog::backdrop {
     animation: none;
   }
 }
+
+/* Admin sidebar: a soft pulse on badges for work waiting on staff (new payments, activations). */
+.nav-alert {
+  box-shadow: 0 0 0 0 rgb(255 92 122 / 0.6);
+  animation: nav-alert-pulse 1.8s ease-out infinite;
+}
+@keyframes nav-alert-pulse {
+  70% { box-shadow: 0 0 0 7px rgb(255 92 122 / 0); }
+  100% { box-shadow: 0 0 0 0 rgb(255 92 122 / 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-alert { animation: none; }
+}

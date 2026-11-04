@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
   Filter,
+  Share2,
   MonitorSmartphone,
   Search,
   Bell,
@@ -58,6 +59,7 @@ const icons = {
   seo: Search,
   funnel: Filter,
   apps: MonitorSmartphone,
+  social: Share2,
 };
 
 export type NavIcon = keyof typeof icons;
@@ -66,6 +68,8 @@ export type NavItem = {
   label: string;
   icon: NavIcon;
   badge?: number;
+  /** "alert" marks work waiting on staff (e.g. a payment to confirm) with a pulsing badge. */
+  badgeTone?: "alert";
   /** Label for the phone tab bar. */
   short?: string;
   /** Other paths that belong to this section (keeps the item highlighted on its sub-pages). */
@@ -145,7 +149,15 @@ export function AppShell({
                   <Icon className="h-[18px] w-[18px] shrink-0" aria-hidden />
                   <span className="flex-1">{item.label}</span>
                   {item.badge ? (
-                    <span className="rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-semibold text-on-primary">{item.badge}</span>
+                    <span
+                      className={cn(
+                        "rounded-full px-1.5 py-0.5 text-[10px] font-semibold",
+                        item.badgeTone === "alert" ? "nav-alert bg-error text-white" : "bg-primary text-on-primary",
+                      )}
+                      aria-label={`${item.badge} waiting`}
+                    >
+                      {item.badge}
+                    </span>
                   ) : null}
                 </Link>
               </li>
@@ -210,7 +222,7 @@ export function AppShell({
                   >
                     <Icon className="h-5 w-5" aria-hidden />
                     <span className="max-w-full truncate px-1">{item.short ?? item.label}</span>
-                    {item.badge ? <span className="absolute right-[calc(50%-18px)] top-1.5 h-2 w-2 rounded-full bg-primary" aria-label={`${item.badge} new`} /> : null}
+                    {item.badge ? <span className={cn("absolute right-[calc(50%-18px)] top-1.5 h-2 w-2 rounded-full", item.badgeTone === "alert" ? "nav-alert bg-error" : "bg-primary")} aria-label={`${item.badge} new`} /> : null}
                   </Link>
                 </li>
               );

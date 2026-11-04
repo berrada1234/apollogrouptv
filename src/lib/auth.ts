@@ -3,7 +3,7 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { APIError } from "better-auth/api";
 import { nextCookies } from "better-auth/next-js";
-import { emailOTP } from "better-auth/plugins";
+import { emailOTP, twoFactor } from "better-auth/plugins";
 import { db } from "@/lib/db";
 import { sendEmail } from "@/lib/email";
 import { notifyAdmins, notifyUser } from "@/lib/notify";
@@ -43,6 +43,32 @@ async function notifyNewAccount(user: { id: string; name: string; email: string;
     title: "New Customer Registration",
     body: `${user.name} · ${user.email} · Registered ${user.createdAt.toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" })} · Status: Active`,
     href: `/admin/users/${user.id}`,
+  });
+}
+
+async function recordStaffSignIn(session: { userId: string; ipAddress?: string | null; userAgent?: string | null }) {
+  const user = await db.user.findUnique({ where: { id: session.userId }, select: { role: true, twoFactorEnabled: true } });
+  if (!user || user.role === "USER") return;
+  const ip = session.ipAddress || "unknown IP";
+  const device = (session.userAgent ?? "").slice(0, 160) || "unknown device";
+  await db.auditLog.create({
+    data: {
+      actorId: session.userId,
+      action: "auth.staff_sign_in",
+      targetType: "user",
+      targetId: session.userId,
+      ipAddress: session.ipAddress ?? null,
+      metadata: { device, twoFactor: user.twoFactorEnabled },
+    },
+  });
+  await db.notification.create({
+    data: {
+      userId: session.userId,
+      audience: user.role === "ADMIN" ? "ADMIN" : "USER",
+      title: "New sign-in to your staff account",
+      body: `${ip} · ${device}. If this wasn't you, change your password and sign out other sessions in Security.`,
+      href: "/dashboard/security",
+    },
   });
 }
 
@@ -107,6 +133,9 @@ export const auth = betterAuth({
       "/request-password-reset": { window: 300, max: 3 },
       "/send-verification-email": { window: 300, max: 3 },
       "/change-password": { window: 300, max: 5 },
+      // Authenticator codes: the plugin also locks the second step after 5 wrong codes.
+      "/two-factor/verify-totp": { window: 60, max: 5 },
+      "/two-factor/verify-backup-code": { window: 300, max: 5 },
     },
   },
 
@@ -143,6 +172,10 @@ export const auth = betterAuth({
             throw new APIError("FORBIDDEN", { message: "This account is suspended. Please contact support." });
           }
         },
+        // Staff sign-ins are logged and shown in the bell, so an unexpected one is noticed quickly.
+        after: async (session) => {
+          await recordStaffSignIn(session).catch((e) => console.error("[auth] staff sign-in log", e instanceof Error ? e.message : e));
+        },
       },
     },
   },
@@ -165,6 +198,12 @@ export const auth = betterAuth({
           code: otp,
         });
       },
+    }),
+    twoFactor({
+      issuer: siteConfig.name,
+      // "Trust this device" skips the code on that browser for 30 days.
+      trustDeviceMaxAge: 60 * 60 * 24 * 30,
+      backupCodeOptions: { amount: 10, length: 10 },
     }),
     nextCookies(),
   ],

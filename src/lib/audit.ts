@@ -32,10 +32,8 @@ export async function auditData(
   entry: AuditEntry,
 ): Promise<Prisma.AuditLogUncheckedCreateInput> {
   const h = await headers();
-  const ip =
-    h.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    h.get("x-real-ip") ??
-    null;
+  // x-real-ip is set by the hosting proxy; x-forwarded-for can carry client-supplied values.
+  const ip = h.get("x-real-ip") ?? h.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null;
   return {
     actorId: entry.actorId,
     action: entry.action,

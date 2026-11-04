@@ -22,6 +22,9 @@ export const settingsSchemas = {
     instagram: url,
     youtube: url,
     telegram: url,
+    tiktok: url.default(""),
+    // A WhatsApp channel or community link (chat buttons use the WhatsApp number in General).
+    whatsapp: url.default(""),
   }),
   seo: z.object({
     defaultTitle: z.string().trim().min(5).max(70),
@@ -126,7 +129,7 @@ export const defaultSettings: Settings = {
     whatsapp: "",
     address: "",
   },
-  social: { x: "", facebook: "", instagram: "", youtube: "", telegram: "" },
+  social: { x: "", facebook: "", instagram: "", youtube: "", telegram: "", tiktok: "", whatsapp: "" },
   seo: {
     defaultTitle: "Apollo Group TV — Digital Entertainment Platform",
     defaultDescription:

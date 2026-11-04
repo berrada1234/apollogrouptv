@@ -23,6 +23,16 @@ function Section({ id, title, description, children }: { id: string; title: stri
   );
 }
 
+const socialFields = [
+  { key: "facebook", label: "Facebook", placeholder: "https://facebook.com/yourpage" },
+  { key: "instagram", label: "Instagram", placeholder: "https://instagram.com/yourname" },
+  { key: "tiktok", label: "TikTok", placeholder: "https://tiktok.com/@yourname" },
+  { key: "youtube", label: "YouTube", placeholder: "https://youtube.com/@yourchannel" },
+  { key: "x", label: "X (Twitter)", placeholder: "https://x.com/yourname" },
+  { key: "telegram", label: "Telegram", placeholder: "https://t.me/yourchannel" },
+  { key: "whatsapp", label: "WhatsApp channel", placeholder: "https://whatsapp.com/channel/..." },
+] as const;
+
 export default async function SettingsPage() {
   await requireRole("ADMIN");
   const s = await getSettings();
@@ -66,13 +76,13 @@ export default async function SettingsPage() {
           </ActionForm>
         </Section>
 
-        <Section id="social" title="Social links" description="Full https:// URLs. Leave blank to hide.">
+        <Section id="social" title="Social media" description="Paste the full https:// link to each profile. Filled-in links appear as icons in the site footer; leave a field blank to hide it.">
           <ActionForm action={saveSettings} submitLabel="Save social links">
             <input type="hidden" name="settingsKey" value="social" />
             <div className="grid gap-4 sm:grid-cols-2">
-              {(["x", "facebook", "instagram", "youtube", "telegram"] as const).map((k) => (
-                <Field key={k} label={k === "x" ? "X (Twitter)" : k[0].toUpperCase() + k.slice(1)} htmlFor={`social-${k}`}>
-                  <Input id={`social-${k}`} name={k} type="url" defaultValue={s.social[k]} />
+              {socialFields.map(({ key, label, placeholder }) => (
+                <Field key={key} label={label} htmlFor={`social-${key}`}>
+                  <Input id={`social-${key}`} name={key} type="url" inputMode="url" placeholder={placeholder} defaultValue={s.social[key]} />
                 </Field>
               ))}
             </div>

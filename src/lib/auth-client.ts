@@ -1,8 +1,9 @@
 "use client";
 
 import { createAuthClient } from "better-auth/react";
-import { emailOTPClient } from "better-auth/client/plugins";
+import { emailOTPClient, twoFactorClient } from "better-auth/client/plugins";
 
-export const authClient = createAuthClient({ plugins: [emailOTPClient()] });
+// The sign-in form handles the two-step redirect itself, so it can keep the ?next= destination.
+export const authClient = createAuthClient({ plugins: [emailOTPClient(), twoFactorClient()] });
 
 export const { signIn, signUp, signOut, useSession } = authClient;

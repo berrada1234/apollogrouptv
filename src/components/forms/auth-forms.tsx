@@ -58,9 +58,13 @@ export function SignInForm({ next }: { next?: string }) {
 
   const onSubmit = handleSubmit(async (values) => {
     setMsg(null);
-    const { error } = await authClient.signIn
+    const { data, error } = await authClient.signIn
       .email({ email: values.email, password: values.password, rememberMe: values.rememberMe })
-      .catch(() => ({ error: { message: NETWORK_ERROR } as AuthError }));
+      .catch(() => ({ data: null, error: { message: NETWORK_ERROR } as AuthError }));
+    // Accounts with two-step sign-in still need their authenticator code.
+    if (!error && data && "twoFactorRedirect" in data && data.twoFactorRedirect) {
+      return router.push(next ? `/two-factor?next=${encodeURIComponent(safeRedirect(next))}` : "/two-factor");
+    }
     // Signing in with an unverified email sends a fresh code, so go straight to the code screen.
     if (error && (error.code === "EMAIL_NOT_VERIFIED" || (error.status === 403 && /verif/i.test(error.message ?? "")))) {
       return router.push(verifyPath(values.email, next));
@@ -401,6 +405,108 @@ export function VerifyCodeForm({ email: initialEmail, next }: { email?: string; 
         >
           {wait > 0 ? `Send a new code in ${wait}s` : "Send a new code"}
         </button>
+      </p>
+    </form>
+  );
+}
+
+/** Second sign-in step: a code from the authenticator app, or one of the saved backup codes. */
+export function TwoFactorForm({ next }: { next?: string }) {
+  const router = useRouter();
+  const [mode, setMode] = useState<"app" | "backup">("app");
+  const [code, setCode] = useState("");
+  const [trust, setTrust] = useState(false);
+  const [msg, setMsg] = useState<Msg>(null);
+  const [busy, setBusy] = useState(false);
+  const codeRef = useRef<HTMLInputElement>(null);
+
+  async function verify(value: string) {
+    if (mode === "app" && value.length !== 6) return setMsg({ ok: false, message: "Enter the 6-digit code from your authenticator app." });
+    if (mode === "backup" && value.length < 8) return setMsg({ ok: false, message: "Enter one of your backup codes." });
+    setBusy(true);
+    setMsg(null);
+    const call =
+      mode === "app"
+        ? authClient.twoFactor.verifyTotp({ code: value, trustDevice: trust })
+        : authClient.twoFactor.verifyBackupCode({ code: value, trustDevice: trust });
+    const { error } = await call.catch(() => ({ error: { message: NETWORK_ERROR } as AuthError }));
+    if (error) {
+      setBusy(false);
+      setCode("");
+      codeRef.current?.focus();
+      const code = (error as { code?: string }).code;
+      const expired = code === "INVALID_TWO_FACTOR_COOKIE" || /cookie|expired/i.test(error.message ?? "");
+      return setMsg({
+        ok: false,
+        message: expired
+          ? "This sign-in has timed out. Go back and sign in again."
+          : code === "ACCOUNT_TEMPORARILY_LOCKED" || code === "TOO_MANY_ATTEMPTS_REQUEST_NEW_CODE"
+            ? "Too many wrong codes. Wait a few minutes, then sign in again."
+            : error.status === 429
+            ? "Too many attempts. Please wait a minute and try again."
+            : mode === "app"
+              ? "That code didn't work. Codes change every 30 seconds, so use the current one."
+              : "That backup code didn't work, or it was already used.",
+      });
+    }
+    setMsg({ ok: true, message: "Verified. Taking you to your account…" });
+    router.replace(safeRedirect(next));
+    router.refresh();
+  }
+
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        void verify(code);
+      }}
+      noValidate
+      className="space-y-5"
+    >
+      <Field label={mode === "app" ? "Authenticator code" : "Backup code"} htmlFor="tf-code">
+        <Input
+          ref={codeRef}
+          id="tf-code"
+          name="code"
+          inputMode={mode === "app" ? "numeric" : "text"}
+          autoComplete="one-time-code"
+          autoFocus
+          placeholder={mode === "app" ? "••••••" : "xxxxx-xxxxx"}
+          maxLength={mode === "app" ? 6 : 24}
+          value={code}
+          onChange={(e) => {
+            if (mode === "backup") return setCode(e.target.value.trim());
+            const digits = e.target.value.replace(/\D/g, "").slice(0, 6);
+            setCode(digits);
+            if (digits.length === 6 && !busy) void verify(digits);
+          }}
+          className={mode === "app" ? "h-14 text-center font-mono text-2xl tracking-[0.5em] placeholder:tracking-[0.5em]" : "h-12 text-center font-mono text-lg"}
+        />
+      </Field>
+      <Checkbox label="Trust this device for 30 days" checked={trust} onChange={(e) => setTrust(e.target.checked)} />
+      <FormMessage ok={msg?.ok} message={msg?.message} />
+      <Button type="submit" size="lg" className="w-full" loading={busy}>
+        Verify and sign in
+      </Button>
+      <p className="text-center text-sm text-muted">
+        {mode === "app" ? "Lost your phone? " : "Have your phone? "}
+        <button
+          type="button"
+          onClick={() => {
+            setMode(mode === "app" ? "backup" : "app");
+            setCode("");
+            setMsg(null);
+            codeRef.current?.focus();
+          }}
+          className="font-medium text-accent hover:text-light-blue"
+        >
+          {mode === "app" ? "Use a backup code" : "Use the authenticator app"}
+        </button>
+      </p>
+      <p className="text-center text-sm">
+        <Link href="/sign-in" className="text-muted hover:text-text">
+          Back to sign in
+        </Link>
       </p>
     </form>
   );

@@ -19,7 +19,8 @@ export async function sendContactMessage(input: z.input<typeof contactSchema>): 
       return fromZod(parsed.error);
     }
     const h = await headers();
-    const ip = h.get("x-forwarded-for")?.split(",")[0]?.trim() || h.get("x-real-ip") || "unknown";
+    // x-real-ip comes from the hosting proxy; x-forwarded-for can be forged to dodge the limit.
+    const ip = h.get("x-real-ip") || h.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
     if (!(await rateLimit(`contact:${ip}`, 5, 60 * 60)).ok) return fail("Too many messages from your network. Please try again later.");
 
     const user = await getCurrentUser();

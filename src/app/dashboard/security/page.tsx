@@ -10,6 +10,7 @@ import {
   SessionsManager,
 } from "@/components/forms/account-forms";
 import { Notice } from "@/components/ui/misc";
+import { TwoFactorSettings } from "@/components/forms/two-factor-settings";
 import { isEmailConfigured } from "@/lib/email";
 import { requireUser } from "@/lib/session";
 
@@ -17,7 +18,11 @@ export const metadata: Metadata = { title: "Security Settings" };
 
 export default async function SecurityPage() {
   const user = await requireUser("/dashboard/security");
-  const unread = await db.notification.count({ where: { userId: user.id, audience: "USER", readAt: null } });
+  const [unread, account] = await Promise.all([
+    db.notification.count({ where: { userId: user.id, audience: "USER", readAt: null } }),
+    db.user.findUnique({ where: { id: user.id }, select: { twoFactorEnabled: true } }),
+  ]);
+  const twoFactorOn = !!account?.twoFactorEnabled;
 
   const emailReady = isEmailConfigured();
   return (
@@ -30,6 +35,15 @@ export default async function SecurityPage() {
             <CardHeader title="Change password" />
             <CardBody>
               <ChangePasswordForm />
+            </CardBody>
+          </Card>
+          <Card id="two-step">
+            <CardHeader
+              title="Two-step sign-in"
+              description={user.role === "USER" ? "Ask for a code from your phone as well as your password." : "Strongly recommended for staff accounts: it stops someone who learns your password from signing in."}
+            />
+            <CardBody>
+              <TwoFactorSettings enabled={twoFactorOn} />
             </CardBody>
           </Card>
           <Card>
