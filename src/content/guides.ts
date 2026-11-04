@@ -44,7 +44,7 @@ export const generalGuides: Guide[] = [
       },
       {
         title: "Verify your email",
-        body: "Open the email we send and select the verification link. It's valid for 24 hours; if it expires, request a new one on the [Verify email](/verify-email) page.",
+        body: "Enter the 6-digit code from the email we send. It's valid for 10 minutes; if it expires, request a new one on the same screen.",
       },
       {
         title: "Choose a plan",

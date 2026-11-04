@@ -6,6 +6,7 @@ import {
   findSelectedPlan,
   SelectedPlanCard,
 } from "@/components/checkout/selected-plan";
+import { RememberPlan } from "@/components/checkout/remember-plan";
 import { CreateAccountForm } from "@/components/forms/auth-forms";
 import { skipEmailVerification } from "@/lib/auth";
 import { isValidReferralCode } from "@/lib/referral";
@@ -34,9 +35,10 @@ export default async function CreateAccountPage({
       <p className="mt-2 text-muted">
         {skipEmailVerification
           ? "Local testing mode: email verification is off, so you'll go straight to your dashboard."
-          : "It takes less than a minute. We’ll ask you to verify your email."}
+          : "It takes less than a minute. We’ll email you a 6-digit code to confirm your address."}
       </p>
       {plan && <SelectedPlanCard plan={plan} />}
+      {plan && <RememberPlan slug={plan.slug} />}
       <div className="mt-8">
         <CreateAccountForm
           referralCode={ref && isValidReferralCode(ref) ? ref : undefined}

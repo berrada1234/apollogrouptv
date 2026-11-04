@@ -5,6 +5,7 @@ import {
   findSelectedPlan,
   SelectedPlanCard,
 } from "@/components/checkout/selected-plan";
+import { RememberPlan } from "@/components/checkout/remember-plan";
 import { SignInForm } from "@/components/forms/auth-forms";
 import { getCurrentUser } from "@/lib/session";
 import { safeRedirect } from "@/lib/utils";
@@ -37,6 +38,7 @@ export default async function SignInPage({
           : "Sign in to manage your plan, billing and support."}
       </p>
       {plan && <SelectedPlanCard plan={plan} />}
+      {plan && <RememberPlan slug={plan.slug} />}
       <div className="mt-8">
         <SignInForm next={next} />
       </div>

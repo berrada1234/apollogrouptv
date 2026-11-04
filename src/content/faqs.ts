@@ -225,7 +225,7 @@ export const faqSeed: FaqSeed[] = [
     category: "Account & Security",
     question: "How do I sign in to my Apollo Group TV account?",
     answer:
-      "Use your email and password on the [Sign in](/sign-in) page. If you haven't verified your email yet, use the link we sent you or request a new one on the [Verify email](/verify-email) page.",
+      "Use your email and password on the [Sign in](/sign-in) page. If you haven't verified your email yet, signing in sends you a 6-digit code to enter on the [Verify email](/verify-email) page.",
   },
   {
     category: "Account & Security",
@@ -237,7 +237,7 @@ export const faqSeed: FaqSeed[] = [
     category: "Account & Security",
     question: "I didn't receive my verification email.",
     answer:
-      "Check your spam or promotions folder first. Verification links are valid for 24 hours; if yours expired, request a fresh one from the [Verify email](/verify-email) page. Still nothing? [Message us](/contact) with the address you signed up with.",
+      "Check your spam or promotions folder first. Verification codes are valid for 10 minutes; if yours expired, request a new one on the [Verify email](/verify-email) page. Still nothing? [Message us](/contact) with the address you signed up with.",
   },
   {
     category: "Account & Security",

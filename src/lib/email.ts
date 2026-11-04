@@ -25,7 +25,10 @@ function escapeHtml(value: string) {
   return value.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
 }
 
-function layout(heading: string, body: string, cta?: { label: string; url: string }) {
+function layout(heading: string, body: string, cta?: { label: string; url: string }, code?: string) {
+  const codeBlock = code
+    ? `<p style="margin:24px 0;text-align:center"><span style="display:inline-block;background:#050607;border:1px solid #1C2026;border-radius:12px;padding:14px 22px;font-family:Consolas,Menlo,monospace;font-size:32px;font-weight:700;letter-spacing:10px;color:#F4F6F8">${escapeHtml(code)}</span></p>`
+    : "";
   const button = cta
     ? `<p style="margin:28px 0"><a href="${escapeHtml(cta.url)}" style="background:#22D3EE;color:#03141A;padding:12px 22px;border-radius:10px;text-decoration:none;font-weight:600">${escapeHtml(cta.label)}</a></p>
        <p style="color:#A1A8B3;font-size:13px">If the button does not work, copy this link:<br>${escapeHtml(cta.url)}</p>`
@@ -34,11 +37,11 @@ function layout(heading: string, body: string, cta?: { label: string; url: strin
     <div style="max-width:520px;margin:auto;background:#0F1216;border:1px solid #1C2026;border-radius:14px;padding:32px">
       <p style="color:#22D3EE;font-weight:700;margin:0 0 16px">${escapeHtml(siteConfig.name)}</p>
       <h1 style="font-size:20px;margin:0 0 12px">${escapeHtml(heading)}</h1>
-      <p style="color:#CBD5E1;line-height:1.6">${escapeHtml(body)}</p>${button}
+      <p style="color:#CBD5E1;line-height:1.6">${escapeHtml(body)}</p>${codeBlock}${button}
     </div></div>`;
 }
 
-type Mail = { to: string; subject: string; heading: string; body: string; cta?: { label: string; url: string } };
+type Mail = { to: string; subject: string; heading: string; body: string; cta?: { label: string; url: string }; code?: string };
 
 /**
  * Sends a transactional email. Without SMTP configuration the message is
@@ -48,7 +51,7 @@ type Mail = { to: string; subject: string; heading: string; body: string; cta?: 
 export async function sendEmail(mail: Mail) {
   if (!isEmailConfigured()) {
     if (process.env.NODE_ENV !== "production") {
-      console.info(`\n[email:dev] To: ${mail.to}\nSubject: ${mail.subject}\n${mail.body}${mail.cta ? `\n${mail.cta.url}` : ""}\n`);
+      console.info(`\n[email:dev] To: ${mail.to}\nSubject: ${mail.subject}\n${mail.body}${mail.code ? `\nCode: ${mail.code}` : ""}${mail.cta ? `\n${mail.cta.url}` : ""}\n`);
       return;
     }
     throw new Error("Email delivery is not configured. Set SMTP_* and EMAIL_FROM environment variables.");
@@ -57,7 +60,7 @@ export async function sendEmail(mail: Mail) {
     from: process.env.EMAIL_FROM,
     to: mail.to,
     subject: mail.subject,
-    text: `${mail.heading}\n\n${mail.body}${mail.cta ? `\n\n${mail.cta.label}: ${mail.cta.url}` : ""}`,
-    html: layout(mail.heading, mail.body, mail.cta),
+    text: `${mail.heading}\n\n${mail.body}${mail.code ? `\n\n${mail.code}` : ""}${mail.cta ? `\n\n${mail.cta.label}: ${mail.cta.url}` : ""}`,
+    html: layout(mail.heading, mail.body, mail.cta, mail.code),
   });
 }

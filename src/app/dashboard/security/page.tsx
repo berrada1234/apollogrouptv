@@ -71,10 +71,10 @@ export default async function SecurityPage() {
                 <p>
                   Your email isn’t verified yet.{" "}
                   <Link
-                    href="/verify-email"
+                    href={`/verify-email?email=${encodeURIComponent(user.email)}`}
                     className="font-medium text-accent hover:text-light-blue"
                   >
-                    Resend the verification email
+                    Verify it with a code
                   </Link>
                   .
                 </p>

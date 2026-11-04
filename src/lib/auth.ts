@@ -3,10 +3,12 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { APIError } from "better-auth/api";
 import { nextCookies } from "better-auth/next-js";
+import { emailOTP } from "better-auth/plugins";
 import { db } from "@/lib/db";
 import { sendEmail } from "@/lib/email";
 import { notifyAdmins, notifyUser } from "@/lib/notify";
 import { generateReferralCode, REFERRAL_COOKIE } from "@/lib/referral";
+import { OTP_LENGTH, OTP_MINUTES } from "@/lib/otp";
 import { isLocalUrl, siteConfig } from "@/lib/site";
 
 function readCookie(header: string | null | undefined, name: string) {
@@ -73,20 +75,11 @@ export const auth = betterAuth({
     },
   },
 
+  // Verification uses a 6-digit code (the emailOTP plugin below supplies the sender), so it can be typed on any device.
   emailVerification: {
     sendOnSignUp: !skipEmailVerification,
     sendOnSignIn: !skipEmailVerification,
     autoSignInAfterVerification: true,
-    expiresIn: 60 * 60 * 24,
-    sendVerificationEmail: async ({ user, url }) => {
-      await sendEmail({
-        to: user.email,
-        subject: `Verify your ${siteConfig.name} email`,
-        heading: `Welcome, ${user.name}`,
-        body: "Please confirm your email address to activate your account. This link expires in 24 hours.",
-        cta: { label: "Verify email", url },
-      });
-    },
   },
 
   user: {
@@ -151,7 +144,27 @@ export const auth = betterAuth({
     },
   },
 
-  plugins: [nextCookies()],
+  plugins: [
+    emailOTP({
+      overrideDefaultEmailVerification: true,
+      otpLength: OTP_LENGTH,
+      expiresIn: OTP_MINUTES * 60,
+      allowedAttempts: 5,
+      storeOTP: "hashed",
+      rateLimit: { window: 60, max: 5 },
+      sendVerificationOTP: async ({ email, otp, type }) => {
+        if (type !== "email-verification") return;
+        await sendEmail({
+          to: email,
+          subject: `${otp} is your ${siteConfig.name} verification code`,
+          heading: "Confirm your email",
+          body: `Enter this code on the verification page to activate your account. It expires in ${OTP_MINUTES} minutes. If you didn't create an account, you can ignore this email.`,
+          code: otp,
+        });
+      },
+    }),
+    nextCookies(),
+  ],
 });
 
 export type AuthSession = typeof auth.$Infer.Session;
