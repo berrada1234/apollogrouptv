@@ -5,12 +5,11 @@ import { z } from "zod";
 import { db } from "@/lib/db";
 import { auditData } from "@/lib/audit";
 import { encryptSecret } from "@/lib/crypto";
-import { sendEmail } from "@/lib/email";
+import { sendWelcomeEmail } from "@/lib/lifecycle-emails";
 import { fail, fromZod, handleActionError, success, type ActionState } from "@/lib/action";
 import { accessFields, accessSchema, hasUsableLogin, openAccess, sealAccess, type IptvAccess } from "@/lib/iptv-access";
 import { notifyUser } from "@/lib/notify";
 import { assertRole } from "@/lib/session";
-import { absoluteUrl } from "@/lib/site";
 import { parseUsDate } from "@/lib/subscription-status";
 
 const str = (fd: FormData, key: string) => String(fd.get(key) ?? "");
@@ -135,14 +134,10 @@ export async function saveSubscription(_: ActionState, fd: FormData): Promise<Ac
     });
 
     if (becameActive) {
-      // The email only points to the dashboard; login details are never sent by email.
-      await sendEmail({
-        to: sub.user.email,
-        subject: "Your Apollo Group TV account is activated",
-        heading: "Congratulations! Your account is activated",
-        body: "Your subscription has been successfully activated. Sign in to your dashboard to see your account details.",
-        cta: { label: "Open My Account", url: absoluteUrl("/dashboard/subscription") },
-      }).catch((e) => console.error("[subscriptions] activation email", e instanceof Error ? e.message : e));
+      // Sent only when an admin activates the pack. It points to the dashboard; login details are never sent by email.
+      await sendWelcomeEmail({ to: sub.user.email, name: sub.user.name, planName: sub.plan.name, end }).catch((e) =>
+        console.error("[subscriptions] welcome email", e instanceof Error ? e.message : e),
+      );
     }
 
     revalidatePath("/admin/subscriptions");

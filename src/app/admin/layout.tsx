@@ -24,6 +24,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     { href: "/admin", label: "Overview", icon: "overview", short: "Home" },
     ...(isAdmin
       ? ([
+          { href: "/admin/funnel", label: "Conversion funnel", icon: "funnel" },
           { href: "/admin/users", label: "Users", icon: "users" },
           { href: "/admin/plans", label: "Plans", icon: "plan" },
           { href: "/admin/subscriptions", label: "Subscriptions", icon: "subscription" },

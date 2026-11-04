@@ -35,6 +35,24 @@ export function nextReminder(input: {
   return null;
 }
 
+/**
+ * Win-back after a pack expires: one email a day after, one a week after. Keyed per subscription,
+ * so a customer who renews and lapses again gets the pair again for the new pack.
+ */
+export type WinBackKind = "winback1" | "winback7";
+
+const WINBACK_WINDOWS: [WinBackKind, number, number][] = [
+  ["winback1", 24, 96],
+  ["winback7", 168, 336],
+];
+
+export function nextWinBack(input: { hoursSinceEnd: number; sent: ReadonlySet<string> }): WinBackKind | null {
+  for (const [kind, from, to] of WINBACK_WINDOWS) {
+    if (!input.sent.has(kind) && input.hoursSinceEnd >= from && input.hoursSinceEnd <= to) return kind;
+  }
+  return null;
+}
+
 /** Signs a user id so an unsubscribe link works without signing in but can't be forged for someone else. */
 export function signReminderToken(userId: string, secret: string) {
   return createHmac("sha256", secret).update(`reminders:${userId}`).digest("base64url").slice(0, 32);

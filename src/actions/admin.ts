@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import type { Prisma } from "@prisma/client";
 import { db } from "@/lib/db";
+import { sendWelcomeEmail } from "@/lib/lifecycle-emails";
 import { audit, auditData } from "@/lib/audit";
 import {
   fail,
@@ -363,7 +364,7 @@ export async function grantSubscription(
         currentPeriodStart: start,
         currentPeriodEnd: end,
       },
-      include: { plan: { select: { name: true } } },
+      include: { plan: { select: { name: true } }, user: { select: { email: true, name: true } } },
     });
     await db.notification.create({
       data: {
@@ -380,6 +381,9 @@ export async function grantSubscription(
       targetId: sub.id,
       metadata: { userId, planId, start, end },
     });
+    await sendWelcomeEmail({ to: sub.user.email, name: sub.user.name, planName: sub.plan.name, end }).catch((e) =>
+      console.error("[admin] welcome email", e instanceof Error ? e.message : e),
+    );
     revalidatePath(`/admin/users/${userId}`);
     return success("Subscription activated.");
   } catch (e) {

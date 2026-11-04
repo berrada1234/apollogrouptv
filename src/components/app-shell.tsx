@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
+  Filter,
   MonitorSmartphone,
   Search,
   Bell,
@@ -55,6 +56,7 @@ const icons = {
   home: Home,
   mail: Mail,
   seo: Search,
+  funnel: Filter,
   apps: MonitorSmartphone,
 };
 

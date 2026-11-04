@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { nextReminder, signReminderToken, verifyReminderToken } from "@/lib/reminder-schedule";
+import { nextReminder, nextWinBack, signReminderToken, verifyReminderToken } from "@/lib/reminder-schedule";
 
 const base = { accountAgeHours: 0, invoiceAgeHours: null, sent: new Set<string>(), hoursSinceLastReminder: null };
 
@@ -34,5 +34,17 @@ describe("reminder tokens", () => {
     expect(verifyReminderToken("user_2", t, "secret-value-123456")).toBe(false);
     expect(verifyReminderToken("user_1", t, "another-secret-0000")).toBe(false);
     expect(verifyReminderToken("user_1", "", "secret-value-123456")).toBe(false);
+  });
+});
+
+describe("nextWinBack", () => {
+  it("sends one email a day after expiry and one a week after", () => {
+    expect(nextWinBack({ hoursSinceEnd: 10, sent: new Set() })).toBeNull();
+    expect(nextWinBack({ hoursSinceEnd: 30, sent: new Set() })).toBe("winback1");
+    expect(nextWinBack({ hoursSinceEnd: 30, sent: new Set(["winback1"]) })).toBeNull();
+    expect(nextWinBack({ hoursSinceEnd: 170, sent: new Set(["winback1"]) })).toBe("winback7");
+  });
+  it("stops two weeks after expiry", () => {
+    expect(nextWinBack({ hoursSinceEnd: 400, sent: new Set() })).toBeNull();
   });
 });
