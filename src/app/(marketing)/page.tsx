@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { FloatingHelp } from "@/components/home/floating-help";
+import { assistantProvider } from "@/lib/assistant-providers";
 import { HomeQuickNav } from "@/components/home/quick-nav";
 import { HomeHero } from "@/components/home/hero";
 import { SportsSection } from "@/components/sports-section";
@@ -303,7 +304,8 @@ export default async function HomePage() {
         />
       </Band>
       <FinalCta fromMonthly={fromMonthly} maxSave={maxSave} />
-      <FloatingHelp whatsapp={settings.general.whatsapp} />
+      {/* The chat assistant (in the layout) takes this corner when it's switched on. */}
+      {!assistantProvider() && <FloatingHelp whatsapp={settings.general.whatsapp} />}
     </>
   );
 }

@@ -33,3 +33,32 @@ export async function sendWelcomeEmail(input: { to: string; name: string; planNa
     note: `Stuck on a step? The troubleshooting guide (${url("/guides/troubleshooting")}) fixes most setup problems, or open a ticket from your dashboard and our team replies in writing. You can also reply to this email.`,
   });
 }
+
+/** "tomorrow", "in 2 days"… counted from now, since the reminder can go out anywhere in the last three days. */
+function whenLeft(end: Date) {
+  const days = Math.max(1, Math.round((end.getTime() - Date.now()) / 86_400_000));
+  return days === 1 ? "tomorrow" : `in ${days} days`;
+}
+
+/**
+ * Three days before a pack ends: renewing now adds the next period on top, so nothing is lost by acting early.
+ * This is account information about an active pack, so it isn't part of the opt-out reminder sequence.
+ */
+export async function sendExpiringEmail(input: { to: string; name: string; planName: string; planSlug: string | null; end: Date }) {
+  const url = (path: string) => `${siteConfig.url}${path}`;
+  const firstName = input.name.split(" ")[0] || "there";
+  await sendEmail({
+    to: input.to,
+    subject: `Your ${input.planName} ends on ${formatDate(input.end)}`,
+    heading: `Keep watching without a break, ${firstName}`,
+    body: [
+      `Your ${input.planName} ends on ${formatDate(input.end)}, ${whenLeft(input.end)}.`,
+      "Add your next pack now and the new period starts when the current one ends, so you don't lose any days. Your login details stay the same in most cases.",
+    ].join("\n\n"),
+    cta: {
+      label: input.planSlug ? `Renew my ${input.planName}` : "Choose my next pack",
+      url: url(input.planSlug ? `/dashboard/plan?plan=${encodeURIComponent(input.planSlug)}` : "/dashboard/plan"),
+    },
+    note: `The renewal guide (${url("/apollo-group-tv-renewal")}) shows each step. Questions? Reply to this email or open a ticket from your dashboard.`,
+  });
+}
