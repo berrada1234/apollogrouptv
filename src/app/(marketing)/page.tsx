@@ -30,8 +30,8 @@ import { getPosts } from "@/lib/blog";
 import { siteConfig } from "@/lib/site";
 import { formatDate, formatMoney } from "@/lib/utils";
 
-// Rebuilt at most every 5 minutes (and immediately when an admin saves settings), so visitors get a cached page.
-export const revalidate = 300;
+// Rendered per request: the database isn't reachable during the Hostinger build, so the page can't be prerendered.
+export const dynamic = "force-dynamic";
 
 // Guides shown on the homepage, in the order a new customer needs them.
 const homeGuides = ["how-to-get-apollo-tv", "apollo-tv-downloader-code", "xtream-codes-login", "is-apollo-tv-down", "apollo-group-tv-netflix", "apollo-group-tv-roku"];
