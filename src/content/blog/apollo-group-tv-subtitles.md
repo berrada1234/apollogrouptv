@@ -152,9 +152,11 @@ If subtitles stopped working on one device only, clearing the app's cache can he
 
 If a title you'd expect to have subtitles doesn't, or subtitles stopped working everywhere, open a ticket from your dashboard through [support](/dashboard/support/new). Include the title or channel name, the device and app you're using, whether subtitles worked before, and a photo of the player controls if you can. We can't promise subtitles for every title, because availability depends on how each one is delivered, but clear reports help us check what's going on.
 
-## Example: captions for a household member with hearing loss
+## Example scenario: captions for a household member with hearing loss
 
-A customer wanted captions on by default for a parent who is hard of hearing. On their Fire TV, they went to **Settings > Accessibility**, turned subtitles on, and changed the style to large yellow text on a dark background. For on-demand films, they used the subtitle option in the player controls to pick the SDH track whenever one was listed. On live news channels that carry captions, the captions appeared in the larger style they'd chosen. For titles without subtitle tracks, they knew there was nothing to switch on, which saved them from hunting through menus.
+*An illustrative scenario based on common support questions, not a specific customer's account.*
+
+In this scenario, a customer wanted captions on by default for a parent who is hard of hearing. On their Fire TV, they went to **Settings > Accessibility**, turned subtitles on, and changed the style to large yellow text on a dark background. For on-demand films, they used the subtitle option in the player controls to pick the SDH track whenever one was listed. On live news channels that carry captions, the captions appeared in the larger style they'd chosen. For titles without subtitle tracks, they knew there was nothing to switch on, which saved them from hunting through menus.
 
 ## Frequently asked questions
 

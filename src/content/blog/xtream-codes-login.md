@@ -174,9 +174,11 @@ Before saving your details in any player, run through this list. It catches near
 
 If every line checks out and the player still refuses, try the same details in a different player on another device. If they work there, the problem is the first player or device; updating or reinstalling the app usually fixes it. If they fail everywhere, contact support so we can check your login.
 
-## Example: a login that failed because of one character
+## Example scenario: a login that failed because of one character
 
-A customer setting up an Apple TV player saw "authentication failed" on every attempt, despite copying the details carefully. Comparing the entry with My Account showed the issue: the player had automatically capitalized the first letter of the username. Turning off auto-capitalization on the on-screen keyboard and retyping the username fixed it straight away.
+*An illustrative scenario based on common support questions, not a specific customer's account.*
+
+In this scenario, a customer setting up an Apple TV player saw "authentication failed" on every attempt, despite copying the details carefully. Comparing the entry with My Account showed the issue: the player had automatically capitalized the first letter of the username. Turning off auto-capitalization on the on-screen keyboard and retyping the username fixed it straight away.
 
 Another common case: a server URL entered as `server.example.test` without `http://` worked in one player and failed in another. Adding the full address, scheme included, made it work everywhere. When in doubt, enter the server URL exactly as it appears in My Account.
 

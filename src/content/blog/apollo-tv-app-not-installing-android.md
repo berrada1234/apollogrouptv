@@ -178,9 +178,11 @@ TV devices are installed differently, with the Downloader app rather than a brow
 | "Problem parsing the package" | Incomplete file or old Android | Download again; check Android version |
 | Installs but crashes | Cache or data issue | Clear cache, clear data, reinstall |
 
-## Example: two errors, one after the other
+## Example scenario: two errors, one after the other
 
-A customer with a recent Samsung phone tapped the downloaded file and nothing happened. Auto Blocker was on. After turning it off, the installation started, but ended with "App not installed". It turned out an old copy of the app, installed months earlier from a link in a video, was still on the phone. Uninstalling it and installing the official file worked on the next try. The customer then turned Auto Blocker back on.
+*An illustrative scenario based on common support questions, not a specific customer's account.*
+
+In this scenario, a customer with a recent Samsung phone tapped the downloaded file and nothing happened. Auto Blocker was on. After turning it off, the installation started, but ended with "App not installed". It turned out an old copy of the app, installed months earlier from a link in a video, was still on the phone. Uninstalling it and installing the official file worked on the next try. The customer then turned Auto Blocker back on.
 
 Two different problems produced two different messages, and each had a simple fix. Taking them one at a time, in order, is the quickest route.
 

@@ -166,9 +166,11 @@ If you've worked through the steps and still can't watch, open a ticket from you
 
 A ticket with these details can usually be answered in one reply, instead of a back-and-forth asking for each one.
 
-## Example: an "outage" that wasn't
+## Example scenario: an "outage" that wasn't
 
-A customer reported that Apollo TV was down: the living room TV showed a spinner on every channel. Working through this guide:
+*An illustrative scenario based on common support questions, not a specific customer's account.*
+
+In this scenario, a customer reported that Apollo TV was down: the living room TV showed a spinner on every channel. Working through this guide:
 
 - Other apps on the same Fire TV played fine, so the internet was working.
 - My Account showed an active subscription.

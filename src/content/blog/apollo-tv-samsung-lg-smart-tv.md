@@ -144,9 +144,11 @@ Before you spend money on a device for your Samsung or LG TV:
 4. **Check your internet** at the TV's location. Our guide to the [internet speed you need for IPTV](/blog/internet-speed-for-iptv) explains what live TV needs.
 5. **Plan for your connection limit** if you'll watch on several TVs at once. See [IPTV connection limits](/blog/iptv-connection-limit).
 
-## Example: a Samsung TV in the living room
+## Example scenario: a Samsung TV in the living room
 
-A customer with a Samsung TV asked whether they needed a new TV to watch Apollo Group TV. They didn't. They bought a Fire OS streaming stick, plugged it into a spare HDMI port, turned on Anynet+ so the stick's remote could control the TV's power and volume, installed the Apollo TV app with Downloader and signed in with the details from My Account. Setup took about 20 minutes, and they kept using the TV's own apps for everything else.
+*An illustrative scenario based on common support questions, not a specific customer's account.*
+
+In this scenario, a customer with a Samsung TV asked whether they needed a new TV to watch Apollo Group TV. They didn't. They bought a Fire OS streaming stick, plugged it into a spare HDMI port, turned on Anynet+ so the stick's remote could control the TV's power and volume, installed the Apollo TV app with Downloader and signed in with the details from My Account. Setup took about 20 minutes, and they kept using the TV's own apps for everything else.
 
 ## Frequently asked questions
 

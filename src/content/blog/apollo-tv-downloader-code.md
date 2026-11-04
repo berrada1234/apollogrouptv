@@ -160,9 +160,11 @@ Downloader has a few other tabs you don't need for Apollo TV, but they're good t
 - **Settings:** options such as JavaScript and the home page. The defaults are fine.
 - **Favorites:** saved web addresses.
 
-## Example: "Downloader does nothing when I press Go"
+## Example scenario: "Downloader does nothing when I press Go"
 
-A customer typed the code, pressed Go, and nothing happened. Working through the table above:
+*An illustrative scenario based on common support questions, not a specific customer's account.*
+
+In this scenario, a customer typed the code, pressed Go, and nothing happened. Working through the table above:
 
 - Other apps on the Fire TV worked, so the internet was fine.
 - Looking closely at the address box, one digit of the code had been entered twice when the remote double-clicked.

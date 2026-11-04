@@ -124,9 +124,11 @@ If someone offers you an "Apollo app for Roku" outside our website, treat it wit
 4. **Check your internet at the TV.** Our guide to the [internet speed you need for IPTV](/blog/internet-speed-for-iptv) explains what live TV needs, and [Ethernet vs Wi-Fi on a Firestick](/blog/firestick-ethernet-vs-wifi) helps if the TV is far from the router.
 5. **Plan for your connection limit** if several TVs will watch at once. See our article on [IPTV connection limits](/blog/iptv-connection-limit).
 
-## Example: a Roku TV in the living room
+## Example scenario: a Roku TV in the living room
 
-A household with a Roku TV wanted to watch Apollo Group TV without replacing the television. They bought a Fire OS streaming stick, plugged it into HDMI 2, set up the input from the Roku home screen and renamed the tile "Apollo". With CEC turned on, the stick's remote switched the TV on and jumped straight to the right input. They installed the Apollo TV app with Downloader and signed in with the details from My Account. The Roku home screen still runs all their other channels, and Apollo Group TV is one tile away.
+*An illustrative scenario based on common support questions, not a specific customer's account.*
+
+In this scenario, a household with a Roku TV wanted to watch Apollo Group TV without replacing the television. They bought a Fire OS streaming stick, plugged it into HDMI 2, set up the input from the Roku home screen and renamed the tile "Apollo". With CEC turned on, the stick's remote switched the TV on and jumped straight to the right input. They installed the Apollo TV app with Downloader and signed in with the details from My Account. The Roku home screen still runs all their other channels, and Apollo Group TV is one tile away.
 
 ## Frequently asked questions
 

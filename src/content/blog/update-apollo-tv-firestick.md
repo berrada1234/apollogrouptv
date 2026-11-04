@@ -145,9 +145,11 @@ You don't need to think about updates often. A light routine every month or two 
 
 That's five minutes, and it heads off most of the problems people contact support about.
 
-## Example: fixing an app that stopped loading after months without an update
+## Example scenario: fixing an app that stopped loading after months without an update
 
-Here's a typical case. A customer's Apollo TV app had worked for months, then started showing a loading spinner that never finished. The Fire TV was the original model, rarely restarted, and showed only 300 MB of free storage.
+*An illustrative scenario based on common support questions, not a specific customer's account.*
+
+Here's an illustrative case. A customer's Apollo TV app had worked for months, then started showing a loading spinner that never finished. The Fire TV was the original model, rarely restarted, and showed only 300 MB of free storage.
 
 The fix took four steps: deleting two old installer files in Downloader freed most of a gigabyte; a Fire OS update that had been waiting installed overnight; the Apollo TV app was updated using the manual method above; and its cache was cleared once. The app loaded normally afterwards. None of the steps were complicated, but skipping any of them would likely have left the problem in place.
 

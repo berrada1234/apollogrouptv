@@ -155,9 +155,11 @@ If none of the steps help, open a ticket from your dashboard through [support](/
 
 Never post your login details or playlist link publicly, for example in a forum or comment, when asking for help. Anyone with them could use your connections.
 
-## Example: 404 on every channel after renewing
+## Example scenario: 404 on every channel after renewing
 
-A customer renewed their subscription and found that every channel in their player app now showed "Status code 404". The Apollo TV app on their phone worked fine. That pointed to the player, not the service.
+*An illustrative scenario based on common support questions, not a specific customer's account.*
+
+In this scenario, a customer renewed their subscription and found that every channel in their player app now showed "Status code 404". The Apollo TV app on their phone worked fine. That pointed to the player, not the service.
 
 They opened My Account, copied their current login details with the copy buttons, deleted the old profile in the player and added a new one. After the player reloaded the channel list, everything played. The old profile had been asking for addresses tied to their previous details.
 

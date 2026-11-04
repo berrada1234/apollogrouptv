@@ -137,9 +137,11 @@ A few mix-ups come up again and again when people combine services:
 - **"Netflix uses one of my Apollo connections."** No. Only streams on your Apollo login count toward its connection limit.
 - **"The Netflix button on my remote opens Apollo."** No. It opens Netflix. Use the Home button to get back to your apps.
 
-## Example: a household with Apollo Group TV and Netflix
+## Example scenario: a household with Apollo Group TV and Netflix
 
-A family wanted live sports and news without cable, but the kids weren't giving up their favorite Netflix series. They set up a Fire OS streaming stick on the main TV, installed the Apollo TV app and Netflix, and moved both to the front of the home screen. Sports and news run on Apollo Group TV; the kids' shows run on Netflix with their own profiles. When a big match and a series overlap, the bedroom TV takes one and the living room the other, and their connection handles both because they checked their speeds first.
+*An illustrative scenario based on common support questions, not a specific customer's account.*
+
+In this scenario, a family wanted live sports and news without cable, but the kids weren't giving up their favorite Netflix series. They set up a Fire OS streaming stick on the main TV, installed the Apollo TV app and Netflix, and moved both to the front of the home screen. Sports and news run on Apollo Group TV; the kids' shows run on Netflix with their own profiles. When a big match and a series overlap, the bedroom TV takes one and the living room the other, and their connection handles both because they checked their speeds first.
 
 ## Frequently asked questions
 

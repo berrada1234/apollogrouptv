@@ -145,9 +145,11 @@ For a household that watches live TV, the most practical setup is usually no VPN
 - **"A VPN makes anything allowed."** It doesn't change what the law or a service's terms allow. Using one to get around regional licensing breaks our terms.
 - **"Free VPNs are just as good."** Free services have to pay for their servers somehow, and that often means limits on speed, ads or data collection.
 
-## Example: buffering that turned out to be a VPN
+## Example scenario: buffering that turned out to be a VPN
 
-A customer reported that live channels started slowly and buffered every evening, although a speed test showed a fast connection. The speed test had been run on a laptop, but the Fire TV Stick had a VPN app running, connected to a server in another country to keep a different streaming app working.
+*An illustrative scenario based on common support questions, not a specific customer's account.*
+
+In this scenario, a customer reported that live channels started slowly and buffered every evening, although a speed test showed a fast connection. The speed test had been run on a laptop, but the Fire TV Stick had a VPN app running, connected to a server in another country to keep a different streaming app working.
 
 Turning off the VPN on the Fire TV fixed the buffering immediately. The detour to a distant server and the extra load on the stick's small processor had been enough to empty the live buffer at busy times. The customer kept the VPN on the laptop for privacy and left the Fire TV without it.
 

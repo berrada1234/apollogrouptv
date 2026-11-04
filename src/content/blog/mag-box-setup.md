@@ -171,9 +171,11 @@ MAG remotes are simple, but a few habits help:
 
 If you already own a MAG box, it's a dependable way to watch. If you're buying something new, a streaming device running the Apollo TV app is usually simpler to set up; see the [Apollo TV app page](/app) for supported devices and our guide to the [best Fire TV Stick for IPTV](/blog/best-firestick-for-iptv).
 
-## Example: a box that wouldn't authorize
+## Example scenario: a box that wouldn't authorize
 
-A customer entered the portal URL correctly but kept seeing "Authorization failed". The MAC address in their support ticket ended in `...:B8`, but the label on the box read `...:8B`. Two characters had been swapped when typing the ticket. Once the registration was corrected, the box loaded the portal on the next reboot.
+*An illustrative scenario based on common support questions, not a specific customer's account.*
+
+In this scenario, a customer entered the portal URL correctly but kept seeing "Authorization failed". The MAC address in their support ticket ended in `...:B8`, but the label on the box read `...:8B`. Two characters had been swapped when typing the ticket. Once the registration was corrected, the box loaded the portal on the next reboot.
 
 The lesson: copy the MAC address from a photo of the label rather than from memory, and send the photo with your ticket if you can.
 
