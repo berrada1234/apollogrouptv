@@ -28,6 +28,8 @@ export function HomeHero({
   // "Apollo Group TV: Live TV and …" — the brand sits on its own line above the statement.
   const [brand, ...rest] = homeCopy.hero.h1.split(": ");
   const statement = rest.join(": ");
+  const [brandFirst, ...brandWords] = brand.split(" ");
+  const brandRest = brandWords.join(" ");
 
   return (
     <section className="relative isolate -mt-[4.5rem] overflow-hidden pt-[4.5rem]">
@@ -40,12 +42,12 @@ export function HomeHero({
       <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-b from-transparent to-bg" aria-hidden />
 
       <Container className="relative grid min-h-[calc(100svh-4.5rem)] grid-rows-[auto_1fr_auto] lg:min-h-[min(calc(100svh-4.5rem),900px)]">
-        {/* Art: above the text on small screens, filling the right half on large ones. */}
-        <div className="relative mt-6 h-[260px] sm:h-[340px] lg:absolute lg:inset-y-0 lg:left-[44%] lg:right-[-6%] lg:mt-0 lg:h-auto">
+        {/* Art on large screens: the right half of the hero. */}
+        <div className="absolute inset-y-0 left-[44%] right-[-6%] hidden lg:block">
           <Prism />
         </div>
 
-        <div className="relative z-10 flex max-w-[44rem] flex-col justify-center pb-10 pt-4 lg:py-16">
+        <div className="relative z-10 flex max-w-[44rem] flex-col justify-center pb-10 pt-8 sm:pt-12 lg:py-16">
           {/* Official-site badge with a live green status light. */}
           <p className="rise inline-flex w-fit items-center gap-2.5 rounded-full border border-emerald-400/40 bg-emerald-400/10 px-4 py-1.5 text-sm font-semibold text-emerald-300 shadow-[0_0_24px_-6px_rgb(52_211_153/0.7)]" style={delay(0)}>
             <span className="relative flex h-2.5 w-2.5" aria-hidden>
@@ -54,15 +56,30 @@ export function HomeHero({
             </span>
             Official Apollo Group TV
           </p>
-          <h1 className="mt-6 font-hero font-medium tracking-[-0.045em] text-text">
+          {/*
+            Art on phones and tablets: anchored to the headline, centred on the brand line in the empty space to its right,
+            so it follows the text at every screen width. --s is the prism size; the Prism draws it at 40% of the box width,
+            centred 34% from the box's left edge.
+          */}
+          <div className="relative">
+            <div
+              className="pointer-events-none absolute left-[calc(100%-var(--s)*1.25)] top-[calc(4.15rem-var(--s)/2)] h-[var(--s)] w-[calc(var(--s)*2.5)] opacity-90 sm:top-[calc(5.17rem-var(--s)/2)] lg:hidden"
+              style={{ "--s": "clamp(100px, 30vw, 170px)" } as React.CSSProperties}
+            >
+              <Prism />
+            </div>
+          <h1 className="relative mt-6 font-hero font-medium tracking-[-0.045em] text-text">
             <span className="rise block text-[2.6rem] font-semibold leading-[1.02] sm:text-[3.6rem] xl:text-[4.2rem]" style={delay(1)}>
-              {brand}
+              {/* Two lines below desktop so the prism always has the space right of the second line. */}
+              {brandFirst} <br className="lg:hidden" />
+              {brandRest}
               <span className="sr-only">: </span>
             </span>
             <span className="rise mt-3 block text-[1.5rem] leading-[1.15] text-light-blue sm:text-[2rem] xl:text-[2.35rem]" style={delay(2)}>
               {statement}
             </span>
           </h1>
+          </div>
           <p className="rise mt-6 max-w-xl text-base leading-7 text-muted sm:text-lg sm:leading-8" style={delay(3)}>
             {homeCopy.hero.lead}
           </p>

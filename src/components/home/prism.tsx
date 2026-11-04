@@ -78,8 +78,8 @@ export function Prism() {
 
   return (
     <div ref={stage} className="prism-stage relative h-full w-full" aria-hidden>
-      {/* Incoming beam */}
-      <div className="absolute left-0 top-[52%] h-px w-[38%] -translate-y-1/2 bg-gradient-to-r from-transparent via-white/50 to-white">
+      {/* Incoming beam (large screens only: on phones it would cross the headline) */}
+      <div className="absolute left-0 hidden lg:block top-[52%] h-px w-[38%] -translate-y-1/2 bg-gradient-to-r from-transparent via-white/50 to-white">
         <span className="beam-pulse absolute -top-[3px] left-0 h-[7px] w-16 rounded-full bg-white/90 blur-[3px]" />
       </div>
 
