@@ -1,3 +1,4 @@
+import path from "node:path";
 import type { NextConfig } from "next";
 
 const isProd = process.env.NODE_ENV === "production";
@@ -29,6 +30,16 @@ const nextConfig: NextConfig = {
     inlineCss: true,
   },
   poweredByHeader: false,
+  // Next.js bundles a polyfill module into every page even though all browsers it supports already have those
+  // features natively (Lighthouse "Legacy JavaScript"). Swap it for an empty file in client bundles.
+  webpack(config, { isServer, webpack }) {
+    if (!isServer) {
+      config.plugins.push(
+        new webpack.NormalModuleReplacementPlugin(/[\\/]build[\\/]polyfills[\\/]polyfill-module(\.js)?$/, path.join(process.cwd(), "src/lib/empty-polyfills.js")),
+      );
+    }
+    return config;
+  },
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: process.env.NEXT_PUBLIC_IMAGE_HOSTS

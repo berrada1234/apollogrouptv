@@ -26,9 +26,13 @@ export function SiteHeader() {
   // The bar condenses once the page scrolls, so the hero gets the full first screen.
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
-    onScroll();
+    // First read on the next frame, not straight after hydration, so it doesn't force an early layout.
+    const first = requestAnimationFrame(onScroll);
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      cancelAnimationFrame(first);
+      window.removeEventListener("scroll", onScroll);
+    };
   }, []);
 
   useEffect(() => {
