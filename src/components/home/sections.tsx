@@ -307,7 +307,7 @@ export function DevicesSection() {
           <p className="mt-6 flex gap-3 text-sm leading-6 text-muted">
             <MessageSquareText className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden />
             <span>
-              Device not listed? <Link href="/contact" className="font-medium text-text underline-offset-4 hover:text-light-blue hover:underline">Ask us before subscribing</Link> —
+              Device not listed? <Link href="/contact" className="font-medium text-text underline-offset-4 hover:text-light-blue hover:underline">Ask us before subscribing</Link> and
               we&apos;ll tell you whether it works.
             </span>
           </p>
