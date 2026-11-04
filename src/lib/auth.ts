@@ -111,6 +111,9 @@ export const auth = betterAuth({
   },
 
   advanced: {
+    // Hostinger's proxy overwrites x-real-ip with the visitor's address; x-forwarded-for repeats hops and
+    // passes client-supplied values through, so it can't be trusted for rate limiting.
+    ipAddress: { ipAddressHeaders: ["x-real-ip"] },
     useSecureCookies: process.env.NODE_ENV === "production",
     cookiePrefix: "agtv",
   },
