@@ -1,6 +1,7 @@
 import { timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
 import { sweepPayments } from "@/lib/checkout/service";
+import { sweepReminders } from "@/lib/reminders";
 import { sweepSubscriptions } from "@/lib/subscriptions";
 
 export const dynamic = "force-dynamic";
@@ -8,7 +9,7 @@ export const dynamic = "force-dynamic";
 /**
  * Background job for a cron (e.g. every 5 minutes): confirms Bitcoin payments even
  * after the customer closes the page, expires lapsed subscriptions and sends
- * "expiring soon" reminders:
+ * "expiring soon" reminders, then the "finish your purchase" emails:
  *   curl -H "Authorization: Bearer $CRON_SECRET" https://your-domain/api/cron/payments
  */
 export async function GET(req: Request) {
@@ -23,5 +24,7 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const payments = await sweepPayments();
   const subscriptions = await sweepSubscriptions();
-  return NextResponse.json({ payments, subscriptions });
+  // A reminder failure must never block payment confirmation, so it is caught and reported separately.
+  const reminders = await sweepReminders().catch((e: unknown) => ({ error: e instanceof Error ? e.message : String(e) }));
+  return NextResponse.json({ payments, subscriptions, reminders });
 }

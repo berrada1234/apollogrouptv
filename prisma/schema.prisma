@@ -124,6 +124,8 @@ model User {
   referralCode        String?    @unique @db.VarChar(16)
   marketingOptIn      Boolean    @default(false)
   productUpdatesOptIn Boolean    @default(true)
+  // Set by the unsubscribe link in reminder emails; stops the "finish your purchase" sequence.
+  remindersOptOut     Boolean    @default(false)
   createdAt           DateTime   @default(now())
   updatedAt           DateTime   @updatedAt
 
@@ -142,6 +144,7 @@ model User {
   notifications    Notification[]
   playerCredential PlayerCredential?
   auditLogs        AuditLog[]
+  emailReminders   EmailReminder[]
 
   @@index([role])
   @@index([status])
@@ -612,4 +615,17 @@ model PlayerCredential {
   updatedAt   DateTime @updatedAt
 
   @@map("player_credentials")
+}
+
+// One row per reminder email sent, so each step of the sequence goes out at most once per customer.
+model EmailReminder {
+  id     String   @id @default(cuid())
+  userId String
+  user   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kind   String   @db.VarChar(40)
+  sentAt DateTime @default(now())
+
+  @@unique([userId, kind])
+  @@index([sentAt])
+  @@map("email_reminders")
 }
