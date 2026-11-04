@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { AlertTriangle, Check, ChevronDown, CreditCard, ExternalLink, Gift, Lock, Package, ShieldCheck, Sparkles, Tag, UserPlus, Zap } from "lucide-react";
+import { AlertTriangle, ArrowRight, Check, ChevronDown, CreditCard, ExternalLink, Gift, Lock, Package, ShieldCheck, Sparkles, Tag, UserPlus, Zap } from "lucide-react";
 import { InvoiceActions, ReservationTimer, SubscribeButton } from "@/components/checkout/checkout-client";
 import { CheckoutSection } from "@/components/checkout/checkout-section";
 import { findSelectedPlan } from "@/components/checkout/selected-plan";
@@ -18,6 +19,7 @@ import { getCustomerMethods } from "@/lib/checkout/methods";
 import { CheckoutError, createInvoice, getOpenInvoice } from "@/lib/checkout/service";
 import { rateLimit } from "@/lib/rate-limit";
 import { accessLabel, monthlyCents, pricingContext, savingsPct } from "@/lib/pricing";
+import { PLAN_COOKIE } from "@/lib/plan-cookie";
 import { getActivePlans } from "@/lib/queries";
 import { requireUser } from "@/lib/session";
 import { getSettings } from "@/lib/settings";
@@ -41,7 +43,7 @@ function PacksWrapper({ collapsed, current, children }: { collapsed: boolean; cu
       <summary className="flex cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
         <span>
           <span className="block font-semibold text-text">Change pack</span>
-          <span className="block text-sm text-muted">Your invoice is for the {current}. Pick another pack here to replace it.</span>
+          <span className="block text-sm text-muted">You chose the {current}. Pick another pack here instead.</span>
         </span>
         <ChevronDown className="h-5 w-5 shrink-0 text-muted transition-transform group-open:rotate-180" aria-hidden />
       </summary>
@@ -53,7 +55,7 @@ function PacksWrapper({ collapsed, current, children }: { collapsed: boolean; cu
 export default async function PlansBillingPage({ searchParams }: PageProps<"/dashboard/plan">) {
   const user = await requireUser("/dashboard/plan");
   const sp = await searchParams;
-  const [subscription, plans, settings, referral, history, invoice, selected] = await Promise.all([
+  const [subscription, plans, settings, referral, history, invoice, selected, jar] = await Promise.all([
     getCurrentSubscription(user.id),
     getActivePlans(),
     getSettings(),
@@ -61,14 +63,15 @@ export default async function PlansBillingPage({ searchParams }: PageProps<"/das
     db.subscription.count({ where: { userId: user.id } }),
     getOpenInvoice(user.id),
     findSelectedPlan(sp.plan),
+    cookies(),
   ]);
   const methods = await getCustomerMethods(settings);
   // Self-serve checkout needs at least one usable payment method; otherwise packs go through an activation ticket.
   const checkout = methods.length > 0;
   // A pack chosen on the Plans page (carried through sign-up or sign-in) becomes the unpaid invoice straight away.
   // The redirect drops ?plan, so refreshing the page never creates another one.
-  if (selected) {
-    if (checkout && invoice?.planId !== selected.id && (await rateLimit(`invoice:${user.id}`, 10, 60 * 10)).ok) {
+  if (selected && checkout) {
+    if (invoice?.planId !== selected.id && (await rateLimit(`invoice:${user.id}`, 10, 60 * 10)).ok) {
       try {
         await createInvoice(user.id, selected.slug);
       } catch (e) {
@@ -79,6 +82,9 @@ export default async function PlansBillingPage({ searchParams }: PageProps<"/das
   }
   const payable = invoice?.status === "PENDING" ? invoice : null;
   const live = subscription && (subscription.status === "ACTIVE" || subscription.status === "PAST_DUE");
+  // Without online checkout no invoice can be created, so the chosen pack (from ?plan or the pre-sign-up cookie)
+  // is shown on its own with an activation request, instead of the full list again.
+  const chosen = !checkout && !live && !invoice ? (selected ?? (history === 0 ? await findSelectedPlan(jar.get(PLAN_COOKIE)?.value) : null)) : null;
   const { baseMonthly, bestValueId } = pricingContext(plans);
   const included = plans[0] ? parseFeatures(plans[0].features) : [];
   const { liveChannels, moviesShows } = settings.highlights;
@@ -158,6 +164,35 @@ export default async function PlansBillingPage({ searchParams }: PageProps<"/das
         </section>
       )}
 
+      {chosen && (
+        <section aria-labelledby="chosen-heading" className={cn(panel, "mb-6 border-primary/40 p-5 sm:p-6")}>
+          <div className="flex items-start gap-4">
+            <span className="grid h-12 w-12 shrink-0 place-items-center rounded-[12px] bg-primary/15 text-accent">
+              <Package className="h-6 w-6" aria-hidden />
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-accent">Your selected pack</p>
+              <h2 id="chosen-heading" className="mt-1 font-display text-lg font-bold text-text">
+                {chosen.name}
+              </h2>
+              <p className="mt-0.5 text-sm text-muted">
+                {accessLabel(chosen.interval)} — <span className="font-semibold text-text">{formatMoney(chosen.priceCents, chosen.currency)}</span>
+                {chosen.oneTime && " · one-time payment, no auto-renewal"}
+              </p>
+              <p className="mt-3 text-sm leading-6 text-muted">
+                Request activation and our team replies in a ticket with the amount and the payment options. Your pack is switched on as soon as payment is
+                confirmed.
+              </p>
+              <div className="mt-5 flex flex-wrap gap-3">
+                <ButtonLink href={`/dashboard/support/new?plan=${encodeURIComponent(chosen.slug)}&mode=new`}>
+                  Request activation <ArrowRight className="h-4 w-4" aria-hidden />
+                </ButtonLink>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* With an unpaid invoice, payment comes straight after it and the other packs fold away. */}
       {checkout && payable && (
         <div className={cn(panel, "mb-6 p-5 sm:p-6")}>
@@ -169,7 +204,7 @@ export default async function PlansBillingPage({ searchParams }: PageProps<"/das
       {plans.length === 0 ? (
         <EmptyState icon={Package} title="No packs available right now" description="Please check back soon or contact support." />
       ) : (
-        <PacksWrapper collapsed={Boolean(payable)} current={payable?.plan.name}>
+        <PacksWrapper collapsed={Boolean(payable || chosen)} current={payable?.plan.name ?? chosen?.name}>
         <h2 className="sr-only">Available packs</h2>
         <ul id="packs" className="grid scroll-mt-24 gap-4 pt-3 sm:grid-cols-2 xl:grid-cols-4">
           {plans.map((plan) => {
