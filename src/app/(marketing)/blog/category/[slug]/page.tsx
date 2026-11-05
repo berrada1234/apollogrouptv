@@ -10,6 +10,7 @@ import { blogCategories, categoryBySlug } from "@/content/blog-categories";
 import { getPosts } from "@/lib/blog";
 import { siteConfig } from "@/lib/site";
 import { webPageNode } from "@/lib/schema";
+import { shareImage } from "@/lib/share-image";
 
 export function generateStaticParams() {
   return blogCategories.map((c) => ({ slug: c.slug }));
@@ -23,7 +24,7 @@ export async function generateMetadata({ params }: PageProps<"/blog/category/[sl
     title: { absolute: category.title },
     description: category.description,
     alternates: { canonical: path },
-    openGraph: { title: category.title, description: category.description, url: path },
+    openGraph: { ...shareImage, title: category.title, description: category.description, url: path },
   };
 }
 

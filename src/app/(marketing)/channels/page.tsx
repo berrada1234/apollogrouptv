@@ -30,6 +30,7 @@ import { SportsSection } from "@/components/sports-section";
 import { channelCategories, channelFaq, channelGuideSteps, channelRegions, channelsCopy } from "@/content/channels";
 import { cn } from "@/lib/utils";
 import { ldJson, webPageNode } from "@/lib/schema";
+import { shareImage } from "@/lib/share-image";
 
 const title = "Apollo Group TV Channels: Live TV Categories & Lineup Guide";
 const description =
@@ -39,7 +40,7 @@ export const metadata: Metadata = {
   title: { absolute: title },
   description,
   alternates: { canonical: "/channels" },
-  openGraph: { title, description, url: "/channels" },
+  openGraph: { ...shareImage, title, description, url: "/channels" },
 };
 
 const categoryIcons: Record<string, LucideIcon> = {

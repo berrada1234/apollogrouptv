@@ -5,6 +5,7 @@ import { Container } from "@/components/ui/misc";
 import { PageHero, RelatedLinks } from "@/components/marketing/sections";
 import { FaqAccordion } from "@/components/marketing/faq-list";
 import { articleNode } from "@/lib/schema";
+import { shareImage } from "@/lib/share-image";
 
 const title = "Is Apollo Group TV Legal? IPTV, Licensing and Your Rights";
 const description =
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
   title: { absolute: title },
   description,
   alternates: { canonical: "/is-apollo-group-tv-legal" },
-  openGraph: { title, description, url: "/is-apollo-group-tv-legal", type: "article" },
+  openGraph: { ...shareImage, title, description, url: "/is-apollo-group-tv-legal", type: "article" },
 };
 
 const articleLd = articleNode({ path: "/is-apollo-group-tv-legal", headline: "Is Apollo Group TV Legal?", description });

@@ -9,6 +9,7 @@ import { ReadingPath } from "@/components/reading-path";
 import { renewal } from "@/content/renewal";
 import { parseBlocks, plainText, type Block } from "@/lib/blog";
 import { faqNode } from "@/lib/schema";
+import { shareImage } from "@/lib/share-image";
 
 const path = `/${renewal.slug}`;
 const signInToRenew = "/sign-in?next=/dashboard/plan";
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
   title: { absolute: renewal.seoTitle },
   description: renewal.description,
   alternates: { canonical: path },
-  openGraph: { title: renewal.seoTitle, description: renewal.description, url: path, type: "article" },
+  openGraph: { ...shareImage, title: renewal.seoTitle, description: renewal.description, url: path, type: "article" },
 };
 
 /** Questions and answers under the "Frequently asked questions" heading, for FAQPage structured data. */

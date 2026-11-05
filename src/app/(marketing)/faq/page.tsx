@@ -14,6 +14,7 @@ import { getSettings } from "@/lib/settings";
 import { siteConfig } from "@/lib/site";
 import { cn, formatMoney } from "@/lib/utils";
 import { breadcrumbId, pageId, websiteRef } from "@/lib/schema";
+import { shareImage } from "@/lib/share-image";
 
 export const dynamic = "force-dynamic";
 
@@ -25,7 +26,7 @@ export const metadata: Metadata = {
   title: { absolute: title },
   description,
   alternates: { canonical: "/faq" },
-  openGraph: { title, description, url: "/faq" },
+  openGraph: { ...shareImage, title, description, url: "/faq" },
 };
 
 export default async function FaqPage() {

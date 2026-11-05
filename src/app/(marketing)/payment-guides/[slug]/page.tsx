@@ -9,6 +9,7 @@ import { Container } from "@/components/ui/misc";
 import { getPaymentGuide, paymentGuides } from "@/content/payment-guides";
 import { formatDate } from "@/lib/utils";
 import { articleNode, faqNode } from "@/lib/schema";
+import { shareImage } from "@/lib/share-image";
 
 export function generateStaticParams() {
   return paymentGuides.map((g) => ({ slug: g.slug }));
@@ -21,7 +22,7 @@ export async function generateMetadata({ params }: PageProps<"/payment-guides/[s
     title: { absolute: g.metaTitle },
     description: g.description,
     alternates: { canonical: `/payment-guides/${g.slug}` },
-    openGraph: { title: g.metaTitle, description: g.description, url: `/payment-guides/${g.slug}`, type: "article", modifiedTime: g.updated },
+    openGraph: { ...shareImage, title: g.metaTitle, description: g.description, url: `/payment-guides/${g.slug}`, type: "article", modifiedTime: g.updated },
   };
 }
 

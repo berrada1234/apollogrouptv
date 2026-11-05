@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { GuideArticle } from "@/components/compare/guide-article";
 import { choosingIptv as page } from "@/content/compare-guides";
+import { shareImage } from "@/lib/share-image";
 
 export const metadata: Metadata = {
   title: { absolute: page.seoTitle },
   description: page.description,
   alternates: { canonical: page.path },
-  openGraph: { title: page.seoTitle, description: page.description, url: page.path, type: "article" },
+  openGraph: { ...shareImage, title: page.seoTitle, description: page.description, url: page.path, type: "article" },
 };
 
 export default function Page() {

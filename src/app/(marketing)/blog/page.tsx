@@ -7,6 +7,7 @@ import { CtaBand, PageHero } from "@/components/marketing/sections";
 import { Section } from "@/components/section";
 import { getPosts } from "@/lib/blog";
 import { siteConfig } from "@/lib/site";
+import { shareImage } from "@/lib/share-image";
 
 const title = "Apollo Group TV Blog: Streaming Guides, Devices and IPTV Tips";
 const description =
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
   title: { absolute: title },
   description,
   alternates: { canonical: "/blog" },
-  openGraph: { title, description, url: "/blog" },
+  openGraph: { ...shareImage, title, description, url: "/blog" },
 };
 
 export default async function BlogIndex({ searchParams }: PageProps<"/blog">) {

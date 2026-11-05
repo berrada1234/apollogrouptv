@@ -8,6 +8,7 @@ import { EmptyState } from "@/components/ui/misc";
 import { getCustomerMethods } from "@/lib/checkout/methods";
 import { getSettings } from "@/lib/settings";
 import { cn } from "@/lib/utils";
+import { shareImage } from "@/lib/share-image";
 
 export const dynamic = "force-dynamic";
 
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
   title: { absolute: title },
   description,
   alternates: { canonical: "/payment-methods" },
-  openGraph: { title, description, url: "/payment-methods" },
+  openGraph: { ...shareImage, title, description, url: "/payment-methods" },
 };
 
 const steps = [

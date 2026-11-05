@@ -25,6 +25,7 @@ import { monthlyCents } from "@/lib/pricing";
 import { getActivePlans } from "@/lib/queries";
 import { getSettings } from "@/lib/settings";
 import { cn, formatMoney } from "@/lib/utils";
+import { shareImage } from "@/lib/share-image";
 
 export const dynamic = "force-dynamic";
 
@@ -36,7 +37,7 @@ export const metadata: Metadata = {
   title: { absolute: title },
   description,
   alternates: { canonical: "/product" },
-  openGraph: { title, description, url: "/product" },
+  openGraph: { ...shareImage, title, description, url: "/product" },
 };
 
 const dashboard = [

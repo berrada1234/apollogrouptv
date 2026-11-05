@@ -8,6 +8,7 @@ import { CtaBand, PageHero } from "@/components/marketing/sections";
 import { ReferralPanel } from "@/components/referral-panel";
 import { getCurrentUser } from "@/lib/session";
 import { getSettings } from "@/lib/settings";
+import { shareImage } from "@/lib/share-image";
 
 export const dynamic = "force-dynamic";
 
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
   title: { absolute: title },
   description,
   alternates: { canonical: "/refer-a-friend" },
-  openGraph: { title, description, url: "/refer-a-friend" },
+  openGraph: { ...shareImage, title, description, url: "/refer-a-friend" },
 };
 
 export default async function ReferPage() {

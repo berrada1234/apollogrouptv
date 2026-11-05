@@ -8,6 +8,7 @@ import { Container } from "@/components/ui/misc";
 import { CHECKED, rivals } from "@/content/compare";
 import { getApolloCompareData } from "@/lib/compare-data";
 import { cn } from "@/lib/utils";
+import { shareImage } from "@/lib/share-image";
 
 export const dynamic = "force-dynamic";
 
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
   title: { absolute: title },
   description,
   alternates: { canonical: "/compare" },
-  openGraph: { title, description, url: "/compare" },
+  openGraph: { ...shareImage, title, description, url: "/compare" },
 };
 
 export default async function ComparePage() {

@@ -5,6 +5,7 @@ import { CtaBand, PageHero } from "@/components/marketing/sections";
 import { Section, SectionHeader } from "@/components/section";
 import { paymentGuides } from "@/content/payment-guides";
 import { siteConfig } from "@/lib/site";
+import { shareImage } from "@/lib/share-image";
 
 const title = "Apollo Group TV Payment Guides: Cash App, Venmo, MoonPay & More";
 const description =
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
   title: { absolute: title },
   description,
   alternates: { canonical: "/payment-guides" },
-  openGraph: { title, description, url: "/payment-guides" },
+  openGraph: { ...shareImage, title, description, url: "/payment-guides" },
 };
 
 const methodSlugs = ["cash-app", "venmo", "shakepay", "moonpay", "credit-card", "crypto-wallet", "zelle"];

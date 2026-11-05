@@ -8,6 +8,7 @@ import { ButtonLink } from "@/components/ui/button";
 import { PageHero } from "@/components/marketing/sections";
 import { generalGuides } from "@/content/guides";
 import { getDeviceGuides } from "@/lib/guides";
+import { shareImage } from "@/lib/share-image";
 
 export const dynamic = "force-dynamic";
 
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
   description:
     "Step-by-step Apollo Group TV guides for verified devices, account setup and troubleshooting, kept in one place and updated as devices are verified.",
   alternates: { canonical: "/guides" },
-  openGraph: { url: "/guides" },
+  openGraph: { ...shareImage, url: "/guides" },
 };
 
 const generalIcons: Record<string, typeof UserPlus> = { "account-setup": UserPlus, troubleshooting: Wrench };

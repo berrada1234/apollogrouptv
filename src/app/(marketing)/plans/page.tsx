@@ -16,6 +16,7 @@ import { getSettings } from "@/lib/settings";
 import { siteConfig } from "@/lib/site";
 import { cn, formatMoney, parseFeatures } from "@/lib/utils";
 import { ldJson, organizationRef, pageId, webPageNode } from "@/lib/schema";
+import { shareImage } from "@/lib/share-image";
 
 export const dynamic = "force-dynamic";
 
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
   title: { absolute: title },
   description,
   alternates: { canonical: "/plans" },
-  openGraph: { title, description, url: "/plans" },
+  openGraph: { ...shareImage, title, description, url: "/plans" },
 };
 
 const periodLabels = { MONTHLY: "Monthly", QUARTERLY: "Quarterly", SEMIANNUAL: "Semi-Annual", YEARLY: "Annual", ONE_TIME: "One-time" } as const;

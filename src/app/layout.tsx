@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Instrument_Sans, Unbounded } from "next/font/google";
 import { siteConfig } from "@/lib/site";
 import "./globals.css";
+import { shareImage } from "@/lib/share-image";
 
 const body = Instrument_Sans({ variable: "--font-body", subsets: ["latin"], display: "swap" });
 // App UI headings use the body family (legible at small sizes); Unbounded is the wide display face for marketing headlines.
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
   description: siteConfig.description,
   applicationName: siteConfig.name,
   openGraph: {
+    ...shareImage,
     type: "website",
     siteName: siteConfig.name,
     locale: "en_US",

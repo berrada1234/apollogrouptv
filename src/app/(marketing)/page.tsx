@@ -42,20 +42,45 @@ export const dynamic = "force-dynamic";
 // Guides shown on the homepage, in the order a new customer needs them.
 const homeGuides = ["how-to-get-apollo-tv", "apollo-tv-downloader-code", "xtream-codes-login", "is-apollo-tv-down", "apollo-group-tv-netflix", "apollo-group-tv-roku"];
 
-export const metadata: Metadata = {
-  title: {
-    absolute: "Apollo Group TV (Apollo TV): Live TV & On-Demand Streaming",
-  },
-  description:
-    "Apollo Group TV (Apollo TV) streams live channels and on-demand shows to Fire TV, Android, iPhone, Windows and Mac. One-time packs, no auto-renewal.",
-  alternates: { canonical: "/" },
-  openGraph: {
-    title: "Apollo Group TV (Apollo TV): Live TV and On-Demand Streaming",
-    description:
-      "Live channels and an on-demand library on the screens you already own. Pay once for one to twelve months, with a setup guide for every device.",
-    url: "/",
-  },
-};
+// 59 characters: brand + the "Apollo TV" short name people search for, the official-site signal, then what it is.
+const homeTitle = "Apollo Group TV (Apollo TV) Official Site: Live TV & Movies";
+
+/** The description quotes the cheapest monthly price from the live price list, so it never goes stale. */
+export async function generateMetadata(): Promise<Metadata> {
+  let from: string | null = null;
+  try {
+    const plans = await getActivePlans();
+    const monthlies = plans.map(monthlyCents).filter((m): m is number => m !== null);
+    if (monthlies.length) from = formatMoney(Math.min(...monthlies), plans[0]?.currency ?? "USD");
+  } catch {
+    // Database briefly unavailable: fall back to the wording without a price.
+  }
+  // Opens with the brand keyword, which Google bolds when it matches the search; about 147 characters.
+  const description = from
+    ? `Apollo Group TV streams live TV, sports and movies to Fire TV, Android, iPhone, Windows and Mac. One-time packs from ${from}/month, no auto-renewal.`
+    : "Apollo Group TV streams live TV, sports and movies to Fire TV, Android, iPhone, Windows and Mac. Pay once for 1 to 12 months, no auto-renewal.";
+  return {
+    title: { absolute: homeTitle },
+    description,
+    alternates: { canonical: "/" },
+    openGraph: {
+      title: "Apollo Group TV Official Site: Live TV, Sports & Movies",
+      description: from
+        ? `Apollo Group TV: live channels, sports and movies on the screens you already own. Pay once from ${from}/month, with a setup guide for every device.`
+        : "Apollo Group TV: live channels, sports and movies on the screens you already own. Pay once for 1 to 12 months, with a setup guide for every device.",
+      url: "/",
+      type: "website",
+      // A page-level openGraph object replaces the inherited one, so the share image must be listed here.
+      images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Apollo Group TV, the official site for live TV, sports and movies" }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Apollo Group TV Official Site: Live TV, Sports & Movies",
+      description,
+      images: ["/opengraph-image"],
+    },
+  };
+}
 
 const quickNav = [
   { id: "overview", label: "Overview" },

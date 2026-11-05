@@ -34,6 +34,7 @@ import { getSettings } from "@/lib/settings";
 import { siteConfig } from "@/lib/site";
 import { cn, formatMoney, slugify } from "@/lib/utils";
 import { ldJson, organizationRef, pageId, webPageNode } from "@/lib/schema";
+import { shareImage } from "@/lib/share-image";
 
 export const dynamic = "force-dynamic";
 
@@ -45,7 +46,7 @@ export const metadata: Metadata = {
   title: { absolute: title },
   description,
   alternates: { canonical: "/app" },
-  openGraph: { title, description, url: "/app" },
+  openGraph: { ...shareImage, title, description, url: "/app" },
 };
 
 const whyIcons: LucideIcon[] = [LayoutGrid, Tv, UserCheck, LifeBuoy];

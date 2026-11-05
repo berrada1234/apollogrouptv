@@ -8,6 +8,7 @@ import { PageHero, ReviewCard } from "@/components/marketing/sections";
 import { ReviewForm } from "@/components/forms/review-form";
 import { displayName, getApprovedReviews, getRatingDistribution } from "@/lib/queries";
 import { getCurrentUser } from "@/lib/session";
+import { shareImage } from "@/lib/share-image";
 
 export const dynamic = "force-dynamic";
 
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
   title: { absolute: "Apollo Group TV Reviews — Moderated Customer Feedback" },
   description: "Read moderated Apollo Group TV reviews from registered customers, see how verification works, and share your own experience.",
   alternates: { canonical: "/reviews" },
-  openGraph: { title: "Apollo Group TV Reviews — Moderated Customer Feedback", description: "Read moderated Apollo Group TV reviews from registered customers, see how verification works, and share your own experience.", url: "/reviews" },
+  openGraph: { ...shareImage, title: "Apollo Group TV Reviews — Moderated Customer Feedback", description: "Read moderated Apollo Group TV reviews from registered customers, see how verification works, and share your own experience.", url: "/reviews" },
 };
 
 const PAGE_SIZE = 12;

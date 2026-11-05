@@ -3,6 +3,7 @@ import { LegalPage, legalTokens } from "@/components/legal-page";
 import { RichText } from "@/components/rich-text";
 import { refundPolicy as doc } from "@/content/legal";
 import { getSettings } from "@/lib/settings";
+import { shareImage } from "@/lib/share-image";
 
 export const dynamic = "force-dynamic";
 
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
   description: doc.description,
   alternates: { canonical: `/${doc.slug}` },
   openGraph: {
+    ...shareImage,
     title: doc.metaTitle,
     description: doc.description,
     url: `/${doc.slug}`,

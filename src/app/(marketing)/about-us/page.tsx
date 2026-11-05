@@ -29,6 +29,7 @@ import { getSettings } from "@/lib/settings";
 import { siteConfig } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { organizationRef, webPageNode } from "@/lib/schema";
+import { shareImage } from "@/lib/share-image";
 
 export const dynamic = "force-dynamic";
 
@@ -40,7 +41,7 @@ export const metadata: Metadata = {
   title: { absolute: title },
   description,
   alternates: { canonical: "/about-us" },
-  openGraph: { title, description, url: "/about-us" },
+  openGraph: { ...shareImage, title, description, url: "/about-us" },
 };
 
 const practices = [

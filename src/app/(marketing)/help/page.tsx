@@ -7,6 +7,7 @@ import { cardClass, Section } from "@/components/section";
 import { ButtonLink } from "@/components/ui/button";
 import { getHelpIndex } from "@/lib/help-index";
 import { cn } from "@/lib/utils";
+import { shareImage } from "@/lib/share-image";
 
 export const dynamic = "force-dynamic";
 
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
   title: { absolute: title },
   description,
   alternates: { canonical: "/help" },
-  openGraph: { title, description, url: "/help" },
+  openGraph: { ...shareImage, title, description, url: "/help" },
 };
 
 export default async function HelpCenterPage() {

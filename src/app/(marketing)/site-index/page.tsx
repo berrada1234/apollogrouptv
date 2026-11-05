@@ -11,6 +11,7 @@ import { getHelpIndex } from "@/lib/help-index";
 import { accessLabel } from "@/lib/pricing";
 import { getActivePlans } from "@/lib/queries";
 import { cn, formatMoney } from "@/lib/utils";
+import { shareImage } from "@/lib/share-image";
 
 export const dynamic = "force-dynamic";
 
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
   title: { absolute: title },
   description,
   alternates: { canonical: "/site-index" },
-  openGraph: { title, description, url: "/site-index" },
+  openGraph: { ...shareImage, title, description, url: "/site-index" },
 };
 
 type Group = { title: string; blurb: string; links: { href: string; label: string; note?: string }[] };
