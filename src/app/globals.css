@@ -360,6 +360,20 @@ p {
   animation: rise-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
   animation-delay: calc(var(--d, 0) * 60ms);
 }
+/* Hero text: slides without fading. Text that starts at opacity 0 is not counted as painted until it
+   becomes visible, which pushed Largest Contentful Paint well past the first paint on slow phones. */
+.rise-solid {
+  animation: rise-solid 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--d, 0) * 60ms);
+}
+@keyframes rise-solid {
+  from {
+    transform: translateY(10px);
+  }
+  to {
+    transform: none;
+  }
+}
 /* Headline reveal: each line slides up from behind a mask. */
 .line-mask {
   display: block;

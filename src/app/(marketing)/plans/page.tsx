@@ -209,14 +209,14 @@ export default async function PlansPage() {
           <div className="relative mx-auto max-w-4xl">
             <div className="headline-light pointer-events-none absolute inset-x-[10%] -inset-y-10 -z-10 rounded-full blur-2xl" aria-hidden />
             <h1 className="font-hero font-medium tracking-[-0.045em] text-text">
-              <span className="rise block text-base font-normal tracking-[-0.01em] text-light-blue sm:text-lg" style={{ "--d": 0 } as React.CSSProperties}>
+              <span className="rise-solid block text-base font-normal tracking-[-0.01em] text-light-blue sm:text-lg" style={{ "--d": 0 } as React.CSSProperties}>
                 Apollo Group TV Plans &amp; Pricing
               </span>
-              <span className="rise mt-4 block text-[2.5rem] leading-[1.05] sm:text-[3.5rem] lg:text-[4.25rem]" style={{ "--d": 1 } as React.CSSProperties}>
+              <span className="rise-solid mt-4 block text-[2.5rem] leading-[1.05] sm:text-[3.5rem] lg:text-[4.25rem]" style={{ "--d": 1 } as React.CSSProperties}>
                 Choose Your Perfect Plan
               </span>
             </h1>
-            <p className="rise mx-auto mt-6 max-w-2xl text-base leading-7 text-muted sm:text-lg sm:leading-8" style={{ "--d": 2 } as React.CSSProperties}>
+            <p className="rise-solid mx-auto mt-6 max-w-2xl text-base leading-7 text-muted sm:text-lg sm:leading-8" style={{ "--d": 2 } as React.CSSProperties}>
               Every pack has the same channels, library and support. Pick how many months you want, pay once, and nothing renews by itself.
             </p>
             <ul className="rise mt-7 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-muted" style={{ "--d": 3 } as React.CSSProperties}>

@@ -69,18 +69,18 @@ export function HomeHero({
               <Prism />
             </div>
           <h1 className="relative mt-6 font-hero font-medium tracking-[-0.045em] text-text">
-            <span className="rise block text-[2.6rem] font-semibold leading-[1.02] sm:text-[3.6rem] xl:text-[4.2rem]" style={delay(1)}>
+            <span className="rise-solid block text-[2.6rem] font-semibold leading-[1.02] sm:text-[3.6rem] xl:text-[4.2rem]" style={delay(1)}>
               {/* Two lines below desktop so the prism always has the space right of the second line. */}
               {brandFirst} <br className="lg:hidden" />
               {brandRest}
               <span className="sr-only">: </span>
             </span>
-            <span className="rise mt-3 block text-[1.5rem] leading-[1.15] text-light-blue sm:text-[2rem] xl:text-[2.35rem]" style={delay(2)}>
+            <span className="rise-solid mt-3 block text-[1.5rem] leading-[1.15] text-light-blue sm:text-[2rem] xl:text-[2.35rem]" style={delay(2)}>
               {statement}
             </span>
           </h1>
           </div>
-          <p className="rise mt-6 max-w-xl text-base leading-7 text-muted sm:text-lg sm:leading-8" style={delay(3)}>
+          <p className="rise-solid mt-6 max-w-xl text-base leading-7 text-muted sm:text-lg sm:leading-8" style={delay(3)}>
             {homeCopy.hero.lead}
           </p>
 

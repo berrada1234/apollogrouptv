@@ -53,7 +53,7 @@ export function PageHero({
               {eyebrow}
             </p>
           )}
-          <h1 className={cn("rise max-w-3xl font-hero text-[2rem] font-medium leading-[1.1] tracking-[-0.04em] text-text sm:text-[2.75rem] lg:text-[3.25rem]", centered && "mx-auto")}>
+          <h1 className={cn("rise-solid max-w-3xl font-hero text-[2rem] font-medium leading-[1.1] tracking-[-0.04em] text-text sm:text-[2.75rem] lg:text-[3.25rem]", centered && "mx-auto")}>
             {title}
           </h1>
           {description && <p className={cn("mt-5 max-w-2xl text-lg leading-relaxed text-muted", centered && "mx-auto")}>{description}</p>}
