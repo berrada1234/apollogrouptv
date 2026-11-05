@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Sparkles, Star } from "lucide-react";
 import { buttonClasses } from "@/components/ui/button";
@@ -201,14 +201,20 @@ export function PricingExplorer({ plans, defaultId }: { plans: PricingPlan[]; de
   // One highlight pill that slides (via transform) to the active period, measured from the buttons.
   const groupRef = useRef<HTMLDivElement>(null);
   const [pill, setPill] = useState<{ x: number; y: number; w: number; h: number } | null>(null);
-  useLayoutEffect(() => {
+  const mounted = useRef(false);
+  useEffect(() => {
+    const group = groupRef.current;
+    if (!group) return;
     const measure = () => {
-      const el = groupRef.current?.querySelector<HTMLElement>(`#period-${selected.slug}`);
+      const el = group.querySelector<HTMLElement>(`#period-${selected.slug}`);
       if (el) setPill({ x: el.offsetLeft, y: el.offsetTop, w: el.offsetWidth, h: el.offsetHeight });
     };
-    measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
+    // A selection change is a click or key press, so layout is read in response to the visitor, not on load.
+    if (mounted.current) measure();
+    mounted.current = true;
+    const observer = new ResizeObserver(measure);
+    observer.observe(group);
+    return () => observer.disconnect();
   }, [selected.slug]);
 
   const onKey = (e: React.KeyboardEvent, i: number) => {

@@ -22,8 +22,13 @@ export function HomeQuickNav({ items }: { items: { id: string; label: string }[]
     return () => observer.disconnect();
   }, [items]);
 
-  // Keep the active chip visible on narrow screens.
+  // Keep the active chip visible on narrow screens. Skipped on load, when nothing has moved yet.
+  const first = useRef(true);
   useEffect(() => {
+    if (first.current) {
+      first.current = false;
+      return;
+    }
     const el = listRef.current?.querySelector<HTMLElement>(`[data-id="${active}"]`);
     const list = listRef.current;
     if (el && list) list.scrollTo({ left: el.offsetLeft - list.clientWidth / 2 + el.clientWidth / 2, behavior: "smooth" });

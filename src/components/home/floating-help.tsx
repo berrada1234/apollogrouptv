@@ -1,19 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useScrolledPast } from "@/lib/use-scrolled-past";
 import { LifeBuoy, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /** Help button that appears after the visitor scrolls past the hero, so it never covers the first screen. */
 export function FloatingHelp({ whatsapp }: { whatsapp: string }) {
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > window.innerHeight * 0.8);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  const visible = useScrolledPast("80vh");
 
   const href = whatsapp ? `https://wa.me/${whatsapp}` : "/dashboard/support/new";
   return (

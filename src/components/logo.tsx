@@ -17,7 +17,8 @@ export function Logo({ className, height = 40, priority }: { className?: string;
         alt="Apollo Group TV"
         width={width}
         height={height}
-        priority={priority}
+        loading={priority ? "eager" : undefined}
+        fetchPriority={priority ? "high" : undefined}
         className="h-auto max-w-full"
         style={{ width, height: "auto" }}
       />

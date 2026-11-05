@@ -9,11 +9,13 @@ import { ButtonLink } from "@/components/ui/button";
 import { useSession } from "@/lib/auth-client";
 import { isNavActive, mainNav, secondaryNav } from "@/lib/site";
 import { cn } from "@/lib/utils";
+import { useScrolledPast } from "@/lib/use-scrolled-past";
 
 export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  // The bar condenses once the page scrolls, so the hero gets the full first screen.
+  const scrolled = useScrolledPast("12px");
   const [lastPath, setLastPath] = useState(pathname);
   const { data: session, isPending } = useSession();
 
@@ -23,17 +25,6 @@ export function SiteHeader() {
     setOpen(false);
   }
 
-  // The bar condenses once the page scrolls, so the hero gets the full first screen.
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    // First read on the next frame, not straight after hydration, so it doesn't force an early layout.
-    const first = requestAnimationFrame(onScroll);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      cancelAnimationFrame(first);
-      window.removeEventListener("scroll", onScroll);
-    };
-  }, []);
 
   useEffect(() => {
     if (!open) return;
