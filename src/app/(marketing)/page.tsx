@@ -42,8 +42,8 @@ export const dynamic = "force-dynamic";
 // Guides shown on the homepage, in the order a new customer needs them.
 const homeGuides = ["how-to-get-apollo-tv", "apollo-tv-downloader-code", "xtream-codes-login", "is-apollo-tv-down", "apollo-group-tv-netflix", "apollo-group-tv-roku"];
 
-// 59 characters: brand + the "Apollo TV" short name people search for, the official-site signal, then what it is.
-const homeTitle = "Apollo Group TV (Apollo TV) Official Site: Live TV & Movies";
+// 54 characters: brand + the "Apollo TV" short name people search for, the official-site signal, then the category (IPTV service, USA).
+const homeTitle = "Apollo Group TV (Apollo TV): Official IPTV Service USA";
 
 /** The description quotes the cheapest monthly price from the live price list, so it never goes stale. */
 export async function generateMetadata(): Promise<Metadata> {
@@ -55,10 +55,10 @@ export async function generateMetadata(): Promise<Metadata> {
   } catch {
     // Database briefly unavailable: fall back to the wording without a price.
   }
-  // Opens with the brand keyword, which Google bolds when it matches the search; about 147 characters.
+  // Opens with both brand keywords, which Google bolds when they match the search; about 150 characters.
   const description = from
-    ? `Apollo Group TV streams live TV, sports and movies to Fire TV, Android, iPhone, Windows and Mac. One-time packs from ${from}/month, no auto-renewal.`
-    : "Apollo Group TV streams live TV, sports and movies to Fire TV, Android, iPhone, Windows and Mac. Pay once for 1 to 12 months, no auto-renewal.";
+    ? `Apollo Group TV (Apollo TV) is an IPTV service for live TV, sports and movies on Fire TV, Android, iPhone and PC. One-time packs from ${from}/month.`
+    : "Apollo Group TV (Apollo TV) is an IPTV service for live TV, sports and movies on Fire TV, Android, iPhone and PC. Pay once for 1 to 12 months.";
   return {
     title: { absolute: homeTitle },
     description,
@@ -215,6 +215,7 @@ export default async function HomePage() {
     alternateName: "Apollo TV",
     url: siteConfig.url,
     description: siteConfig.description,
+    knowsAbout: ["IPTV", "Internet television"],
     // Only profiles the owner has entered in Admin → Settings → Social; never invented.
     ...(Object.values(settings.social).some(Boolean) ? { sameAs: Object.values(settings.social).filter(Boolean) } : {}),
     logo: { "@type": "ImageObject", url: LOGO_URL, width: 512, height: 512 },

@@ -7,15 +7,15 @@
  */
 export const homeCopy = {
   hero: {
-    h1: "Apollo Group TV: Live TV and On-Demand Streaming Without a Cable Box",
+    h1: "Apollo Group TV: IPTV Service for Live TV and On-Demand Streaming",
     lead:
-      "Apollo Group TV (Apollo TV for short) streams live channels and an on-demand library to the Fire TV stick, phone or computer you already have. You pay once for one to twelve months, follow a step-by-step install guide, and keep every bill and support reply in one dashboard.",
+      "Apollo Group TV (Apollo TV for short) is an IPTV provider that streams live channels and an on-demand library to the Fire TV stick, phone or computer you already have. You pay once for one to twelve months, follow a step-by-step install guide, and keep every bill and support reply in one dashboard.",
   },
 
   intro: {
     intent: "Informational — what is it",
     eyebrow: "Start here",
-    h2: "What Is Apollo Group TV?",
+    h2: "What Is Apollo Group TV? The IPTV Service Explained",
     paragraphs: [
       "**Apollo Group TV**, often shortened to **Apollo TV**, is an internet TV service. In place of a cable box on a monthly contract you get an app: live channels sorted by category and region, a library of movies and series to watch when you like, and one online account that holds your pack, payments and support history.",
       "You decide how long you want access, from one month to a full year, and pay once. Nothing renews on its own. Our team switches the pack on, and if a device gives you trouble during setup, you keep replying in the same ticket until it works.",
@@ -54,7 +54,7 @@ export const homeCopy = {
   compare: {
     intent: "Commercial investigation — comparison",
     eyebrow: "Cut the cord",
-    h2: "Apollo Group TV vs. Cable TV: How They Compare",
+    h2: "Apollo Group TV vs. Cable TV: IPTV Compared for US Viewers",
     description:
       "Thinking about leaving cable? Here is how Apollo Group TV and a typical cable package differ on monthly cost, equipment, commitment and support.",
     footnote: "Cable and streaming terms vary by provider and region. Those columns describe common arrangements, not any specific company.",
@@ -128,6 +128,14 @@ export const homeCopy = {
  * Questions keep the brand because that's how people search; answers mostly don't repeat it.
  */
 export const homeFaq = [
+  {
+    q: "Is Apollo Group TV the same as Apollo TV?",
+    a: "Yes. Apollo TV is the short name for Apollo Group TV: one service, one account and one official website. The [official site guide](/blog/apollo-group-tv-official-website) shows how to tell it apart from lookalike sites.",
+  },
+  {
+    q: "Is Apollo Group TV an IPTV service?",
+    a: "Yes. IPTV means TV delivered over the internet instead of cable or satellite. You watch live channels and an on-demand library in an app on your own device. [What is IPTV?](/blog/what-is-iptv) explains how it works.",
+  },
   {
     q: "Is Apollo Group TV legal?",
     a: "Internet TV delivery is a lawful technology. What matters is whether the provider has rights to the content, and we list only authorized, properly licensed content. Our [plain-English explanation](/is-apollo-group-tv-legal) goes further.",
