@@ -489,7 +489,7 @@ export async function finalizePaid(
     await sendEmail({
       to: result.order.user.email,
       subject: `Payment confirmed: ${result.order.plan.name}`,
-      heading: "Payment Successful!",
+      heading: "Payment confirmed",
       body: `Your payment for invoice ${result.order.number} has been confirmed. We're activating your ${result.order.plan.name} now; your login details will appear in My Account on your dashboard.`,
       cta: {
         label: "Open your dashboard",
