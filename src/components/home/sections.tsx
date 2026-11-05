@@ -31,7 +31,7 @@ import {
   Download,
 } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
-import { LogoMark } from "@/components/logo";
+import { LogoMark, Wordmark } from "@/components/logo";
 import { Container, EmptyState } from "@/components/ui/misc";
 import { PlanCard } from "@/components/marketing/sections";
 import { FaqAccordion } from "@/components/marketing/faq-list";
@@ -386,7 +386,7 @@ export function CompareSection({
             <tr className="border-b border-border text-left">
               <th scope="col" className="w-[22%] px-6 py-5 text-[11px] font-semibold uppercase tracking-[0.12em] text-subtle">Feature</th>
               <th scope="col" className="w-[28%] border-x border-primary/20 bg-primary/[0.07] px-6 py-4">
-                <Image src="/brand/apollo-logo.webp" alt="Apollo Group TV" width={155} height={32} className="h-8 w-auto" />
+                <Wordmark height={26} />
               </th>
               <th scope="col" className="w-[25%] px-6 py-5 text-sm font-semibold text-muted">Cable TV</th>
               <th scope="col" className="w-[25%] px-6 py-5 text-sm font-semibold text-muted">Other streaming</th>

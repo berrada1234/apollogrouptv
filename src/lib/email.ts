@@ -171,7 +171,7 @@ function layout({ heading, body, cta, code, links, note, unsubscribe }: Mail) {
   <tr><td align="center" class="shell" style="padding:32px 16px">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px">
       <tr><td bgcolor="${C.midnight}" style="background:${C.midnight};border-radius:16px 16px 0 0;padding:26px 36px" class="pad">
-        <a href="${escapeHtml(siteConfig.url)}" style="text-decoration:none"><img src="${escapeHtml(`${siteConfig.url}/brand/apollo-logo-email.png`)}" width="200" height="41" alt="${escapeHtml(siteConfig.name)}" style="display:block;border:0;outline:none;width:200px;height:auto;color:#FFFFFF;font-family:${FONT};font-size:18px;font-weight:700"></a>
+        <a href="${escapeHtml(siteConfig.url)}" style="text-decoration:none"><img src="${escapeHtml(`${siteConfig.url}/brand/apollo-logo-email.png`)}" width="220" height="36" alt="${escapeHtml(siteConfig.name)}" style="display:block;border:0;outline:none;width:220px;height:auto;color:#FFFFFF;font-family:${FONT};font-size:18px;font-weight:700"></a>
       </td></tr>
       <tr><td height="4" bgcolor="${C.cyan}" style="height:4px;line-height:4px;font-size:0;background:${C.cyan};background-image:linear-gradient(90deg,#46E0FF,#7B8CFF,#9D7BFF)">&nbsp;</td></tr>
       <tr><td class="card pad" bgcolor="${C.paper}" style="background:${C.paper};padding:36px 36px 20px">

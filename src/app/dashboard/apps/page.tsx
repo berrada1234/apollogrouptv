@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import QRCode from "qrcode";
 import { Apple, Download, Flame, Info, Laptop, LifeBuoy, Mic, MonitorSmartphone, ShieldCheck, Smartphone, Sparkles, Tv, Wrench, Zap, type LucideIcon } from "lucide-react";
@@ -12,6 +11,7 @@ import { getCurrentSubscription } from "@/components/dashboard/overview";
 import { requireUser } from "@/lib/session";
 import { getSettings } from "@/lib/settings";
 import { cn, slugify } from "@/lib/utils";
+import { Wordmark } from "@/components/logo";
 
 export const metadata: Metadata = { title: "Apps & Guides" };
 
@@ -85,7 +85,7 @@ export default async function AppsGuidesPage({ searchParams }: PageProps<"/dashb
                 <span className="h-1.5 w-1.5 rounded-full bg-primary" aria-hidden /> v{app.appVersion} · Now available
               </span>
             )}
-            <Image src="/brand/apollo-logo.webp" alt="Apollo Group TV" width={466} height={96} className="mt-6 h-14 w-auto sm:h-20" priority />
+            <div className="mt-6"><Wordmark height={52} className="sm:hidden" /><Wordmark height={72} className="hidden sm:inline-flex" /></div>
             <p className="mt-6 max-w-2xl text-base leading-7 text-muted sm:text-lg">
               {app.appTagline || "One app for live channels and on-demand viewing. Pick your device below, follow the steps, then sign in with your Apollo Group TV account."}
             </p>
