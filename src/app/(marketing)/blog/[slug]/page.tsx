@@ -141,13 +141,13 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
       {related.length > 0 && (
         <section aria-labelledby="related" className="border-t border-border py-14">
           <Container>
-            <p id="related" className="font-display text-2xl font-bold text-text">
+            <h2 id="related" className="font-display text-2xl font-bold text-text">
               Related articles
-            </p>
+            </h2>
             <ul className="mt-6 grid gap-5 md:grid-cols-3">
               {related.map((p) => (
                 <li key={p.slug}>
-                  <PostCard post={p} />
+                  <PostCard post={p} headingLevel="h3" />
                 </li>
               ))}
             </ul>

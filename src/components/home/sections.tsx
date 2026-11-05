@@ -826,7 +826,7 @@ export function GuidesSection({ posts }: { posts: BlogPost[] }) {
       <ul className={cn(afterHeader, "grid gap-5 sm:grid-cols-2 lg:grid-cols-3")}>
         {posts.map((p) => (
           <li key={p.slug}>
-            <PostCard post={p} />
+            <PostCard post={p} headingLevel="h3" />
           </li>
         ))}
       </ul>

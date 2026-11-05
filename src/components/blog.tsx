@@ -149,7 +149,9 @@ export function TableOfContents({ blocks }: { blocks: Block[] }) {
   );
 }
 
-export function PostCard({ post }: { post: BlogPost }) {
+/** `headingLevel` is h3 where the cards sit under a section heading (homepage, related articles). */
+export function PostCard({ post, headingLevel = "h2" }: { post: BlogPost; headingLevel?: "h2" | "h3" }) {
+  const Heading = headingLevel;
   return (
     <Link
       href={`/blog/${post.slug}`}
@@ -166,7 +168,7 @@ export function PostCard({ post }: { post: BlogPost }) {
       />
       <div className="flex flex-1 flex-col p-5">
         <p className="text-xs font-semibold uppercase tracking-[0.14em] text-accent">{post.category}</p>
-        <h2 className="mt-2 font-display text-lg font-bold leading-snug text-text">{post.title}</h2>
+        <Heading className="mt-2 font-display text-lg font-bold leading-snug text-text">{post.title}</Heading>
         <p className="mt-2 flex-1 text-sm leading-6 text-muted">{post.excerpt}</p>
         <p className="mt-4 flex items-center justify-between text-xs text-subtle">
           <span className="inline-flex items-center gap-1">

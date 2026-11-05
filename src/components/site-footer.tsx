@@ -128,7 +128,8 @@ export async function SiteFooter() {
           <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 xl:grid-cols-6">
             {footerNav.map((group) => (
               <nav key={group.title} aria-label={group.title}>
-                <h2 className="text-sm font-semibold text-text">{group.title}</h2>
+                {/* A label, not a heading: footer columns repeat on every page and would clutter each page outline. */}
+                <p className="text-sm font-semibold text-text">{group.title}</p>
                 <ul className="mt-4 space-y-2.5">
                   {group.links.map((link) => (
                     <li key={link.href}>
