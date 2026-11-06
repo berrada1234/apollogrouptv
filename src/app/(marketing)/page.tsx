@@ -138,6 +138,8 @@ export default async function HomePage() {
 
   // Hero stats: catalog sizes are set in Admin → Settings → Homepage highlights; the rating is the real review average.
   const { highlights } = settings;
+  const heroScore = highlights.rating ? Number(highlights.rating) : reviewTotal > 0 ? average : null;
+  const heroReviews = highlights.reviewCount || (reviewTotal > 0 ? reviewTotal.toLocaleString("en-US") : "");
   const stats = [
     highlights.liveChannels && {
       label: "Live Channels",
@@ -147,11 +149,12 @@ export default async function HomePage() {
       label: "Movies & Shows",
       value: highlights.moviesShows,
     },
-    reviewTotal > 0 &&
-      average !== null && {
-        label: `Rating · ${reviewTotal} review${reviewTotal === 1 ? "" : "s"}`,
-        value: `${average.toFixed(1)}/5`,
-      },
+    // Same source as the proof bar: the rating set in Settings → Homepage highlights wins over the live average,
+    // so both places always show one number.
+    heroScore !== null && {
+      label: heroReviews ? `Rating · ${heroReviews} reviews` : "Rating",
+      value: `${heroScore.toFixed(1)}/5`,
+    },
   ].filter((s): s is { label: string; value: string } => Boolean(s));
   const badges = [
     highlights.moneyBackDays && `${highlights.moneyBackDays}-day money-back`,
