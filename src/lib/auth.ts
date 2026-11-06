@@ -9,6 +9,7 @@ import { sendEmail } from "@/lib/email";
 import { notifyAdmins, notifyUser } from "@/lib/notify";
 import { generateReferralCode, REFERRAL_COOKIE } from "@/lib/referral";
 import { OTP_LENGTH, OTP_MINUTES } from "@/lib/otp";
+import { normalizePhone } from "@/lib/phone";
 import { isLocalUrl, siteConfig } from "@/lib/site";
 
 function readCookie(header: string | null | undefined, name: string) {
@@ -33,7 +34,7 @@ async function assignReferralCode(userId: string) {
  * It only takes effect when the site runs on localhost, so it can never weaken a deployed site.
  */
 /** Welcome note for the customer and a "new registration" alert for admins. */
-async function notifyNewAccount(user: { id: string; name: string; email: string; createdAt: Date }) {
+async function notifyNewAccount(user: { id: string; name: string; email: string; createdAt: Date; phone?: string | null }) {
   await notifyUser(user.id, {
     title: "Account Successfully Created",
     body: "Welcome to Apollo Group TV. Choose a pack in Plans & Billing whenever you're ready.",
@@ -41,8 +42,8 @@ async function notifyNewAccount(user: { id: string; name: string; email: string;
   });
   await notifyAdmins({
     title: "New Customer Registration",
-    body: `${user.name} · ${user.email} · Registered ${user.createdAt.toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" })} · Status: Active`,
-    href: `/admin/users/${user.id}`,
+    body: `${user.name} · ${user.email}${user.phone ? ` · ${user.phone}` : ""} · Registered ${user.createdAt.toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" })}`,
+    href: "/admin/leads",
   });
 }
 
@@ -113,6 +114,8 @@ export const auth = betterAuth({
       role: { type: "string", input: false, defaultValue: "USER" },
       status: { type: "string", input: false, defaultValue: "ACTIVE" },
       referralCode: { type: "string", input: false, required: false },
+      // Optional at sign-up; normalised in the create hook below.
+      phone: { type: "string", input: true, required: false },
     },
   },
 
@@ -151,7 +154,10 @@ export const auth = betterAuth({
     user: {
       create: {
         // In local testing mode accounts start verified, so dashboards and admin promotion work without email.
-        before: async (user) => (skipEmailVerification ? { data: { ...user, emailVerified: true } } : undefined),
+        before: async (user) => {
+          const phone = normalizePhone((user as { phone?: unknown }).phone);
+          return { data: { ...user, phone, ...(skipEmailVerification ? { emailVerified: true } : {}) } };
+        },
         after: async (user, ctx) => {
           await assignReferralCode(user.id);
           await notifyNewAccount(user).catch((e) => console.error("[auth] signup notifications", e instanceof Error ? e.message : e));

@@ -149,7 +149,7 @@ export default async function AppPage() {
     ...(settings.apps.appVersion ? { softwareVersion: settings.apps.appVersion } : {}),
     publisher: organizationRef,
     url: `${siteConfig.url}/app`,
-    image: `${siteConfig.url}/images/app/apollo-group-tv-app-home-screen.webp`,
+    image: `${siteConfig.url}/images/app/apollo-group-tv-app-home.webp`,
   };
 
   return (

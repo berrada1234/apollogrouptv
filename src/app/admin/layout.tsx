@@ -18,18 +18,19 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const user = await requireRole("SUPPORT");
   const isAdmin = hasRole(user, "ADMIN");
   const [counts, adminUnread, account] = await Promise.all([
-    adminAttention(isAdmin),
+    adminAttention(user.id, isAdmin),
     isAdmin ? db.notification.count({ where: { userId: user.id, audience: "ADMIN", readAt: null } }) : 0,
     db.user.findUnique({ where: { id: user.id }, select: { twoFactorEnabled: true } }),
   ]);
-  const { openTickets, pendingReviews, newMessages, paymentsToReview, toActivate } = counts;
-  const attentionKey = [paymentsToReview, toActivate, openTickets, newMessages, pendingReviews].join(",");
+  const { openTickets, pendingReviews, newMessages, paymentsToReview, toActivate, newSignups } = counts;
+  const attentionKey = [paymentsToReview, toActivate, newSignups, openTickets, newMessages, pendingReviews].join(",");
 
   const nav: NavItem[] = [
     { href: "/admin", label: "Overview", icon: "overview", short: "Home" },
     ...(isAdmin
       ? ([
           { href: "/admin/funnel", label: "Conversion funnel", icon: "funnel" },
+          { href: "/admin/leads", label: "Not purchased", icon: "leads", short: "Leads", badge: newSignups, badgeTone: "alert" },
           { href: "/admin/users", label: "Users", icon: "users" },
           { href: "/admin/plans", label: "Plans", icon: "plan" },
           { href: "/admin/subscriptions", label: "Subscriptions", icon: "subscription", badge: toActivate, badgeTone: "alert" },
@@ -67,9 +68,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       ]}
       user={{ name: user.name, email: user.email, role: user.role }}
       bell={isAdmin ? { href: "/admin/notifications", count: adminUnread } : undefined}
-      mobileTabs={isAdmin ? ["/admin", "/admin/payments", "/admin/subscriptions", "/admin/support"] : ["/admin", "/admin/support", "/admin/reviews"]}
+      mobileTabs={isAdmin ? ["/admin", "/admin/leads", "/admin/payments", "/admin/subscriptions"] : ["/admin", "/admin/support", "/admin/reviews"]}
     >
-      <AttentionWatcher initial={attentionKey} />
+      <AttentionWatcher initial={attentionKey} latestSignupId={counts.latestSignup?.id ?? null} />
       {!account?.twoFactorEnabled && (
         <Link
           href="/dashboard/security#two-step"

@@ -117,6 +117,8 @@ model User {
   id                  String     @id
   name                String     @db.VarChar(120)
   email               String     @unique @db.VarChar(255)
+  // Optional phone or WhatsApp number given at sign-up, so staff can help with activation.
+  phone               String?    @db.VarChar(32)
   emailVerified       Boolean    @default(false)
   image               String?    @db.VarChar(512)
   role                Role       @default(USER)

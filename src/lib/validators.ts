@@ -22,6 +22,13 @@ export const signInSchema = z.object({
 export const createAccountSchema = z.object({
   name: nameSchema,
   email: emailSchema,
+  // Optional; checked loosely here and normalised on the server.
+  phone: z
+    .string()
+    .trim()
+    .max(32)
+    .refine((v) => v === "" || (/^\+?[0-9][0-9 ()\-.]{5,22}$/.test(v) && v.replace(/\D/g, "").length >= 7), "Enter a phone number with country code, e.g. +1 555 123 4567, or leave it empty.")
+    .optional(),
   password: passwordSchema,
   acceptTerms: z.boolean().refine((v) => v, "Please accept the Terms and Privacy Policy to continue."),
 });

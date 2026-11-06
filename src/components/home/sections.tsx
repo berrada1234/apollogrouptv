@@ -215,7 +215,7 @@ export function IntroSection() {
           <figure className="parallax relative">
             <div className="glass edge-spectrum overflow-hidden rounded-[18px] p-1.5 shadow-[0_40px_80px_-30px_rgb(0_0_0/0.9)] sm:p-2">
               <Image
-                src="/images/app/apollo-group-tv-app-home-screen.webp"
+                src="/images/app/apollo-group-tv-app-home.webp"
                 alt="Apollo Group TV app home screen: a featured title, trending and popular movie rows, and a menu for Search, Movies, TV Shows, Live TV, Sports VOD and the TV Guide"
                 width={1672}
                 height={941}

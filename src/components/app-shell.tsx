@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   Filter,
   Share2,
+  UserPlus,
   MonitorSmartphone,
   Search,
   Bell,
@@ -60,6 +61,7 @@ const icons = {
   funnel: Filter,
   apps: MonitorSmartphone,
   social: Share2,
+  leads: UserPlus,
 };
 
 export type NavIcon = keyof typeof icons;

@@ -33,7 +33,7 @@ function BrandPanel() {
 
         <figure className="mt-8 max-w-md overflow-hidden rounded-[14px] border border-border-strong bg-card shadow-lg">
           <Image
-            src="/images/app/apollo-group-tv-app-home-screen.webp"
+            src="/images/app/apollo-group-tv-app-home.webp"
             alt="The Apollo Group TV app home screen"
             width={1672}
             height={941}

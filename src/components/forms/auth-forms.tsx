@@ -122,7 +122,7 @@ export function CreateAccountForm({
   } = useForm<z.input<typeof createAccountSchema>>({
     mode: "onTouched",
     resolver: zodResolver(createAccountSchema),
-    defaultValues: { name: "", email: "", password: "", acceptTerms: false },
+    defaultValues: { name: "", email: "", phone: "", password: "", acceptTerms: false },
   });
   const password = useWatch({ control, name: "password" }) ?? "";
   const email = useWatch({ control, name: "email" }) ?? "";
@@ -134,7 +134,7 @@ export function CreateAccountForm({
   const onSubmit = handleSubmit(async (values) => {
     setMsg(null);
     const { error } = await authClient.signUp
-      .email({ name: values.name, email: values.email, password: values.password })
+      .email({ name: values.name, email: values.email, password: values.password, ...(values.phone ? { phone: values.phone } : {}) })
       .catch(() => ({ error: { message: NETWORK_ERROR } }));
     if (error) return setMsg({ ok: false, message: authErrorMessage(error) });
     // Local testing mode signs the new account in immediately — go straight on.
@@ -188,6 +188,21 @@ export function CreateAccountForm({
             We’ll send your verification code here.
           </p>
         )}
+      </Field>
+      <Field label="Phone or WhatsApp (optional)" htmlFor="phone" error={errors.phone?.message}>
+        <Input
+          id="phone"
+          type="tel"
+          inputMode="tel"
+          autoComplete="tel"
+          placeholder="+1 555 123 4567"
+          aria-invalid={!!errors.phone}
+          aria-describedby="phone-error phone-hint"
+          {...register("phone")}
+        />
+        <p id="phone-hint" className="mt-1.5 text-xs text-muted">
+          Only used if we need to reach you about your activation. Never shared.
+        </p>
       </Field>
       <Field label="Password" htmlFor="password" error={errors.password?.message}>
         <PasswordInput id="password" autoComplete="new-password" aria-invalid={!!errors.password} aria-describedby="password-error password-rules" {...register("password")} />
