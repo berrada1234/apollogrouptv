@@ -377,7 +377,7 @@ export const dmcaPolicy: LegalDoc = {
 export const disclaimer: LegalDoc = {
   slug: "disclaimer",
   title: "Disclaimer",
-  metaTitle: "Disclaimer — Apollo Group TV",
+  metaTitle: "Disclaimer: How to Use Information on Apollo Group TV",
   description:
     "The limits of the information on the Apollo Group TV website: general guidance, sourced comparisons, trademarks, external links and service availability.",
   intro:

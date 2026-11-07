@@ -24,7 +24,7 @@ export const blogCategories: BlogCategory[] = [
   {
     slug: "devices",
     name: "Devices",
-    title: "Apollo Group TV on Your Devices: Roku, Smart TVs, Google TV and Firestick",
+    title: "Apollo Group TV on Roku, Smart TVs, Google TV and Firestick",
     description: "Which devices run Apollo Group TV: Roku, Samsung and LG smart TVs, Google TV, choosing a Firestick and wired versus Wi-Fi connections.",
     intro: "Device-by-device articles: what works, what needs a workaround and how to pick and connect the screen you watch on.",
     hub: { href: "/guides", label: "All device setup guides" },
@@ -40,7 +40,7 @@ export const blogCategories: BlogCategory[] = [
   {
     slug: "players-logins",
     name: "Players & Logins",
-    title: "IPTV Players and Logins: M3U, Xtream Codes, MAG Boxes and Subtitles",
+    title: "IPTV Players and Logins: M3U, Xtream Codes and MAG Boxes",
     description: "How to sign in to Apollo Group TV in other players with an M3U URL, Xtream Codes login or a MAG box, and how subtitles work.",
     intro: "Using a player other than the Apollo TV app? Here is how each login type works, where to enter your details and how to turn on subtitles.",
     hub: { href: "/app", label: "The Apollo TV app" },
@@ -48,7 +48,7 @@ export const blogCategories: BlogCategory[] = [
   {
     slug: "streaming-tech",
     name: "Streaming Tech",
-    title: "Streaming Tech Explained: IPTV, Internet Speed and Connection Limits",
+    title: "IPTV Explained: Internet Speed and Connection Limits",
     description: "Plain-English explanations of how IPTV works, how fast your internet needs to be, connection limits and how IPTV compares with cable.",
     intro: "The technology behind your stream, explained without jargon, so you can pick the right pack and connection.",
     hub: { href: "/choosing-an-iptv-service", label: "How to choose an IPTV service" },
@@ -56,7 +56,7 @@ export const blogCategories: BlogCategory[] = [
   {
     slug: "troubleshooting",
     name: "Troubleshooting",
-    title: "Apollo Group TV Troubleshooting: Errors, Outages and Install Problems",
+    title: "Apollo Group TV Troubleshooting: Errors and Install Fixes",
     description: "Fixes for common Apollo Group TV problems: status code 404, checking whether the service is down and apps that won't install on Android.",
     intro: "Something not working? Start with these fixes for the problems customers ask us about most.",
     hub: { href: "/guides/troubleshooting", label: "Full troubleshooting guide" },
