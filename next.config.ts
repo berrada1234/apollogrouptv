@@ -57,6 +57,12 @@ const nextConfig: NextConfig = {
       config.plugins.push(
         new webpack.NormalModuleReplacementPlugin(/[\\/]build[\\/]polyfills[\\/]polyfill-module(\.js)?$/, path.join(process.cwd(), "src/lib/empty-polyfills.js")),
       );
+    } else {
+      // Icons in server components render as plain <svg> instead of hydrated client components (see the file).
+      config.resolve.alias["@lucide-shared"] = path.join(process.cwd(), "node_modules/lucide-react/dist/esm/shared/src");
+      config.plugins.push(
+        new webpack.NormalModuleReplacementPlugin(/lucide-react[\\/]dist[\\/]esm[\\/]Icon\.mjs$/, path.join(process.cwd(), "src/lib/lucide-server-icon.mjs")),
+      );
     }
     return config;
   },
