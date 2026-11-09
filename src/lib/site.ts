@@ -146,19 +146,15 @@ export const publicRoutes = [
 /** Policy pages — listed in the sitemap only after the owner approves them. */
 export const policyRoutes = ["/privacy-policy", "/terms-and-conditions", "/refund-policy", "/dmca", "/disclaimer"];
 
-/** Route prefixes that are private and must never be indexed. */
-export const privatePrefixes = [
-  "/dashboard",
-  "/admin",
-  "/account",
-  "/client-portal",
-  "/sign-in",
-  "/create-account",
-  "/forgot-password",
-  "/reset-password",
-  "/verify-email",
-  "/api",
-];
+/**
+ * Areas crawlers should not request at all (robots.txt Disallow): signed-in sections and the API.
+ *
+ * The sign-in, create-account and password pages are deliberately NOT here. They carry a noindex tag, and
+ * Google can only see that tag if it is allowed to fetch the page; blocking them made Search Console report
+ * "Indexed, though blocked by robots.txt" (they are linked from every header) and "Redirect error" for old
+ * addresses like /login and /signup that redirect to them.
+ */
+export const privatePrefixes = ["/dashboard", "/admin", "/account", "/client-portal", "/api"];
 
 export function absoluteUrl(path = "/") {
   return `${siteConfig.url}${path.startsWith("/") ? path : `/${path}`}`;
