@@ -2,6 +2,8 @@ import { BlogBody, TableOfContents } from "@/components/blog";
 import { CtaBand, PageHero } from "@/components/marketing/sections";
 import { Container } from "@/components/ui/misc";
 import { type Block, parseBlocks } from "@/lib/blog";
+import { PageCover } from "@/components/page-cover";
+import { articleNode, ldJson } from "@/lib/schema";
 
 /**
  * Long-form page rendered from Markdown with the blog renderer: quick answer first, then the body.
@@ -33,6 +35,8 @@ export function GuideArticle({
   return (
     <>
       <PageHero eyebrow="Compare" title={page.title} description={page.description} crumbs={crumbs} />
+      <PageCover path={crumbs[crumbs.length - 1].href} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: ldJson(articleNode({ path: crumbs[crumbs.length - 1].href, headline: page.title, description: page.description, section: "Comparisons" })) }} />
       <Container className="grid gap-10 py-10 lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-14 lg:py-14">
         <article className="min-w-0 max-w-3xl">
           <section aria-label="Quick answer" className="glass edge-spectrum mb-8 rounded-[18px] p-5 sm:p-6">

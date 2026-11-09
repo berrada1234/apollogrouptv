@@ -90,7 +90,8 @@ export function articleNode({
     publisher: organizationRef,
     ...(datePublished ? { datePublished } : {}),
     ...(dateModified ? { dateModified } : {}),
-    ...(image ? { image } : {}),
+    // Each article-style page has its own cover at /covers/<path> (see src/lib/covers.ts).
+    image: { "@type": "ImageObject", url: image ?? `${siteConfig.url}/covers${path}`, width: 1200, height: 630 },
     ...(section ? { articleSection: section } : {}),
   };
 }

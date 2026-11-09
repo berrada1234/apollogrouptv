@@ -4,6 +4,7 @@ import { GuideLayout } from "@/components/guide-layout";
 import { generalGuides } from "@/content/guides";
 import { getDeviceGuides } from "@/lib/guides";
 import { shareImage } from "@/lib/share-image";
+import { coverShare } from "@/lib/covers";
 
 export const dynamic = "force-dynamic";
 
@@ -23,7 +24,7 @@ export async function generateMetadata({ params }: PageProps<"/guides/[slug]">):
     title: { absolute: meta.metaTitle },
     description: meta.description,
     alternates: { canonical: `/guides/${slug}` },
-    openGraph: { ...shareImage, title: meta.metaTitle, description: meta.description, url: `/guides/${slug}` },
+    openGraph: { ...shareImage, ...coverShare(`/guides/${slug}`, meta.title, "Setup guide"), title: meta.metaTitle, description: meta.description, url: `/guides/${slug}` },
   };
 }
 

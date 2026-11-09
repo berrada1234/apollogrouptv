@@ -10,6 +10,8 @@ import { getPaymentGuide, paymentGuides } from "@/content/payment-guides";
 import { formatDate } from "@/lib/utils";
 import { articleNode, faqNode } from "@/lib/schema";
 import { shareImage } from "@/lib/share-image";
+import { PageCover } from "@/components/page-cover";
+import { coverShare } from "@/lib/covers";
 
 export function generateStaticParams() {
   return paymentGuides.map((g) => ({ slug: g.slug }));
@@ -22,7 +24,7 @@ export async function generateMetadata({ params }: PageProps<"/payment-guides/[s
     title: { absolute: g.metaTitle },
     description: g.description,
     alternates: { canonical: `/payment-guides/${g.slug}` },
-    openGraph: { ...shareImage, title: g.metaTitle, description: g.description, url: `/payment-guides/${g.slug}`, type: "article", modifiedTime: g.updated },
+    openGraph: { ...shareImage, ...coverShare(`/payment-guides/${g.slug}`, g.title, "Payment guide"), title: g.metaTitle, description: g.description, url: `/payment-guides/${g.slug}`, type: "article", modifiedTime: g.updated },
   };
 }
 
@@ -59,6 +61,7 @@ export default async function PaymentGuidePage({ params }: PageProps<"/payment-g
           </div>
         </div>
       </PageHero>
+      <PageCover path={`/payment-guides/${g.slug}`} />
 
       <Container className="grid gap-12 py-12 lg:grid-cols-[minmax(0,1fr)_280px] lg:py-16">
         <article className="min-w-0 max-w-3xl space-y-10">

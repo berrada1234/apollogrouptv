@@ -6,6 +6,8 @@ import { PageHero, RelatedLinks } from "@/components/marketing/sections";
 import { FaqAccordion } from "@/components/marketing/faq-list";
 import { articleNode } from "@/lib/schema";
 import { shareImage } from "@/lib/share-image";
+import { PageCover } from "@/components/page-cover";
+import { coverShare } from "@/lib/covers";
 
 const title = "Is Apollo Group TV Legal? IPTV, Licensing and Your Rights";
 const description =
@@ -15,7 +17,7 @@ export const metadata: Metadata = {
   title: { absolute: title },
   description,
   alternates: { canonical: "/is-apollo-group-tv-legal" },
-  openGraph: { ...shareImage, title, description, url: "/is-apollo-group-tv-legal", type: "article" },
+  openGraph: { ...shareImage, ...coverShare("/is-apollo-group-tv-legal", "Is Apollo Group TV Legal?", "Trust and safety"), title, description, url: "/is-apollo-group-tv-legal", type: "article" },
 };
 
 const articleLd = articleNode({ path: "/is-apollo-group-tv-legal", headline: "Is Apollo Group TV Legal?", description });
@@ -68,6 +70,7 @@ export default function LegalExplainerPage() {
         description="The answer starts with a distinction most articles skip: the technology used to deliver TV is one question, and the right to distribute the content is another."
         crumbs={[{ href: "/is-apollo-group-tv-legal", label: "Is Apollo Group TV legal?" }]}
       />
+      <PageCover path={"/is-apollo-group-tv-legal"} />
 
       <Container className="py-14">
         <div className="grid gap-12 lg:grid-cols-[1fr_300px]">

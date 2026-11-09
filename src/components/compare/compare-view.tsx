@@ -10,6 +10,7 @@ import type { ApolloCompare } from "@/lib/compare-data";
 import { siteConfig } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { articleNode, ldJson } from "@/lib/schema";
+import { PageCover } from "@/components/page-cover";
 
 /** One comparison page: honest summary, yearly cost, side-by-side table, verdict, FAQ and sources. */
 export function CompareView({ rival, apollo }: { rival: Rival; apollo: ApolloCompare }) {
@@ -55,6 +56,7 @@ export function CompareView({ rival, apollo }: { rival: Rival; apollo: ApolloCom
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: ldJson(articleLd) }} />
       <PageHero eyebrow="Compare" title={`Apollo Group TV vs ${rival.name}`} description={rival.intro} crumbs={[{ href: "/compare", label: "Compare" }, { href: rival.path, label: `vs ${rival.name}` }]} />
+      <PageCover path={rival.path} />
 
       {/* Honest short version + yearly cost */}
       <section className="section-y">

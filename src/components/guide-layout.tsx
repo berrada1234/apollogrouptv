@@ -7,6 +7,7 @@ import { FaqAccordion } from "@/components/marketing/faq-list";
 import { RichText } from "@/components/rich-text";
 import type { GuideStep } from "@/content/guides";
 import { articleNode, ldJson } from "@/lib/schema";
+import { PageCover } from "@/components/page-cover";
 
 type Related = { href: string; title: string };
 
@@ -55,6 +56,7 @@ export function GuideLayout({
           { href: `/guides/${slug}`, label: title },
         ]}
       />
+      <PageCover path={`/guides/${slug}`} />
       <Container className="grid gap-12 py-14 lg:grid-cols-[1fr_280px]">
         <article className="max-w-3xl space-y-12">
           <section aria-labelledby="req" className="rounded-lg border border-border bg-card p-6 shadow-card">
