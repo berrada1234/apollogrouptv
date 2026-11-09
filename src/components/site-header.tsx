@@ -6,10 +6,10 @@ import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { ButtonLink } from "@/components/ui/button";
-import { useSession } from "@/lib/auth-client";
 import { isNavActive, mainNav, secondaryNav } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { useScrolledPast } from "@/lib/use-scrolled-past";
+import { useSignedIn } from "@/lib/use-signed-in";
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -17,7 +17,7 @@ export function SiteHeader() {
   // The bar condenses once the page scrolls, so the hero gets the full first screen.
   const scrolled = useScrolledPast("12px");
   const [lastPath, setLastPath] = useState(pathname);
-  const { data: session, isPending } = useSession();
+  const auth = useSignedIn();
 
   // Close the mobile menu after navigation (state adjusted during render, not in an effect).
   if (pathname !== lastPath) {
@@ -37,9 +37,9 @@ export function SiteHeader() {
     };
   }, [open]);
 
-  const authActions = isPending ? (
+  const authActions = auth === "pending" ? (
     <span className="h-10 w-40" aria-hidden />
-  ) : session ? (
+  ) : auth === "in" ? (
     <ButtonLink href="/dashboard" size="sm">
       Dashboard
     </ButtonLink>
