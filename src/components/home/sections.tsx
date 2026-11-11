@@ -22,7 +22,6 @@ import {
   Smartphone,
   Laptop,
   Globe,
-  Star,
   Tv,
   User,
   UserPlus,
@@ -49,90 +48,52 @@ import { cn } from "@/lib/utils";
 
 // ─── Highlights bar (directly under the hero) ───────────────────────────────
 
-/** Abbreviates real member counts: 1,240 → "1.2K+", 87 → "80+". */
-function formatMembers(n: number) {
-  if (n >= 1000) return `${(Math.floor(n / 100) / 10).toString().replace(/\.0$/, "")}K+`;
-  return `${Math.floor(n / 10) * 10}+`;
-}
-
-/* Member avatars: AI-generated portraits of people who don't exist, so no real person's face is used. */
-const memberPhotos = [
-  { src: "/images/avatars/member-1.webp", alt: "Illustrative portrait of a smiling woman with short curly hair" },
-  { src: "/images/avatars/member-2.webp", alt: "Illustrative portrait of a smiling man with short dark hair and stubble" },
-  { src: "/images/avatars/member-3.webp", alt: "Illustrative portrait of a smiling woman with long straight black hair" },
-  { src: "/images/avatars/member-4.webp", alt: "Illustrative portrait of a smiling man with a short beard" },
-  { src: "/images/avatars/member-5.webp", alt: "Illustrative portrait of a smiling woman with dark hair tied back" },
-];
-
-/** A portrait in a pink-to-violet ring, with a dark edge so overlapping circles stay separate. */
-function MemberAvatar({ src, alt }: { src: string; alt: string }) {
-  return (
-    <span className="relative grid h-9 w-9 place-items-center rounded-full bg-[linear-gradient(135deg,#ff3d9a,#9d7bff)] sm:h-11 sm:w-11 p-[2px] shadow-[0_6px_16px_-6px_rgb(255_61_154/0.6)]">
-      <Image src={src} alt={alt} width={64} height={64} loading="eager" className="h-full w-full rounded-full border-2 border-[#0c1024] object-cover" />
-    </span>
-  );
-}
-
-/** Five stars with a partial fill for fractional ratings (4.8 → the last star 80% filled). */
-function RatingStars({ rating }: { rating: number }) {
-  return (
-    <span className="flex gap-0.5" aria-hidden>
-      {[0, 1, 2, 3, 4].map((n) => {
-        const fill = Math.max(0, Math.min(1, rating - n));
-        return (
-          <span key={n} className="relative h-[18px] w-[18px]">
-            <Star className="absolute inset-0 h-full w-full text-white/15" fill="currentColor" strokeWidth={0} />
-            <span className="absolute inset-y-0 left-0 overflow-hidden" style={{ width: `${fill * 100}%` }}>
-              <Star className="h-[18px] w-[18px] text-[#fbbf24] drop-shadow-[0_0_6px_rgb(251_191_36/0.55)]" fill="currentColor" strokeWidth={0} />
-            </span>
-          </span>
-        );
-      })}
-    </span>
-  );
-}
-
-export function SocialProofBar({
-  members,
-  rating,
-  overrides,
+/** One proof-bar cell: an icon tile, a short fact and a supporting line, linking to where the fact is spelled out. */
+function BarFact({
+  icon: Icon,
+  title,
+  detail,
+  href,
+  align,
 }: {
-  members: number;
-  rating: { average: number | null; total: number };
-  /** Owner-entered figures (Admin → Settings → Homepage highlights); blank falls back to live data. */
-  overrides: { rating: string; reviewCount: string; members: string };
+  icon: typeof Receipt;
+  title: string;
+  detail: string;
+  href: string;
+  align: "start" | "end";
 }) {
-  // Below 50 a live member count reads as noise rather than proof, so the bar invites instead.
-  const memberLabel = overrides.members || (members >= 50 ? formatMembers(members) : null);
-  const score = overrides.rating ? Number(overrides.rating) : rating.total > 0 ? rating.average : null;
-  const reviewLabel = overrides.reviewCount || (rating.total > 0 ? rating.total.toLocaleString("en-US") : null);
+  return (
+    <div className={`flex items-center justify-center py-6 ${align === "start" ? "lg:justify-start lg:pr-8" : "lg:justify-end lg:pl-8"}`}>
+      <Link href={href} className="group flex items-center gap-4">
+        <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-border-strong bg-white/[0.04] text-light-blue transition-colors group-hover:border-accent/45">
+          <Icon className="h-5 w-5" aria-hidden />
+        </span>
+        <span>
+          <span className="block font-hero text-base font-medium tracking-[-0.03em] text-text transition-colors group-hover:text-light-blue">{title}</span>
+          <span className="block text-sm text-muted">{detail}</span>
+        </span>
+      </Link>
+    </div>
+  );
+}
+
+/**
+ * Reasons to buy, each one a checkable fact: the lowest monthly price comes from the live price list and the
+ * money-back window from Admin → Settings → Homepage highlights. No ratings or member counts.
+ */
+export function SocialProofBar({ fromMonthly, oneTime, moneyBackDays }: { fromMonthly: string | null; oneTime: boolean; moneyBackDays: string }) {
+  const price = fromMonthly
+    ? { icon: Receipt, title: `From ${fromMonthly} a month`, detail: oneTime ? "Pay once, nothing renews by itself" : "See every pack and price", href: "/plans" }
+    : { icon: Receipt, title: "Pay once for 1 to 12 months", detail: "Nothing renews by itself", href: "/plans" };
+  const promise = moneyBackDays
+    ? { icon: ShieldCheck, title: `${moneyBackDays}-day money-back`, detail: `Ask for a refund within ${moneyBackDays} days`, href: "/refund-policy" }
+    : { icon: ShieldCheck, title: "Step-by-step setup guides", detail: "For every supported device", href: "/guides" };
 
   return (
     <section aria-label="At a glance" className="relative pb-4 pt-2">
       <Container>
         <div className="glass edge-spectrum grid divide-y divide-border rounded-[28px] px-6 sm:px-8 lg:grid-cols-[1.25fr_1.2fr_1fr] lg:divide-x lg:divide-y-0">
-          <div className="flex items-center justify-center gap-4 py-6 lg:justify-start lg:pr-8">
-            <div className="flex shrink-0 -space-x-3">
-              {memberPhotos.map((m) => (
-                <MemberAvatar key={m.src} src={m.src} alt={m.alt} />
-              ))}
-            </div>
-            <div>
-              {memberLabel ? (
-                <>
-                  <p className="whitespace-nowrap font-hero text-base font-medium tracking-[-0.03em] text-text">
-                    Joined by <span className="tabular-nums">{memberLabel}</span>
-                  </p>
-                  <p className="text-sm text-muted">cord-cutters worldwide</p>
-                </>
-              ) : (
-                <>
-                  <p className="font-hero text-base font-medium tracking-[-0.03em] text-text">Be one of our first members</p>
-                  <p className="text-sm text-muted">Every account is email-verified</p>
-                </>
-              )}
-            </div>
-          </div>
+          <BarFact {...price} align="start" />
 
           <Link href="/app" className="group flex flex-col items-center justify-center gap-3 py-6 lg:px-8">
             <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3" aria-label="Supported devices">
@@ -145,31 +106,7 @@ export function SocialProofBar({
             <span className="text-center text-xs text-subtle transition-colors group-hover:text-light-blue">Works on your TV, phone and computer</span>
           </Link>
 
-          <div className="flex items-center justify-center py-6 lg:justify-end lg:pl-8">
-            {score !== null && reviewLabel ? (
-              <Link href="/reviews" className="group flex items-center gap-4">
-                <span className="font-hero text-[2rem] font-medium leading-none tracking-[-0.05em] text-text tabular-nums">
-                  {score.toFixed(1)}
-                  <span className="text-lg text-muted">/5</span>
-                </span>
-                <span className="flex flex-col gap-1.5">
-                  <RatingStars rating={score} />
-                  <span className="text-sm text-muted transition-colors group-hover:text-light-blue">
-                    ({reviewLabel} {reviewLabel === "1" ? "review" : "reviews"})
-                  </span>
-                </span>
-                <span className="sr-only">Rated {score.toFixed(1)} out of 5</span>
-              </Link>
-            ) : (
-              <Link href="/reviews" className="group flex items-center gap-3">
-                <ShieldCheck className="h-5 w-5 text-accent" aria-hidden />
-                <span>
-                  <span className="block text-sm font-semibold text-text group-hover:text-light-blue">Moderated reviews only</span>
-                  <span className="block text-xs text-subtle">From registered customers</span>
-                </span>
-              </Link>
-            )}
-          </div>
+          <BarFact {...promise} align="end" />
         </div>
       </Container>
     </section>

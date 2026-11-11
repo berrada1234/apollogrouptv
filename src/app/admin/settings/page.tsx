@@ -158,7 +158,7 @@ export default async function SettingsPage() {
         <Section
           id="highlights"
           title="Homepage highlights"
-          description="Shown in the homepage hero. Leave a field blank to hide it (or, for the proof bar, to use live figures)."
+          description="Shown in the homepage hero. Leave a field blank to hide it."
         >
           <div className="mb-4">
             <Notice tone="warning" title="Only publish what you can back up">
@@ -172,14 +172,9 @@ export default async function SettingsPage() {
               <Field label="Live channels" htmlFor="liveChannels"><Input id="liveChannels" name="liveChannels" defaultValue={s.highlights.liveChannels} placeholder="e.g. 22,000+" /></Field>
               <Field label="Movies & shows" htmlFor="moviesShows"><Input id="moviesShows" name="moviesShows" defaultValue={s.highlights.moviesShows} placeholder="e.g. 90,000+" /></Field>
             </div>
-            <p className="mb-3 mt-6 text-sm text-muted">
-              Proof bar under the hero. Leave blank to show live figures from approved reviews and verified members. Only enter figures you can document (for example, reviews collected on another platform).
+            <p className="mt-6 text-sm text-muted">
+              The bar under the hero shows billing and the money-back window from the price list and this form. It has no ratings or member counts.
             </p>
-            <div className="grid gap-4 sm:grid-cols-3">
-              <Field label="Average rating (out of 5)" htmlFor="rating"><Input id="rating" name="rating" inputMode="decimal" defaultValue={s.highlights.rating} placeholder="e.g. 4.8" /></Field>
-              <Field label="Number of reviews" htmlFor="reviewCount"><Input id="reviewCount" name="reviewCount" defaultValue={s.highlights.reviewCount} placeholder="e.g. 2,800+" /></Field>
-              <Field label="Members" htmlFor="members"><Input id="members" name="members" defaultValue={s.highlights.members} placeholder="e.g. 77,000+" /></Field>
-            </div>
           </ActionForm>
         </Section>
 

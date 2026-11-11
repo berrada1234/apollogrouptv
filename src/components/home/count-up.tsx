@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Counts up to a real figure once it scrolls into view ("20,000+", "4.8/5").
+ * Counts up to a real figure once it scrolls into view ("22,000+", "90,000+").
  * The leading number animates; any prefix/suffix is kept as written. Values without a number render as-is.
  * Frames write the span's text directly with one shared number formatter, so the animation costs no React
  * renders and no per-frame Intl setup (both showed up as main-thread blocking time).

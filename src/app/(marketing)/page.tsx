@@ -107,16 +107,14 @@ function Band({ id, children }: { id: string; children: React.ReactNode }) {
 export default async function HomePage() {
   const [
     plans,
-    { reviews, total: reviewTotal, average },
+    { reviews },
     settings,
-    members,
     deviceGuides,
     faqCount,
   ] = await Promise.all([
     getActivePlans(),
     getApprovedReviews({ take: 8 }),
     getSettings(),
-    db.user.count({ where: { emailVerified: true, status: "ACTIVE" } }),
     getDeviceGuides(),
     db.faq.count({ where: { isPublished: true } }),
   ]);
@@ -136,10 +134,9 @@ export default async function HomePage() {
     ...plans.map((p) => savingsPct(p, pricing.baseMonthly)),
   );
 
-  // Hero stats: catalog sizes are set in Admin → Settings → Homepage highlights; the rating is the real review average.
+  // Hero stats: catalog sizes are set in Admin → Settings → Homepage highlights. No star rating or review count is
+  // shown on the homepage.
   const { highlights } = settings;
-  const heroScore = highlights.rating ? Number(highlights.rating) : reviewTotal > 0 ? average : null;
-  const heroReviews = highlights.reviewCount || (reviewTotal > 0 ? reviewTotal.toLocaleString("en-US") : "");
   const stats = [
     highlights.liveChannels && {
       label: "Live Channels",
@@ -148,12 +145,6 @@ export default async function HomePage() {
     highlights.moviesShows && {
       label: "Movies & Shows",
       value: highlights.moviesShows,
-    },
-    // Same source as the proof bar: the rating set in Settings → Homepage highlights wins over the live average,
-    // so both places always show one number.
-    heroScore !== null && {
-      label: heroReviews ? `Rating · ${heroReviews} reviews` : "Rating",
-      value: `${heroScore.toFixed(1)}/5`,
     },
   ].filter((s): s is { label: string; value: string } => Boolean(s));
   const badges = [
@@ -266,9 +257,9 @@ export default async function HomePage() {
         badges={badges}
       />
       <SocialProofBar
-        members={members}
-        rating={{ average, total: reviewTotal }}
-        overrides={{ rating: highlights.rating, reviewCount: highlights.reviewCount, members: highlights.members }}
+        fromMonthly={fromMonthly}
+        oneTime={allOneTime}
+        moneyBackDays={highlights.moneyBackDays}
       />
       <HomeQuickNav items={quickNav} />
       {/* Buyer journey: what it is → price → what you get → why switch → price → how to start → trust → answers → help. */}
