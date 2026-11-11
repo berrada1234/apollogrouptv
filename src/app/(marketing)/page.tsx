@@ -137,6 +137,13 @@ export default async function HomePage() {
   // Hero stats: catalog sizes are set in Admin → Settings → Homepage highlights. No star rating or review count is
   // shown on the homepage.
   const { highlights } = settings;
+  // Device limit read from the packs' own feature lists ("Up to 5 devices per account"); shown only when every
+  // active pack states it, using the lowest figure, so the hero never promises more than the cheapest pack gives.
+  const deviceLimits = plans.map((p) => {
+    const line = (Array.isArray(p.features) ? p.features.map(String) : []).find((f) => /up to \d+ devices/i.test(f));
+    return line ? Number(line.match(/up to (\d+) devices/i)![1]) : null;
+  });
+  const deviceLimit = deviceLimits.length && deviceLimits.every((n) => n !== null) ? Math.min(...(deviceLimits as number[])) : null;
   const stats = [
     highlights.liveChannels && {
       label: "Live Channels",
@@ -145,6 +152,10 @@ export default async function HomePage() {
     highlights.moviesShows && {
       label: "Movies & Shows",
       value: highlights.moviesShows,
+    },
+    deviceLimit && {
+      label: "Devices per account",
+      value: String(deviceLimit),
     },
   ].filter((s): s is { label: string; value: string } => Boolean(s));
   const badges = [
