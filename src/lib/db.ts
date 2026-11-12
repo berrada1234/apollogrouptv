@@ -15,9 +15,35 @@ function isConnectionError(error: unknown) {
   return error instanceof Prisma.PrismaClientKnownRequestError && RETRYABLE.has(error.code);
 }
 
+/*
+ * Connection pool limits and timeouts, added to DATABASE_URL here so they don't depend on editing the hosting
+ * environment. Without them a dropped MySQL socket could leave queries waiting with no end, and every page that
+ * reads the database hung until the app was restarted. With them a stuck query fails after a few seconds (the
+ * retry above handles brief blips) and the pool recovers on its own. Any value already in DATABASE_URL wins.
+ */
+const POOL_PARAMS: Record<string, string> = {
+  connection_limit: "5",
+  connect_timeout: "10",
+  pool_timeout: "10",
+  socket_timeout: "30",
+};
+
+/** Appends the missing parameters to the end of the URL; the credentials part is never re-encoded. */
+export function withPoolParams(raw: string | undefined) {
+  if (!raw || raw.includes("#")) return raw;
+  const query = raw.includes("?") ? raw.slice(raw.indexOf("?") + 1) : "";
+  const present = new Set(query.split("&").map((p) => p.split("=")[0]).filter(Boolean));
+  const missing = Object.entries(POOL_PARAMS).filter(([key]) => !present.has(key));
+  if (!missing.length) return raw;
+  const extra = missing.map(([key, value]) => `${key}=${value}`).join("&");
+  return raw + (raw.includes("?") ? (raw.endsWith("?") || raw.endsWith("&") ? "" : "&") : "?") + extra;
+}
+
 function createClient(): PrismaClient {
+  const url = withPoolParams(process.env.DATABASE_URL);
   const base = new PrismaClient({
     log: process.env.NODE_ENV === "development" ? ["warn", "error"] : ["error"],
+    ...(url ? { datasources: { db: { url } } } : {}),
   });
   // A query-only extension leaves every model and result type unchanged, so the client keeps its PrismaClient
   // type (the extended type would not be assignable to Prisma.TransactionClient where helpers expect it).
