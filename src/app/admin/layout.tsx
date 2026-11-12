@@ -48,6 +48,8 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       : []),
     { href: "/admin/support", label: "Support", icon: "support", badge: openTickets },
     { href: "/admin/messages", label: "Messages", icon: "mail", badge: newMessages },
+    // Every staff member manages their own two-step sign-in here; the red dot stays until it's on.
+    { href: "/admin/security", label: "Security (2FA)", icon: "security", short: "2FA", badge: account?.twoFactorEnabled ? 0 : 1, badgeTone: "alert" },
     ...(isAdmin
       ? ([
           { href: "/admin/settings", label: "Settings", icon: "settings" },
@@ -73,7 +75,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <AttentionWatcher initial={attentionKey} latestSignupId={counts.latestSignup?.id ?? null} />
       {!account?.twoFactorEnabled && (
         <Link
-          href="/dashboard/security#two-step"
+          href="/admin/security#two-step"
           className="mb-6 flex items-center gap-3 rounded-2xl border border-warning/40 bg-warning/10 px-4 py-3 text-sm text-text hover:border-warning/70"
         >
           <ShieldAlert className="h-5 w-5 shrink-0 text-warning" aria-hidden />
