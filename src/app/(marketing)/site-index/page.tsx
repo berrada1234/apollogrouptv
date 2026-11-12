@@ -145,8 +145,10 @@ export default async function SiteIndexPage() {
               </h2>
               <p className="mt-1 text-sm text-muted">{g.blurb}</p>
               <ul className="mt-4 space-y-2">
+                {/* Keys must not look like URLs: React keys are written into the page's inline data, and Google
+                    crawled "/guides/apple-tv-8"-style keys as links and reported them as 404s. */}
                 {g.links.map((l, i) => (
-                  <li key={`${l.href}-${i}`} className="text-sm">
+                  <li key={`link${i}`} className="text-sm">
                     <Link href={l.href} className="text-text/90 hover:text-light-blue">
                       {l.label}
                     </Link>
