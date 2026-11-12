@@ -623,7 +623,7 @@ export function SupportSection({ guideCount, faqCount }: { guideCount: number; f
   const c = homeCopy.support;
   const routes = [
     { icon: LifeBuoy, t: "Support tickets", meta: "For customers", b: "Open a ticket from your dashboard. Every reply stays in one thread, and you're notified when we answer.", href: "/dashboard/support/new", cta: "Open a ticket" },
-    { icon: Gauge, t: "Client portal", meta: "Plan & billing", b: "Check your pack, payments and referrals, and jump into the full dashboard.", href: "/client-portal", cta: "Go to the portal" },
+    { icon: Gauge, t: "Your dashboard", meta: "Plan & billing", b: "Check your pack, payments and referrals, all in one place.", href: "/dashboard", cta: "Open your dashboard" },
     { icon: Mail, t: "Contact form", meta: "Anyone", b: "Not a customer yet? Send us a message and we'll reply by email.", href: "/contact", cta: "Send a message" },
     { icon: BookOpen, t: "Help center", meta: `${guideCount} guides · ${faqCount} answers`, b: "Step-by-step setup guides, troubleshooting and the full FAQ.", href: "/guides", cta: "Browse guides" },
   ];

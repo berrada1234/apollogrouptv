@@ -197,11 +197,6 @@ function layout({ heading, body, cta, code, links, note, unsubscribe }: Mail) {
 </html>`;
 }
 
-/** Renders the HTML for an email without sending it (used for previews). */
-export function renderEmailHtml(mail: Mail) {
-  return layout(mail);
-}
-
 function plainText({ heading, body, cta, code, links, note, unsubscribe }: Mail) {
   return [heading, body, links?.map((l) => `- ${l.label}: ${l.url}`).join("\n"), code, cta && `${cta.label}: ${cta.url}`, note, unsubscribe && `Stop these reminders: ${unsubscribe.pageUrl}`].filter(Boolean).join("\n\n");
 }

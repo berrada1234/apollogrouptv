@@ -83,8 +83,7 @@ export const footerNav = [
       { href: "/sign-in", label: "Sign In" },
       { href: "/create-account", label: "Create Account" },
       { href: "/apollo-group-tv-renewal", label: "Renew Subscription" },
-      { href: "/client-portal", label: "Client Portal" },
-      { href: "/account", label: "Account" },
+      { href: "/dashboard", label: "My Dashboard" },
     ],
   },
   {
@@ -154,7 +153,7 @@ export const policyRoutes = ["/privacy-policy", "/terms-and-conditions", "/refun
  * "Indexed, though blocked by robots.txt" (they are linked from every header) and "Redirect error" for old
  * addresses like /login and /signup that redirect to them.
  */
-export const privatePrefixes = ["/dashboard", "/admin", "/account", "/client-portal", "/api"];
+export const privatePrefixes = ["/dashboard", "/admin", "/api"];
 
 export function absoluteUrl(path = "/") {
   return `${siteConfig.url}${path.startsWith("/") ? path : `/${path}`}`;

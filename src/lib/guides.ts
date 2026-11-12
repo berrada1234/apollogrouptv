@@ -13,5 +13,3 @@ export async function getDeviceGuides() {
     .filter((p) => p.slug && !general.has(p.slug))
     .map((p) => ({ ...p, ...deviceGuideCopy(p.name) }));
 }
-
-export type DeviceGuide = Awaited<ReturnType<typeof getDeviceGuides>>[number];

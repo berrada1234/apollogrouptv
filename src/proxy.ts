@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { getSessionCookie } from "better-auth/cookies";
 import { isValidReferralCode, REFERRAL_COOKIE } from "@/lib/referral";
 
-const PROTECTED = ["/dashboard", "/admin", "/account", "/client-portal"];
+const PROTECTED = ["/dashboard", "/admin"];
 const NOINDEX = [...PROTECTED, "/sign-in", "/create-account", "/forgot-password", "/reset-password", "/verify-email"];
 
 const matches = (path: string, prefixes: string[]) => prefixes.some((p) => path === p || path.startsWith(`${p}/`));

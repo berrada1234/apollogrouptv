@@ -93,6 +93,9 @@ const nextConfig: NextConfig = {
       { source: "/about", destination: "/about-us", permanent: true },
       { source: "/support", destination: "/contact", permanent: true },
       { source: "/legal", destination: "/is-apollo-group-tv-legal", permanent: true },
+      // Former duplicate account pages; everything they showed lives in the dashboard.
+      { source: "/account", destination: "/dashboard/profile", permanent: true },
+      { source: "/client-portal", destination: "/dashboard", permanent: true },
     ];
   },
 };

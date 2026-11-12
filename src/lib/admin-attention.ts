@@ -29,5 +29,3 @@ export async function adminAttention(userId: string, isAdmin: boolean) {
     latestSignup: latestSignup ? { ...latestSignup, createdAt: latestSignup.createdAt.toISOString() } : null,
   };
 }
-
-export type AdminAttention = Awaited<ReturnType<typeof adminAttention>>;

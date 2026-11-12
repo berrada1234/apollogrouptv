@@ -1,6 +1,5 @@
 import "server-only";
 import { cache } from "react";
-import type { Prisma } from "@prisma/client";
 import { db } from "@/lib/db";
 
 export const getActivePlans = cache(() =>
@@ -45,40 +44,4 @@ export function displayName(name: string) {
   const [first, ...rest] = name.trim().split(/\s+/);
   const last = rest.at(-1);
   return last ? `${first} ${last[0]}.` : first;
-}
-
-export const getChannelCategories = cache(() =>
-  db.channelCategory.findMany({
-    orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
-    select: { id: true, slug: true, name: true, _count: { select: { channels: { where: { isActive: true } } } } },
-  }),
-);
-
-export async function searchChannels({
-  q,
-  category,
-  page,
-  pageSize = 24,
-}: {
-  q?: string;
-  category?: string;
-  page: number;
-  pageSize?: number;
-}) {
-  const where: Prisma.ChannelWhereInput = {
-    isActive: true,
-    ...(q ? { OR: [{ name: { contains: q } }, { description: { contains: q } }] } : {}),
-    ...(category ? { category: { slug: category } } : {}),
-  };
-  const [channels, total] = await Promise.all([
-    db.channel.findMany({
-      where,
-      orderBy: { name: "asc" },
-      skip: (page - 1) * pageSize,
-      take: pageSize,
-      include: { category: { select: { name: true, slug: true } } },
-    }),
-    db.channel.count({ where }),
-  ]);
-  return { channels, total, totalPages: Math.max(1, Math.ceil(total / pageSize)) };
 }

@@ -63,7 +63,7 @@ test.describe("public website", () => {
 
 test.describe("authentication & access control", () => {
   test("protected areas redirect to sign in", async ({ page }) => {
-    for (const path of ["/dashboard", "/admin", "/account", "/client-portal"]) {
+    for (const path of ["/dashboard", "/admin", "/dashboard/profile"]) {
       await page.goto(path);
       await expect(page).toHaveURL(new RegExp(`/sign-in\\?next=${encodeURIComponent(path).replace(/%2F/g, "(%2F|/)")}`));
     }
