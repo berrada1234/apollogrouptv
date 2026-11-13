@@ -55,7 +55,7 @@ export const rivals: Rival[] = [
     story: [
       "Most people comparing the two want to know one thing: is YouTube TV worth close to a thousand dollars a year, or is there a cheaper way to keep live TV?",
       "YouTube TV does a lot well. The app is fast, unlimited cloud DVR is included, and it runs on almost every device. The cost is the catch: $82.99 every month, billed until you cancel, which comes to $995.88 over twelve months before taxes.",
-      "Apollo Group TV works differently. You choose how long you want access, from one month to a year, and pay once. Nothing renews on its own, and the twelve-month pack costs a fraction of a year of YouTube TV.",
+      "Apollo Group TV works differently. You choose how long you want access, from three months to two years, and pay once. Nothing renews on its own, and the twelve-month pack costs a fraction of a year of YouTube TV.",
     ],
     theyWin: [
       "Unlimited cloud DVR: record shows and watch them later. Apollo Group TV doesn't advertise a recording feature.",
@@ -199,7 +199,7 @@ export const rivals: Rival[] = [
       { q: "How much is DIRECTV STREAM a month?", a: "DIRECTV's website lists the Entertainment streaming package at $89.99 a month regular price, with Choice at $94.99, Ultimate at $129.99 and Premier at $174.99. First-month offers are lower, and required fees apply." },
       { q: "Is Apollo Group TV cheaper than DIRECTV STREAM?", a: "Yes. Twelve months of DIRECTV Entertainment at the regular price is $1,079.88 before fees. Apollo Group TV's yearly price is shown in the table above, from our current prices." },
       { q: "Is DIRECTV STREAM still called DIRECTV STREAM?", a: "DIRECTV now presents it as streaming live TV from DIRECTV, formerly DIRECTV STREAM. The packages and prices compared here come from that page." },
-      { q: "Does Apollo Group TV have a free trial like DIRECTV?", a: "No. The one-month pack is the lowest-commitment way to start, and refund requests are handled under our Refund Policy." },
+      { q: "Does Apollo Group TV have a free trial like DIRECTV?", a: "No. The 3-month pack is the shortest commitment, and refund requests are handled under our Refund Policy." },
     ],
   },
   {
@@ -222,7 +222,7 @@ export const rivals: Rival[] = [
     intro: "Philo is one of the cheapest live TV services month to month. Over a full year, and once you look at what each includes, the comparison with Apollo Group TV becomes more interesting.",
     story: [
       "Philo's appeal is simple: a low monthly price for an entertainment-focused lineup, with a free trial and generous DVR.",
-      "Philo Essential is $25 a month, about the same as Apollo Group TV's one-month pack. The difference shows over time: twelve months of Philo Essential is $300, while Apollo Group TV's twelve-month pack is about half that.",
+      "Philo Essential is $25 a month. The difference shows over time: twelve months of Philo Essential is $300, while Apollo Group TV's twelve-month pack is about half that.",
       "So the answer depends on how long you'll watch. For a month or two, the two cost about the same. For a year, Apollo Group TV costs less, and the pack doesn't renew on its own.",
     ],
     theyWin: [
@@ -239,7 +239,7 @@ export const rivals: Rival[] = [
     verdict: "For a month of entertainment channels with DVR and a free trial, Philo is a fair choice. For a full year of live TV on more screens, Apollo Group TV costs less.",
     faqs: [
       { q: "Is Apollo Group TV cheaper than Philo?", a: "Over a year, yes. Twelve months of Philo Essential is $300; Apollo Group TV's yearly price, shown in the table above, is about half that. For a single month, the two cost about the same." },
-      { q: "Does Philo have a free trial?", a: "Yes, Philo lists a 7-day free trial. Apollo Group TV doesn't offer a free trial; the one-month pack is the lowest-commitment way to start." },
+      { q: "Does Philo have a free trial?", a: "Yes, Philo lists a 7-day free trial. Apollo Group TV doesn't offer a free trial; the 3-month pack is the shortest commitment." },
       { q: "How many screens does each allow?", a: "Philo lists up to 3 devices at once. Apollo Group TV packs list up to 5 devices per account." },
       { q: "Does Apollo Group TV include sports like Philo's lineup?", a: "Apollo Group TV organizes live channels by category and region, including sports categories; our channels page lists them. Philo's lineup focuses on entertainment channels." },
     ],

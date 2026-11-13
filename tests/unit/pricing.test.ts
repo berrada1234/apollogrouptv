@@ -30,6 +30,14 @@ describe("pricing", () => {
   it("estimates a daily cost", () => {
     expect(Math.round(perDayCents(packs[3])!)).toBe(41);
   });
+  it("handles the current line-up: no 1-month pack, a 2-year pack", () => {
+    const current = [...packs.slice(1), { id: "diamond", priceCents: 19900, interval: "BIENNIAL" as const }];
+    const ctx = pricingContext(current);
+    expect(ctx.baseMonthly).toBe(1833);
+    expect(ctx.bestValueId).toBe("diamond");
+    expect(current.map((p) => savingsPct(p, ctx.baseMonthly))).toEqual([0, 9, 32, 55]);
+    expect(accessLabel("BIENNIAL")).toBe("24 Months Access");
+  });
   it("shows no best value or savings when only one plan exists", () => {
     const one = pricingContext([packs[0]]);
     expect(one.bestValueId).toBeNull();

@@ -34,6 +34,7 @@ export const intervalLabels = {
   QUARTERLY: "Every 3 months",
   SEMIANNUAL: "Every 6 months",
   YEARLY: "Yearly",
+  BIENNIAL: "Every 2 years",
   ONE_TIME: "One-time",
 } as const;
 
@@ -42,6 +43,7 @@ export const intervalShort = {
   QUARTERLY: "/3 mo",
   SEMIANNUAL: "/6 mo",
   YEARLY: "/yr",
+  BIENNIAL: "/2 yr",
   ONE_TIME: "",
 } as const;
 

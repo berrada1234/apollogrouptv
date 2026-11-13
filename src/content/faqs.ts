@@ -61,7 +61,7 @@ export const faqSeed: FaqSeed[] = [
     category: "Plans & Billing",
     question: "What does an Apollo Group TV subscription cost?",
     answer:
-      "It depends on how long you want access for. There are four packs (1, 3, 6 and 12 months), and the longer the pack, the lower the cost per month. Every pack includes the same lineup; there's no cheaper tier with fewer channels. Current prices are shown at the top of this page and on the [Plans page](/plans).",
+      "It depends on how long you want access for. There are four packs (3, 6, 12 and 24 months), and the longer the pack, the lower the cost per month. Every pack includes the same lineup; there's no cheaper tier with fewer channels. Current prices are shown at the top of this page and on the [Plans page](/plans).",
   },
   {
     category: "Plans & Billing",
@@ -91,7 +91,7 @@ export const faqSeed: FaqSeed[] = [
     category: "Plans & Billing",
     question: "Is there a trial before I pay?",
     answer:
-      "We don't currently offer a free trial. If you're unsure, the 1-month pack is the lowest-commitment way to start, and our [Refund Policy](/refund-policy) explains how refund requests are handled. You can also [ask us](/contact) about your device before buying.",
+      "We don't currently offer a free trial. If you're unsure, the 3-month pack is the shortest commitment, and our [Refund Policy](/refund-policy) explains how refund requests are handled. You can also [ask us](/contact) about your device before buying.",
   },
   {
     category: "Plans & Billing",

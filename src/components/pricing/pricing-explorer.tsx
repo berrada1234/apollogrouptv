@@ -286,7 +286,7 @@ export function PricingExplorer({ plans, defaultId }: { plans: PricingPlan[]; de
             </p>
             <p className="mt-1 text-xs text-subtle">
               {selected.savingsPct > 0 && selected.fullPriceCents
-                ? `${formatMoney(selected.fullPriceCents - selected.priceCents, selected.currency)} less than ${selected.months} months of the monthly pack.`
+                ? `${formatMoney(selected.fullPriceCents - selected.priceCents, selected.currency)} less than ${selected.months} months at the shortest pack's monthly rate.`
                 : selected.oneTime
                   ? "One payment. Nothing renews automatically."
                   : "Billed per period."}

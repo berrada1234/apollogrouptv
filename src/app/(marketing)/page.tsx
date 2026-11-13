@@ -58,7 +58,7 @@ export async function generateMetadata(): Promise<Metadata> {
   // Opens with both brand keywords, which Google bolds when they match the search; about 150 characters.
   const description = from
     ? `Apollo Group TV (Apollo TV) is an IPTV service for live TV, sports and movies on Fire TV, Android, iPhone and PC. One-time packs from ${from}/month.`
-    : "Apollo Group TV (Apollo TV) is an IPTV service for live TV, sports and movies on Fire TV, Android, iPhone and PC. Pay once for 1 to 12 months.";
+    : "Apollo Group TV (Apollo TV) is an IPTV service for live TV, sports and movies on Fire TV, Android, iPhone and PC. Pay once for 3 months to 2 years.";
   return {
     title: { absolute: homeTitle },
     description,
@@ -67,7 +67,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title: "Apollo Group TV Official Site: Live TV, Sports & Movies",
       description: from
         ? `Apollo Group TV: live channels, sports and movies on the screens you already own. Pay once from ${from}/month, with a setup guide for every device.`
-        : "Apollo Group TV: live channels, sports and movies on the screens you already own. Pay once for 1 to 12 months, with a setup guide for every device.",
+        : "Apollo Group TV: live channels, sports and movies on the screens you already own. Pay once for 3 months to 2 years, with a setup guide for every device.",
       url: "/",
       type: "website",
       // A page-level openGraph object replaces the inherited one, so the share image must be listed here.

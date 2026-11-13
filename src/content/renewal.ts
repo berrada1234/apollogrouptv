@@ -40,7 +40,7 @@ If your pack is still active when you renew, the new period starts when the curr
 
 ### One-time packs, no automatic renewal
 
-Apollo Group TV packs cover a set length of time, from one month to a year. When you pay for a pack, you pay once. There's no card on file being charged again, and no subscription quietly renewing in the background. To continue after your pack ends, you buy another one. That purchase is what we call a renewal.
+Apollo Group TV packs cover a set length of time, from three months to two years. When you pay for a pack, you pay once. There's no card on file being charged again, and no subscription quietly renewing in the background. To continue after your pack ends, you buy another one. That purchase is what we call a renewal.
 
 ### Your new period starts when the current one ends
 

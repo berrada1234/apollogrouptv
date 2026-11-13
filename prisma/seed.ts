@@ -55,10 +55,10 @@ const packFeatures = [
 ];
 
 const packs = [
-  { slug: "starter", name: "Starter Pack", interval: "MONTHLY", priceCents: 2499, sortOrder: 1, description: "One month of access, the shortest commitment to start with." },
   { slug: "silver", name: "Silver Pack", interval: "QUARTERLY", priceCents: 5499, sortOrder: 2, description: "Three months of access at a lower monthly cost." },
   { slug: "elite", name: "Elite Pack", interval: "SEMIANNUAL", priceCents: 9999, sortOrder: 3, description: "Six months of access for regular viewers." },
-  { slug: "platinum", name: "Platinum Pack", interval: "YEARLY", priceCents: 14999, sortOrder: 4, description: "A full year of access with the lowest monthly cost." },
+  { slug: "platinum", name: "Platinum Pack", interval: "YEARLY", priceCents: 14999, sortOrder: 4, description: "A full year of access at a low monthly cost." },
+  { slug: "diamond", name: "Diamond Pack", interval: "BIENNIAL", priceCents: 19900, sortOrder: 5, description: "Two full years of access with the lowest monthly cost." },
 ] as const;
 
 async function seedPlans() {
@@ -69,8 +69,8 @@ async function seedPlans() {
       create: { ...p, currency: "USD", oneTime: true, highlighted: false, isActive: true, features: packFeatures },
     });
   }
-  // Retire the development placeholders now that real packs exist.
-  const retired = await db.plan.updateMany({ where: { slug: { startsWith: "demo-" }, isActive: true }, data: { isActive: false } });
+  // Retire the development placeholders and the discontinued 1-month pack (kept in the table for past orders).
+  const retired = await db.plan.updateMany({ where: { OR: [{ slug: { startsWith: "demo-" } }, { slug: "starter" }], isActive: true }, data: { isActive: false } });
   console.log(`✓ Plans: ${packs.length} packs ensured, ${retired.count} demo plans deactivated`);
 }
 

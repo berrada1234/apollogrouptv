@@ -12,7 +12,7 @@ export const whyApollo = {
   description:
     "Why households choose Apollo Group TV: one-time packs, no auto-renewal, a guide for every device and written support, plus when it isn't the right fit.",
   answer:
-    "People choose Apollo Group TV to keep live TV without a bill that renews every month. You pay once for a pack from one month to a year, every pack includes the same live channels and on-demand library, and a year costs far less than the big live TV services. It isn't for everyone: there's no recording feature and no free trial.",
+    "People choose Apollo Group TV to keep live TV without a bill that renews every month. You pay once for a pack from three months to two years, every pack includes the same live channels and on-demand library, and a year costs far less than the big live TV services. It isn't for everyone: there's no recording feature and no free trial.",
   body: `
 Live TV over the internet has become expensive. The big streaming services that replaced cable now cost close to what cable did, billed every month until you remember to cancel. Apollo Group TV was built around a different idea: decide how long you want to watch, pay once, and keep the rest of your money.
 
@@ -81,7 +81,7 @@ No. Every pack is a one-time payment. When it ends, you decide whether to add an
 
 ### Is there a free trial?
 
-No. The one-month pack is the lowest-commitment way to start, and refund requests are handled under our Refund Policy.
+No. The 3-month pack is the shortest commitment, and refund requests are handled under our Refund Policy.
 
 ### What devices does Apollo Group TV work on?
 

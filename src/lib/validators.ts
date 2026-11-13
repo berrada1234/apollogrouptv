@@ -88,7 +88,7 @@ export const planSchema = z.object({
   description: z.string().trim().min(10).max(1000),
   price: z.coerce.number().min(0).max(100000),
   currency: z.string().trim().toUpperCase().length(3),
-  interval: z.enum(["MONTHLY", "QUARTERLY", "SEMIANNUAL", "YEARLY", "ONE_TIME"]),
+  interval: z.enum(["MONTHLY", "QUARTERLY", "SEMIANNUAL", "YEARLY", "BIENNIAL", "ONE_TIME"]),
   features: z
     .string()
     .transform((v) =>

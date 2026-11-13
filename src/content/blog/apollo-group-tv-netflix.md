@@ -59,7 +59,7 @@ You may come across offers that claim to include Netflix accounts or "every stre
 | Main focus | Live channels plus an on-demand library | On-demand films and series |
 | Live TV | Yes, organized by category and region | Mostly on-demand; live events are occasional |
 | Original series | Not the focus | A large catalog of Netflix originals |
-| How you pay | One-time packs, from one month to a year | A monthly plan, managed with Netflix |
+| How you pay | One-time packs, from three months to two years | A monthly plan, managed with Netflix |
 | Renewal | No automatic renewal on one-time packs | Renews monthly until cancelled |
 | Account | Your Apollo Group TV dashboard | Your Netflix account |
 
@@ -175,7 +175,7 @@ Yes, as long as your internet can carry both streams. Each service counts its ow
 
 ### Is there a free trial so I can compare?
 
-We don't currently offer a free trial. The one-month pack is the lowest-commitment way to start, and our [Refund Policy](/refund-policy) explains how refund requests work.
+We don't currently offer a free trial. The 3-month pack is the shortest commitment, and our [Refund Policy](/refund-policy) explains how refund requests work.
 
 ## Conclusion
 

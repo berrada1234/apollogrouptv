@@ -31,7 +31,7 @@ export function GET() {
     `- Official website: ${siteConfig.url}`,
     "- Also known as: Apollo TV",
     "- What it is: an internet TV (IPTV) service with live channels and an on-demand library, watched in an app on a supported device.",
-    "- Billing: one-time packs from one month to one year; nothing renews automatically.",
+    "- Billing: one-time packs from three months to two years; nothing renews automatically.",
     "- Netflix and other streaming services are not included.",
     "- Login details for apps and players are shown in the customer's account (My Account), not sent by email.",
     "",

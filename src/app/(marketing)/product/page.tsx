@@ -193,7 +193,7 @@ export default async function ProductPage() {
             <IconBox icon={LayoutGrid} />
             <h2 className="mt-5 font-display text-xl font-bold text-text">Packs You Pay for Once</h2>
             <p className="mt-3 text-sm leading-6 text-muted">
-              You choose how long you want access, from one month to a year, and pay a single amount. Nothing renews automatically; when the pack ends, access stops.
+              You choose how long you want access, from three months to two years, and pay a single amount. Nothing renews automatically; when the pack ends, access stops.
               Longer packs cost less per month, and every pack includes the same service. Compare them on the{" "}
               <Link href="/plans" className="text-accent hover:text-light-blue">
                 Plans page

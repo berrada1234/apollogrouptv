@@ -18,9 +18,9 @@ export const homeCopy = {
     h2: "What Is Apollo Group TV? The IPTV Service Explained",
     paragraphs: [
       "**Apollo Group TV**, often shortened to **Apollo TV**, is an internet TV service. In place of a cable box on a monthly contract you get an app: live channels sorted by category and region, a library of movies and series to watch when you like, and one online account that holds your pack, payments and support history.",
-      "You decide how long you want access, from one month to a full year, and pay once. Nothing renews on its own. Our team switches the pack on, and if a device gives you trouble during setup, you keep replying in the same ticket until it works.",
+      "You decide how long you want access, from three months to two years, and pay once. Nothing renews on its own. Our team switches the pack on, and if a device gives you trouble during setup, you keep replying in the same ticket until it works.",
     ],
-    tagline: "Pick one month or twelve, then watch on the screens you already own.",
+    tagline: "Pick three months or two years, then watch on the screens you already own.",
     highlights: [
       { title: "HD, Full HD and 4K where available", body: "Channels carry a quality label, so you know what you're getting before you press play." },
       { title: "Pay once, no auto-renewal", body: "A pack covers a fixed number of days. When it ends, access stops and nothing is charged." },
@@ -146,7 +146,7 @@ export const homeFaq = [
   },
   {
     q: "How much does Apollo Group TV cost?",
-    a: "Each pack is a single payment for a fixed period, from one month to a year, and longer packs cost less per month. The [Plans page](/plans) shows every current price with the cost per month.",
+    a: "Each pack is a single payment for a fixed period, from three months to two years, and longer packs cost less per month. The [Plans page](/plans) shows every current price with the cost per month.",
   },
   {
     q: "Do I need an Apollo Group TV downloader code?",
@@ -178,7 +178,7 @@ export const homeFaq = [
   },
   {
     q: "Is there an Apollo Group TV free trial?",
-    a: "We don't currently offer a free trial. The 1-month pack is the lowest-commitment way to start, and the [Refund Policy](/refund-policy) explains how refund requests work.",
+    a: "We don't currently offer a free trial. The 3-month pack is the shortest commitment, and the [Refund Policy](/refund-policy) explains how refund requests work.",
   },
   {
     q: "Will Apollo Group TV buffer or freeze?",

@@ -2,7 +2,7 @@ import type { BillingInterval } from "@prisma/client";
 
 type PlanLike = { id: string; priceCents: number; interval: BillingInterval };
 
-const MONTHS: Record<BillingInterval, number> = { MONTHLY: 1, QUARTERLY: 3, SEMIANNUAL: 6, YEARLY: 12, ONE_TIME: 0 };
+const MONTHS: Record<BillingInterval, number> = { MONTHLY: 1, QUARTERLY: 3, SEMIANNUAL: 6, YEARLY: 12, BIENNIAL: 24, ONE_TIME: 0 };
 
 export function monthsFor(interval: BillingInterval) {
   return MONTHS[interval];

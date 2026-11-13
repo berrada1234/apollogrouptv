@@ -116,7 +116,7 @@ export default async function AboutPage() {
               We provide live channels and an on-demand library through the
               Apollo TV app, on TVs, streaming sticks, phones and computers.
               Instead of a cable contract, customers buy a pack for a fixed
-              period, from one month to a year, and pay once.
+              period, from three months to two years, and pay once.
             </p>
             <p>
               Everything after sign-up happens in one account: the pack and its

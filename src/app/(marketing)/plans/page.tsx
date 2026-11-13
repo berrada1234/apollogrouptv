@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   openGraph: { ...shareImage, title, description, url: "/plans" },
 };
 
-const periodLabels = { MONTHLY: "Monthly", QUARTERLY: "Quarterly", SEMIANNUAL: "Semi-Annual", YEARLY: "Annual", ONE_TIME: "One-time" } as const;
+const periodLabels = { MONTHLY: "Monthly", QUARTERLY: "Quarterly", SEMIANNUAL: "Semi-Annual", YEARLY: "Annual", BIENNIAL: "2-Year", ONE_TIME: "One-time" } as const;
 
 /** "Most popular" is only claimed when paid orders show a clear leader. */
 const POPULAR_MIN_ORDERS = 5;
@@ -334,11 +334,11 @@ export default async function PlansPage() {
               </table>
             </div>
             <p className="mt-4 text-center text-xs text-subtle">
-              Saving compares each pack with buying the 1-month pack repeatedly for the same length of time.
+              Saving compares each pack with paying the shortest pack's monthly rate for the same length of time.
               {example && (
                 <>
                   {" "}
-                  For example, {example.months} months of monthly packs cost {formatMoney(example.viaShort, example.long.currency)}; the {example.long.name} costs{" "}
+                  For example, {example.months} months at that rate cost {formatMoney(example.viaShort, example.long.currency)}; the {example.long.name} costs{" "}
                   {formatMoney(example.long.priceCents, example.long.currency)}.
                 </>
               )}

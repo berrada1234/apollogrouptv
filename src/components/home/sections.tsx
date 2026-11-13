@@ -84,7 +84,7 @@ function BarFact({
 export function SocialProofBar({ fromMonthly, oneTime, moneyBackDays }: { fromMonthly: string | null; oneTime: boolean; moneyBackDays: string }) {
   const price = fromMonthly
     ? { icon: Receipt, title: `From ${fromMonthly} a month`, detail: oneTime ? "Pay once, nothing renews by itself" : "See every pack and price", href: "/plans" }
-    : { icon: Receipt, title: "Pay once for 1 to 12 months", detail: "Nothing renews by itself", href: "/plans" };
+    : { icon: Receipt, title: "Pay once for 3 months to 2 years", detail: "Nothing renews by itself", href: "/plans" };
   const promise = moneyBackDays
     ? { icon: ShieldCheck, title: `${moneyBackDays}-day money-back`, detail: `Ask for a refund within ${moneyBackDays} days`, href: "/refund-policy" }
     : { icon: ShieldCheck, title: "Step-by-step setup guides", detail: "For every supported device", href: "/guides" };

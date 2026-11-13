@@ -30,6 +30,7 @@ enum BillingInterval {
   QUARTERLY
   SEMIANNUAL
   YEARLY
+  BIENNIAL
   ONE_TIME
 }
 
