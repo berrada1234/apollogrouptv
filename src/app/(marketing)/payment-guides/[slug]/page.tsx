@@ -7,7 +7,8 @@ import { GuideCard, GuideGlyph, GuideMeta, PaymentFlow } from "@/components/paym
 import { RichText, stripRich } from "@/components/rich-text";
 import { Container } from "@/components/ui/misc";
 import { getPaymentGuide, paymentGuides } from "@/content/payment-guides";
-import { formatDate } from "@/lib/utils";
+import Image from "next/image";
+import { cn, formatDate } from "@/lib/utils";
 import { articleNode, faqNode } from "@/lib/schema";
 import { shareImage } from "@/lib/share-image";
 import { PageCover } from "@/components/page-cover";
@@ -132,6 +133,18 @@ export default async function PaymentGuidePage({ params }: PageProps<"/payment-g
                                 <RichText text={step.note} />
                               </span>
                             </p>
+                          )}
+                          {step.image && (
+                            <figure className={cn("mt-4", { phone: "max-w-[240px]", panel: "max-w-[360px]", screen: "max-w-full" }[step.image.kind])}>
+                              <Image
+                                src={step.image.src}
+                                alt={step.image.alt}
+                                width={step.image.width}
+                                height={step.image.height}
+                                sizes={{ phone: "240px", panel: "360px", screen: "(min-width: 1024px) 640px, 100vw" }[step.image.kind]}
+                                className={cn("h-auto w-full border border-border", step.image.kind === "phone" ? "rounded-[18px]" : "rounded-[12px]")}
+                              />
+                            </figure>
                           )}
                         </div>
                       </li>

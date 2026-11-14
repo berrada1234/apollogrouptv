@@ -5,7 +5,10 @@
  * Inline links and bold use the RichText syntax: [label](/path) and **bold**.
  */
 
-export type PayStep = { title: string; body: string; tip?: string; note?: string };
+/** A screenshot for a step. `phone` frames are tall app screens shown narrow, `panel` a tall website form or window, `screen` a wide website crop. */
+export type StepImage = { src: string; alt: string; width: number; height: number; kind: "phone" | "panel" | "screen" };
+
+export type PayStep = { title: string; body: string; tip?: string; note?: string; image?: StepImage };
 
 export type PaymentGuide = {
   slug: string;
@@ -35,6 +38,7 @@ export type PaymentGuide = {
 };
 
 const UPDATED = "2026-11-03";
+const IMG = "/images/payment-guides/cash-app";
 
 // Shared closing paragraph for Bitcoin-based guides: what happens after the coins leave the customer's app.
 const afterBitcoin = [
@@ -50,59 +54,143 @@ export const paymentGuides: PaymentGuide[] = [
     accent: "#00D632",
     title: "How to Buy Bitcoin with Cash App and Pay for Apollo Group TV",
     metaTitle: "Pay for Apollo Group TV with Cash App Bitcoin: Step-by-Step",
-    description: "Buy Bitcoin in Cash App and send the exact amount to your Apollo Group TV invoice. Setup, identity checks, withdrawal speeds and what to do if something stalls.",
+    description: "Pay for Apollo Group TV with Cash App, with a screenshot for every step: choose your pack, open your invoice, buy Bitcoin in Cash App and send the exact amount.",
     summary: "Buy Bitcoin in the app, then send it to your invoice.",
     minutes: 12,
     region: "US only",
-    updated: UPDATED,
+    updated: "2026-11-14",
     intro: [
       "Cash App is the quickest route to Bitcoin for most people in the United States: you probably already have it on your phone, it links to a normal debit card, and it can send Bitcoin straight to another wallet. That last part is what you need here.",
-      "This guide covers the whole trip in order: getting Cash App ready for Bitcoin, buying the right amount, opening your Apollo Group TV invoice, and sending the payment. If Cash App is already verified on your phone, skip to Part 2 and you'll be done in a few minutes.",
+      "This guide follows the whole trip in order, with a screenshot for every step: choosing your pack on Apollo Group TV, opening your invoice, getting Cash App ready, buying the Bitcoin and sending it. If Cash App is already verified for Bitcoin on your phone, skip Part 2 and you'll be done in a few minutes.",
     ],
     needs: [
       "An iPhone or Android phone with Cash App installed",
       "A US debit card or bank account linked to Cash App",
       "Your legal name, date of birth, address and the last 4 digits of your SSN (Cash App asks for these before it enables Bitcoin)",
-      "An Apollo Group TV account with a pack chosen in [Plans & Billing](/dashboard/plan)",
+      "An email address for your Apollo Group TV account (you create it in Part 1)",
     ],
-    flow: ["Cash App balance or card", "Buy Bitcoin in Cash App", "Send to the Apollo invoice address", "Login appears in My Account"],
+    flow: ["Choose your pack on Apollo", "Buy Bitcoin in Cash App", "Send it to your invoice address", "Login appears in My Account"],
     sections: [
       {
-        heading: "Part 1: Get Cash App ready for Bitcoin",
-        intro: "New to Cash App? Do this once. Existing users can check the Bitcoin tile opens without asking for verification, then move on.",
+        heading: "Part 1: Choose your pack and create your account",
+        intro: "Start on the Apollo Group TV website. Your invoice tells you exactly how much Bitcoin to send, so set it up before you open Cash App.",
         steps: [
-          { title: "Install Cash App and sign in", body: "Download Cash App from the App Store or Google Play. Sign up with your phone number or email and enter the code Cash App texts you." },
+          {
+            title: "Pick how long you want access",
+            body: "Open the [Plans page](/plans) and choose a period: Quarterly, Semi-Annual, Annual or 2-Year. Every pack has the same channels and library; only the length and the price change. Press the **Get** button under the price to continue.",
+            image: { src: `${IMG}/apollo-plans-2-year-pack.webp`, alt: "Apollo Group TV Plans page with the 2-Year option selected, showing the Diamond Pack at $199 and the Get Diamond button", width: 1200, height: 338, kind: "screen" },
+          },
+          {
+            title: "Create your free account",
+            body: "Enter your full name, your email and a password, tick the box to accept the Terms, and press **Create account**. The pack you picked stays selected while you sign up. Then type the 6-digit code we email you to confirm your address.",
+            tip: "Use an email you can open on your phone. The code and your activation notice both go there.",
+            image: { src: `${IMG}/apollo-create-account.webp`, alt: "Apollo Group TV Create your account form with the selected Diamond Pack shown above the name, email and password fields", width: 720, height: 1169, kind: "panel" },
+          },
+          {
+            title: "Confirm your pack in Plans & Billing",
+            body: "You land in your dashboard. Open **Plans & Billing** and press **Subscribe** on the pack you want. This creates your invoice.",
+            image: { src: `${IMG}/apollo-choose-pack.webp`, alt: "Plans & Billing in the Apollo Group TV dashboard with Silver, Elite, Platinum and Diamond packs and a Subscribe button on each", width: 1200, height: 390, kind: "screen" },
+          },
+          {
+            title: "Open your invoice",
+            body: "Your unpaid invoice appears at the top of the page with its price and a reservation timer. Press **Continue Payment**.",
+            image: { src: `${IMG}/apollo-unpaid-invoice.webp`, alt: "Unpaid invoice card for the Diamond Pack, $199.00, with Pending Payment and reservation timer badges and a Continue Payment button", width: 1000, height: 209, kind: "screen" },
+          },
+          {
+            title: "Choose Bitcoin Wallet and press Pay Now",
+            body: "Under **Payment Methods**, press **Pay Now** on **Bitcoin Wallet**. Cash App sends ordinary Bitcoin, so this is the option to use (or **Cash App**, if it's listed with a Bitcoin address).",
+            image: { src: `${IMG}/apollo-payment-methods.webp`, alt: "Payment Methods section with Bitcoin Wallet, Shakepay and MoonPay cards, each with a How to pay link and a Pay Now button", width: 1200, height: 577, kind: "screen" },
+          },
+          {
+            title: "Keep the payment window open",
+            body: "The window shows the three things you'll use in Cash App: the **Wallet Address**, the **Amount to Send (BTC)** and a QR code. The price is locked for the time shown at the top. Leave this window open on your computer, or keep this tab open on your phone.",
+            tip: "The last few digits of the BTC amount are unique to your invoice. They're how our system recognizes your payment, so don't round them.",
+            image: { src: `${IMG}/apollo-bitcoin-payment-window.webp`, alt: "Bitcoin Wallet Payment window with the price lock timer, QR code, wallet address and Amount to Send in BTC, each with a Copy button (address and QR blurred in this example)", width: 720, height: 1092, kind: "panel" },
+          },
+        ],
+      },
+      {
+        heading: "Part 2: Get Cash App ready for Bitcoin",
+        intro: "New to Cash App? Do this once. If you already buy Bitcoin in Cash App, skip to Part 3.",
+        steps: [
+          { title: "Install Cash App and sign up", body: "Download Cash App from the App Store or Google Play. Sign up with your phone number or email and enter the code Cash App texts you." },
           { title: "Link a debit card or bank", body: "Add the debit card you'll use to pay. Cash App uses it to top up your balance or to pay for the Bitcoin directly." },
-          { title: "Verify your identity for Bitcoin", body: "Open the **Money** tab and tap **Bitcoin**. Cash App asks for your full name, date of birth, address and the last 4 digits of your Social Security number before it unlocks buying and sending. Some accounts are also asked for a photo of a government ID.", note: "Verification can be instant or take a while on new accounts. Do it before you open your Apollo invoice, so your price lock doesn't run out while you wait." },
+          { title: "Verify your identity for Bitcoin", body: "Cash App asks for your full name, date of birth, address and the last 4 digits of your Social Security number before it unlocks buying and sending Bitcoin. Some accounts are also asked for a photo of a government ID.", note: "Verification can be instant or take a while on new accounts. Finish it before your invoice's price lock runs out, or press **Get a new quote** in the payment window when you're ready." },
           { title: "Set a PIN or turn on Face ID", body: "Cash App confirms every Bitcoin purchase and withdrawal with your PIN or biometrics. Set one now so you're not stuck mid-payment." },
         ],
       },
       {
-        heading: "Part 2: Open your Apollo Group TV invoice",
-        intro: "Get the exact Bitcoin amount from Apollo first, so you know how much to buy.",
+        heading: "Part 3: Buy the Bitcoin in Cash App",
+        intro: "The pink arrows in the screenshots show where to tap.",
         steps: [
-          { title: "Choose your pack", body: "Sign in to Apollo Group TV and open [Plans & Billing](/dashboard/plan). Pick a pack. Your invoice appears at the top of the page with a reservation timer." },
-          { title: "Press Continue Payment", body: "This takes you to the payment methods. Choose **Bitcoin Wallet** (or **Cash App**, if it's listed with a Bitcoin address) and press **Pay Now**." },
-          { title: "Keep the payment window open", body: "The window shows three things you'll use: the **Wallet Address**, the **Amount to Send (BTC)** and a QR code. The BTC amount is locked for a limited time, shown at the top of the window.", tip: "The last few digits of the BTC amount are unique to your invoice. They're how our system recognizes your payment, so don't round them." },
+          {
+            title: "Open the Money tab",
+            body: "On Cash App's home screen, tap the **Money** icon (the bank symbol) at the bottom left.",
+            image: { src: `${IMG}/cash-app-money-tab.webp`, alt: "Cash App home screen with an arrow pointing to the Money tab icon at the bottom left", width: 540, height: 1173, kind: "phone" },
+          },
+          {
+            title: "Tap Bitcoin",
+            body: "Tap the **Bitcoin** tile. It shows how much Bitcoin you already hold.",
+            image: { src: `${IMG}/cash-app-bitcoin-tile.webp`, alt: "Cash App Money tab with an arrow pointing to the Bitcoin tile", width: 540, height: 1173, kind: "phone" },
+          },
+          {
+            title: "Press Buy",
+            body: "On the Bitcoin screen, press the blue **Buy** button under the price chart.",
+            image: { src: `${IMG}/cash-app-buy-button.webp`, alt: "Cash App Bitcoin screen with an arrow pointing to the Buy button", width: 540, height: 1173, kind: "phone" },
+          },
+          {
+            title: "Choose a custom amount",
+            body: "Tap **…** to type your own dollar amount, then press **Next**. Enter a little more than your invoice total, so a small price move or a faster withdrawal fee doesn't leave you short.",
+            note: "The video uses $1 only as a demonstration. Buy enough to cover your invoice, for example about $205 to $210 for a $199 pack.",
+            image: { src: `${IMG}/cash-app-buy-amount.webp`, alt: "Cash App Buy Bitcoin sheet with preset amounts and an arrow pointing to the custom amount button, and the Next button", width: 540, height: 1173, kind: "phone" },
+          },
+          {
+            title: "Confirm the purchase",
+            body: "Check the summary: funding source, Bitcoin amount, exchange rate and Cash App's fee. Press **Confirm**, then approve with your PIN or Face ID.",
+            image: { src: `${IMG}/cash-app-confirm-purchase.webp`, alt: "Cash App Confirm your Bitcoin purchase screen listing funding source, amount, exchange rate, fees and total, with an arrow to Confirm", width: 540, height: 1173, kind: "phone" },
+          },
+          {
+            title: "Press Done",
+            body: "Cash App shows how much Bitcoin you bought. Press **Done**. The Bitcoin is in your Cash App balance straight away.",
+            image: { src: `${IMG}/cash-app-purchase-done.webp`, alt: "Cash App You purchased Bitcoin confirmation with an arrow pointing to the Done button", width: 540, height: 1173, kind: "phone" },
+          },
         ],
       },
       {
-        heading: "Part 3: Buy the Bitcoin",
+        heading: "Part 4: Send the Bitcoin to your invoice",
         steps: [
-          { title: "Tap Bitcoin, then Buy", body: "In Cash App, open the **Money** tab, tap the **Bitcoin** tile and press **Buy**." },
-          { title: "Enter a custom amount", body: "Tap the **…** or the custom amount option and enter a dollar amount a little above your invoice total. A few extra dollars covers price movement and leaves room for the network fee if you choose a faster withdrawal." },
-          { title: "Review and confirm", body: "Cash App shows the Bitcoin you'll receive, the price and its fee. Confirm with your PIN. The Bitcoin lands in your Cash App balance straight away." },
-        ],
-      },
-      {
-        heading: "Part 4: Send it to your invoice",
-        steps: [
-          { title: "Start a Bitcoin withdrawal", body: "From the Bitcoin screen, tap the send/withdraw button (the arrow icon) and choose **Send Bitcoin**." },
-          { title: "Enter the exact BTC amount", body: "Switch the amount to **BTC** and type the **Amount to Send** from your Apollo payment window, every digit. If Cash App only shows dollars, tap the currency label to switch it." },
-          { title: "Paste or scan the wallet address", body: "Press **Copy** next to the wallet address in the Apollo window and paste it into Cash App's address field, or scan the QR code with Cash App's scanner. Check the first and last four characters match." },
-          { title: "Pick a withdrawal speed", body: "Cash App offers a few speeds with different fees. A faster speed reaches the Bitcoin network sooner, which means your invoice is confirmed sooner. Whatever you pick, the amount that arrives must still equal the BTC amount on your invoice.", note: "Check the summary screen: the amount being sent to the address should match your invoice. If the fee is taken out of that amount, increase what you send by the fee." },
-          { title: "Confirm and send", body: "Review the address, amount and speed one last time, then confirm with your PIN. Bitcoin payments can't be reversed, so this check matters." },
-          { title: "Press I Have Paid", body: "Go back to the Apollo payment window and press **I Have Paid**. This lets our team know to look for your payment and opens the Payment Under Review page. You don't have to wait for it: the blockchain check keeps running either way." },
+          {
+            title: "Tap the send and receive button",
+            body: "Back on the Bitcoin screen, tap the button with two arrows (⇅), next to Buy and Sell.",
+            image: { src: `${IMG}/cash-app-send-receive-button.webp`, alt: "Cash App Bitcoin screen with an arrow pointing to the send and receive button beside Buy and Sell", width: 540, height: 1173, kind: "phone" },
+          },
+          {
+            title: "Choose Send bitcoin",
+            body: "In the menu that opens, tap **Send bitcoin**.",
+            image: { src: `${IMG}/cash-app-send-bitcoin.webp`, alt: "Cash App Send or receive menu with an arrow pointing to Send bitcoin", width: 540, height: 1173, kind: "phone" },
+          },
+          {
+            title: "Switch to BTC and enter the exact amount",
+            body: "Tap the small **BTC ⇅** label under the amount so you type in Bitcoin instead of dollars. Enter the **Amount to Send (BTC)** from your Apollo payment window, every digit, then press **Send**.",
+            tip: "On a phone, press **Copy** next to the amount in the Apollo window and paste it, so no digit gets lost.",
+            image: { src: `${IMG}/cash-app-enter-btc-amount.webp`, alt: "Cash App Send Bitcoin keypad with an arrow pointing to the BTC switch under the amount and to the Send button", width: 540, height: 1173, kind: "phone" },
+          },
+          {
+            title: "Paste the wallet address",
+            body: "Tap the **To** field and paste the **Wallet Address** from your Apollo payment window (press **Copy** there first), or tap the scanner at the top and scan the QR code. Check that the first and last four characters match, then press **Next**.",
+            note: "Bitcoin payments can't be reversed. Always paste or scan the address from your own invoice window; never type it from a screenshot.",
+            image: { src: `${IMG}/cash-app-paste-address.webp`, alt: "Cash App To field for a Bitcoin address with arrows pointing to the address field and the Next button", width: 540, height: 1173, kind: "phone" },
+          },
+          {
+            title: "Pick a withdrawal speed",
+            body: "Choose how fast Cash App sends it: **Priority** (about 20 minutes), **Rush** (about 2 hours) or **Standard** (about 24 hours, free, with a minimum amount). Faster speeds cost a fee and get your invoice confirmed sooner. Press **Next**, check the summary and confirm with your PIN.",
+            note: "Make sure the amount arriving at the address still equals the BTC amount on your invoice. If the fee comes out of that amount, raise what you send by the fee.",
+            image: { src: `${IMG}/cash-app-withdrawal-speed.webp`, alt: "Cash App Select your withdrawal speed screen with Priority, Rush and Standard options and a Next button", width: 540, height: 1173, kind: "phone" },
+          },
+          {
+            title: "Press I Have Paid",
+            body: "Go back to the Apollo payment window and press **I Have Paid**. This tells our team to look for your payment and opens the Payment Under Review page. The blockchain check keeps running either way, so you can close the window.",
+          },
         ],
       },
     ],
