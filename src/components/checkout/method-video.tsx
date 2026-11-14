@@ -26,12 +26,21 @@ const VIDEOS = {
     button: "Video: how to pay with Venmo",
     guide: { href: "/payment-guides/venmo", label: "Open the step-by-step guide" },
   },
+  shakepay: {
+    src: "/videos/apollo-shakepay-bitcoin.mp4",
+    poster: "/videos/apollo-shakepay-bitcoin-poster.webp",
+    title: "How to pay with Shakepay",
+    subtitle: "Add Canadian dollars by Interac, buy Bitcoin in Shakepay and send the exact amount to the wallet address in your payment window.",
+    button: "Video: how to pay with Shakepay",
+    guide: { href: "/payment-guides/shakepay", label: "Open the step-by-step guide with pictures" },
+  },
 } satisfies Record<string, MethodVideo>;
 
 /** The video for a payment method card, or null. */
 export const videoFor = (m: { kind: string; name: string }): MethodVideo | null => {
   if (/cash\s*app/i.test(m.name)) return VIDEOS.cashApp;
   if (/venmo/i.test(m.name)) return VIDEOS.venmo;
+  if (/shakepay/i.test(m.name)) return VIDEOS.shakepay;
   return null;
 };
 

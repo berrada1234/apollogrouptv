@@ -42,6 +42,7 @@ export type PaymentGuide = {
 const UPDATED = "2026-11-03";
 const IMG = "/images/payment-guides/cash-app";
 const VIMG = "/images/payment-guides/venmo";
+const SIMG = "/images/payment-guides/shakepay";
 
 // Shared closing paragraph for Bitcoin-based guides: what happens after the coins leave the customer's app.
 const afterBitcoin = [
@@ -338,7 +339,7 @@ export const paymentGuides: PaymentGuide[] = [
     summary: "Canadian users: Interac e-Transfer, buy Bitcoin, send.",
     minutes: 15,
     region: "Canada only",
-    updated: UPDATED,
+    updated: "2026-11-14",
     intro: [
       "Shakepay is a Canadian app built around buying Bitcoin with money from your bank. You move Canadian dollars in with Interac e-Transfer, buy Bitcoin, and send it to any Bitcoin address, which is exactly how you pay an Apollo Group TV invoice from Canada.",
       "The slowest part is usually the first deposit. Interac transfers often arrive quickly, but a new account or a large amount can take longer. Fund Shakepay before you open your invoice and the rest takes a few minutes.",
@@ -349,30 +350,47 @@ export const paymentGuides: PaymentGuide[] = [
       "Your Apollo Group TV invoice in [Plans & Billing](/dashboard/plan)",
     ],
     flow: ["Canadian bank (Interac)", "Buy Bitcoin in Shakepay", "Send to the Apollo invoice address", "Login appears in My Account"],
+    video: {
+      src: "/videos/apollo-shakepay-bitcoin.mp4",
+      poster: "/videos/apollo-shakepay-bitcoin-poster.webp",
+      width: 1920,
+      height: 1080,
+      title: "How to pay for Apollo Group TV with Shakepay",
+      description: "A narrated walkthrough: choosing a pack on apollogroupr.tv, opening your invoice with the Shakepay card, adding funds by Interac, buying Bitcoin and sending it, then confirming your payment.",
+      duration: "PT2M13S",
+      uploaded: "2026-11-14",
+    },
     sections: [
       {
         heading: "Before you pay: set up and fund Shakepay",
+        intro: "The pictures of Shakepay below are simplified illustrations, not real screenshots. The blue circle shows where to tap; your app's screens may look a little different.",
         steps: [
           { title: "Create and verify your account", body: "Install Shakepay, sign up and complete identity verification. Shakepay asks for a government photo ID and a selfie, and checks them before you can deposit." },
-          { title: "Deposit Canadian dollars by Interac", body: "Tap **Add funds**, choose **Interac e-Transfer** and send money from your bank to the details Shakepay shows you. Use the exact email and message Shakepay gives you, or the deposit can get stuck.", tip: "Deposit a bit more than your pack's price. Bitcoin's price in CAD moves, and you'll want room for the network fee." },
+          { title: "Tap Add funds", body: "On your Shakepay wallet, tap **Add funds**.", image: { src: `${SIMG}/shakepay-illustration-add-funds.webp`, alt: "Illustration of the Shakepay wallet with the Add funds button highlighted", width: 480, height: 931, kind: "phone" } },
+          { title: "Deposit Canadian dollars by Interac", body: "Choose **Interac e-Transfer** and send money from your bank to the details Shakepay shows you. Use the exact email and message Shakepay gives you, or the deposit can get stuck.", tip: "Deposit a bit more than your pack's price. Bitcoin's price in CAD moves, and you'll want room for the network fee.", image: { src: `${SIMG}/shakepay-illustration-interac.webp`, alt: "Illustration of the Shakepay Add funds menu with Interac e-Transfer highlighted", width: 480, height: 931, kind: "phone" } },
           { title: "Wait for the deposit to land", body: "Your Shakepay balance updates when the transfer arrives. Shakepay may hold new deposits before they can be sent out as Bitcoin; the app tells you if so." },
         ],
       },
       {
         heading: "Get your invoice details",
         steps: [
-          { title: "Open your invoice", body: "Choose a pack on Apollo Group TV. Press **Continue Payment** on your invoice." },
-          { title: "Choose Shakepay and press Pay Now", body: "Select **Shakepay** (or **Bitcoin Wallet**). The payment window shows the wallet address, the exact **Amount to Send (BTC)** and how long that amount is locked." },
+          { title: "Open your invoice", body: "Choose a pack on Apollo Group TV. Press **Continue Payment** on your invoice.", image: { src: `${IMG}/apollo-unpaid-invoice.webp`, alt: "Unpaid invoice card for the Diamond Pack, $199.00, with Pending Payment and reservation timer badges and a Continue Payment button", width: 1000, height: 209, kind: "screen" } },
+          { title: "Press Pay Now on the Shakepay card", body: "Under **Payment Methods**, press **Pay Now** on the **Shakepay** card. It opens a Bitcoin payment window.", image: { src: `${SIMG}/apollo-payment-methods-shakepay.webp`, alt: "Payment Methods row with the Shakepay card, its video button and its Pay Now button, next to MoonPay", width: 1200, height: 388, kind: "screen" } },
+          { title: "Keep the payment window open", body: "The window shows the wallet address, the exact **Amount to Send (BTC)** and how long that amount is locked. Keep it open on your computer and use Shakepay on your phone, so the QR code is easy to scan.", image: { src: `${SIMG}/apollo-shakepay-payment-window.webp`, alt: "Shakepay Payment window with the price lock timer, QR code, wallet address and Amount to Send in BTC, each with a Copy button (address and QR blurred in this example)", width: 720, height: 1242, kind: "panel" } },
         ],
       },
       {
         heading: "Buy and send the Bitcoin",
         steps: [
-          { title: "Buy Bitcoin", body: "In Shakepay, tap **Buy**, choose **Bitcoin** and enter a CAD amount slightly above your invoice. Shakepay shows the rate it's offering for the next few seconds; review it and confirm before it refreshes. The Bitcoin appears in your Shakepay wallet right away." },
-          { title: "Tap Send and choose Bitcoin", body: "From your wallet screen, tap **Send** and select **Bitcoin**." },
-          { title: "Paste the Apollo address", body: "Paste the wallet address from the payment window, or scan the QR code. Shakepay may ask for two-factor confirmation for new addresses." },
-          { title: "Enter the BTC amount exactly", body: "Enter the **Amount to Send (BTC)** from your invoice. Make sure you're entering BTC, not CAD.", note: "If Shakepay deducts a network fee from the amount, add that fee so the address still receives the full invoice amount." },
-          { title: "Confirm the send", body: "Check the address and amount, then confirm. Shakepay shows the transaction in your history once it's broadcast." },
+          { title: "Tap Buy", body: "Back on your Shakepay wallet, tap **Buy**.", image: { src: `${SIMG}/shakepay-illustration-buy-button.webp`, alt: "Illustration of the Shakepay wallet with the Buy button highlighted", width: 480, height: 931, kind: "phone" } },
+          { title: "Choose Bitcoin and enter a CAD amount", body: "Choose **Bitcoin** and enter a CAD amount slightly above your invoice, then tap **Next**.", note: "The CA$300 in the picture is only an example.", image: { src: `${SIMG}/shakepay-illustration-buy-amount.webp`, alt: "Illustration of the Shakepay Buy screen with Bitcoin selected, an example CAD amount and the Next button highlighted", width: 480, height: 931, kind: "phone" } },
+          { title: "Review the rate and confirm", body: "Shakepay shows the rate it's offering for the next few seconds; review it and tap **Buy** before it refreshes. The Bitcoin appears in your Shakepay wallet right away.", image: { src: `${SIMG}/shakepay-illustration-rate-review.webp`, alt: "Illustration of the Shakepay purchase review with the rate refresh countdown and the Buy button highlighted", width: 480, height: 931, kind: "phone" } },
+          { title: "Tap Send", body: "From your wallet screen, tap **Send**.", image: { src: `${SIMG}/shakepay-illustration-send-button.webp`, alt: "Illustration of the Shakepay wallet with the Send button highlighted", width: 480, height: 931, kind: "phone" } },
+          { title: "Choose Bitcoin", body: "In the menu, select **Bitcoin (BTC)**.", image: { src: `${SIMG}/shakepay-illustration-send-bitcoin.webp`, alt: "Illustration of the Shakepay Send menu with Bitcoin highlighted", width: 480, height: 931, kind: "phone" } },
+          { title: "Paste the Apollo address", body: "Paste the wallet address from the payment window, or scan the QR code. Check that the first and last four characters match. Shakepay may ask for two-factor confirmation for new addresses.", image: { src: `${SIMG}/shakepay-illustration-paste-address.webp`, alt: "Illustration of the Shakepay Send Bitcoin screen with a pasted address and the Paste button highlighted", width: 480, height: 931, kind: "phone" } },
+          { title: "Enter the BTC amount exactly", body: "Switch to **BTC** and enter the **Amount to Send (BTC)** from your invoice. Make sure you're entering BTC, not CAD.", note: "If Shakepay deducts a network fee from the amount, add that fee so the address still receives the full invoice amount.", image: { src: `${SIMG}/shakepay-illustration-btc-amount.webp`, alt: "Illustration of the Shakepay amount screen in BTC with a pasted amount and the Next button highlighted", width: 480, height: 931, kind: "phone" } },
+          { title: "Confirm with your two-factor code", body: "Check the address and amount, enter your two-factor code, then tap **Send**.", image: { src: `${SIMG}/shakepay-illustration-two-factor.webp`, alt: "Illustration of the Shakepay send confirmation with the two-factor code boxes and the Send button highlighted", width: 480, height: 931, kind: "phone" } },
+          { title: "Keep your receipt", body: "Shakepay shows the transaction in your history once it's broadcast. Take a screenshot and keep it until your pack is active, in case our support team asks for it.", image: { src: `${SIMG}/shakepay-illustration-sent.webp`, alt: "Illustration of a Shakepay Bitcoin sent confirmation with the amount, status and transaction ID rows", width: 480, height: 931, kind: "phone" } },
           { title: "Press I Have Paid", body: "Return to the Apollo window and press **I Have Paid** so our team knows to watch for your payment." },
         ],
       },
