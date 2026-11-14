@@ -29,6 +29,8 @@ export type PaymentGuide = {
   needs: string[];
   /** The money trail, drawn as a diagram at the top of the guide. */
   flow: string[];
+  /** Optional walkthrough video shown above the steps (self-hosted in /public/videos). */
+  video?: { src: string; poster: string; width: number; height: number; title: string; description: string; duration: string; uploaded: string };
   sections: { heading: string; intro?: string; steps: PayStep[] }[];
   /** Extra explainer blocks after the steps (fees, comparisons, safety). */
   extras?: { heading: string; paragraphs: string[]; list?: string[] }[];
@@ -70,6 +72,16 @@ export const paymentGuides: PaymentGuide[] = [
       "An email address for your Apollo Group TV account (you create it in Part 1)",
     ],
     flow: ["Choose your pack on Apollo", "Buy Bitcoin in Cash App", "Send it to your invoice address", "Login appears in My Account"],
+    video: {
+      src: "/videos/pay-with-cash-app.mp4",
+      poster: "/videos/pay-with-cash-app-poster.webp",
+      width: 540,
+      height: 1172,
+      title: "How to pay for Apollo Group TV with Cash App",
+      description: "Screen recording of Cash App: buying Bitcoin, then sending it to a Bitcoin address with a chosen withdrawal speed.",
+      duration: "PT1M30S",
+      uploaded: "2026-11-14",
+    },
     sections: [
       {
         heading: "Part 1: Choose your pack and create your account",

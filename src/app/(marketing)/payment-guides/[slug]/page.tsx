@@ -10,6 +10,7 @@ import { getPaymentGuide, paymentGuides } from "@/content/payment-guides";
 import Image from "next/image";
 import { cn, formatDate } from "@/lib/utils";
 import { articleNode, faqNode } from "@/lib/schema";
+import { absoluteUrl } from "@/lib/site";
 import { shareImage } from "@/lib/share-image";
 import { PageCover } from "@/components/page-cover";
 import { coverShare } from "@/lib/covers";
@@ -36,6 +37,20 @@ export default async function PaymentGuidePage({ params }: PageProps<"/payment-g
   const jsonLd = [
     articleNode({ path: `/payment-guides/${g.slug}`, headline: g.title, description: g.description, type: "TechArticle", dateModified: g.updated, section: "Payment guides" }),
     faqNode(`/payment-guides/${g.slug}`, g.faqs.map((f) => ({ q: f.q, a: stripRich(f.a) }))),
+    ...(g.video
+      ? [
+          {
+            "@context": "https://schema.org",
+            "@type": "VideoObject",
+            name: g.video.title,
+            description: g.video.description,
+            thumbnailUrl: absoluteUrl(g.video.poster),
+            contentUrl: absoluteUrl(g.video.src),
+            uploadDate: g.video.uploaded,
+            duration: g.video.duration,
+          },
+        ]
+      : []),
   ];
   const related = g.related.map(getPaymentGuide).filter((x) => x !== undefined);
   // Steps are numbered continuously across sections.
@@ -75,6 +90,27 @@ export default async function PaymentGuidePage({ params }: PageProps<"/payment-g
           </div>
 
           <PaymentFlow guide={g} />
+
+          {g.video && (
+            <section aria-labelledby="video" className="rounded-[16px] border border-border bg-card p-6 shadow-card">
+              <h2 id="video" className="font-display text-xl font-bold text-text">
+                Watch it first
+              </h2>
+              <p className="mt-2 text-muted">{g.video.description} The steps below show the same screens one at a time.</p>
+              <video
+                controls
+                playsInline
+                preload="none"
+                poster={g.video.poster}
+                width={g.video.width}
+                height={g.video.height}
+                className="mt-5 h-auto w-full max-w-[300px] rounded-[18px] border border-border bg-black"
+                aria-label={g.video.title}
+              >
+                <source src={g.video.src} type="video/mp4" />
+              </video>
+            </section>
+          )}
 
           <section aria-labelledby="needs" className="rounded-[16px] border border-border bg-card p-6 shadow-card">
             <h2 id="needs" className="font-display text-xl font-bold text-text">
