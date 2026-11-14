@@ -33,7 +33,7 @@ import {
   type PayResult,
 } from "@/actions/checkout";
 import { MethodLogo } from "@/components/checkout/method-logo";
-import { hasCashAppVideo, MethodVideoButton } from "@/components/checkout/method-video";
+import { MethodVideoButton, videoFor } from "@/components/checkout/method-video";
 import { CopyField } from "@/components/dashboard/copy-field";
 import { Button, buttonClasses } from "@/components/ui/button";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
@@ -266,9 +266,7 @@ export function MethodGrid({
               </p>
             )}
             <div className="mt-auto pt-4">
-              {hasCashAppVideo(m) && (
-                <MethodVideoButton label={m.kind === "BITCOIN" ? "Video: paying from Cash App" : "Video: pay with Bitcoin from Cash App"} />
-              )}
+              {videoFor(m) && <MethodVideoButton video={videoFor(m)!} />}
               {m.instructions && (
                 <details className="group mb-3 rounded-xl border border-border bg-inset">
                   <summary className="flex cursor-pointer list-none items-center justify-center gap-2 px-3 py-2.5 text-sm font-medium text-muted hover:text-text [&::-webkit-details-marker]:hidden">
