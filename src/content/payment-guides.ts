@@ -41,6 +41,7 @@ export type PaymentGuide = {
 
 const UPDATED = "2026-11-03";
 const IMG = "/images/payment-guides/cash-app";
+const VIMG = "/images/payment-guides/venmo";
 
 // Shared closing paragraph for Bitcoin-based guides: what happens after the coins leave the customer's app.
 const afterBitcoin = [
@@ -236,11 +237,11 @@ export const paymentGuides: PaymentGuide[] = [
     accent: "#3D95CE",
     title: "How to Pay for Apollo Group TV with Venmo Crypto",
     metaTitle: "Pay for Apollo Group TV with Venmo: Buy and Send Bitcoin",
-    description: "Use the Crypto tab in Venmo to buy Bitcoin and send it to your Apollo Group TV invoice. Requirements, step-by-step sending, and how to avoid a short payment.",
+    description: "Pay for Apollo Group TV with Venmo, a picture for each step: open your invoice with the Venmo card, buy Bitcoin in the Crypto tab, transfer the exact amount.",
     summary: "Buy Bitcoin in the Crypto tab and transfer it out.",
     minutes: 12,
     region: "US only",
-    updated: UPDATED,
+    updated: "2026-11-14",
     intro: [
       "If you split dinner bills on Venmo, you already have most of what you need. Venmo's Crypto tab lets US users buy Bitcoin with their Venmo balance, bank or debit card, and transfer it to an outside address such as your Apollo Group TV invoice.",
       "The one thing that catches Venmo users out is the transfer step: Venmo treats sending crypto outside the app as a separate feature, and it may ask for extra verification the first time. This guide walks through it so you can plan around it.",
@@ -265,33 +266,38 @@ export const paymentGuides: PaymentGuide[] = [
     sections: [
       {
         heading: "Step 1: Turn on crypto in Venmo",
+        intro: "The pictures of Venmo below are simplified illustrations, not real screenshots. The blue circle shows where to tap; your app's screens may look a little different.",
         steps: [
-          { title: "Open the Crypto tab", body: "Update Venmo to the latest version, open it and tap **Crypto** (on some versions it sits under the menu or the Me tab)." },
+          { title: "Open the Crypto tab", body: "Update Venmo to the latest version, open it and tap **Crypto** (on some versions it sits under the menu or the Me tab).", image: { src: `${VIMG}/venmo-illustration-crypto-tab.webp`, alt: "Illustration of the Venmo home screen with the Crypto tab highlighted in the bottom bar", width: 480, height: 931, kind: "phone" } },
           { title: "Accept the crypto terms and verify", body: "Venmo asks you to agree to its crypto terms and confirm your identity. Have your legal name, address, date of birth and SSN ready. If Venmo asks for a photo ID, finish that before moving on." },
         ],
       },
       {
         heading: "Step 2: Get your Apollo amount and address",
         steps: [
-          { title: "Create your invoice", body: "On Apollo Group TV, choose a pack in [Plans & Billing](/dashboard/plan). Your unpaid invoice appears with a reservation timer." },
-          { title: "Open the Bitcoin payment window", body: "Press **Continue Payment**, then press **Pay Now** on the **Venmo** card. It opens a Bitcoin payment window with the wallet address and the **Amount to Send (BTC)**. Leave the window open.", tip: "Copy the BTC amount into your phone's notes. Switching between apps is easier when you're not trying to remember eight decimal places." },
+          { title: "Create your invoice", body: "On Apollo Group TV, choose a pack in [Plans & Billing](/dashboard/plan). Your unpaid invoice appears with a reservation timer. Press **Continue Payment**.", image: { src: `${IMG}/apollo-unpaid-invoice.webp`, alt: "Unpaid invoice card for the Diamond Pack, $199.00, with Pending Payment and reservation timer badges and a Continue Payment button", width: 1000, height: 209, kind: "screen" } },
+          { title: "Press Pay Now on the Venmo card", body: "Under **Payment Methods**, press **Pay Now** on the **Venmo** card. It opens a Bitcoin payment window, because you pay by buying Bitcoin in Venmo and sending it to our wallet.", image: { src: `${VIMG}/apollo-payment-methods-venmo.webp`, alt: "Payment Methods section with Bitcoin Wallet, Cash App and Venmo cards; the Venmo card says Buy Bitcoin in Venmo and send it to our wallet, with a video button and a Pay Now button", width: 1200, height: 636, kind: "screen" } },
+          { title: "Keep the payment window open", body: "The window shows the **Wallet Address**, the **Amount to Send (BTC)** and a QR code. The price is locked for the time shown at the top. Leave it open while you use Venmo.", tip: "Copy the BTC amount into your phone's notes. Switching between apps is easier when you're not trying to remember eight decimal places.", image: { src: `${VIMG}/apollo-venmo-payment-window.webp`, alt: "Venmo Payment window with the price lock timer, QR code, wallet address and Amount to Send in BTC, each with a Copy button (address and QR blurred in this example)", width: 720, height: 1242, kind: "panel" } },
         ],
       },
       {
         heading: "Step 3: Buy Bitcoin",
         steps: [
-          { title: "Choose Bitcoin and tap Buy", body: "In the Crypto tab, select **Bitcoin** and tap **Buy**." },
-          { title: "Buy a little more than the invoice", body: "Enter a dollar amount slightly above your Apollo invoice. Prices move between buying and sending, and Venmo may charge a network fee on the transfer." },
-          { title: "Pick how to pay and confirm", body: "Choose your Venmo balance, bank or card, review Venmo's fee and the Bitcoin you'll get, then confirm." },
+          { title: "Choose Bitcoin", body: "In the Crypto tab, select **Bitcoin**.", image: { src: `${VIMG}/venmo-illustration-bitcoin.webp`, alt: "Illustration of the Venmo Crypto tab with Bitcoin highlighted", width: 480, height: 931, kind: "phone" } },
+          { title: "Tap Buy", body: "On the Bitcoin page, tap **Buy**.", image: { src: `${VIMG}/venmo-illustration-buy-button.webp`, alt: "Illustration of the Venmo Bitcoin page with the Buy button highlighted", width: 480, height: 931, kind: "phone" } },
+          { title: "Buy a little more than the invoice", body: "Enter a dollar amount slightly above your Apollo invoice, then tap **Next**. Prices move between buying and sending, and Venmo may charge a network fee on the transfer.", note: "The $205 in the picture is only an example for a $199 pack.", image: { src: `${VIMG}/venmo-illustration-buy-amount.webp`, alt: "Illustration of the Venmo Buy bitcoin keypad with an example amount and the Next button highlighted", width: 480, height: 931, kind: "phone" } },
+          { title: "Pick how to pay and confirm", body: "Choose your Venmo balance, bank or card, review Venmo's fee and the Bitcoin you'll get, then confirm.", image: { src: `${VIMG}/venmo-illustration-pay-with.webp`, alt: "Illustration of the Venmo purchase review with Venmo balance, Bank and Debit card options and the Buy button highlighted", width: 480, height: 931, kind: "phone" } },
         ],
       },
       {
         heading: "Step 4: Transfer to Apollo Group TV",
         steps: [
-          { title: "Tap Transfer, then Send to external address", body: "On your Bitcoin page in Venmo, tap **Transfer** (or **Send**) and choose the option to send to an outside wallet or address." },
-          { title: "Scan the QR code or paste the address", body: "Scan the QR code in your Apollo payment window, or paste the wallet address you copied. Venmo may ask you to confirm you trust this address." },
-          { title: "Enter the BTC amount", body: "Type the exact **Amount to Send** from your invoice. Venmo shows the network fee and the total leaving your account.", note: "The address must receive the full invoice amount. If Venmo subtracts the fee from what you enter, raise the amount by that fee." },
-          { title: "Review and send", body: "Check the address, amount and fee, then confirm. Venmo may hold the first transfer for a security review; if it does, it tells you in the app." },
+          { title: "Tap Transfer", body: "Back on your Bitcoin page in Venmo, tap **Transfer** (or **Send**).", image: { src: `${VIMG}/venmo-illustration-transfer-button.webp`, alt: "Illustration of the Venmo Bitcoin page with the Transfer button highlighted", width: 480, height: 931, kind: "phone" } },
+          { title: "Choose Send to an external address", body: "Pick the option to send to an outside wallet or address.", image: { src: `${VIMG}/venmo-illustration-send-external.webp`, alt: "Illustration of the Transfer bitcoin menu with Send to an external address highlighted", width: 480, height: 931, kind: "phone" } },
+          { title: "Scan the QR code or paste the address", body: "Scan the QR code in your Apollo payment window, or paste the wallet address you copied. Venmo may ask you to confirm you trust this address. Check that the first and last four characters match.", image: { src: `${VIMG}/venmo-illustration-paste-address.webp`, alt: "Illustration of the Venmo Send to screen with a pasted Bitcoin address, the Paste button highlighted and I trust this address ticked", width: 480, height: 931, kind: "phone" } },
+          { title: "Enter the BTC amount", body: "Type the exact **Amount to Send** from your invoice. Venmo shows the network fee and the total leaving your account.", note: "The address must receive the full invoice amount. If Venmo subtracts the fee from what you enter, raise the amount by that fee.", image: { src: `${VIMG}/venmo-illustration-btc-amount.webp`, alt: "Illustration of the Venmo amount screen in BTC with the network fee and total, and the Next button highlighted", width: 480, height: 931, kind: "phone" } },
+          { title: "Review and send", body: "Check the address, amount and fee, then tap **Send** and confirm it's you. Venmo may hold the first transfer for a security review; if it does, it tells you in the app.", image: { src: `${VIMG}/venmo-illustration-review-send.webp`, alt: "Illustration of the Venmo transfer review with address, amount, network fee and network, and the Send button highlighted", width: 480, height: 931, kind: "phone" } },
+          { title: "Keep your receipt", body: "When Venmo shows the transfer was submitted, take a screenshot. Keep it until your pack is active, in case our support team asks for it.", image: { src: `${VIMG}/venmo-illustration-transfer-done.webp`, alt: "Illustration of a Venmo Transfer submitted confirmation with the amount, status and transaction ID rows", width: 480, height: 931, kind: "phone" } },
           { title: "Press I Have Paid", body: "Back in the Apollo window, press **I Have Paid**. You'll see the Payment Under Review page, which updates on its own." },
         ],
       },
