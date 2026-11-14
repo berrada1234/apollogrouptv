@@ -4,41 +4,34 @@ import { useRef } from "react";
 import Link from "next/link";
 import { PlayCircle, X } from "lucide-react";
 
-// Narrated walkthroughs offered on the payment method cards. Each card gets the video for what that card really does:
-// Cash App and Venmo cards send dollars to our account with the invoice memo; Bitcoin Wallet pays a Bitcoin invoice
-// (the video shows buying that Bitcoin in Cash App). Made in the apollo-video Remotion project.
+// Narrated walkthroughs offered on the payment method cards. Cash App and Venmo are Bitcoin methods: the card opens
+// a Bitcoin payment window, and the video shows clicking that card, buying Bitcoin in the app and sending it to the
+// address in the window. Made in the apollo-video Remotion project.
 type MethodVideo = { src: string; poster: string; title: string; subtitle: string; button: string; guide?: { href: string; label: string } };
 
 const VIDEOS = {
-  cashappDirect: {
-    src: "/videos/apollo-cash-app-direct.mp4",
-    poster: "/videos/apollo-cash-app-direct-poster.webp",
+  cashApp: {
+    src: "/videos/apollo-cash-app-bitcoin.mp4",
+    poster: "/videos/apollo-cash-app-bitcoin-poster.webp",
     title: "How to pay with Cash App",
-    subtitle: "Send the exact amount to our Cash App with your invoice number in the note, then press I Have Paid.",
+    subtitle: "Buy Bitcoin in Cash App and send the exact amount to the wallet address in your payment window.",
     button: "Video: how to pay with Cash App",
-  },
-  venmoDirect: {
-    src: "/videos/apollo-venmo-direct.mp4",
-    poster: "/videos/apollo-venmo-direct-poster.webp",
-    title: "How to pay with Venmo",
-    subtitle: "Send the exact amount to our Venmo with your invoice number in the note, then press I Have Paid.",
-    button: "Video: how to pay with Venmo",
-  },
-  bitcoinFromCashApp: {
-    src: "/videos/apollo-cash-app-guide-narrated.mp4",
-    poster: "/videos/apollo-cash-app-guide-narrated-poster.webp",
-    title: "Pay with Bitcoin from Cash App",
-    subtitle: "Buy Bitcoin in Cash App and send it to your Bitcoin Wallet invoice.",
-    button: "Video: paying with Bitcoin from Cash App",
     guide: { href: "/payment-guides/cash-app", label: "Open the step-by-step guide with pictures" },
+  },
+  venmo: {
+    src: "/videos/apollo-venmo-bitcoin.mp4",
+    poster: "/videos/apollo-venmo-bitcoin-poster.webp",
+    title: "How to pay with Venmo",
+    subtitle: "Buy Bitcoin in Venmo and transfer the exact amount to the wallet address in your payment window.",
+    button: "Video: how to pay with Venmo",
+    guide: { href: "/payment-guides/venmo", label: "Open the step-by-step guide" },
   },
 } satisfies Record<string, MethodVideo>;
 
-/** The video for a payment method card, or null. Manual Cash App/Venmo cards get the direct-pay video. */
+/** The video for a payment method card, or null. */
 export const videoFor = (m: { kind: string; name: string }): MethodVideo | null => {
-  if (m.kind === "MANUAL" && /cash\s*app/i.test(m.name)) return VIDEOS.cashappDirect;
-  if (m.kind === "MANUAL" && /venmo/i.test(m.name)) return VIDEOS.venmoDirect;
-  if (m.kind === "BITCOIN" && /^bitcoin\b/i.test(m.name.trim())) return VIDEOS.bitcoinFromCashApp;
+  if (/cash\s*app/i.test(m.name)) return VIDEOS.cashApp;
+  if (/venmo/i.test(m.name)) return VIDEOS.venmo;
   return null;
 };
 

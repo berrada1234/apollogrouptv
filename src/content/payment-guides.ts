@@ -73,13 +73,13 @@ export const paymentGuides: PaymentGuide[] = [
     ],
     flow: ["Choose your pack on Apollo", "Buy Bitcoin in Cash App", "Send it to your invoice address", "Login appears in My Account"],
     video: {
-      src: "/videos/apollo-cash-app-guide-narrated.mp4",
-      poster: "/videos/apollo-cash-app-guide-narrated-poster.webp",
+      src: "/videos/apollo-cash-app-bitcoin.mp4",
+      poster: "/videos/apollo-cash-app-bitcoin-poster.webp",
       width: 1920,
       height: 1080,
       title: "How to pay for Apollo Group TV with Cash App",
-      description: "A narrated walkthrough of the whole journey in about two minutes: choosing a pack on apollogroupr.tv, creating your account, opening your invoice, buying and sending Bitcoin in Cash App, and confirming your payment.",
-      duration: "PT2M10S",
+      description: "A narrated walkthrough of the whole journey in about two minutes: choosing a pack on apollogroupr.tv, creating your account, opening your invoice with the Cash App card, buying and sending Bitcoin in Cash App, and confirming your payment.",
+      duration: "PT2M9S",
       uploaded: "2026-11-14",
     },
     sections: [
@@ -109,15 +109,15 @@ export const paymentGuides: PaymentGuide[] = [
             image: { src: `${IMG}/apollo-unpaid-invoice.webp`, alt: "Unpaid invoice card for the Diamond Pack, $199.00, with Pending Payment and reservation timer badges and a Continue Payment button", width: 1000, height: 209, kind: "screen" },
           },
           {
-            title: "Choose Bitcoin Wallet and press Pay Now",
-            body: "Under **Payment Methods**, press **Pay Now** on **Bitcoin Wallet**. Cash App sends ordinary Bitcoin, so this is the option to use (or **Cash App**, if it's listed with a Bitcoin address).",
-            image: { src: `${IMG}/apollo-payment-methods.webp`, alt: "Payment Methods section with Bitcoin Wallet, Shakepay and MoonPay cards, each with a How to pay link and a Pay Now button", width: 1200, height: 577, kind: "screen" },
+            title: "Choose Cash App and press Pay Now",
+            body: "Under **Payment Methods**, press **Pay Now** on the **Cash App** card. It opens a Bitcoin payment window, because you pay by buying Bitcoin in Cash App and sending it to our wallet.",
+            image: { src: `${IMG}/apollo-payment-methods-cash-app.webp`, alt: "Payment Methods section with Bitcoin Wallet, Cash App and Venmo cards; the Cash App card says Buy Bitcoin in Cash App and send it to our wallet, with a video button and a Pay Now button", width: 1200, height: 636, kind: "screen" },
           },
           {
             title: "Keep the payment window open",
             body: "The window shows the three things you'll use in Cash App: the **Wallet Address**, the **Amount to Send (BTC)** and a QR code. The price is locked for the time shown at the top. Leave this window open on your computer, or keep this tab open on your phone.",
             tip: "The last few digits of the BTC amount are unique to your invoice. They're how our system recognizes your payment, so don't round them.",
-            image: { src: `${IMG}/apollo-bitcoin-payment-window.webp`, alt: "Bitcoin Wallet Payment window with the price lock timer, QR code, wallet address and Amount to Send in BTC, each with a Copy button (address and QR blurred in this example)", width: 720, height: 1092, kind: "panel" },
+            image: { src: `${IMG}/apollo-cash-app-payment-window.webp`, alt: "Cash App Payment window with the price lock timer, QR code, wallet address and Amount to Send in BTC, each with a Copy button (address and QR blurred in this example)", width: 720, height: 1242, kind: "panel" },
           },
         ],
       },
@@ -221,7 +221,7 @@ export const paymentGuides: PaymentGuide[] = [
     ],
     after: afterBitcoin,
     faqs: [
-      { q: "Can I pay Apollo Group TV with my Cash App balance in dollars?", a: "Only if Cash App appears at checkout with a $Cashtag instead of a Bitcoin address. Otherwise buy Bitcoin as shown here; it's the method our system can confirm automatically." },
+      { q: "Can I pay Apollo Group TV with my Cash App balance in dollars?", a: "No. The Cash App option at checkout is a Bitcoin payment: buy Bitcoin in Cash App and send it to the address in your payment window, as shown here. It's the method our system can confirm automatically." },
       { q: "Why does Cash App ask for my SSN?", a: "US rules require Cash App to verify who you are before you can buy or send Bitcoin. Apollo Group TV never sees this information." },
       { q: "My price lock ran out before I sent. What now?", a: "Don't send to the old amount. Press **Get a new quote** in the payment window to lock a fresh BTC amount, then send that. If you already sent, don't send again; press I Have Paid and our team will match it." },
       { q: "I sent slightly more than the invoice. Is that a problem?", a: "No. A small overpayment is accepted and noted on your invoice. Sending less than the amount marks the invoice as underpaid until it's sorted out with support." },
@@ -252,6 +252,16 @@ export const paymentGuides: PaymentGuide[] = [
       "Your Apollo Group TV invoice open in [Plans & Billing](/dashboard/plan)",
     ],
     flow: ["Venmo balance, bank or card", "Buy Bitcoin in the Crypto tab", "Transfer to the Apollo address", "Login appears in My Account"],
+    video: {
+      src: "/videos/apollo-venmo-bitcoin.mp4",
+      poster: "/videos/apollo-venmo-bitcoin-poster.webp",
+      width: 1920,
+      height: 1080,
+      title: "How to pay for Apollo Group TV with Venmo",
+      description: "A narrated walkthrough: choosing a pack on apollogroupr.tv, opening your invoice with the Venmo card, buying Bitcoin in Venmo's Crypto tab and transferring it, then confirming your payment.",
+      duration: "PT2M19S",
+      uploaded: "2026-11-14",
+    },
     sections: [
       {
         heading: "Step 1: Turn on crypto in Venmo",
@@ -264,7 +274,7 @@ export const paymentGuides: PaymentGuide[] = [
         heading: "Step 2: Get your Apollo amount and address",
         steps: [
           { title: "Create your invoice", body: "On Apollo Group TV, choose a pack in [Plans & Billing](/dashboard/plan). Your unpaid invoice appears with a reservation timer." },
-          { title: "Open the Bitcoin payment window", body: "Press **Continue Payment**, choose **Bitcoin Wallet** (or Venmo if it's listed with a Bitcoin address) and press **Pay Now**. Note the **Amount to Send (BTC)** and leave the window open.", tip: "Copy the BTC amount into your phone's notes. Switching between apps is easier when you're not trying to remember eight decimal places." },
+          { title: "Open the Bitcoin payment window", body: "Press **Continue Payment**, then press **Pay Now** on the **Venmo** card. It opens a Bitcoin payment window with the wallet address and the **Amount to Send (BTC)**. Leave the window open.", tip: "Copy the BTC amount into your phone's notes. Switching between apps is easier when you're not trying to remember eight decimal places." },
         ],
       },
       {
@@ -301,7 +311,7 @@ export const paymentGuides: PaymentGuide[] = [
     ],
     after: afterBitcoin,
     faqs: [
-      { q: "Can I send Venmo dollars to Apollo Group TV?", a: "Only if Venmo is listed at checkout with a Venmo username to pay. Otherwise use the Crypto tab to buy and send Bitcoin as described here." },
+      { q: "Can I send Venmo dollars to Apollo Group TV?", a: "No. The Venmo option at checkout is a Bitcoin payment: use the Crypto tab to buy Bitcoin and send it to the address in your payment window, as described here." },
       { q: "Is Venmo crypto available in my state?", a: "Venmo controls where crypto is offered. If you don't see the Crypto tab after updating the app, it may not be available to your account yet." },
       { q: "Why was my Venmo transfer held?", a: "Venmo reviews some crypto transfers for security, especially the first one. The app shows the status. Our system detects the payment as soon as it reaches the Bitcoin network." },
       { q: "What address type does Apollo use?", a: "The address in your payment window is a standard Bitcoin address. Send on the Bitcoin network only, never through a different network or token." },
