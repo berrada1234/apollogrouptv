@@ -110,7 +110,7 @@ A few practical ideas from households that have cut the cord:
 
 - **Decide what each service is for.** Live sports and news, a broad library, specific originals: write down which service covers each, and drop any that only duplicate another.
 - **Rotate on-demand services.** Some people keep one on-demand service at a time and switch when they've watched what they wanted. Live TV tends to stay constant.
-- **Match the pack to your plans.** A one-month Apollo pack suits trying it out; longer packs cost less per month. Compare them on the [Plans page](/plans).
+- **Match the pack to your plans.** The 3-month Apollo pack is the shortest commitment; longer packs cost less per month. Compare them on the [Plans page](/plans).
 - **Keep a list of renewal dates.** Monthly services renew until you cancel. Apollo Group TV's one-time packs don't renew automatically, so you choose when to buy the next one.
 
 ## What replaces what when you leave cable

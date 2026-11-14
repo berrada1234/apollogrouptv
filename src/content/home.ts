@@ -9,7 +9,7 @@ export const homeCopy = {
   hero: {
     h1: "Apollo Group TV: IPTV Service for Live TV and On-Demand Streaming",
     lead:
-      "Apollo Group TV (Apollo TV for short) is an IPTV provider that streams live channels and an on-demand library to the Fire TV stick, phone or computer you already have. You pay once for one to twelve months, follow a step-by-step install guide, and keep every bill and support reply in one dashboard.",
+      "Apollo Group TV (Apollo TV for short) is an IPTV provider that streams live channels and an on-demand library to the Fire TV stick, phone or computer you already have. You pay once for three months to two years, follow a step-by-step install guide, and keep every bill and support reply in one dashboard.",
   },
 
   intro: {

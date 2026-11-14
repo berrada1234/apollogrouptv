@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 const journey = [
   { t: "Create your account", b: "Name, email and a password. It takes about a minute." },
   { t: "Confirm your email", b: "Enter the 6-digit code we email you." },
-  { t: "Choose a pack and pay", b: "One to twelve months, paid once. Nothing renews by itself." },
+  { t: "Choose a pack and pay", b: "Three months to two years, paid once. Nothing renews by itself." },
   { t: "Start watching", b: "Our team activates your pack and you install the app on your device." },
 ];
 

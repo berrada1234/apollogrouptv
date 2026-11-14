@@ -48,7 +48,7 @@ function buildReminder(kind: ReminderKind, ctx: { firstName: string; invoice: In
         subject: `Your ${siteConfig.name} account is ready`,
         heading: `Welcome, ${ctx.firstName}. One step left`,
         body: [
-          `You created your account but haven't chosen a pack yet. Every pack has the same channels, on-demand library and support. Only the length changes, from one to twelve months${ctx.allOneTime ? ", and you pay once with nothing renewing by itself" : ""}.`,
+          `You created your account but haven't chosen a pack yet. Every pack has the same channels, on-demand library and support. Only the length changes, from three months to two years${ctx.allOneTime ? ", and you pay once with nothing renewing by itself" : ""}.`,
           "Your account shows the packs and exactly what happens after you choose.",
         ].join("\n\n"),
         cta: { label: "Choose my pack", url: url("/dashboard/get-started") },

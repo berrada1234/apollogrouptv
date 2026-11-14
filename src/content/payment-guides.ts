@@ -73,13 +73,13 @@ export const paymentGuides: PaymentGuide[] = [
     ],
     flow: ["Choose your pack on Apollo", "Buy Bitcoin in Cash App", "Send it to your invoice address", "Login appears in My Account"],
     video: {
-      src: "/videos/apollo-cash-app-guide.mp4",
-      poster: "/videos/apollo-cash-app-guide-poster.webp",
+      src: "/videos/apollo-cash-app-guide-narrated.mp4",
+      poster: "/videos/apollo-cash-app-guide-narrated-poster.webp",
       width: 1920,
       height: 1080,
       title: "How to pay for Apollo Group TV with Cash App",
-      description: "The whole journey in under two minutes: choosing a pack on apollogroupr.tv, creating your account, opening your invoice, buying and sending Bitcoin in Cash App, and confirming your payment.",
-      duration: "PT1M59S",
+      description: "A narrated walkthrough of the whole journey in about two minutes: choosing a pack on apollogroupr.tv, creating your account, opening your invoice, buying and sending Bitcoin in Cash App, and confirming your payment.",
+      duration: "PT2M10S",
       uploaded: "2026-11-14",
     },
     sections: [

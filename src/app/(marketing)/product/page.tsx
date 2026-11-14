@@ -58,7 +58,7 @@ const security = [
 
 const steps = [
   { icon: UserPlus, t: "Create an account", b: "Sign up with your email. It takes about a minute." },
-  { icon: CreditCard, t: "Choose a pack", b: "Pick one to twelve months. Our team confirms payment with you in a ticket." },
+  { icon: CreditCard, t: "Choose a pack", b: "Pick three months to two years. Our team confirms payment with you in a ticket." },
   { icon: CalendarCheck, t: "Get activated", b: "Your pack goes live and its dates appear in Plans & Billing." },
   { icon: Tv, t: "Install and watch", b: "Follow the guide for your device in Apps & Guides and sign in." },
 ];
