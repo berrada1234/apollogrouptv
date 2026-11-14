@@ -104,7 +104,7 @@ export default async function PaymentGuidePage({ params }: PageProps<"/payment-g
                 poster={g.video.poster}
                 width={g.video.width}
                 height={g.video.height}
-                className="mt-5 h-auto w-full max-w-[300px] rounded-[18px] border border-border bg-black"
+                className={cn("mt-5 h-auto w-full rounded-[18px] border border-border bg-black", g.video.height > g.video.width && "max-w-[300px]")}
                 aria-label={g.video.title}
               >
                 <source src={g.video.src} type="video/mp4" />

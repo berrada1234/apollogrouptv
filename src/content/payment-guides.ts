@@ -73,13 +73,13 @@ export const paymentGuides: PaymentGuide[] = [
     ],
     flow: ["Choose your pack on Apollo", "Buy Bitcoin in Cash App", "Send it to your invoice address", "Login appears in My Account"],
     video: {
-      src: "/videos/pay-with-cash-app.mp4",
-      poster: "/videos/pay-with-cash-app-poster.webp",
-      width: 540,
-      height: 1172,
+      src: "/videos/apollo-cash-app-guide.mp4",
+      poster: "/videos/apollo-cash-app-guide-poster.webp",
+      width: 1920,
+      height: 1080,
       title: "How to pay for Apollo Group TV with Cash App",
-      description: "Screen recording of Cash App: buying Bitcoin, then sending it to a Bitcoin address with a chosen withdrawal speed.",
-      duration: "PT1M30S",
+      description: "The whole journey in under two minutes: choosing a pack on apollogroupr.tv, creating your account, opening your invoice, buying and sending Bitcoin in Cash App, and confirming your payment.",
+      duration: "PT1M59S",
       uploaded: "2026-11-14",
     },
     sections: [
@@ -133,38 +133,37 @@ export const paymentGuides: PaymentGuide[] = [
       },
       {
         heading: "Part 3: Buy the Bitcoin in Cash App",
-        intro: "The pink arrows in the screenshots show where to tap.",
+        intro: "The images below are simplified illustrations, not real screenshots of Cash App. The blue circle shows where to tap; your app's screens may look a little different.",
         steps: [
           {
             title: "Open the Money tab",
             body: "On Cash App's home screen, tap the **Money** icon (the bank symbol) at the bottom left.",
-            image: { src: `${IMG}/cash-app-money-tab.webp`, alt: "Cash App home screen with an arrow pointing to the Money tab icon at the bottom left", width: 540, height: 1173, kind: "phone" },
+            image: { src: `${IMG}/cash-app-illustration-money-tab.webp`, alt: "Illustration of a payment app home screen with the Money tab highlighted in the bottom bar", width: 480, height: 931, kind: "phone" },
           },
           {
             title: "Tap Bitcoin",
             body: "Tap the **Bitcoin** tile. It shows how much Bitcoin you already hold.",
-            image: { src: `${IMG}/cash-app-bitcoin-tile.webp`, alt: "Cash App Money tab with an arrow pointing to the Bitcoin tile", width: 540, height: 1173, kind: "phone" },
+            image: { src: `${IMG}/cash-app-illustration-bitcoin-tile.webp`, alt: "Illustration of the Money tab with the Bitcoin tile highlighted", width: 480, height: 931, kind: "phone" },
           },
           {
             title: "Press Buy",
             body: "On the Bitcoin screen, press the blue **Buy** button under the price chart.",
-            image: { src: `${IMG}/cash-app-buy-button.webp`, alt: "Cash App Bitcoin screen with an arrow pointing to the Buy button", width: 540, height: 1173, kind: "phone" },
+            image: { src: `${IMG}/cash-app-illustration-buy-button.webp`, alt: "Illustration of the Bitcoin screen with the Buy button highlighted", width: 480, height: 931, kind: "phone" },
           },
           {
             title: "Choose a custom amount",
             body: "Tap **…** to type your own dollar amount, then press **Next**. Enter a little more than your invoice total, so a small price move or a faster withdrawal fee doesn't leave you short.",
             note: "The video uses $1 only as a demonstration. Buy enough to cover your invoice, for example about $205 to $210 for a $199 pack.",
-            image: { src: `${IMG}/cash-app-buy-amount.webp`, alt: "Cash App Buy Bitcoin sheet with preset amounts and an arrow pointing to the custom amount button, and the Next button", width: 540, height: 1173, kind: "phone" },
+            image: { src: `${IMG}/cash-app-illustration-buy-amount.webp`, alt: "Illustration of the Buy bitcoin screen with an example custom amount and the Next button highlighted", width: 480, height: 931, kind: "phone" },
           },
           {
             title: "Confirm the purchase",
             body: "Check the summary: funding source, Bitcoin amount, exchange rate and Cash App's fee. Press **Confirm**, then approve with your PIN or Face ID.",
-            image: { src: `${IMG}/cash-app-confirm-purchase.webp`, alt: "Cash App Confirm your Bitcoin purchase screen listing funding source, amount, exchange rate, fees and total, with an arrow to Confirm", width: 540, height: 1173, kind: "phone" },
+            image: { src: `${IMG}/cash-app-illustration-confirm-purchase.webp`, alt: "Illustration of the purchase review screen with the Confirm button highlighted", width: 480, height: 931, kind: "phone" },
           },
           {
             title: "Press Done",
             body: "Cash App shows how much Bitcoin you bought. Press **Done**. The Bitcoin is in your Cash App balance straight away.",
-            image: { src: `${IMG}/cash-app-purchase-done.webp`, alt: "Cash App You purchased Bitcoin confirmation with an arrow pointing to the Done button", width: 540, height: 1173, kind: "phone" },
           },
         ],
       },
@@ -173,31 +172,36 @@ export const paymentGuides: PaymentGuide[] = [
         steps: [
           {
             title: "Tap the send and receive button",
-            body: "Back on the Bitcoin screen, tap the button with two arrows (⇅), next to Buy and Sell.",
-            image: { src: `${IMG}/cash-app-send-receive-button.webp`, alt: "Cash App Bitcoin screen with an arrow pointing to the send and receive button beside Buy and Sell", width: 540, height: 1173, kind: "phone" },
+            body: "Back on the Bitcoin screen, tap the button with two arrows, next to Buy and Sell.",
+            image: { src: `${IMG}/cash-app-illustration-send-receive-button.webp`, alt: "Illustration of the Bitcoin screen with the two-arrow send and receive button highlighted", width: 480, height: 931, kind: "phone" },
           },
           {
             title: "Choose Send bitcoin",
             body: "In the menu that opens, tap **Send bitcoin**.",
-            image: { src: `${IMG}/cash-app-send-bitcoin.webp`, alt: "Cash App Send or receive menu with an arrow pointing to Send bitcoin", width: 540, height: 1173, kind: "phone" },
+            image: { src: `${IMG}/cash-app-illustration-send-bitcoin.webp`, alt: "Illustration of the Send or receive menu with Send bitcoin highlighted", width: 480, height: 931, kind: "phone" },
           },
           {
             title: "Switch to BTC and enter the exact amount",
             body: "Tap the small **BTC ⇅** label under the amount so you type in Bitcoin instead of dollars. Enter the **Amount to Send (BTC)** from your Apollo payment window, every digit, then press **Send**.",
             tip: "On a phone, press **Copy** next to the amount in the Apollo window and paste it, so no digit gets lost.",
-            image: { src: `${IMG}/cash-app-enter-btc-amount.webp`, alt: "Cash App Send Bitcoin keypad with an arrow pointing to the BTC switch under the amount and to the Send button", width: 540, height: 1173, kind: "phone" },
+            image: { src: `${IMG}/cash-app-illustration-enter-btc-amount.webp`, alt: "Illustration of the Send bitcoin keypad switched to BTC with a pasted amount", width: 480, height: 931, kind: "phone" },
           },
           {
             title: "Paste the wallet address",
             body: "Tap the **To** field and paste the **Wallet Address** from your Apollo payment window (press **Copy** there first), or tap the scanner at the top and scan the QR code. Check that the first and last four characters match, then press **Next**.",
             note: "Bitcoin payments can't be reversed. Always paste or scan the address from your own invoice window; never type it from a screenshot.",
-            image: { src: `${IMG}/cash-app-paste-address.webp`, alt: "Cash App To field for a Bitcoin address with arrows pointing to the address field and the Next button", width: 540, height: 1173, kind: "phone" },
+            image: { src: `${IMG}/cash-app-illustration-paste-address.webp`, alt: "Illustration of the Send to screen with a pasted Bitcoin address and the Paste button highlighted", width: 480, height: 931, kind: "phone" },
           },
           {
             title: "Pick a withdrawal speed",
             body: "Choose how fast Cash App sends it: **Priority** (about 20 minutes), **Rush** (about 2 hours) or **Standard** (about 24 hours, free, with a minimum amount). Faster speeds cost a fee and get your invoice confirmed sooner. Press **Next**, check the summary and confirm with your PIN.",
             note: "Make sure the amount arriving at the address still equals the BTC amount on your invoice. If the fee comes out of that amount, raise what you send by the fee.",
-            image: { src: `${IMG}/cash-app-withdrawal-speed.webp`, alt: "Cash App Select your withdrawal speed screen with Priority, Rush and Standard options and a Next button", width: 540, height: 1173, kind: "phone" },
+            image: { src: `${IMG}/cash-app-illustration-withdrawal-speed.webp`, alt: "Illustration of the withdrawal speed choices Priority, Rush and Standard, with Next highlighted", width: 480, height: 931, kind: "phone" },
+          },
+          {
+            title: "Keep your receipt",
+            body: "When Cash App shows that the Bitcoin was sent, take a screenshot. The payment also stays in your Cash App activity. Keep it until your pack is active, in case our support team asks for it.",
+            image: { src: `${IMG}/cash-app-illustration-receipt.webp`, alt: "Illustration of a Bitcoin sent confirmation with the amount, status and transaction ID rows", width: 480, height: 931, kind: "phone" },
           },
           {
             title: "Press I Have Paid",
