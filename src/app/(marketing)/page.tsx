@@ -42,8 +42,7 @@ export const dynamic = "force-dynamic";
 // Guides shown on the homepage, in the order a new customer needs them.
 const homeGuides = ["how-to-get-apollo-tv", "apollo-tv-downloader-code", "xtream-codes-login", "is-apollo-tv-down", "apollo-group-tv-netflix", "apollo-group-tv-roku"];
 
-// 54 characters: brand + the "Apollo TV" short name people search for, the official-site signal, then the category (IPTV service, USA).
-const homeTitle = "Apollo Group TV (Apollo TV): IPTV for Live TV and On-Demand";
+const homeTitle = "Apollo Group TV | Official Apollo App for Live TV, Sports & Movies";
 
 /** The description quotes the cheapest monthly price from the live price list, so it never goes stale. */
 export async function generateMetadata(): Promise<Metadata> {
@@ -55,10 +54,9 @@ export async function generateMetadata(): Promise<Metadata> {
   } catch {
     // Database briefly unavailable: fall back to the wording without a price.
   }
-  // Opens with both brand keywords, which Google bolds when they match the search; about 150 characters.
   const description = from
-    ? `Apollo Group TV (Apollo TV) is an IPTV service for live TV, sports and movies on Fire TV, Android, iPhone and PC. One-time packs from ${from}/month.`
-    : "Apollo Group TV (Apollo TV) is an IPTV service for live TV, sports and movies on Fire TV, Android, iPhone and PC. Pay once for 3 months to 2 years.";
+    ? `Discover Apollo Group TV, your official app for 22,000+ live channels and 90,000+ movies & shows. Enjoy live sports, multi-device streaming and plans from ${from}/month.`
+    : "Discover Apollo Group TV, your official app for 22,000+ live channels and 90,000+ movies & shows. Enjoy live sports, multi-device streaming and plans from 3 months to 2 years.";
   return {
     title: { absolute: homeTitle },
     description,
