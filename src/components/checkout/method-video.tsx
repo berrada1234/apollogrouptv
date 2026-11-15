@@ -34,6 +34,14 @@ const VIDEOS = {
     button: "Video: how to pay with Shakepay",
     guide: { href: "/payment-guides/shakepay", label: "Open the step-by-step guide with pictures" },
   },
+  moonpay: {
+    src: "/videos/apollo-moonpay-bitcoin.mp4",
+    poster: "/videos/apollo-moonpay-bitcoin-poster.webp",
+    title: "How to pay with MoonPay",
+    subtitle: "Buy Bitcoin with a card, Apple Pay or Google Pay and have MoonPay send it straight to the wallet address in your payment window.",
+    button: "Video: how to pay with MoonPay",
+    guide: { href: "/payment-guides/moonpay", label: "Open the step-by-step guide with pictures" },
+  },
 } satisfies Record<string, MethodVideo>;
 
 /** The video for a payment method card, or null. */
@@ -41,6 +49,7 @@ export const videoFor = (m: { kind: string; name: string }): MethodVideo | null 
   if (/cash\s*app/i.test(m.name)) return VIDEOS.cashApp;
   if (/venmo/i.test(m.name)) return VIDEOS.venmo;
   if (/shakepay/i.test(m.name)) return VIDEOS.shakepay;
+  if (/moonpay/i.test(m.name)) return VIDEOS.moonpay;
   return null;
 };
 

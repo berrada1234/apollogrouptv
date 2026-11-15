@@ -43,6 +43,7 @@ const UPDATED = "2026-11-03";
 const IMG = "/images/payment-guides/cash-app";
 const VIMG = "/images/payment-guides/venmo";
 const SIMG = "/images/payment-guides/shakepay";
+const MIMG = "/images/payment-guides/moonpay";
 
 // Shared closing paragraph for Bitcoin-based guides: what happens after the coins leave the customer's app.
 const afterBitcoin = [
@@ -430,7 +431,7 @@ export const paymentGuides: PaymentGuide[] = [
     summary: "Card, Apple Pay or Google Pay, delivered to your invoice.",
     minutes: 8,
     region: "Most countries",
-    updated: UPDATED,
+    updated: "2026-11-15",
     intro: [
       "MoonPay is the shortest path if you don't own any Bitcoin and don't want to install a new app. You buy Bitcoin with a card or a phone wallet, and MoonPay sends it straight to the address you give it. Give it your Apollo Group TV invoice address and the purchase and the payment happen in one go.",
       "Because the Bitcoin never sits in an account of yours, there's no separate send step. You do need to pass MoonPay's identity check, which is usually quick if your ID and card details match.",
@@ -441,22 +442,37 @@ export const paymentGuides: PaymentGuide[] = [
       "Your Apollo Group TV invoice with the payment window open",
     ],
     flow: ["Card, Apple Pay or Google Pay", "MoonPay buys the Bitcoin", "Delivered to the Apollo invoice address", "Login appears in My Account"],
+    video: {
+      src: "/videos/apollo-moonpay-bitcoin.mp4",
+      poster: "/videos/apollo-moonpay-bitcoin-poster.webp",
+      width: 1920,
+      height: 1080,
+      title: "How to pay for Apollo Group TV with MoonPay",
+      description: "A narrated walkthrough: choosing a pack on apollogroupr.tv, opening your invoice with the MoonPay card, buying Bitcoin with a card or phone wallet delivered straight to your invoice address, then confirming your payment.",
+      duration: "PT2M10S",
+      uploaded: "2026-11-15",
+    },
     sections: [
       {
         heading: "Get your invoice ready",
         steps: [
-          { title: "Choose a pack", body: "Sign in, open [Plans & Billing](/dashboard/plan) and choose a pack. Press **Continue Payment** on your invoice." },
-          { title: "Select MoonPay and press Pay Now", body: "Choose **MoonPay** (or **Bitcoin Wallet**). The window shows the wallet address and the exact BTC amount. If an **Open MoonPay** button appears, it takes you to the right place." },
+          { title: "Choose a pack", body: "Sign in, open [Plans & Billing](/dashboard/plan) and choose a pack. Press **Continue Payment** on your invoice.", image: { src: `${IMG}/apollo-unpaid-invoice.webp`, alt: "Unpaid invoice card for the Diamond Pack, $199.00, with Pending Payment and reservation timer badges and a Continue Payment button", width: 1000, height: 209, kind: "screen" } },
+          { title: "Press Pay Now on the MoonPay card", body: "Under **Payment Methods**, press **Pay Now** on the **MoonPay** card. It opens a Bitcoin payment window.", image: { src: `${MIMG}/apollo-payment-methods-moonpay.webp`, alt: "Payment Methods row with the MoonPay card, its video button and its Pay Now button, next to Shakepay", width: 1200, height: 388, kind: "screen" } },
+          { title: "Keep the payment window open", body: "The window shows the wallet address and the exact BTC amount. Keep it open: you'll copy both into MoonPay.", image: { src: `${MIMG}/apollo-moonpay-payment-window.webp`, alt: "MoonPay Payment window with the price lock timer, QR code, wallet address and Amount to Send in BTC, each with a Copy button (address and QR blurred in this example)", width: 720, height: 1242, kind: "panel" } },
         ],
       },
       {
         heading: "Buy through MoonPay",
+        intro: "The pictures of MoonPay below are simplified illustrations, not real screenshots. The blue circle shows where to tap; MoonPay's pages may look a little different.",
         steps: [
-          { title: "Choose Bitcoin (BTC)", body: "On MoonPay, select **BTC** on the Bitcoin network as the currency to buy." },
-          { title: "Set the amount you receive", body: "Where MoonPay lets you enter the crypto amount you get, enter the **Amount to Send (BTC)** from your invoice. If it only accepts a currency amount, enter a little more than your invoice so the delivered Bitcoin covers it.", tip: "What matters is the BTC that arrives at the address. MoonPay shows its fees and the network fee separately before you pay." },
-          { title: "Paste the Apollo address as the destination", body: "When MoonPay asks for your wallet address, paste the address from the Apollo window. Double-check it; MoonPay sends to whatever you enter." },
-          { title: "Verify your identity", body: "First-time buyers confirm their email and upload an ID. Use the same name as on your card to avoid delays." },
-          { title: "Pay", body: "Choose card, Apple Pay or Google Pay and approve the payment. Your bank may show a 3-D Secure check; approve it in your banking app." },
+          { title: "Open MoonPay", body: "Open MoonPay in your phone's browser (or computer) and tap **Buy crypto**.", image: { src: `${MIMG}/moonpay-illustration-open.webp`, alt: "Illustration of the MoonPay page in a phone browser with the Buy crypto button highlighted", width: 480, height: 931, kind: "phone" } },
+          { title: "Choose Bitcoin (BTC)", body: "On MoonPay, select **BTC** on the Bitcoin network as the currency to buy.", image: { src: `${MIMG}/moonpay-illustration-choose-btc.webp`, alt: "Illustration of the MoonPay currency list with BTC on the Bitcoin network highlighted", width: 480, height: 931, kind: "phone" } },
+          { title: "Set the amount you receive", body: "Where MoonPay lets you enter the crypto amount you get, enter the **Amount to Send (BTC)** from your invoice. If it only accepts a currency amount, enter a little more than your invoice so the delivered Bitcoin covers it.", tip: "What matters is the BTC that arrives at the address. MoonPay shows its fees and the network fee separately before you pay.", image: { src: `${MIMG}/moonpay-illustration-btc-amount.webp`, alt: "Illustration of the MoonPay Buy BTC page with the BTC amount you get filled in from the invoice", width: 480, height: 931, kind: "phone" } },
+          { title: "Paste the Apollo address as the destination", body: "When MoonPay asks for your wallet address, paste the address from the Apollo window. Double-check it; MoonPay sends to whatever you enter.", image: { src: `${MIMG}/moonpay-illustration-wallet-address.webp`, alt: "Illustration of the MoonPay wallet address page with a pasted Bitcoin address and the Paste button highlighted", width: 480, height: 931, kind: "phone" } },
+          { title: "Verify your identity", body: "First-time buyers confirm their email and upload an ID. Use the same name as on your card to avoid delays.", image: { src: `${MIMG}/moonpay-illustration-verify.webp`, alt: "Illustration of the MoonPay identity check with email code and photo ID steps", width: 480, height: 931, kind: "phone" } },
+          { title: "Pay", body: "Choose card, Apple Pay or Google Pay and tap **Buy now**.", image: { src: `${MIMG}/moonpay-illustration-pay-method.webp`, alt: "Illustration of the MoonPay payment method page with Card selected and the Buy now button highlighted", width: 480, height: 931, kind: "phone" } },
+          { title: "Approve the payment with your bank", body: "Your bank may show a 3-D Secure check; approve it in your banking app.", image: { src: `${MIMG}/moonpay-illustration-approve.webp`, alt: "Illustration of a bank approval prompt for the MoonPay payment", width: 480, height: 931, kind: "phone" } },
+          { title: "Wait until the order is sent", body: "MoonPay shows each stage: payment received, processing, then sent, with a transaction ID. Take a screenshot and keep it until your pack is active.", image: { src: `${MIMG}/moonpay-illustration-order-sent.webp`, alt: "Illustration of the MoonPay order status with Payment received, Processing and Sent to your address checked, and the transaction ID row", width: 480, height: 931, kind: "phone" } },
           { title: "Press I Have Paid", body: "Once MoonPay shows the order as processing or complete, go back to the Apollo window and press **I Have Paid**." },
         ],
       },
