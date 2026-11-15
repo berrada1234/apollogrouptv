@@ -43,7 +43,7 @@ export const dynamic = "force-dynamic";
 const homeGuides = ["how-to-get-apollo-tv", "apollo-tv-downloader-code", "xtream-codes-login", "is-apollo-tv-down", "apollo-group-tv-netflix", "apollo-group-tv-roku"];
 
 // 54 characters: brand + the "Apollo TV" short name people search for, the official-site signal, then the category (IPTV service, USA).
-const homeTitle = "Apollo Group TV (Apollo TV): Official IPTV Service USA";
+const homeTitle = "Apollo Group TV (Apollo TV): IPTV for Live TV and On-Demand";
 
 /** The description quotes the cheapest monthly price from the live price list, so it never goes stale. */
 export async function generateMetadata(): Promise<Metadata> {

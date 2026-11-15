@@ -158,7 +158,7 @@ export const termsAndConditions: LegalDoc = {
   title: "Terms and Conditions",
   metaTitle: "Terms and Conditions — Apollo Group TV",
   description:
-    "The rules for Apollo Group TV accounts and packs: one-time payments, activation, device limits, acceptable use, availability, liability and termination.",
+    "Terms and conditions for Apollo Group TV: your account, packs, prices and payment, refunds, devices and logins, acceptable use, termination and liability.",
   intro:
     "These terms are the agreement between you and {{entityName}} (“Apollo Group TV”, “we”) for using this website, your account and any pack you buy. By creating an account you accept them. If you don't agree, please don't use the service.",
   sections: [

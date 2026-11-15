@@ -1,6 +1,6 @@
 ---
 title: How to Get Apollo TV, from Zero to Watching in Five Steps
-seoTitle: How to Get Apollo TV: The Complete Beginner's Roadmap
+seoTitle: How to Get Apollo TV: From Zero to Watching in Five Steps
 description: What you need before you start, and the order to do it in: check your device and internet, create an account, choose a pack, pay, install and sign in.
 keyword: how to get apollo tv
 secondary: how to get apollo group tv, apollo tv sign up, apollo tv subscription, start apollo tv, what do i need for apollo tv, apollo tv for beginners

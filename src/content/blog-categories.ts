@@ -32,8 +32,8 @@ export const blogCategories: BlogCategory[] = [
   {
     slug: "fire-tv",
     name: "Fire TV",
-    title: "Fire TV and Firestick Articles: Setup, Updates and Performance",
-    description: "Firestick care for Apollo Group TV viewers: the Downloader code, updating the app and clearing the cache to keep it running smoothly.",
+    title: "Fire TV Articles: Downloader Code, App Updates and Cache",
+    description: "Fire TV articles for Apollo Group TV: the Downloader code, how to update the Apollo TV app on a Firestick and how to clear cache for smoother streaming.",
     intro: "Most of our customers watch on a Fire TV device. These articles keep yours fast, updated and connected.",
     hub: { href: "/guides/fire-tv-android-tv", label: "Fire TV and Android TV setup guide" },
   },
@@ -48,8 +48,8 @@ export const blogCategories: BlogCategory[] = [
   {
     slug: "streaming-tech",
     name: "Streaming Tech",
-    title: "IPTV Explained: Internet Speed and Connection Limits",
-    description: "Plain-English explanations of how IPTV works, how fast your internet needs to be, connection limits and how IPTV compares with cable.",
+    title: "Streaming Tech: What IPTV Is, Internet Speed and Limits",
+    description: "Streaming tech articles: what IPTV is and how it works, the internet speed you need, IPTV connection limits and IPTV vs cable TV compared.",
     intro: "The technology behind your stream, explained without jargon, so you can pick the right pack and connection.",
     hub: { href: "/choosing-an-iptv-service", label: "How to choose an IPTV service" },
   },
@@ -64,8 +64,8 @@ export const blogCategories: BlogCategory[] = [
   {
     slug: "trust-safety",
     name: "Trust & Safety",
-    title: "Trust and Safety: The Official Website, VPNs and Streaming Safely",
-    description: "How to recognise the official Apollo Group TV website and avoid copies, and what to know about using a VPN with the service.",
+    title: "Trust & Safety: The Official Website and Using a VPN",
+    description: "Trust and safety articles: the Apollo Group TV official website, how to spot fake Apollo TV sites, and whether you need a VPN to stream safely.",
     intro: "Straight answers about finding the real site, privacy and VPNs, so you pay the right people and stream safely.",
     hub: { href: "/is-apollo-group-tv-legal", label: "Is Apollo Group TV legal?" },
   },

@@ -1,6 +1,6 @@
 ---
 title: Does Apollo Group TV Include Netflix? How It Fits with Your Streaming Apps
-seoTitle: Does Apollo Group TV Have Netflix? What's Included and What Isn't
+seoTitle: Does Apollo Group TV Include Netflix? How It Fits Your Apps
 description: Whether Netflix comes with Apollo Group TV, why streaming services stay separate, and how to run Apollo TV and Netflix side by side on one device.
 keyword: does apollo group tv have netflix
 secondary: apollo tv and netflix, iptv vs netflix, netflix on fire tv with iptv, live tv and netflix together, streaming services comparison, cord cutting app setup
