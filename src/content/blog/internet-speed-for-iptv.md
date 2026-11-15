@@ -1,6 +1,6 @@
 ---
 title: What Internet Speed Do You Need for IPTV? HD, 4K and Whole-Household Numbers
-seoTitle: What Internet Speed Do You Need for IPTV? HD and 4K Numbers
+seoTitle: Internet Speed for IPTV: Mbps for HD, 4K and Multiple TVs
 description: How many Mbps IPTV needs for HD and 4K, how to budget for several TVs, why stability matters more than speed, and how to test your connection properly.
 keyword: internet speed for iptv
 secondary: mbps for 4k streaming, how to test streaming speed, household bandwidth for streaming, ping and jitter

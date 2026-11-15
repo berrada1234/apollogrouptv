@@ -38,9 +38,9 @@ import { shareImage } from "@/lib/share-image";
 
 export const dynamic = "force-dynamic";
 
-const title = "The Apollo Group TV App: One Account on Every Screen";
+const title = "Apollo Group TV App: Devices, Install Guide & Features";
 const description =
-  "The Apollo TV app brings live channels and on-demand viewing to your TV, streaming stick, phone or computer. Sign in once with one account on every screen.";
+  "The Apollo TV app on Fire TV, Android, Windows and Mac, plus UHF on iPhone, iPad and Apple TV. One account, official downloads and a guide per device.";
 
 export const metadata: Metadata = {
   title: { absolute: title },

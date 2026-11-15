@@ -11,7 +11,7 @@ import { shareImage } from "@/lib/share-image";
 
 const title = "Apollo Group TV Blog: Streaming Guides, Devices and IPTV Tips";
 const description =
-  "Streaming guides and IPTV tips from the Apollo Group TV team: Fire TV setup, devices, internet speed, M3U and Xtream logins, troubleshooting and safety.";
+  "Practical guides from the Apollo Group TV team: Fire TV care, choosing devices, internet speed, player logins like M3U, Xtream and MAG, and staying safe online.";
 
 export const metadata: Metadata = {
   title: { absolute: title },
