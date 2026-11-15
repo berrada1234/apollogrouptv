@@ -65,9 +65,9 @@ export function MethodVideoButton({ video: v }: { video: MethodVideo }) {
       <button
         type="button"
         onClick={() => dialog.current?.showModal()}
-        className="mb-3 flex w-full items-center justify-center gap-2 rounded-xl border border-primary/30 bg-primary/[0.07] px-3 py-2.5 text-sm font-medium text-light-blue hover:border-primary/60 hover:text-text"
+        className="attention mb-3 flex w-full items-center justify-center gap-2 rounded-xl border border-primary/30 bg-primary/[0.07] px-3 py-2.5 text-sm font-medium text-light-blue hover:border-primary/60 hover:text-text"
       >
-        <PlayCircle className="h-4 w-4 shrink-0" aria-hidden /> {v.button}
+        <PlayCircle className="attention-hand h-4 w-4 shrink-0" aria-hidden /> {v.button}
       </button>
       <dialog
         ref={dialog}

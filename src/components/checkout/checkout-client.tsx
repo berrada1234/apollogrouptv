@@ -14,7 +14,6 @@ import {
   AlertTriangle,
   ArrowRight,
   CheckCircle2,
-  ChevronDown,
   Clock,
   ExternalLink,
   Loader2,
@@ -267,35 +266,21 @@ export function MethodGrid({
             )}
             <div className="mt-auto pt-4">
               {videoFor(m) && <MethodVideoButton video={videoFor(m)!} />}
-              {m.instructions && (
-                <details className="group mb-3 rounded-xl border border-border bg-inset">
-                  <summary className="flex cursor-pointer list-none items-center justify-center gap-2 px-3 py-2.5 text-sm font-medium text-muted hover:text-text [&::-webkit-details-marker]:hidden">
-                    How to pay{" "}
-                    <ChevronDown
-                      className="h-4 w-4 transition-transform group-open:rotate-180"
-                      aria-hidden
-                    />
-                  </summary>
-                  <p className="whitespace-pre-line border-t border-border px-4 py-3 text-sm leading-6 text-muted">
-                    {m.instructions}
-                  </p>
-                </details>
-              )}
               {orderId ? (
                 <Button
                   type="button"
-                  className="w-full"
+                  className="attention w-full"
                   data-pay={i === 0 ? "" : undefined}
                   onClick={() => setActive({ method: m, orderId })}
                 >
-                  Pay Now
+                  <Pointer className="attention-hand h-4 w-4" aria-hidden /> Pay Now
                 </Button>
               ) : payHref ? (
                 <Link
                   href={payHref}
-                  className={buttonClasses({ className: "w-full" })}
+                  className={buttonClasses({ className: "attention w-full" })}
                 >
-                  Pay Now
+                  <Pointer className="attention-hand h-4 w-4" aria-hidden /> Pay Now
                 </Link>
               ) : (
                 <Link

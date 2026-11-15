@@ -503,7 +503,7 @@ p {
   }
 }
 
-/* Draws the eye to the next step (I Have Paid, Get Your Login Info). */
+/* Draws the eye to the next step (I Have Paid, Get Your Login Info, Pay Now and the payment video buttons). */
 @keyframes attention-ring {
   0% {
     box-shadow: 0 0 0 0 rgb(70 224 255 / 0.55);
