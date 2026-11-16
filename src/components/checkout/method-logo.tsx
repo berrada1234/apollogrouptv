@@ -33,16 +33,21 @@ export function MethodLogo({
       />
     );
   }
+  const text = glyph || name.slice(0, 1).toUpperCase();
+  // Symbols outside basic Latin (₿) use a system font: drawing them in a web font would download that font's
+  // extended-character file (over 100KB for the display face) and re-lay out the whole page when it arrives.
+  const systemGlyph = /[^\u0000-ÿ]/.test(text);
   return (
     <span
       aria-hidden
       className={cn(
         box,
-        "grid shrink-0 place-items-center font-display font-extrabold text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.25)]",
+        "grid shrink-0 place-items-center font-extrabold text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.25)]",
+        systemGlyph ? "[font-family:Arial,Helvetica,sans-serif]" : "font-display",
       )}
       style={{ backgroundColor: accent || "#22d3ee" }}
     >
-      {glyph || name.slice(0, 1).toUpperCase()}
+      {text}
     </span>
   );
 }
