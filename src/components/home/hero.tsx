@@ -69,18 +69,19 @@ export function HomeHero({
               <Prism />
             </div>
           <h1 className="relative mt-6 font-hero font-medium tracking-[-0.045em] text-text">
-            <span className="rise-solid block text-[2.6rem] font-semibold leading-[1.02] sm:text-[3.6rem] xl:text-[4.2rem]" style={delay(1)}>
+            <span className="block text-[2.6rem] font-semibold leading-[1.02] sm:text-[3.6rem] xl:text-[4.2rem]">
               {/* Two lines below desktop so the prism always has the space right of the second line. */}
               {brandFirst} <br className="lg:hidden" />
               {brandRest}
               <span className="sr-only">: </span>
             </span>
-            <span className="rise-solid mt-3 block text-[1.5rem] leading-[1.15] text-light-blue sm:text-[2rem] xl:text-[2.35rem]" style={delay(2)}>
+            <span className="mt-3 block text-[1.5rem] leading-[1.15] text-light-blue sm:text-[2rem] xl:text-[2.35rem]">
               {statement}
             </span>
           </h1>
           </div>
-          <p className="rise-solid mt-6 max-w-xl text-base leading-7 text-muted sm:text-lg sm:leading-8" style={delay(3)}>
+          {/* Headline and lead paint at once, with no entrance motion: they are the Largest Contentful Paint. */}
+          <p className="mt-6 max-w-xl text-base leading-7 text-muted sm:text-lg sm:leading-8">
             {homeCopy.hero.lead}
           </p>
 
