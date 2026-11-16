@@ -207,6 +207,15 @@ p {
   -webkit-backdrop-filter: blur(18px) saturate(140%);
   backdrop-filter: blur(18px) saturate(140%);
 }
+/* Phones: a live backdrop blur is recomputed on every scroll frame (sticky header, quick nav), which is heavy on
+   mobile GPUs. A denser fill gives the same panel look without it. */
+@media (max-width: 767px) {
+  .glass-blur {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: rgb(10 13 32 / 0.96);
+  }
+}
 
 /* Gradient hairline border for the one panel in a section that leads. */
 .edge-spectrum {
@@ -503,16 +512,21 @@ p {
   }
 }
 
-/* Draws the eye to the next step (I Have Paid, Get Your Login Info, Pay Now and the payment video buttons). */
+/* Draws the eye to the next step (I Have Paid, Get Your Login Info, Pay Now and the payment video buttons).
+   The halo is a pseudo-element whose shadow is painted once; only its scale and opacity animate, on the GPU.
+   (Animating box-shadow itself repainted every button on every frame.) */
 @keyframes attention-ring {
   0% {
-    box-shadow: 0 0 0 0 rgb(70 224 255 / 0.55);
+    opacity: 1;
+    transform: scale(1);
   }
   70% {
-    box-shadow: 0 0 0 12px rgb(70 224 255 / 0);
+    opacity: 0;
+    transform: scale(1.06, 1.3);
   }
   100% {
-    box-shadow: 0 0 0 0 rgb(70 224 255 / 0);
+    opacity: 0;
+    transform: scale(1.06, 1.3);
   }
 }
 
@@ -527,6 +541,15 @@ p {
 }
 
 .attention {
+  position: relative;
+}
+.attention::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 0 5px rgb(70 224 255 / 0.5);
+  pointer-events: none;
   animation: attention-ring 1.8s ease-out infinite;
 }
 
@@ -609,12 +632,6 @@ dialog::backdrop {
 
 /* ─── Pricing ─────────────────────────────────────────────────────────────── */
 
-@property --angle {
-  syntax: "<angle>";
-  initial-value: 0deg;
-  inherits: false;
-}
-
 /* Glass pack card with pointer tilt (--tilt-x/--tilt-y set by PricingExplorer). */
 .price-card {
   background: linear-gradient(180deg, rgb(28 36 80 / 0.5), rgb(10 13 32 / 0.75));
@@ -640,15 +657,16 @@ dialog::backdrop {
     0 0 60px -20px rgb(157 123 255 / 0.45);
 }
 
-/* Neon border: a conic light that travels around the active card (and appears on hover). */
-.glow-border::before {
-  content: "";
+/* Neon border: a conic light that travels around the active card (and appears on hover).
+   .glow-ring is the masked 1.5px ring; inside it .glow-spin (an oversized conic gradient) turns with a transform,
+   which the GPU animates without repainting. (Animating the gradient angle itself repainted the card every frame.) */
+.glow-ring {
   position: absolute;
   inset: -1px;
   z-index: 1;
   padding: 1.5px;
   border-radius: inherit;
-  background: conic-gradient(from var(--angle), transparent 0 55%, #46e0ff 70%, #7aa2ff 78%, #9d7bff 86%, transparent 95%);
+  overflow: hidden;
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
@@ -656,17 +674,26 @@ dialog::backdrop {
   transition: opacity 0.4s ease;
   pointer-events: none;
 }
-.glow-border:hover::before {
+.glow-spin {
+  position: absolute;
+  inset: -100%;
+  background: conic-gradient(transparent 0 55%, #46e0ff 70%, #7aa2ff 78%, #9d7bff 86%, transparent 95%);
+  animation: glow-turn 4.5s linear infinite paused;
+}
+.glow-border:hover .glow-ring {
   opacity: 0.55;
-  animation: spin-angle 4.5s linear infinite;
 }
-.glow-border[data-active="true"]::before {
+.glow-border[data-active="true"] .glow-ring {
   opacity: 1;
-  animation: spin-angle 4.5s linear infinite;
 }
-@keyframes spin-angle {
+/* Only turn while the ring is visible. */
+.glow-border:hover .glow-spin,
+.glow-border[data-active="true"] .glow-spin {
+  animation-play-state: running;
+}
+@keyframes glow-turn {
   to {
-    --angle: 360deg;
+    transform: rotate(360deg);
   }
 }
 

@@ -47,6 +47,8 @@ const nextConfig: NextConfig = {
     cpus: 2,
     // Ship CSS inside the HTML <head> instead of separate render-blocking stylesheet requests
     // (Tailwind keeps it compact), so the first paint doesn't wait on a second round trip.
+    // Measured 2026-11-16: turning this off shrank HTML (342KB → 84KB on /dmca) but delayed first paint on a cold
+    // phone load by 300–700ms on 4 of 5 pages, so it stays on.
     inlineCss: true,
   },
   poweredByHeader: false,

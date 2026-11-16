@@ -121,6 +121,9 @@ function PlanCard({ plan, selected, onSelect }: { plan: PricingPlan; selected: b
         selected ? "price-card-active" : "",
       )}
     >
+      <span className="glow-ring" aria-hidden>
+        <span className="glow-spin" />
+      </span>
       {plan.badge && (
         <span
           className={cn(
