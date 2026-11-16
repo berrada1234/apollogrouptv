@@ -79,8 +79,9 @@ const nextConfig: NextConfig = {
     return [
       { source: "/:path*", headers: securityHeaders },
       // The homepage is the same for every visitor (no session, no cookies), so the Hostinger CDN may keep a copy
-      // for a minute and serve it from the nearest edge. Only full page loads: RSC/prefetch requests and URLs
-      // with a query string keep the private headers Next sets.
+      // and serve it from the nearest edge. After 5 minutes the next visitor still gets the saved copy at once
+      // while the CDN fetches a fresh one in the background (stale-while-revalidate), so nobody waits on the server.
+      // Only full page loads: RSC/prefetch requests and URLs with a query string keep the private headers Next sets.
       {
         source: "/",
         has: [{ type: "header", key: "accept", value: ".*text/html.*" }],
@@ -90,7 +91,7 @@ const nextConfig: NextConfig = {
           { type: "header", key: "next-router-state-tree" },
           { type: "query", key: "_rsc" },
         ],
-        headers: [{ key: "Cache-Control", value: "public, max-age=0, s-maxage=60, stale-while-revalidate=60" }],
+        headers: [{ key: "Cache-Control", value: "public, max-age=0, s-maxage=300, stale-while-revalidate=86400" }],
       },
     ];
   },
