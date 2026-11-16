@@ -76,7 +76,23 @@ const nextConfig: NextConfig = {
       : [],
   },
   async headers() {
-    return [{ source: "/:path*", headers: securityHeaders }];
+    return [
+      { source: "/:path*", headers: securityHeaders },
+      // The homepage is the same for every visitor (no session, no cookies), so the Hostinger CDN may keep a copy
+      // for a minute and serve it from the nearest edge. Only full page loads: RSC/prefetch requests and URLs
+      // with a query string keep the private headers Next sets.
+      {
+        source: "/",
+        has: [{ type: "header", key: "accept", value: ".*text/html.*" }],
+        missing: [
+          { type: "header", key: "rsc" },
+          { type: "header", key: "next-router-prefetch" },
+          { type: "header", key: "next-router-state-tree" },
+          { type: "query", key: "_rsc" },
+        ],
+        headers: [{ key: "Cache-Control", value: "public, max-age=0, s-maxage=60, stale-while-revalidate=60" }],
+      },
+    ];
   },
   async redirects() {
     return [
