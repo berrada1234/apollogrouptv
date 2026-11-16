@@ -81,8 +81,9 @@ const nextConfig: NextConfig = {
     return [
       { source: "/:path*", headers: securityHeaders },
       // The homepage is the same for every visitor (no session, no cookies), so the Hostinger CDN may keep a copy
-      // and serve it from the nearest edge. After 5 minutes the next visitor still gets the saved copy at once
-      // while the CDN fetches a fresh one in the background (stale-while-revalidate), so nobody waits on the server.
+      // and serve it from the nearest edge for an hour. The Hostinger CDN ignores stale-while-revalidate (tested
+      // 2026-11-16: the first request after expiry waits on the server), so a short lifetime meant most visits on a
+      // quiet site missed the cache. Admin price/content changes reach the homepage within the hour.
       // Only full page loads: RSC/prefetch requests and URLs with a query string keep the private headers Next sets.
       {
         source: "/",
@@ -93,7 +94,7 @@ const nextConfig: NextConfig = {
           { type: "header", key: "next-router-state-tree" },
           { type: "query", key: "_rsc" },
         ],
-        headers: [{ key: "Cache-Control", value: "public, max-age=0, s-maxage=300, stale-while-revalidate=86400" }],
+        headers: [{ key: "Cache-Control", value: "public, max-age=0, s-maxage=3600, stale-while-revalidate=86400" }],
       },
     ];
   },
