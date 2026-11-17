@@ -55,8 +55,8 @@ export async function generateMetadata(): Promise<Metadata> {
     // Database briefly unavailable: fall back to the wording without a price.
   }
   const description = from
-    ? `Discover Apollo Group TV, your official app for 22,000+ live channels and 90,000+ movies & shows. Enjoy live sports, multi-device streaming and plans from ${from}/month.`
-    : "Discover Apollo Group TV, your official app for 22,000+ live channels and 90,000+ movies & shows. Enjoy live sports, multi-device streaming and plans from 3 months to 2 years.";
+    ? `Discover Apollo Group TV, your official app for 22,000+ live channels and 90,000+ movies & shows. Live sports, multi-device streaming, from ${from}/month.`
+    : "Discover Apollo Group TV, your official app for 22,000+ live channels and 90,000+ movies & shows. Live sports, multi-device streaming, plans from 3 months.";
   return {
     title: { absolute: homeTitle },
     description,
