@@ -1,10 +1,11 @@
 import "server-only";
 import { cache } from "react";
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import type { Role } from "@prisma/client";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { readStaffToken, STAFF_COOKIE } from "@/lib/staff-step-up";
 
 /**
  * Resolves the current session and re-reads role/status from the database,
@@ -27,6 +28,7 @@ export const getCurrentUser = cache(async () => {
       marketingOptIn: true,
       productUpdatesOptIn: true,
       createdAt: true,
+      twoFactorEnabled: true,
     },
   });
   if (!user || user.status !== "ACTIVE") return null;
@@ -47,10 +49,23 @@ export function hasRole(user: Pick<CurrentUser, "role">, minimum: Role) {
   return rank[user.role] >= rank[minimum];
 }
 
-/** For admin pages: unauthenticated → sign in; insufficient role → 404. */
+/** True when this session passed the staff code check recently (see staff-step-up.ts). */
+export async function isStaffVerified(user: Pick<CurrentUser, "sessionId">) {
+  const token = readStaffToken((await cookies()).get(STAFF_COOKIE)?.value);
+  return token?.sessionId === user.sessionId;
+}
+
+/**
+ * For admin pages: unauthenticated → sign in; insufficient role → dashboard. Staff pages also need two-step
+ * sign-in turned on and a fresh authenticator code for this visit.
+ */
 export async function requireRole(minimum: Role, next = "/admin"): Promise<CurrentUser> {
   const user = await requireUser(next);
   if (!hasRole(user, minimum)) redirect("/dashboard");
+  if (rank[minimum] >= rank.SUPPORT && !(await isStaffVerified(user))) {
+    if (!user.twoFactorEnabled) redirect("/dashboard/security?staff=1#two-step");
+    redirect(`/staff-verify?next=${encodeURIComponent(next)}`);
+  }
   return user;
 }
 
@@ -60,6 +75,9 @@ export class AuthorizationError extends Error {}
 export async function assertRole(minimum: Role): Promise<CurrentUser> {
   const user = await getCurrentUser();
   if (!user || !hasRole(user, minimum)) throw new AuthorizationError("Not authorized");
+  if (rank[minimum] >= rank.SUPPORT && !(await isStaffVerified(user))) {
+    throw new AuthorizationError("Enter your authenticator code again to continue in the admin area.");
+  }
   return user;
 }
 

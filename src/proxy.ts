@@ -1,8 +1,9 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getSessionCookie } from "better-auth/cookies";
 import { isValidReferralCode, REFERRAL_COOKIE } from "@/lib/referral";
+import { makeStaffToken, readStaffToken, STAFF_COOKIE, staffCookieOptions } from "@/lib/staff-step-up";
 
-const PROTECTED = ["/dashboard", "/admin"];
+const PROTECTED = ["/dashboard", "/admin", "/staff-verify"];
 const NOINDEX = [...PROTECTED, "/sign-in", "/create-account", "/forgot-password", "/reset-password", "/verify-email"];
 
 const matches = (path: string, prefixes: string[]) => prefixes.some((p) => path === p || path.startsWith(`${p}/`));
@@ -25,6 +26,12 @@ export function proxy(request: NextRequest) {
   const response = NextResponse.next();
 
   if (matches(pathname, NOINDEX)) response.headers.set("X-Robots-Tag", "noindex, nofollow");
+
+  // Each admin page load restarts the idle timer of a passed staff code check (see staff-step-up.ts).
+  if (matches(pathname, ["/admin"])) {
+    const passed = readStaffToken(request.cookies.get(STAFF_COOKIE)?.value);
+    if (passed) response.cookies.set(STAFF_COOKIE, makeStaffToken(passed.sessionId), staffCookieOptions);
+  }
 
   // Remember a referral code for 30 days so it survives the sign-up flow.
   const ref = searchParams.get("ref")?.toUpperCase();

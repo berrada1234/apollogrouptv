@@ -40,9 +40,14 @@ export default async function SecurityPage() {
           <Card id="two-step">
             <CardHeader
               title="Two-step sign-in"
-              description={user.role === "USER" ? "Ask for a code from your phone as well as your password." : "Strongly recommended for staff accounts: it stops someone who learns your password from signing in."}
+              description={user.role === "USER" ? "Ask for a code from your phone as well as your password." : "Required for staff accounts: the admin area opens only after a code from your authenticator app."}
             />
-            <CardBody>
+            <CardBody className="space-y-4">
+              {user.role !== "USER" && !twoFactorOn && (
+                <Notice tone="warning" title="Turn this on to open the admin area">
+                  Staff accounts need two-step sign-in. Once it&rsquo;s on, the admin area asks for a code from your authenticator app on every visit.
+                </Notice>
+              )}
               <TwoFactorSettings enabled={twoFactorOn} />
             </CardBody>
           </Card>
