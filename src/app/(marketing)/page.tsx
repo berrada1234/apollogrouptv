@@ -42,8 +42,8 @@ export const dynamic = "force-dynamic";
 // Guides shown on the homepage, in the order a new customer needs them.
 const homeGuides = ["how-to-get-apollo-tv", "apollo-tv-downloader-code", "xtream-codes-login", "is-apollo-tv-down", "apollo-group-tv-netflix", "apollo-group-tv-roku"];
 
-// Chosen by the owner (2026-11-18). About 615px: Google may cut the closing "| Apollo App" on narrow results.
-const homeTitle = "Apollo Group TV - Official Site | Live TV, Sports & Movies | Apollo App";
+// Chosen by the owner (2026-11-18). About 570px: keep it under 580px so search results show it whole.
+const homeTitle = "Apollo Group TV - Official Apollo App | Live TV, Sports & Movies";
 
 /** The description quotes the cheapest monthly price from the live price list, so it never goes stale. */
 export async function generateMetadata(): Promise<Metadata> {
