@@ -42,8 +42,8 @@ export const dynamic = "force-dynamic";
 // Guides shown on the homepage, in the order a new customer needs them.
 const homeGuides = ["how-to-get-apollo-tv", "apollo-tv-downloader-code", "xtream-codes-login", "is-apollo-tv-down", "apollo-group-tv-netflix", "apollo-group-tv-roku"];
 
-// 54 characters: brand + the "Apollo TV" short name people search for, the official-site signal, then the category (IPTV service, USA).
-const homeTitle = "Apollo Group TV (Apollo TV): IPTV for Live TV and On-Demand";
+// Chosen by the owner (2026-11-18). About 615px: Google may cut the closing "| Apollo App" on narrow results.
+const homeTitle = "Apollo Group TV - Official Site | Live TV, Sports & Movies | Apollo App";
 
 /** The description quotes the cheapest monthly price from the live price list, so it never goes stale. */
 export async function generateMetadata(): Promise<Metadata> {
