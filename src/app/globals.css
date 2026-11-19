@@ -563,6 +563,16 @@ p {
   overflow-x: clip; /* decorative rings may extend past the edge; clip keeps sticky children working */
   scroll-margin-top: 2.5rem; /* adds to html scroll-padding: clears header + quick nav */
 }
+/*
+ * Below-the-fold blocks (homepage bands, the footer): the browser skips their style, layout and paint until they
+ * come near the screen, so the first paint only pays for the hero. The content stays in the DOM for search engines
+ * and screen readers. "auto" remembers each block's real height once it has been drawn.
+ */
+.home-band,
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
 .home-band + .home-band::before {
   content: "";
   position: absolute;

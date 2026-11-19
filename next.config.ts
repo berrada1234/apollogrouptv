@@ -45,6 +45,9 @@ const nextConfig: NextConfig = {
   experimental: {
     // Hostinger shared hosting caps threads per account; the default (one worker per host CPU) aborts the build.
     cpus: 2,
+    // app/global-not-found.tsx renders the 404 for unmatched URLs, so no root not-found.tsx rides along in every
+    // page's RSC payload.
+    globalNotFound: true,
     // Ship CSS inside the HTML <head> instead of separate render-blocking stylesheet requests
     // (Tailwind keeps it compact), so the first paint doesn't wait on a second round trip.
     // Measured 2026-11-16: turning this off shrank HTML (342KB → 84KB on /dmca) but delayed first paint on a cold

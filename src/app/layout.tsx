@@ -1,12 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { Instrument_Sans, Unbounded } from "next/font/google";
+import { fontVariables } from "@/lib/fonts";
 import { siteConfig } from "@/lib/site";
 import "./globals.css";
 import { shareImage } from "@/lib/share-image";
-
-const body = Instrument_Sans({ variable: "--font-body", subsets: ["latin"], display: "swap" });
-// App UI headings use the body family (legible at small sizes); Unbounded is the wide display face for marketing headlines.
-const hero = Unbounded({ variable: "--font-hero", subsets: ["latin"], display: "swap", weight: ["400", "500", "600"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -31,7 +27,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${body.variable} ${hero.variable} h-full`}>
+    <html lang="en" className={`${fontVariables} h-full`}>
       <body className="flex min-h-full flex-col bg-bg text-text antialiased">
         <a
           href="#main"
