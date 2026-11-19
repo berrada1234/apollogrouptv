@@ -35,7 +35,7 @@ Speed recommendations come from on-demand services, where players can download m
 
 Bitrates also vary. A fast-moving sports broadcast uses more data than a news studio, and a channel's bitrate can spike during action scenes. A connection running right at the minimum has nothing spare for those moments.
 
-That's why a household with "enough" speed on paper can still see buffering on live channels. Headroom absorbs the peaks.
+That's why a household with "enough" speed on paper can still see buffering on live channels. Headroom absorbs the peaks. If you already have the speed and still see buffering, our guide to [fixing IPTV buffering](/blog/iptv-buffering) covers the other causes.
 
 ## Budget for your whole household
 

@@ -180,6 +180,8 @@ So the problem was the Fire TV. Its storage was almost full, and the Apollo TV c
 
 ## Keep it from happening again
 
+If channels play but keep stopping to load, that is buffering rather than an outage; our [IPTV buffering guide](/blog/iptv-buffering) walks through the fixes.
+
 A few habits prevent most of the problems that look like outages:
 
 - **Restart your streaming device once a week** to clear its memory.
