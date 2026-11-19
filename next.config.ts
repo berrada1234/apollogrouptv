@@ -38,6 +38,15 @@ const securityHeaders = [
     : []),
 ];
 
+// Top-level public sections (src/app/(marketing)) whose pages may be cached at the CDN; see headers() below.
+const publicSections = [
+  "about-us", "apollo-group-tv-renewal", "apollo-group-tv-vs-directv-stream", "apollo-group-tv-vs-hulu-live-tv",
+  "apollo-group-tv-vs-philo", "apollo-group-tv-vs-sling-tv", "apollo-group-tv-vs-youtube-tv", "app", "blog", "channels",
+  "choosing-an-iptv-service", "compare", "contact", "disclaimer", "dmca", "faq", "guides", "help",
+  "is-apollo-group-tv-legal", "payment-guides", "payment-methods", "plans", "privacy-policy", "product",
+  "refer-a-friend", "refund-policy", "reviews", "site-index", "terms-and-conditions", "why-apollo-group-tv",
+];
+
 const nextConfig: NextConfig = {
   // Pages that read the database render per request (`dynamic = "force-dynamic"`),
   // so the classic caching model is used instead of Cache Components.
@@ -99,22 +108,25 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       { source: "/:path*", headers: securityHeaders },
-      // The homepage is the same for every visitor (no session, no cookies), so the Hostinger CDN may keep a copy
-      // and serve it from the nearest edge for an hour. The Hostinger CDN ignores stale-while-revalidate (tested
-      // 2026-11-16: the first request after expiry waits on the server), so a short lifetime meant most visits on a
-      // quiet site missed the cache. Admin price/content changes reach the homepage within the hour.
-      // Only full page loads: RSC/prefetch requests and URLs with a query string keep the private headers Next sets.
-      {
-        source: "/",
-        has: [{ type: "header", key: "accept", value: ".*text/html.*" }],
+      // Public pages are the same for every visitor (no session or cookie is read on the server; the header's sign-in
+      // state loads in the browser), so the Cloudflare edge may keep a copy for an hour. PageSpeed showed why it
+      // matters (2026-11-19): from the edge the HTML arrives in ~80 ms; from the origin it trickles in over ~1 s,
+      // which pushed mobile Speed Index from ~1.1-1.3 s to 2.2-2.4 s. The CDN ignores stale-while-revalidate (tested
+      // 2026-11-16: the first request after expiry waits on the server), so the first visit after an hour is still
+      // slow. Admin price/content changes reach these pages within the hour.
+      // Only full page loads: RSC/prefetch requests (their own ?_rsc= URLs) keep the private headers Next sets.
+      // /email-preferences is left out: its link carries a personal token.
+      ...["/", `/:section(${publicSections.join("|")})/:rest*`].map((source) => ({
+        source,
+        has: [{ type: "header" as const, key: "accept", value: ".*text/html.*" }],
         missing: [
-          { type: "header", key: "rsc" },
-          { type: "header", key: "next-router-prefetch" },
-          { type: "header", key: "next-router-state-tree" },
-          { type: "query", key: "_rsc" },
+          { type: "header" as const, key: "rsc" },
+          { type: "header" as const, key: "next-router-prefetch" },
+          { type: "header" as const, key: "next-router-state-tree" },
+          { type: "query" as const, key: "_rsc" },
         ],
         headers: [{ key: "Cache-Control", value: "public, max-age=0, s-maxage=3600, stale-while-revalidate=86400" }],
-      },
+      })),
     ];
   },
   async redirects() {
