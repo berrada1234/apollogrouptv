@@ -2,7 +2,6 @@ import Link from "next/link";
 import { ArrowRight, Check, ShieldCheck } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
 import { Container } from "@/components/ui/misc";
-import { CountUp } from "@/components/home/count-up";
 import { Prism } from "@/components/home/prism";
 import { homeCopy } from "@/content/home";
 
@@ -16,7 +15,6 @@ export function Eyebrow({ children }: { children: React.ReactNode }) {
   );
 }
 
-const delay = (d: number) => ({ "--d": d }) as React.CSSProperties;
 
 export function HomeHero({
   stats,
@@ -48,12 +46,10 @@ export function HomeHero({
         </div>
 
         <div className="relative z-10 flex max-w-[44rem] flex-col justify-center pb-10 pt-8 sm:pt-12 lg:py-16">
-          {/* Official-site badge with a live green status light. */}
-          <p className="rise inline-flex w-fit items-center gap-2.5 rounded-full border border-emerald-400/40 bg-emerald-400/10 px-4 py-1.5 text-sm font-semibold text-emerald-300 shadow-[0_0_24px_-6px_rgb(52_211_153/0.7)]" style={delay(0)}>
-            <span className="relative flex h-2.5 w-2.5" aria-hidden>
-              <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 motion-safe:animate-ping" />
-              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgb(52_211_153/0.95)]" />
-            </span>
+          {/* Official-site badge with a green status light. The first screen paints complete and holds still: no entrance
+              motion, count-ups or pulsing, which kept the screen changing for a second after first paint (Speed Index). */}
+          <p className="inline-flex w-fit items-center gap-2.5 rounded-full border border-emerald-400/40 bg-emerald-400/10 px-4 py-1.5 text-sm font-semibold text-emerald-300 shadow-[0_0_24px_-6px_rgb(52_211_153/0.7)]">
+            <span className="inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgb(52_211_153/0.95)]" aria-hidden />
             Official Apollo Group TV
           </p>
           {/*
@@ -85,7 +81,7 @@ export function HomeHero({
             {homeCopy.hero.lead}
           </p>
 
-          <div className="rise mt-9 flex flex-col gap-3 sm:flex-row sm:items-center" style={delay(4)}>
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
             <ButtonLink href="/plans" size="lg">
               View plans <ArrowRight className="h-4 w-4" aria-hidden />
             </ButtonLink>
@@ -94,7 +90,7 @@ export function HomeHero({
             </ButtonLink>
           </div>
 
-          <ul className="rise mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted" style={delay(5)}>
+          <ul className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted">
             {badges.map((b) => (
               <li key={b} className="inline-flex items-center gap-1.5">
                 {b.includes("money-back") ? (
@@ -115,15 +111,12 @@ export function HomeHero({
         </div>
 
         {stats.length > 0 && (
-          <dl className="glass-blur rise relative z-10 mb-8 grid grid-cols-1 divide-y divide-border rounded-[20px] sm:grid-cols-3 sm:divide-x sm:divide-y-0 lg:mb-12 lg:max-w-3xl" style={delay(6)}>
+          <dl className="glass-blur relative z-10 mb-8 grid grid-cols-1 divide-y divide-border rounded-[20px] sm:grid-cols-3 sm:divide-x sm:divide-y-0 lg:mb-12 lg:max-w-3xl">
             {stats.map((s) => (
               <div key={s.label} className="flex flex-col-reverse px-6 py-4 sm:py-5">
                 <dt className="mt-1 text-xs text-subtle sm:text-sm">{s.label}</dt>
                 <dd className="font-hero text-2xl font-medium tracking-[-0.04em] text-text sm:text-[1.75rem]">
-                  <span className="sr-only">{s.value}</span>
-                  <span aria-hidden>
-                    <CountUp value={s.value} />
-                  </span>
+                  <span className="tabular-nums">{s.value}</span>
                 </dd>
               </div>
             ))}

@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/site-header";
 import { fontVariables } from "@/lib/fonts";
 import { siteConfig } from "@/lib/site";
 import "./globals.css";
+import { InlineCss } from "@/components/inline-css";
 
 /*
  * 404 page for URLs that match no route. It renders without the root layout, so it brings its own <html>, fonts
@@ -24,6 +25,10 @@ export const viewport: Viewport = {
 export default function GlobalNotFound() {
   return (
     <html lang="en" className={`${fontVariables} h-full`}>
+      <head>
+        {/* The site stylesheet, once (see the component). */}
+        <InlineCss />
+      </head>
       <body className="flex min-h-full flex-col bg-bg text-text antialiased">
         <SiteHeader />
         <main id="main" className="flex flex-1 flex-col">

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { fontVariables } from "@/lib/fonts";
 import { siteConfig } from "@/lib/site";
 import "./globals.css";
+import { InlineCss } from "@/components/inline-css";
 import { shareImage } from "@/lib/share-image";
 
 export const metadata: Metadata = {
@@ -28,6 +29,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${fontVariables} h-full`}>
+      <head>
+        {/* The site stylesheet, once (see the component). */}
+        <InlineCss />
+      </head>
       <body className="flex min-h-full flex-col bg-bg text-text antialiased">
         <a
           href="#main"

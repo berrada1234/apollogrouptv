@@ -52,12 +52,28 @@ const nextConfig: NextConfig = {
     // (Tailwind keeps it compact), so the first paint doesn't wait on a second round trip.
     // Measured 2026-11-16: turning this off shrank HTML (342KB → 84KB on /dmca) but delayed first paint on a cold
     // phone load by 300–700ms on 4 of 5 pages, so it stays on.
+    // Since 2026-11-19 it only carries the small @font-face sheet from next/font: in production the Tailwind sheet is
+    // written once by <InlineCss /> (src/components/inline-css.tsx), because this option also copies every inlined
+    // sheet into the RSC payload.
     inlineCss: true,
   },
   poweredByHeader: false,
-  // Next.js bundles a polyfill module into every page even though all browsers it supports already have those
-  // features natively (Lighthouse "Legacy JavaScript"). Swap it for an empty file in client bundles.
-  webpack(config, { isServer, webpack }) {
+  webpack(config, { isServer, webpack, dev }) {
+    if (!dev) {
+      // Production: globals.css reaches the page through <InlineCss /> instead of Next's CSS pipeline (see above).
+      // The server gets the compiled text from scripts/build-css.mjs (run by `npm run build`); browser bundles keep
+      // the empty stub. Development keeps the normal import, with hot reloading.
+      config.plugins.push(
+        new webpack.NormalModuleReplacementPlugin(/[\\/]src[\\/]app[\\/]globals\.css$/, path.join(process.cwd(), "src/lib/empty.css")),
+      );
+      if (isServer) {
+        config.plugins.push(
+          new webpack.NormalModuleReplacementPlugin(/[\\/]src[\\/]lib[\\/]site-css(\.ts)?$/, path.join(process.cwd(), ".site-css/site-css.mjs")),
+        );
+      }
+    }
+    // Next.js bundles a polyfill module into every page even though all browsers it supports already have those
+    // features natively (Lighthouse "Legacy JavaScript"). Swap it for an empty file in client bundles.
     if (!isServer) {
       config.plugins.push(
         new webpack.NormalModuleReplacementPlugin(/[\\/]build[\\/]polyfills[\\/]polyfill-module(\.js)?$/, path.join(process.cwd(), "src/lib/empty-polyfills.js")),

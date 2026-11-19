@@ -44,3 +44,6 @@ next-env.d.ts
 # test output
 /test-results/
 /playwright-report/
+
+# compiled stylesheet for <InlineCss /> (scripts/build-css.mjs)
+/.site-css/

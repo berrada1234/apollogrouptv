@@ -55,7 +55,7 @@ export async function SiteFooter() {
   ].filter(Boolean) as { icon: typeof Mail; label: string; href?: string; external?: boolean }[];
 
   return (
-    <footer className="cv-auto relative mt-auto overflow-hidden bg-bg">
+    <footer className="relative mt-auto overflow-hidden bg-bg">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgb(70_224_255/0.5),rgb(157_123_255/0.5),transparent)]" aria-hidden />
       <div className="pointer-events-none absolute -bottom-40 left-1/2 h-80 w-[60rem] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgb(122_162_255/0.12),transparent)]" aria-hidden />
 
