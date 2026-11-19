@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { FloatingHelp } from "@/components/home/floating-help";
 import { assistantProvider } from "@/lib/assistant-providers";
 import { HomeQuickNav } from "@/components/home/quick-nav";
@@ -36,8 +37,21 @@ import { siteConfig } from "@/lib/site";
 import { formatDate, formatMoney } from "@/lib/utils";
 import { LOGO_URL, ORG_ID, SITE_ID, webPageNode } from "@/lib/schema";
 
-// Rendered per request: the database isn't reachable during the Hostinger build, so the page can't be prerendered.
-export const dynamic = "force-dynamic";
+/*
+ * The homepage, served at "/" (src/proxy.ts rewrites "/" to /home/index; /home/* itself answers 404).
+ *
+ * Rendering it takes ~600 ms on the Hostinger server, and every Cloudflare cache miss used to pay that: PageSpeed's
+ * mobile Speed Index went from ~1.1-1.3 s (edge copy) to 2.2-2.4 s (origin render), 2026-11-19. So the rendered page
+ * is kept in Next's incremental cache: rendered on the first request after a deploy (nothing at build time: the
+ * database isn't reachable during the Hostinger build), then served straight from the cache and re-rendered in the
+ * background at most every 5 minutes. Admin price and content changes show within ~5 minutes at the origin (plus up to
+ * an hour in the Cloudflare copy, see next.config.ts).
+ */
+export const revalidate = 300;
+export const dynamicParams = true;
+export function generateStaticParams(): { variant: string }[] {
+  return [];
+}
 
 // Guides shown on the homepage, in the order a new customer needs them.
 const homeGuides = ["how-to-get-apollo-tv", "apollo-tv-downloader-code", "xtream-codes-login", "is-apollo-tv-down", "apollo-group-tv-netflix", "apollo-group-tv-roku"];
@@ -46,7 +60,8 @@ const homeGuides = ["how-to-get-apollo-tv", "apollo-tv-downloader-code", "xtream
 const homeTitle = "Apollo Group TV - Official Apollo App | Live TV, Sports & Movies";
 
 /** The description quotes the cheapest monthly price from the live price list, so it never goes stale. */
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps<"/home/[variant]">): Promise<Metadata> {
+  if ((await params).variant !== "index") notFound();
   let from: string | null = null;
   try {
     const plans = await getActivePlans();
@@ -104,7 +119,8 @@ function Band({ id, children }: { id: string; children: React.ReactNode }) {
   );
 }
 
-export default async function HomePage() {
+export default async function HomePage({ params }: PageProps<"/home/[variant]">) {
+  if ((await params).variant !== "index") notFound();
   const [
     plans,
     { reviews },

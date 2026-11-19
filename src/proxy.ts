@@ -16,6 +16,16 @@ const matches = (path: string, prefixes: string[]) => prefixes.some((p) => path 
 export function proxy(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl;
 
+  // The homepage lives at /home/index so Next can cache its rendered HTML (see that page). Serve it at "/" only.
+  if (pathname === "/") {
+    const url = request.nextUrl.clone();
+    url.pathname = "/home/index";
+    return NextResponse.rewrite(url);
+  }
+  if (pathname === "/home" || pathname.startsWith("/home/")) {
+    return new NextResponse("Not found", { status: 404, headers: { "X-Robots-Tag": "noindex" } });
+  }
+
   if (matches(pathname, PROTECTED) && !getSessionCookie(request, { cookiePrefix: "agtv" })) {
     const url = new URL("/sign-in", request.url);
     // Keep the query (e.g. ?plan=elite) so a chosen pack survives the sign-in.
