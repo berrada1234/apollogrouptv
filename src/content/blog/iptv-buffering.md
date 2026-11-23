@@ -141,7 +141,7 @@ If a wired test on a healthy device is consistently far below your plan's speed,
 
 ## When only one channel buffers
 
-If one channel buffers while every other channel plays smoothly, your home setup is fine. The source of that channel is having trouble, and it's usually temporary. Switch to another channel and come back in a few minutes. If the same channel keeps failing for more than a day, report it to support with the channel name and the time, so the team can check that source.
+If one channel buffers while every other channel plays smoothly, your home setup is fine. (If the channel plays but its guide is empty, that is a separate issue covered in our [IPTV EPG guide](/blog/iptv-epg).) The source of that channel is having trouble, and it's usually temporary. Switch to another channel and come back in a few minutes. If the same channel keeps failing for more than a day, report it to support with the channel name and the time, so the team can check that source.
 
 ## IPTV buffering on a Firestick
 

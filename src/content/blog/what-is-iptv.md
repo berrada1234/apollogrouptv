@@ -153,7 +153,7 @@ What's included depends on the provider and the player you use. If on-demand con
 | Playlist (M3U) | A list of channel addresses a player can open |
 | Xtream login | Server address, username and password for player apps |
 | Connection limit | How many streams your login can play at the same time |
-| EPG | Electronic programme guide: listings of what's on, shown by some players |
+| EPG | Electronic programme guide: listings of what's on, shown by some players. See our [IPTV EPG guide](/blog/iptv-epg) |
 
 ## Example: what happens when you press a channel
 

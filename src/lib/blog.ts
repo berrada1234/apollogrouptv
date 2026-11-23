@@ -7,7 +7,8 @@ import { cache } from "react";
  * Blog articles live as Markdown files in src/content/blog. Each file starts with a
  * simple front matter block (key: value lines between ---). The body supports the
  * subset of Markdown the articles use: ## and ### headings, paragraphs, - and 1. lists,
- * tables, fenced code, > quotes, **bold**, `code` and [links](url).
+ * tables, fenced code, > quotes, **bold**, `code` and [links](url), plus images on their own line:
+ * ![alt text](/images/blog/slug/file.webp 1600x900 "Caption"). The size is required so the page doesn't shift.
  */
 
 export type BlogMeta = {
@@ -33,7 +34,10 @@ export type Block =
   | { type: "quote"; text: string }
   | { type: "code"; text: string }
   | { type: "list"; ordered: boolean; items: string[] }
-  | { type: "table"; head: string[]; rows: string[][] };
+  | { type: "table"; head: string[]; rows: string[][] }
+  | { type: "img"; src: string; alt: string; width: number; height: number; caption: string };
+
+const IMAGE = /^!\[([^\]]+)\]\((\/\S+)\s+(\d+)x(\d+)(?:\s+"([^"]*)")?\)\s*$/;
 
 export type BlogPost = BlogMeta & { blocks: Block[]; words: number; minutes: number };
 
@@ -105,6 +109,12 @@ export function parseBlocks(body: string): Block[] {
       blocks.push({ type: "list", ordered, items });
       continue;
     }
+    const img = IMAGE.exec(line);
+    if (img) {
+      blocks.push({ type: "img", alt: img[1], src: img[2], width: Number(img[3]), height: Number(img[4]), caption: img[5] ?? "" });
+      i++;
+      continue;
+    }
     if (line.startsWith(">")) {
       const quote: string[] = [];
       while (i < lines.length && lines[i].startsWith(">")) quote.push(lines[i++].replace(/^>\s?/, ""));
@@ -112,7 +122,7 @@ export function parseBlocks(body: string): Block[] {
       continue;
     }
     const para: string[] = [];
-    while (i < lines.length && lines[i].trim() && !/^(#{2,3}\s|```|\||>|-\s|\d+\.\s)/.test(lines[i])) para.push(lines[i++].trim());
+    while (i < lines.length && lines[i].trim() && !/^(#{2,3}\s|```|\||>|-\s|\d+\.\s|!\[)/.test(lines[i])) para.push(lines[i++].trim());
     blocks.push({ type: "p", text: para.join(" ") });
   }
   return blocks;
@@ -126,6 +136,7 @@ export function plainText(text: string) {
 function blockText(b: Block): string {
   if (b.type === "list") return b.items.join(" ");
   if (b.type === "table") return [...b.head, ...b.rows.flat()].join(" ");
+  if (b.type === "img") return b.caption;
   return b.text;
 }
 

@@ -98,6 +98,22 @@ export function BlogBody({ blocks, tokens }: { blocks: Block[]; tokens: Record<s
               </Tag>
             );
           }
+          case "img":
+            return (
+              <figure key={i} className="my-2">
+                {/* eslint-disable-next-line @next/next/no-img-element -- pre-sized WebP from /public, lazy below the fold */}
+                <img
+                  src={b.src}
+                  alt={b.alt}
+                  width={b.width}
+                  height={b.height}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-auto w-full rounded-[14px] border border-border bg-card"
+                />
+                {b.caption && <figcaption className="mt-2 text-center text-sm leading-6 text-subtle">{b.caption}</figcaption>}
+              </figure>
+            );
           case "table":
             return (
               <div key={i} className="overflow-x-auto rounded-[14px] border border-border">

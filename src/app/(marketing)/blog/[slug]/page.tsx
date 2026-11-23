@@ -59,7 +59,13 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
     "@id": `${url}#article`,
     mainEntityOfPage: { "@id": pageId(`/blog/${post.slug}`) },
     inLanguage: "en",
-    image: cover,
+    // The generated cover, then any images inside the article, so image search can attribute them to the page.
+    image: [
+      cover,
+      ...post.blocks.flatMap((b) =>
+        b.type === "img" ? [{ "@type": "ImageObject", url: `${siteConfig.url}${b.src}`, width: b.width, height: b.height, caption: b.caption || b.alt }] : [],
+      ),
+    ],
     datePublished: post.date,
     dateModified: post.updated,
     articleSection: post.category,
