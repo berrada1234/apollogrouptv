@@ -231,7 +231,7 @@ export const faqSeed: FaqSeed[] = [
     category: "Account & Security",
     question: "I forgot my password or lost my login details. How do I get back in?",
     answer:
-      "Request a reset link from the [Sign in](/sign-in) page; it's valid for 30 minutes. Your website email and password also sign you in to the Apollo TV app. Third-party players use the separate player login shown in [My Accounts](/dashboard/profile). If you no longer have access to your email, [contact support](/contact).",
+      "Request a reset link from the [Sign in](/sign-in) page; it's valid for 30 minutes. Your website email and password also sign you in to the Apollo TV app. Third-party players use the separate player login shown in [My Accounts](/dashboard/profile). If you no longer have access to your email, [contact support](/contact). Our [Apollo Group TV login guide](/blog/apollo-group-tv-login) shows which login goes where.",
   },
   {
     category: "Account & Security",

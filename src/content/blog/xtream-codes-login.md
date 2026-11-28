@@ -190,7 +190,7 @@ No. "Xtream Codes" is the name of a login method. You enter Xtream details into 
 
 ### Where do I find my Xtream login details?
 
-Apollo Group TV customers find their Xtream server, username and password in My Account in the dashboard once their subscription is active. Each has a copy button.
+Apollo Group TV customers find their Xtream server, username and password in My Account in the dashboard once their subscription is active. Each has a copy button. These details are separate from the email and password you use on the website; our [Apollo Group TV login guide](/blog/apollo-group-tv-login) shows which login goes where.
 
 ### Are my Xtream details the same as my website login?
 

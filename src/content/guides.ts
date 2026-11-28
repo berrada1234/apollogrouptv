@@ -130,7 +130,7 @@ export const generalGuides: Guide[] = [
     troubleshooting: [
       {
         q: "The app says my credentials are wrong",
-        a: "Reset your password from the Sign in page, then sign in again on the device with the new password.",
+        a: "Reset your password from the Sign in page, then sign in again on the device with the new password. Our [Apollo Group TV login guide](/blog/apollo-group-tv-login) explains which login each app needs.",
       },
       {
         q: "Video starts, then keeps buffering",
